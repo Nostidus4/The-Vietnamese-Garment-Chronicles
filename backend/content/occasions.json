@@ -1,0 +1,9 @@
+{
+  "occasions": [
+    {"id": "tet-chua", "name": "Tết / đi chùa", "background": "a Vietnamese pagoda courtyard during Tết with apricot blossoms"},
+    {"id": "le-hoi", "name": "Lễ hội truyền thống", "background": "a traditional Vietnamese village festival"},
+    {"id": "su-kien-truong", "name": "Sự kiện trường / kỷ yếu", "background": "a modern school yard with a graduation atmosphere"},
+    {"id": "di-tich", "name": "Chụp ảnh di tích", "background": "a historic Vietnamese heritage site"},
+    {"id": "dam-cuoi", "name": "Dự đám cưới (khách)", "background": "a Vietnamese wedding reception, guest attire"}
+  ]
+}

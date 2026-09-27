@@ -1,0 +1,240 @@
+"""Loads backend/content, validates every file and every cross-reference, and keeps it in memory.
+
+Errors (bad field, unknown id) stop the server so broken data never reaches the demo.
+Warnings (unverified, missing image or source) are listed in GET /admin/content-report.
+"""
+
+import json
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import TypeVar
+
+from pydantic import BaseModel, ValidationError
+
+from .schemas import (
+    Accessory,
+    Color,
+    ComicPage,
+    Garment,
+    Occasion,
+    QuizItem,
+    Region,
+    Rule,
+    Shop,
+    Source,
+)
+
+CONTENT_DIR = Path(__file__).resolve().parents[2] / "content"
+M = TypeVar("M", bound=BaseModel)
+
+
+@dataclass
+class Report:
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+
+    def as_dict(self) -> dict:
+        return {"ok": not self.errors, "errors": self.errors, "warnings": self.warnings}
+
+
+@dataclass
+class Content:
+    root: Path
+    sources: dict[str, Source]
+    colors: dict[str, Color]
+    accessories: dict[str, Accessory]
+    garments: dict[str, Garment]
+    occasions: dict[str, Occasion]
+    regions: dict[str, Region]
+    rules: dict[str, Rule]
+    quiz: dict[str, QuizItem]
+    shops: dict[str, Shop]
+    comic: list[ComicPage]
+
+    def media_exists(self, rel: str | None) -> bool:
+        return bool(rel) and (self.root / "media" / rel).is_file()
+
+
+class ContentError(Exception):
+    def __init__(self, report: Report):
+        self.report = report
+        super().__init__("Content has errors:\n- " + "\n- ".join(report.errors))
+
+
+def _read(path: Path, report: Report) -> object | None:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        report.errors.append(f"{path.name}: file missing")
+    except json.JSONDecodeError as e:
+        report.errors.append(f"{path.name}: invalid JSON at line {e.lineno}, column {e.colno}: {e.msg}")
+    return None
+
+
+def _parse_list(raw: object, key: str, model: type[M], where: str, report: Report) -> list[M]:
+    items = raw.get(key, []) if isinstance(raw, dict) else []
+    out: list[M] = []
+    for i, item in enumerate(items):
+        try:
+            out.append(model.model_validate(item))
+        except ValidationError as e:
+            for err in e.errors():
+                loc = ".".join(str(p) for p in err["loc"])
+                label = item.get("id", f"#{i}") if isinstance(item, dict) else f"#{i}"
+                report.errors.append(f"{where} [{label}] {loc}: {err['msg']}")
+    return out
+
+
+def _index(items: list[M], where: str, report: Report, key: str = "id") -> dict[str, M]:
+    out: dict[str, M] = {}
+    for it in items:
+        k = getattr(it, key)
+        if k in out:
+            report.errors.append(f"{where}: duplicate {key} '{k}'")
+        out[k] = it
+    return out
+
+
+def load(root: Path = CONTENT_DIR) -> tuple[Content, Report]:
+    r = Report()
+
+    def lst(file: str, key: str, model: type[M]) -> list[M]:
+        raw = _read(root / file, r)
+        return _parse_list(raw, key, model, file, r) if raw is not None else []
+
+    garment_list: list[Garment] = []
+    for gf in sorted((root / "garments").glob("*.json")):
+        raw = _read(gf, r)
+        if raw is None:
+            continue
+        parsed = _parse_list({"x": [raw]}, "x", Garment, f"garments/{gf.name}", r)
+        for g in parsed:
+            if g.id != gf.stem:
+                r.errors.append(f"garments/{gf.name}: id '{g.id}' must match the file name")
+        garment_list += parsed
+
+    c = Content(
+        root=root,
+        sources=_index(lst("sources.json", "sources", Source), "sources.json", r),
+        colors=_index(lst("colors.json", "colors", Color), "colors.json", r),
+        accessories=_index(lst("accessories.json", "accessories", Accessory), "accessories.json", r),
+        garments=_index(garment_list, "garments/", r),
+        occasions=_index(lst("occasions.json", "occasions", Occasion), "occasions.json", r),
+        regions=_index(lst("regions.json", "regions", Region), "regions.json", r),
+        rules=_index(lst("rules.json", "rules", Rule), "rules.json", r, key="type"),
+        quiz=_index(lst("quiz.json", "items", QuizItem), "quiz.json", r),
+        shops=_index(lst("shops.json", "shops", Shop), "shops.json", r),
+        comic=sorted(lst("comic.json", "pages", ComicPage), key=lambda p: p.n),
+    )
+    _check_refs(c, r)
+    return c, r
+
+
+def _check_refs(c: Content, r: Report) -> None:
+    def need(ids: list[str] | None, pool: dict, where: str, what: str) -> None:
+        for i in ids or []:
+            if i not in pool:
+                r.errors.append(f"{where}: unknown {what} '{i}'")
+
+    def srcs(ids: list[str], where: str, required: bool = True) -> None:
+        need(ids, c.sources, where, "source")
+        if required and not ids:
+            r.warnings.append(f"{where}: no sources yet")
+
+    def media(path: str | None, where: str) -> None:
+        if path and not c.media_exists(path):
+            r.warnings.append(f"{where}: image not found at content/media/{path}")
+
+    for t in ("fusion", "restricted", "core", "caution", "occasion", "flexible"):
+        if t not in c.rules:
+            r.errors.append(f"rules.json: missing rule of type '{t}'")
+    for rule in c.rules.values():
+        srcs(rule.sources, f"rules.json [{rule.type}]")
+
+    for a in c.accessories.values():
+        w = f"accessories.json [{a.id}]"
+        need(a.occasions, c.occasions, w, "occasion")
+        need([a.alternative] if a.alternative else [], c.accessories, w, "alternative accessory")
+        srcs(a.sources, w, required=a.kind in ("traditional-vn", "traditional-foreign", "restricted"))
+        media(a.image, w)
+        if not a.verified and a.kind != "modern":
+            r.warnings.append(f"{w}: not verified")
+
+    for g in c.garments.values():
+        w = f"garments/{g.id}.json"
+        need([g.region], c.regions, w, "region")
+        need(g.occasions, c.occasions, w, "occasion")
+        need(g.colors, c.colors, w, "color")
+        need(g.accessories, c.accessories, w, "accessory")
+        for dc in g.default_colors:
+            if dc not in g.colors:
+                r.errors.append(f"{w}: default color '{dc}' is not in its colors list")
+        for f in g.facts:
+            need(f.sources, c.sources, w, "source")
+        srcs(g.sources, w)
+        if g.reference_image is None:
+            r.warnings.append(f"{w}: no reference_image (try-on accuracy drops without it)")
+        media(g.reference_image, w)
+        for s in g.wearing_steps:
+            media(s.image, w)
+        if not g.verified:
+            r.warnings.append(f"{w}: not verified")
+        reg = c.regions.get(g.region)
+        if reg and g.id not in reg.garments:
+            r.errors.append(f"{w}: region '{g.region}' does not list this garment")
+
+    for reg in c.regions.values():
+        w = f"regions.json [{reg.id}]"
+        need(reg.garments, c.garments, w, "garment")
+        if reg.status == "open" and not reg.garments:
+            r.errors.append(f"{w}: open region needs at least one garment")
+        if reg.status == "locked" and not reg.lock_note:
+            r.warnings.append(f"{w}: locked region should explain why (lock_note)")
+        media(reg.stamp_image, w)
+
+    for q in c.quiz.values():
+        w = f"quiz.json [{q.id}]"
+        need([q.garment_id] if q.garment_id else [], c.garments, w, "garment")
+        srcs(q.sources, w)
+        media(q.image, w)
+
+    for s in c.shops.values():
+        w = f"shops.json [{s.id}]"
+        need(s.garments, c.garments, w, "garment")
+        if not s.verified:
+            r.warnings.append(f"{w}: not verified")
+
+    for p in c.comic:
+        media(p.image, f"comic.json [page {p.n}]")
+
+    avatar = "avatars/default.png"
+    if not c.media_exists(avatar):
+        r.warnings.append(f"media: content/media/{avatar} missing (needed for avatar try-on)")
+    for g in c.garments.values():
+        if not c.media_exists(f"fallback/{g.id}.png"):
+            r.warnings.append(f"media: fallback/{g.id}.png missing (shown when Gemini is unavailable)")
+
+
+_current: tuple[Content, Report] | None = None
+
+
+def get() -> Content:
+    global _current
+    if _current is None:
+        reload()
+    return _current[0]  # type: ignore[index]
+
+
+def report() -> Report:
+    get()
+    return _current[1]  # type: ignore[index]
+
+
+def reload(root: Path = CONTENT_DIR) -> Report:
+    """Reloads content; raises ContentError and keeps the old content if the new one is broken."""
+    global _current
+    content, rep = load(root)
+    if rep.errors:
+        raise ContentError(rep)
+    _current = (content, rep)
+    return rep

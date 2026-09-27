@@ -1,0 +1,32 @@
+{
+  "id": "ao-dai",
+  "region": "hue",
+  "name_vi": "Áo dài hiện đại",
+  "name_en": "Modern ao dai",
+  "group": "cach-tan",
+  "period": "Thế kỷ XX: áo Le Mur (Cát Tường) đầu thập niên 1930, áo Lê Phổ, dáng ôm Sài Gòn thập niên 1950",
+  "summary": "Biểu tượng mạnh nhất của Việt Nam, và cũng là kết quả của một lần cách tân từ áo ngũ thân.",
+  "facts": [
+    {"text": "Kiểu áo dài tân thời do họa sĩ Cát Tường (Le Mur) giới thiệu đầu thập niên 1930, tiếp đó là cải tiến của Lê Phổ.", "sources": ["ref-04"]},
+    {"text": "Thợ may Sài Gòn làm áo ôm dáng, tay raglan trong thập niên 1950 – dạng phổ biến hiện nay.", "sources": ["ref-66"]},
+    {"text": "'Tri thức may và mặc áo dài Huế' là Di sản văn hóa phi vật thể quốc gia (2024).", "sources": ["ref-08", "ref-11"]}
+  ],
+  "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong", "dam-cuoi"],
+  "zones": [
+    {"part": "hai tà dài", "level": "keep"},
+    {"part": "xẻ tà hai bên", "level": "keep"},
+    {"part": "cổ áo", "level": "caution"},
+    {"part": "màu vải, họa tiết", "level": "free"},
+    {"part": "chất liệu", "level": "free"}
+  ],
+  "colors": ["trang", "xanh-thien-thanh", "tim-hue", "do-son", "xanh-mint"],
+  "default_colors": ["trang", "xanh-thien-thanh"],
+  "accessories": ["non-la", "khan-van", "sneakers-trang", "tui-tote", "kinh-mat", "obi", "no-jeogori"],
+  "must_keep": ["two long flaps front and back", "side slits from the waist", "worn over long trousers"],
+  "must_avoid": ["hanfu cross collar", "Japanese obi", "Korean jeogori ribbon", "Chinese qipao styling"],
+  "reference_image": "ref/ao-dai.png",
+  "hot_weather_tip": "Áo dài vải lụa mỏng hoặc voan nhẹ vẫn giữ hai tà và đường xẻ.",
+  "wearing_steps": [],
+  "sources": ["ref-04", "ref-08", "research-6"],
+  "verified": false
+}

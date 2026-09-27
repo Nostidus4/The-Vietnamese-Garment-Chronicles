@@ -10,8 +10,8 @@ const STATE: Record<CompassState, { icon: string; name: string; tone: string }> 
 export function CompassPanel({ result }: { result: CompassResult | null }) {
   if (!result) return null;
   const s = STATE[result.state];
-  // Show the most severe trigger's lines first
-  const main = [...result.triggers].reverse().find((t) => t.state === result.state) ?? result.triggers[0];
+  // The API sorts triggers most severe first
+  const main = result.triggers[0];
 
   return (
     <section className={`rounded-lg border-2 p-5 ${s.tone}`}>

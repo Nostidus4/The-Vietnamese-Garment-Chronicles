@@ -3,8 +3,7 @@
 import HTMLFlipBook from "react-pageflip";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { comicPages } from "@/data/comic";
-import { regionNotes } from "@/data/regions";
+import type { Bootstrap } from "@/lib/types";
 import { ComicPage } from "./ComicPage";
 import { HandwrittenText } from "./HandwrittenText";
 import { Page } from "./Page";
@@ -17,14 +16,15 @@ interface FlipApi {
   pageFlip(): { flip(page: number): void };
 }
 
-export default function Flipbook() {
+export default function Flipbook({ data }: { data: Bootstrap }) {
   const router = useRouter();
   const book = useRef<FlipApi>(null);
   const [hovered, setHovered] = useState<string | null>(null);
 
-  const pages = comicPages.filter((p) => SHOW_UP_TO === "P1" || p.priority === "P0");
+  const pages = data.comic.filter((p) => SHOW_UP_TO === "P1" || p.priority === "P0");
   const mapIndex = pages.length + 1; // cover + comic pages
-  const note = regionNotes[hovered ?? "hue"];
+  const regions = new Map(data.regions.map((r) => [r.id, r]));
+  const note = (regions.get(hovered ?? "hue") ?? data.regions[0]).map_note;
 
   return (
     <div className="flex w-full max-w-5xl flex-col items-center gap-4">
@@ -68,7 +68,12 @@ export default function Flipbook() {
 
         {/* Map spread: left = map, right = handwritten notes */}
         <Page className="p-4">
-          <VietnamMap active={hovered} onHover={setHovered} onSelect={(id) => router.push(`/chapter/${id}`)} />
+          <VietnamMap
+            active={hovered}
+            locked={data.regions.filter((r) => r.status === "locked").map((r) => r.id)}
+            onHover={setHovered}
+            onSelect={(id) => router.push(`/chapter/${id}`)}
+          />
         </Page>
         <Page className="flex flex-col justify-between p-8">
           <HandwrittenText title={note.title} lines={note.lines} />

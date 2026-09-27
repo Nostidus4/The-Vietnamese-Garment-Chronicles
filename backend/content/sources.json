@@ -1,0 +1,364 @@
+{
+  "sources": [
+    {
+      "id": "ref-01",
+      "title": "Bảo tàng Đắk Lắk (n.d.). Giới thiệu sách “Trang phục cổ truyền các dân tộc Việt Nam” (Ngô Đức Thịnh)",
+      "url": "https://daklakmuseum.vn/nghien-cuu/bai-viet/gioi-thieu-sach-trang-phuc-co-truyen-cac-dan-toc-viet-nam"
+    },
+    {
+      "id": "ref-02",
+      "title": "Thư viện tỉnh Bình Thuận (2024). Trang phục cổ truyền các dân tộc Việt Nam – Ngô Đức Thịnh, NXB Tri thức 2023",
+      "url": "https://www.thuvienbinhthuan.com.vn/trang-phuc-co-truyen-cac-dan-toc-viet-nam.html"
+    },
+    {
+      "id": "ref-03",
+      "title": "Trường ĐH KHXH&NV – ĐHQG TP.HCM (n.d.). Tài liệu nghiên cứu áo dài, trích Trần Quang Đức (2013)",
+      "url": "https://hcmussh.edu.vn/static/document/13110.pdf"
+    },
+    {
+      "id": "ref-04",
+      "title": "Chuyên san KHXH&NV – ĐH Sư phạm Hà Nội 2 (n.d.). Bài viết về lịch sử áo dài",
+      "url": "https://sjsh.hpu2.edu.vn/index.php/journal/article/download/567/204/2188"
+    },
+    {
+      "id": "ref-05",
+      "title": "Nguyễn Thị Kim Ngân (2022). Hình tượng áo dài trong hội họa Việt Nam. Tạp chí KH ĐH Đồng Tháp",
+      "url": "https://dthujs.vn/index.php/dthujs/article/download/184/148/302"
+    },
+    {
+      "id": "ref-06",
+      "title": "ĐH Thăng Long (n.d.). Preservation of cultural identity by Vietnamese youth…",
+      "url": "https://science.thanglong.edu.vn/index.php/volb/article/download/248/156"
+    },
+    {
+      "id": "ref-07",
+      "title": "Bộ VHTTDL (27/11/2022). Bảo tồn trang phục truyền thống DTTS: Thúc đẩy vai trò của thanh niên",
+      "url": "https://bvhttdl.gov.vn/bao-ton-trang-phuc-truyen-thong-dan-toc-thieu-so-thuc-day-vai-tro-cua-thanh-nien-20221127080518241.htm"
+    },
+    {
+      "id": "ref-08",
+      "title": "Nhân Dân (28/08/2024). Nghệ thuật may, mặc áo dài Huế trở thành Di sản VHPVT quốc gia",
+      "url": "https://nhandan.vn/ao-dai-hue-tro-thanh-di-san-van-hoa-phi-vat-the-quoc-gia-post823898.html"
+    },
+    {
+      "id": "ref-09",
+      "title": "Nhân Dân (23/11/2024). Đón nhận danh hiệu “Tri thức may, mặc áo dài Huế”",
+      "url": "https://nhandan.vn/don-nhan-danh-hieu-di-san-van-hoa-phi-vat-the-quoc-gia-tri-thuc-may-mac-ao-dai-hue-post846558.html"
+    },
+    {
+      "id": "ref-10",
+      "title": "Người Hà Nội (23/11/2024). Lan tỏa di sản “Tri thức may, mặc áo dài Huế”",
+      "url": "https://nguoihanoi.vn/lan-toa-di-san-van-hoa-phi-vat-the-quoc-gia-tri-thuc-may-mac-ao-dai-hue-trong-cuoc-song-duong-dai-88262.html"
+    },
+    {
+      "id": "ref-11",
+      "title": "Tiền Phong (23/11/2024). Tri thức may, mặc áo dài Huế là Di sản VHPVT quốc gia",
+      "url": "https://tienphong.vn/tri-thuc-may-mac-ao-dai-hue-la-di-san-van-hoa-phi-vat-the-quoc-gia-post1694152.tpo"
+    },
+    {
+      "id": "ref-12",
+      "title": "Công Thương – Thương hiệu quốc gia (11/11/2024). Áo dài Huế trở thành Di sản phi vật thể Quốc gia",
+      "url": "https://thuonghieuquocgia.congthuong.vn/ao-dai-hue-tro-thanh-di-san-phi-vat-the-quoc-gia-358064.html"
+    },
+    {
+      "id": "ref-13",
+      "title": "VnTravelLive (16/08/2024). Áo dài Huế được công nhận là Di sản VHPVT quốc gia",
+      "url": "https://vntravellive.com/ao-dai-hue-duoc-cong-nhan-la-di-san-van-hoa-phi-vat-the-quoc-gia-d37483.html"
+    },
+    {
+      "id": "ref-14",
+      "title": "Thanh Niên (07/03/2023). Ngày 8.3: Mặc áo dài tham quan cố đô Huế được miễn phí vé",
+      "url": "https://thanhnien.vn/ngay-83-mac-ao-dai-tham-quan-co-do-hue-duoc-mien-phi-ve-vao-cong-185230307094417981.htm"
+    },
+    {
+      "id": "ref-15",
+      "title": "Dân tộc & Phát triển (06/03/2021). Huế miễn vé tham quan di tích cho người mặc áo dài",
+      "url": "https://dantocphattrien.vietnamnet.vn/hue-mien-ve-tham-quan-di-tich-cho-nguoi-mac-ao-dai-truyen-thong-14292.html"
+    },
+    {
+      "id": "ref-16",
+      "title": "VnExpress (18/07/2024). Xu hướng mặc cổ phục của giới trẻ Việt",
+      "url": "https://vnexpress.net/xu-huong-mac-co-phuc-cua-gioi-tre-viet-4769383.html"
+    },
+    {
+      "id": "ref-17",
+      "title": "VOV English (21/02/2026). Traditional attire finds new life in modern cultural landscape",
+      "url": "https://english.vov.vn/en/culture/traditional-attire-finds-new-life-in-modern-cultural-landscape-post1270224.vov"
+    },
+    {
+      "id": "ref-18",
+      "title": "VOV (2026). Người trẻ mặc cổ phục du xuân",
+      "url": "https://vov.gov.vn/nguoi-tre-mac-co-phuc-du-xuan-huong-ve-gia-tri-truyen-thong-cua-tet-viet-dtnew-1131347"
+    },
+    {
+      "id": "ref-19",
+      "title": "Dân tộc & Phát triển (26/03/2026). Cổ phục trong đời sống đương đại",
+      "url": "https://dantocphattrien.vietnamnet.vn/co-phuc-trong-doi-song-duong-dai-74199.html"
+    },
+    {
+      "id": "ref-20",
+      "title": "Truyền thông Trẻ – IOJ (12/06/2024). Người trẻ “hồi sinh” cổ phục Việt",
+      "url": "https://truyenthongtre.vn/chuyen-de/nguoi-tre-hoi-sinh-co-phuc-viet-90400"
+    },
+    {
+      "id": "ref-21",
+      "title": "Công an Nhân dân (01/06/2018). Nở rộ trào lưu phục dựng văn hóa Việt cổ của giới trẻ",
+      "url": "https://cand.com.vn/Phong-su-Tieu-diem/No-ro-trao-luu-phuc-dung-van-hoa-Viet-co-cua-gioi-tre-i477669/"
+    },
+    {
+      "id": "ref-22",
+      "title": "Công an Nhân dân (06/02/2023). Lan tỏa cổ phục Việt trong đời sống hiện tại",
+      "url": "https://cand.com.vn/doi-song-van-hoa/lan-toa-co-phuc-viet-trong-doi-song-hien-tai-i682180/"
+    },
+    {
+      "id": "ref-23",
+      "title": "Công an Nhân dân (07/12/2022). Bảo tồn trang phục truyền thống của dân tộc",
+      "url": "https://cand.com.vn/doi-song-van-hoa/bao-ton-trang-phuc-truyen-thong-cua-dan-toc-khong-la-chuyen-cua-ngay-sau-i676848/"
+    },
+    {
+      "id": "ref-24",
+      "title": "Sở VHTT Hà Nội (n.d.). Những người trẻ tìm về văn hóa Việt cổ",
+      "url": "https://sovhtt.hanoi.gov.vn/nhung-nguoi-tre-tim-ve-van-hoa-viet-co/"
+    },
+    {
+      "id": "ref-25",
+      "title": "Saigoneer (2022, cập nhật 2026). Great Vietnam Resurrects Nguyễn-Era Fashion",
+      "url": "https://saigoneer.com/ton-sur-ton/25701-great-vietnam-resurrects-nguy%E1%BB%85n-era-fashion,-one-traditional-costume-at-a-time"
+    },
+    {
+      "id": "ref-26",
+      "title": "Phụ nữ Việt Nam (10/02/2026). Áo dài lập kỷ lục trên “sàn diễn số” mùa Tết Bính Ngọ",
+      "url": "https://phunuvietnam.vn/ao-dai-lap-ky-luc-tren-san-dien-so-mua-tet-binh-ngo-238260210174909825.htm"
+    },
+    {
+      "id": "ref-27",
+      "title": "CafeBiz (20/06/2026). Áo dài trở thành hiện tượng thương mại điện tử",
+      "url": "https://cafebiz.vn/ao-dai-tro-thanh-hien-tuong-thuong-mai-dien-tu-don-hang-tang-gan-17-lan-176260620122509394.chn"
+    },
+    {
+      "id": "ref-28",
+      "title": "Báo Công Thương (15/02/2026). Hàng triệu đơn hàng áo dài qua TikTok Shop mùa Tết",
+      "url": "https://congthuong.vn/hang-trieu-don-hang-ao-dai-duoc-tieu-thu-qua-tiktok-shop-mua-tet-443030.html"
+    },
+    {
+      "id": "ref-29",
+      "title": "Doanh nghiệp & Tiếp thị (10/02/2026). Áo dài đạt mức tiêu thụ kỷ lục dịp Tết Bính Ngọ",
+      "url": "https://doanhnghieptiepthi.vn/ao-dai-dat-muc-tieu-thu-ky-luc-dip-tet-binh-ngo-161260209212219034.htm"
+    },
+    {
+      "id": "ref-30",
+      "title": "MarketingAI (10/01/2025). Lý giải thị trường áo dài sôi động trước Tết 2025 (trích Metric)",
+      "url": "https://marketingai.vn/ly-giai-thi-truong-ao-dai-soi-dong-truoc-tet-nguyen-dan-2025-194250109120819706.htm"
+    },
+    {
+      "id": "ref-31",
+      "title": "Style Republik (18/02/2026). Những vấn đề của thị trường áo dài Tết năm nay",
+      "url": "https://stylerepublik.vn/nhung-van-de-cua-thi-truong-ao-dai-tet-nam-nay"
+    },
+    {
+      "id": "ref-32",
+      "title": "Vietnam.vn / Quảng Ninh (05/02/2024). Bùng nổ doanh thu bán áo dài mùa Tết (trích Buzzmetrics)",
+      "url": "https://www.vietnam.vn/quangninh/bung-no-doanh-thu-ban-ao-dai-mua-tet/"
+    },
+    {
+      "id": "ref-33",
+      "title": "Kenh14 (23/03/2024). Gợi ý địa chỉ thuê cổ phục gần Đại Nội",
+      "url": "https://kenh14.vn/check-in-hue-dip-nay-goi-y-dia-chi-thue-co-phuc-gia-chi-tu-100k-ngay-gan-dai-noi-20240323095406425.chn"
+    },
+    {
+      "id": "ref-34",
+      "title": "Sovaba Travel (20/09/2025). Địa chỉ thuê áo dài, cổ phục tham quan Đại Nội Huế",
+      "url": "https://sovaba.travel/blog/bai-viet-dia-chi-thue-ao-dai-co-phuc-tham-quan-dai-noi-hue-trai-nghiem-hoa-than-thanh-hoang-cung-xua"
+    },
+    {
+      "id": "ref-35",
+      "title": "Hoa Nghiêm Việt Phục (06/11/2025). Bảng giá thuê cổ phục và áo dài tại Huế",
+      "url": "https://hoanghiemvietphuc.com/bang-gia-thue-co-phuc-va-ao-dai-tai-hue-danh-cho-khach-du-lich/"
+    },
+    {
+      "id": "ref-36",
+      "title": "Tạp chí Công Thương (2025). Bách Hoa Bộ Hành 2025: hơn 1.000 người diễu hành cổ phục",
+      "url": "https://tapchicongthuong.vn/bach-hoa-bo-hanh-2025--hon-1-000-nguoi-dieu-hanh-co-phuc-viet-ruc-ro-sac-mau-di-san-316287.htm"
+    },
+    {
+      "id": "ref-37",
+      "title": "Znews (08/03/2025). Diễu hành cổ phục Việt ở TP.HCM",
+      "url": "https://znews.vn/khach-tay-kieu-ban-gai-xem-dieu-hanh-co-phuc-viet-o-tphcm-post1536648.html"
+    },
+    {
+      "id": "ref-38",
+      "title": "Tuổi Trẻ (22/03/2025). Hàng ngàn người đồng diễn Việt phục “Tóc xanh vạt áo”",
+      "url": "https://tuoitre.vn/vo-chong-victor-vu-cung-hang-ngan-nguoi-dong-dien-viet-phuc-toc-xanh-vat-ao-2025032220354617.htm"
+    },
+    {
+      "id": "ref-39",
+      "title": "Tuổi Trẻ (19/01/2025). 400 bạn trẻ mặc cổ phục Việt diễu hành khắp phố cổ",
+      "url": "https://tuoitre.vn/400-ban-tre-mac-co-phuc-viet-dieu-hanh-khap-pho-co-20250119142325657.htm"
+    },
+    {
+      "id": "ref-40",
+      "title": "Tuổi Trẻ (chuyên trang). Lễ hội áo dài du lịch Hà Nội; Cổ phục",
+      "url": "https://tuoitre.vn/le-hoi-ao-dai-du-lich-ha-noi.html"
+    },
+    {
+      "id": "ref-41",
+      "title": "Báo Văn hóa (2024). Lan tỏa Việt phục trong giới trẻ",
+      "url": "https://baovanhoa.vn/thoi-trang/lan-toa-viet-phuc-trong-gioi-tre-68931.html"
+    },
+    {
+      "id": "ref-42",
+      "title": "Báo Văn hóa (10/11/2024). “Khước từ” trang phục truyền thống và nỗi lo mai một",
+      "url": "https://baovanhoa.vn/dan-toc-ton-giao/bai-2-khuoc-tu-trang-phuc-truyen-thong-va-noi-lo-mai-mot-111188.html"
+    },
+    {
+      "id": "ref-43",
+      "title": "Đại Đoàn Kết (02/12/2025). Mai một trang phục truyền thống: Nguy cơ hiện hữu",
+      "url": "https://daidoanket.vn/mai-mot-trang-phuc-truyen-thong-nguy-co-hien-huu.html"
+    },
+    {
+      "id": "ref-44",
+      "title": "Báo Sơn La (n.d.). Ứng dụng công nghệ số bảo tồn trang phục truyền thống",
+      "url": "https://baosonla.vn/van-hoa-van-nghe-the-thao/ung-dung-cong-nghe-so-bao-ton-trang-phuc-truyen-thong-5Q6Q7s2Vg.html"
+    },
+    {
+      "id": "ref-45",
+      "title": "Nhân Dân (06/12/2013). Nét độc đáo của trang phục dân tộc thiểu số",
+      "url": "https://nhandan.vn/net-doc-dao-cua-trang-phuc-dan-toc-thieu-so-post190344.html"
+    },
+    {
+      "id": "ref-46",
+      "title": "Báo Pháp luật VN (05/03/2023). Để trang phục truyền thống dân tộc Việt không bị mai một",
+      "url": "https://baophapluat.vn/de-trang-phuc-truyen-thong-dan-toc-viet-khong-bi-mai-mot-post468477.html"
+    },
+    {
+      "id": "ref-47",
+      "title": "Báo Tin tức / CEMA (23/12/2013). 40/54 dân tộc không còn mặc trang phục truyền thống",
+      "url": "https://baotintuc.vn/tin-tuc/4054-dan-toc-khong-con-mac-trang-phuc-truyen-thong-20131223093759573.htm"
+    },
+    {
+      "id": "ref-48",
+      "title": "Thanh Niên (23/11/2019). Biến áo dài Việt thành “phong cách Trung Quốc”",
+      "url": "https://thanhnien.vn/bien-ao-dai-viet-thanh-phong-cach-trung-quoc-khac-nao-an-cap-185902825.htm"
+    },
+    {
+      "id": "ref-49",
+      "title": "Heritage – Vietnam Airlines (27/02/2022). Xu hướng thời trang cổ phục Việt",
+      "url": "https://heritagevietnamairlines.com/xu-huong-thoi-trang-co-phuc-viet/"
+    },
+    {
+      "id": "ref-50",
+      "title": "The Momentous Life (25/03/2025). Áo dài Giao Lĩnh và Viên Lĩnh",
+      "url": "https://themomentous.life/ao-dai-giao-linh-va-vien-linh-di-san-co-phuc-viet-nam/"
+    },
+    {
+      "id": "ref-51",
+      "title": "CafeF (05/03/2025). “Cha đẻ” ứng dụng Fit Room",
+      "url": "https://cafef.vn/cha-de-ung-dung-viet-giup-thay-quan-ao-nho-ai-vuot-mat-doi-thu-trung-quoc-beauty-cam-tren-app-store-chung-toi-gan-nhu-khong-co-loi-the-gi-188250305192707475.chn"
+    },
+    {
+      "id": "ref-52",
+      "title": "VR3D (n.d.). Thiết kế áo dài nam truyền thống – Chuyển đổi số di sản trang phục",
+      "url": "https://vr3d.vn/trienlam/tham-gia-thiet-ke-le-phuc-nam-truyen-thong"
+    },
+    {
+      "id": "ref-53",
+      "title": "Q&Me / Asia Plus (2017). Vietnamese fashion behavior survey (n=240)",
+      "url": "https://www.slideshare.net/HIENNGUYENSONGTHANH/vietnamese-fashion-behavior-survey"
+    },
+    {
+      "id": "ref-54",
+      "title": "Yano Research Institute (2025/2026). Kimono Retail Market press release",
+      "url": "https://www.yanoresearch.com/en/press-release/show/press_id/4083"
+    },
+    {
+      "id": "ref-55",
+      "title": "The Japan Times – Sustainable Japan (27/09/2024). Japan’s endangered traditional kimono culture",
+      "url": "https://sustainable.japantimes.com/magazine/vol40/40-02"
+    },
+    {
+      "id": "ref-56",
+      "title": "Rappler / AFP (2018). Japanese kimono makers seek to revive declining industry",
+      "url": "https://www.rappler.com/world/asia-pacific/201805-japanese-kimono-makers-revive-declining-industry/"
+    },
+    {
+      "id": "ref-57",
+      "title": "iResearch (03/11/2022). 2022 China’s New Hanfu Industry Development Report",
+      "url": "https://www.iresearchchina.com/content/details8_71204.html"
+    },
+    {
+      "id": "ref-58",
+      "title": "China.org.cn (15/02/2022). Hanfu, from niche hobby to a big biz (trích iiMedia)",
+      "url": "http://www.china.org.cn/china/2022-02/15/content_78050177.htm"
+    },
+    {
+      "id": "ref-59",
+      "title": "Newhanfu (21/05/2026). 2024 Hanfu Report",
+      "url": "https://www.newhanfu.com/83084.html"
+    },
+    {
+      "id": "ref-60",
+      "title": "The Asia Business Daily (08/05/2026). Clarifying the criteria for free palace admission in hanbok",
+      "url": "https://www.asiae.co.kr/en/article/2026050810025484423"
+    },
+    {
+      "id": "ref-61",
+      "title": "K-Crush (2026). Hanbok Rental in Seoul / What Is Hanbok",
+      "url": "https://k-crush.com/hanbok-rental-seoul/"
+    },
+    {
+      "id": "ref-62",
+      "title": "Homes in Korea (09/05/2026). Hanbok Rental: Best Areas & Free Entry",
+      "url": "https://homesinkor.com/blog/korean-hanbok-rental"
+    },
+    {
+      "id": "ref-63",
+      "title": "United Nations in Indonesia (13/10/2021). Young Indonesians Take Their Cultural Heritage Forward on National Batik Day",
+      "url": "https://indonesia.un.org/en/151362-young-indonesians-take-their-cultural-heritage-forward-national-batik-day"
+    },
+    {
+      "id": "ref-64",
+      "title": "ObserverID (02/10/2023). Getting to know the National Batik Day",
+      "url": "https://observerid.com/getting-to-know-the-national-batik-day-an-indonesian-cultural-heritage-recognized-by-unesco/"
+    },
+    {
+      "id": "ref-65",
+      "title": "The Established (20/02/2024). Saree Revival: Indian Gen-Z Embraces Sarees",
+      "url": "https://www.theestablished.com/style/fashion/gen-z-has-readily-embraced-the-ease-and-versatility-the-saree-offers"
+    },
+    {
+      "id": "ref-66",
+      "title": "Wikipedia (truy cập 26/09/2026). Áo dài; Vietnamese clothing – chỉ dùng cho mốc niên đại đã đối chiếu với nguồn học thuật",
+      "url": "https://en.wikipedia.org/wiki/%C3%81o_d%C3%A0i"
+    },
+    {
+      "id": "research-5-3",
+      "title": "Research Report – Mục 5.3 Regional clothing map (cần thẩm định)",
+      "url": null,
+      "note": "Tab Bối Cảnh trong Google Doc của đội"
+    },
+    {
+      "id": "research-6",
+      "title": "Research Report – Mục 6 Representative Clothing Analysis",
+      "url": null,
+      "note": "Tab Bối Cảnh trong Google Doc của đội"
+    },
+    {
+      "id": "research-7",
+      "title": "Research Report – Mục 7 Occasion & Cultural Context",
+      "url": null,
+      "note": "Tab Bối Cảnh trong Google Doc của đội"
+    },
+    {
+      "id": "research-19-1",
+      "title": "Research Report – Mục 19.1 Thành phần có thể thay đổi vs nên giữ nguyên",
+      "url": null,
+      "note": "Tab Bối Cảnh trong Google Doc của đội"
+    },
+    {
+      "id": "research-19-2",
+      "title": "Research Report – Mục 19.2 Ranh giới giữa modernisation và cultural distortion",
+      "url": null,
+      "note": "Tab Bối Cảnh trong Google Doc của đội"
+    }
+  ]
+}

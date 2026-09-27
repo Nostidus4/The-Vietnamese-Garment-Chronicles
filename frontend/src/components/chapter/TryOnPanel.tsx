@@ -10,18 +10,22 @@ export function TryOnPanel({ selection }: { selection: Selection }) {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<TryOnResult | null>(null);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const image = result?.image_base64
     ? `data:image/png;base64,${result.image_base64}`
     : result?.fallback_url
-      ? `${API_URL}${result.fallback_url}`
+      ? `${API_URL}${result.fallback_url}` // e.g. /media/fallback/ao-dai.png
       : null;
 
   async function run() {
     setBusy(true);
     setSaved(false);
+    setError(null);
     try {
       setResult(await tryOn(selection, photo ? { photo } : { avatarId: "default" }));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Không dựng được ảnh");
     } finally {
       setBusy(false);
     }
@@ -38,6 +42,8 @@ export function TryOnPanel({ selection }: { selection: Selection }) {
         {busy ? "Đang dựng ảnh…" : photo ? "Thử bằng ảnh của tôi" : "Thử bằng avatar"}
       </button>
 
+      {error && <p className="text-sm text-red-700">{error}</p>}
+      {result && !image && <p className="text-sm text-stone-500">Chưa có ảnh (thiếu API key và ảnh dự phòng).</p>}
       {result?.rendered_alternative && (
         <p className="text-sm text-red-700">⛔ Look gốc không được dựng. Đây là phương án thay thế.</p>
       )}

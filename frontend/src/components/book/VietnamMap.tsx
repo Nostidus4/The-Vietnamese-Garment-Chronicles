@@ -4,24 +4,26 @@
 // REQUIRED: the map must include Hoàng Sa and Trường Sa. Keep the same region ids so hover/click still work.
 
 const REGIONS = [
-  { id: "tay-bac", label: "Tây Bắc", d: "M40 30 L95 20 L110 70 L70 95 L35 75 Z", locked: true },
-  { id: "bac-bo", label: "Bắc Bộ", d: "M95 20 L160 30 L165 85 L120 100 L110 70 Z", locked: false },
-  { id: "hue", label: "Huế", d: "M120 100 L165 85 L175 150 L185 215 L160 225 L140 160 Z", locked: false },
-  { id: "nam-bo", label: "Nam Bộ", d: "M160 225 L185 215 L205 280 L180 330 L125 335 L130 290 Z", locked: false },
+  { id: "tay-bac", label: "Tây Bắc", d: "M40 30 L95 20 L110 70 L70 95 L35 75 Z" },
+  { id: "bac-bo", label: "Bắc Bộ", d: "M95 20 L160 30 L165 85 L120 100 L110 70 Z" },
+  { id: "hue", label: "Huế", d: "M120 100 L165 85 L175 150 L185 215 L160 225 L140 160 Z" },
+  { id: "nam-bo", label: "Nam Bộ", d: "M160 225 L185 215 L205 280 L180 330 L125 335 L130 290 Z" },
 ];
 
 export function VietnamMap({
   active,
+  locked,
   onHover,
   onSelect,
 }: {
   active: string | null;
+  locked: string[]; // from regions.json status
   onHover: (id: string | null) => void;
   onSelect: (id: string) => void;
 }) {
   return (
     <svg viewBox="0 0 320 360" className="h-full w-full" role="img" aria-label="Bản đồ Việt Nam">
-      {REGIONS.map((r) => (
+      {REGIONS.map((r) => ({ ...r, locked: locked.includes(r.id) })).map((r) => (
         <g
           key={r.id}
           onMouseEnter={() => onHover(r.id)}

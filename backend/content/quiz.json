@@ -1,0 +1,9 @@
+{
+  "_help": "Mini-game 'Việt hay không?'. answer: viet | hanfu | hanbok | kimono | khac. Ảnh đặt trong content/media/quiz/.",
+  "items": [
+    {"id": "q-ao-dai", "image": "quiz/q-ao-dai.png", "answer": "viet", "garment_id": "ao-dai",
+     "explanation": "Áo dài hiện đại: hai tà dài trước sau, xẻ tà từ eo, mặc cùng quần.", "sources": ["ref-04"], "verified": false},
+    {"id": "q-hanbok", "image": "quiz/q-hanbok.png", "answer": "hanbok",
+     "explanation": "Hanbok: áo jeogori có cổ chéo và phần thân dưới tách riêng – đúng tiêu chí Hàn Quốc dùng để công nhận 'hanbok hợp lệ'.", "sources": ["ref-60"], "verified": false}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "ten-tiem",
+  "name": "Tên tiệm",
+  "city": "Huế",
+  "address": "Địa chỉ",
+  "url": "https://...",
+  "phone": null,
+  "services": ["rent", "tailor", "buy"],
+  "garments": ["ao-dai"],
+  "authenticity": "authentic | adapted | inspired | unknown",
+  "note": "Ghi chú kiểm tra",
+  "verified": false,
+  "last_checked": "2026-10-01"
+}

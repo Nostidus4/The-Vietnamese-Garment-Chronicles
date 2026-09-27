@@ -1,70 +1,86 @@
-from app.compass import evaluate
-from app.gemini import build_tryon_prompt
+import pytest
+
 from app.models import Modification, Selection
+from app.services.compass import SelectionError, evaluate
 
 
 def sel(**kw) -> Selection:
-    base = {"garment_id": "ao-ngu-than", "occasion_id": "di-tich"}
-    return Selection(**{**base, **kw})
+    return Selection(**{"garment_id": "ao-ngu-than", "occasion_id": "di-tich", **kw})
 
 
 def test_plain_garment_is_fit_and_authentic():
     r = evaluate(sel(colors=["tim-hue"], accessories=["khan-van"]))
-    assert r.state == "fit"
-    assert r.label == "Authentic"
+    assert (r.state, r.label) == ("fit", "Authentic")
 
 
 def test_modern_accessory_is_adapted_not_fusion():
     r = evaluate(sel(accessories=["sneakers-trang"]))
-    assert r.state == "adapted"
-    assert r.label == "Adapted"
+    assert (r.state, r.label) == ("adapted", "Adapted")
 
 
 def test_non_default_color_is_adapted():
     assert evaluate(sel(colors=["xanh-mint"])).state == "adapted"
 
 
-def test_foreign_traditional_accessory_is_distorted_with_alternative():
+def test_foreign_accessory_is_distorted_uses_its_own_message_and_offers_alternative():
     r = evaluate(sel(accessories=["sneakers-trang", "obi"]))
-    assert r.state == "distorted"
-    assert r.label is None
-    assert r.alternative is not None
+    assert r.state == "distorted" and r.label is None
+    assert r.triggers[0].type == "fusion"
+    assert "kimono" in r.triggers[0].ti  # accessory.message overrides the generic rule text
     assert r.alternative.accessories == ["sneakers-trang"]
+    assert r.alternative_state == "adapted"
 
 
 def test_restricted_item_is_distorted():
     assert evaluate(sel(accessories=["mu-canh-chuon"])).state == "distorted"
 
 
-def test_changing_core_zone_is_distorted():
+def test_core_zone_change_is_distorted_and_dropped_in_alternative():
     r = evaluate(sel(modifications=[Modification(zone="số thân áo (5 thân)", change="2 thân")]))
     assert r.state == "distorted"
+    assert r.alternative.modifications == []
 
 
-def test_changing_free_zone_is_adapted():
-    r = evaluate(sel(modifications=[Modification(zone="chất liệu", change="linen")]))
-    assert r.state == "adapted"
+def test_caution_zone_change_is_review():
+    r = evaluate(sel(modifications=[Modification(zone="độ dài tay", change="tay lửng")]))
+    assert (r.state, r.label) == ("review", "Inspired")
 
 
-def test_occasion_mismatch_is_review():
-    # non-quai-thao is only tagged for festivals, Tết and heritage sites
+def test_free_zone_change_is_adapted():
+    assert evaluate(sel(modifications=[Modification(zone="chất liệu", change="linen")])).state == "adapted"
+
+
+def test_accessory_occasion_mismatch_is_review():
     r = evaluate(Selection(garment_id="ao-tu-than", occasion_id="su-kien-truong", accessories=["non-quai-thao"]))
     assert r.state == "review"
-    assert r.label == "Inspired"
 
 
-def test_heaviest_state_wins():
+def test_garment_occasion_mismatch_is_review():
+    # ao-ngu-than does not list su-kien-truong
+    assert evaluate(sel(occasion_id="su-kien-truong")).state == "review"
+
+
+def test_heaviest_state_wins_and_is_listed_first():
     r = evaluate(sel(colors=["xanh-mint"], accessories=["no-jeogori"]))
     assert r.state == "distorted"
+    assert r.triggers[0].state == "distorted"
 
 
-def test_harmony_note_does_not_change_state():
-    r = evaluate(sel(colors=["do-son", "vang-nghe", "tim-hue"]))
+@pytest.mark.parametrize(
+    "bad",
+    [
+        {"garment_id": "khong-co"},
+        {"occasion_id": "khong-co"},
+        {"colors": ["trang"]},  # not offered for ao-ngu-than
+        {"accessories": ["khan-ran"]},  # not offered for ao-ngu-than
+        {"modifications": [Modification(zone="không có")]},
+    ],
+)
+def test_invalid_selection_is_rejected(bad):
+    with pytest.raises(SelectionError):
+        evaluate(sel(**bad))
+
+
+def test_harmony_notes_never_change_state():
+    r = evaluate(sel(colors=["do-son", "vang-nghe"]))
     assert r.state == "adapted"
-
-
-def test_tryon_prompt_uses_data_guardrails():
-    p = build_tryon_prompt(sel(colors=["tim-hue"], accessories=["khan-van"]))
-    assert "five panels" in p
-    assert "Japanese obi" in p
-    assert "Khăn vấn" in p

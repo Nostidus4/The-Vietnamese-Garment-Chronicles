@@ -1,0 +1,27 @@
+{
+  "regions": [
+    {
+      "id": "bac-bo", "name": "Bắc Bộ / Kinh Bắc", "status": "open", "garments": ["ao-tu-than"],
+      "map_note": {"title": "Bắc Bộ / Kinh Bắc", "lines": ["Đất hội xuân và quan họ.", "Áo tứ thân, yếm, nón quai thao, khăn mỏ quạ.", "Màu nâu, đen, sồi của đời thường."]},
+      "weather_point": {"lat": 21.18, "lon": 106.07},
+      "stamp_image": "stamps/bac-bo.png"
+    },
+    {
+      "id": "hue", "name": "Huế", "status": "open", "garments": ["ao-ngu-than", "ao-dai"],
+      "map_note": {"title": "Huế", "lines": ["Cố đô bên sông Hương.", "Áo ngũ thân từ năm 1744, rồi áo dài của thế kỷ XX.", "Tri thức may và mặc áo dài Huế là di sản quốc gia."]},
+      "weather_point": {"lat": 16.46, "lon": 107.59},
+      "stamp_image": "stamps/hue.png"
+    },
+    {
+      "id": "nam-bo", "name": "Nam Bộ", "status": "open", "garments": ["ao-ba-ba"],
+      "map_note": {"title": "Nam Bộ", "lines": ["Miền sông nước nắng nóng.", "Áo bà ba nhẹ, thoáng, gắn với đời sống hằng ngày."]},
+      "weather_point": {"lat": 10.03, "lon": 105.78},
+      "stamp_image": "stamps/nam-bo.png"
+    },
+    {
+      "id": "tay-bac", "name": "Tây Bắc", "status": "locked",
+      "lock_note": "Đang đồng tạo cùng cộng đồng. Trang phục các dân tộc thiểu số cần được chính cộng đồng cùng xây dựng và thẩm định trước khi đưa vào.",
+      "map_note": {"title": "Tây Bắc", "lines": ["Nhiều cộng đồng với trang phục riêng.", "Chương này đang được xây dựng cùng cộng đồng trước khi mở."]}
+    }
+  ]
+}

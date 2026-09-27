@@ -3,12 +3,18 @@
 import { toPng } from "html-to-image";
 import { useRef, useState } from "react";
 import { loadDuKy, saveToDuKy } from "@/lib/duky";
+import { useBootstrap } from "@/lib/useBootstrap";
 import type { DuKyEntry } from "@/lib/types";
 
 export default function DuKyView() {
   // Rendered client-only (see app/du-ky/page.tsx), so localStorage is safe here
   const [entries, setEntries] = useState<DuKyEntry[]>(loadDuKy);
   const refs = useRef<Record<string, HTMLDivElement | null>>({});
+  const { data } = useBootstrap();
+  const [realGarment, setRealGarment] = useState("ao-dai");
+  const [realOccasion, setRealOccasion] = useState("tet-chua");
+  const garmentById = new Map(data?.garments.map((g) => [g.id, g]));
+  const occasionName = new Map(data?.occasions.map((o) => [o.id, o.name]));
 
   async function exportEntry(id: string) {
     const node = refs.current[id];
@@ -20,12 +26,11 @@ export default function DuKyView() {
     a.click();
   }
 
-  // "Tôi đã mặc thật": real photo, tagged by the user.
-  // TODO(A): let the user pick garment + occasion instead of the defaults below.
+  // "Tôi đã mặc thật": real photo, tagged by the user with garment + occasion
   function addReal(file: File) {
     const reader = new FileReader();
     reader.onload = () => {
-      saveToDuKy({ kind: "real", image: String(reader.result), garment_id: "ao-dai", occasion_id: "tet-chua", label: null });
+      saveToDuKy({ kind: "real", image: String(reader.result), garment_id: realGarment, occasion_id: realOccasion, label: null });
       setEntries(loadDuKy());
     };
     reader.readAsDataURL(file);
@@ -34,10 +39,18 @@ export default function DuKyView() {
   return (
     <main className="mx-auto max-w-5xl p-6">
       <h1 className="font-hand text-4xl">Du Ký của tôi</h1>
-      <label className="mt-3 inline-block cursor-pointer text-sm underline">
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+        <select value={realGarment} onChange={(e) => setRealGarment(e.target.value)} className="rounded border px-2 py-1">
+          {data?.garments.map((g) => <option key={g.id} value={g.id}>{g.name_vi}</option>)}
+        </select>
+        <select value={realOccasion} onChange={(e) => setRealOccasion(e.target.value)} className="rounded border px-2 py-1">
+          {data?.occasions.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
+        </select>
+      <label className="inline-block cursor-pointer underline">
         + Tôi đã mặc thật (thêm ảnh)
         <input type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && addReal(e.target.files[0])} />
       </label>
+      </div>
 
       {entries.length === 0 && <p className="mt-6 text-stone-500">Chưa có trang nào. Hãy phối một look và lưu lại.</p>}
 
@@ -47,8 +60,10 @@ export default function DuKyView() {
             <div ref={(el) => { refs.current[e.id] = el; }} className="paper rounded-lg p-3 shadow">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={e.image} alt="" className="aspect-[3/4] w-full rounded object-cover" />
-              {/* TODO(A): show garment name, period, one-line note and source from the garment data */}
-              <p className="mt-2 font-hand text-xl">{e.garment_id}</p>
+              <p className="mt-2 font-hand text-xl">{garmentById.get(e.garment_id)?.name_vi ?? e.garment_id}</p>
+              <p className="text-xs text-stone-600">{garmentById.get(e.garment_id)?.period}</p>
+              <p className="text-xs text-stone-600">{occasionName.get(e.occasion_id)}</p>
+              <p className="text-[10px] text-stone-400">Nguồn: {garmentById.get(e.garment_id)?.sources.slice(0, 2).join(", ")}</p>
               <p className="text-xs text-stone-500">
                 {e.kind === "real" ? "Tôi đã mặc thật" : "Ảnh minh họa AI"} · {e.label ?? "—"} · Mặc đúng ✓
               </p>

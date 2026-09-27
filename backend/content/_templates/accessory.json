@@ -1,0 +1,12 @@
+{
+  "id": "ten-phu-kien",
+  "name_vi": "Tên phụ kiện",
+  "kind": "traditional-vn | modern | traditional-foreign | restricted",
+  "description": "Không bắt buộc",
+  "occasions": null,
+  "message": {"ti": "Lời Tí (không bắt buộc)", "teo": "Lời Tèo", "why": "Vì sao, trích research"},
+  "alternative": null,
+  "image": null,
+  "sources": [],
+  "verified": false
+}

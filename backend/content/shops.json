@@ -1,0 +1,8 @@
+{
+  "_help": "Danh bạ thuê/may. authenticity: authentic | adapted | inspired | unknown. Chỉ đặt verified: true sau khi đã kiểm tra tiệm.",
+  "shops": [
+    {"id": "hoa-nghiem-viet-phuc", "name": "Hoa Nghiêm Việt Phục", "city": "Huế", "url": "https://hoanghiemvietphuc.com/",
+     "services": ["rent"], "garments": ["ao-ngu-than", "ao-dai"], "authenticity": "unknown",
+     "note": "Nguồn: ref-35 trong Research. Cần kiểm tra địa chỉ, giá và mức xác thực.", "verified": false}
+  ]
+}

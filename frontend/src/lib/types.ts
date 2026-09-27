@@ -12,10 +12,10 @@ export interface Selection {
 }
 
 export interface Trigger {
-  rule_id: string;
   type: string;
   state: CompassState;
   target: string;
+  target_name: string;
   ti: string;
   teo: string;
   why: string;
@@ -28,39 +28,76 @@ export interface CompassResult {
   triggers: Trigger[];
   harmony_notes: string[];
   alternative: Selection | null;
+  alternative_state: CompassState | null;
+}
+
+export interface Fact {
+  text: string;
+  sources: string[];
 }
 
 export interface Garment {
   id: string;
-  chapter: string;
+  region: string;
   name_vi: string;
   name_en: string;
+  group: string;
   period: string;
-  story: string[];
+  summary: string;
+  facts: Fact[];
   occasions: string[];
-  zones: { part: string; level: "keep" | "caution" | "free" }[];
-  default_colors: string[];
+  zones: { part: string; level: "keep" | "caution" | "free"; note: string | null }[];
   colors: string[];
+  default_colors: string[];
   accessories: string[];
+  hot_weather_tip: string | null;
+  wearing_steps: { title: string; detail: string; image: string | null }[];
   sources: string[];
+  verified: boolean;
 }
 
-export interface GarmentsDoc {
+export interface Region {
+  id: string;
+  name: string;
+  status: "open" | "locked";
+  lock_note: string | null;
+  garments: string[];
+  map_note: { title: string; lines: string[] };
+  stamp_image: string | null;
+}
+
+export interface Bubble {
+  speaker: string;
+  text: string;
+  x: number;
+  y: number;
+}
+
+export interface ComicPage {
+  n: number;
+  priority: "P0" | "P1";
+  image: string;
+  scene: string;
+  bubbles: Bubble[];
+}
+
+export interface Bootstrap {
+  regions: Region[];
   garments: Garment[];
-  colors: Record<string, { name: string; hex: string }>;
-  accessories: Record<string, { name: string; kind: string }>;
-}
-
-export interface OccasionsDoc {
   occasions: { id: string; name: string }[];
-  regions: { id: string; name: string; status: "open" | "locked"; note?: string; garments: string[] }[];
+  colors: Record<string, { id: string; name: string; hex: string; restricted: boolean }>;
+  accessories: Record<string, { id: string; name_vi: string; kind: string }>;
+  sources: Record<string, { id: string; title: string; url: string | null }>;
+  comic: ComicPage[];
 }
 
 export interface TryOnResult {
   compass: CompassResult;
   rendered_alternative: boolean;
+  rendered_selection: Selection;
   image_base64: string | null;
   fallback_url: string | null;
+  cached: boolean;
   label_note: string;
 }
 

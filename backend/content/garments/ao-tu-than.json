@@ -1,0 +1,30 @@
+{
+  "id": "ao-tu-than",
+  "region": "bac-bo",
+  "name_vi": "Áo tứ thân",
+  "name_en": "Four-panel dress",
+  "group": "dan-gian",
+  "period": "Trang phục dân gian đồng bằng Bắc Bộ",
+  "summary": "Trang phục đời thường của phụ nữ Bắc Bộ, hợp nhất để đưa vào đời sống hôm nay.",
+  "facts": [
+    {"text": "Thường đi cùng yếm, nón quai thao và khăn mỏ quạ.", "sources": ["research-5-3"]},
+    {"text": "Màu nâu, đen, sồi là màu của đời thường.", "sources": ["research-5-3"]}
+  ],
+  "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong"],
+  "zones": [
+    {"part": "số thân áo", "level": "keep", "note": "Bốn thân là dấu hiệu nhận diện"},
+    {"part": "yếm bên trong", "level": "caution"},
+    {"part": "màu vải", "level": "free"},
+    {"part": "chất liệu", "level": "free"}
+  ],
+  "colors": ["nau-non", "den", "hong-dao", "xanh-mint", "vang-nghe"],
+  "default_colors": ["nau-non", "den"],
+  "accessories": ["non-quai-thao", "khan-mo-qua", "sneakers-trang", "tui-tote", "kinh-mat", "obi"],
+  "must_keep": ["four-panel outer dress, front panels left open or tied", "worn over a yem (Vietnamese bodice)"],
+  "must_avoid": ["hanfu cross collar", "Japanese obi"],
+  "reference_image": "ref/ao-tu-than.png",
+  "hot_weather_tip": "Chọn vải lanh hoặc cotton mỏng – vẫn giữ bốn thân áo, đây là cách tân có chủ đích.",
+  "wearing_steps": [],
+  "sources": ["research-5-3", "ref-01"],
+  "verified": false
+}

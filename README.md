@@ -9,18 +9,19 @@ Tài liệu sản phẩm đầy đủ: Google Doc của đội (tab Hồ sơ n�
 ## Cấu trúc
 
 ```
-frontend/   Next.js 16 + Tailwind 4 + react-pageflip + framer-motion
+frontend/   Next.js 16 + Tailwind 4 + react-pageflip + framer-motion (chỉ giao diện, không giữ dữ liệu)
   src/app/                  trang: / (sách), /chapter/[id], /du-ky
   src/components/book/      flipbook, trang truyện, bản đồ, chữ viết tay
   src/components/chapter/   Story Card, Builder, Compass, Try-on
-  src/data/                 kịch bản truyện tranh, chữ viết tay theo vùng
-  public/comic/             ảnh trang truyện (Nano Banana, không có chữ)
+  src/lib/                  gọi API, kiểu dữ liệu, Du Ký (localStorage)
 backend/    FastAPI
-  app/compass.py            Cultural Compass – nguồn sự thật duy nhất
-  app/gemini.py             mọi lệnh gọi Gemini (try-on, Hỏi Tèo)
-  data/*.json               trang phục, luật, dịp, vùng
-  data/ref, avatars, fallback   ảnh mẫu chuẩn, avatar, ảnh dự phòng
-  tests/                    test cho Compass
+  app/services/             compass, try-on, Hỏi Tèo, thời tiết, phối màu
+  app/routers/              các endpoint
+  app/content/              đọc + kiểm tra dữ liệu
+  content/                  ← TOÀN BỘ DỮ LIỆU (đội chỉ cần sửa ở đây)
+  scripts/                  check_content, pregenerate_fallbacks
+  tests/                    38 test
+docs/BACKEND.md             kiến trúc, API, CÁCH NHẬP DỮ LIỆU
 docs/TASKS.md               chia việc cho 2 người theo timeline
 ```
 
@@ -33,8 +34,9 @@ cd backend
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env          # điền GEMINI_API_KEY
-uvicorn app.main:app --reload --port 8000
-pytest -q                     # 11 test Compass phải xanh
+uvicorn app.main:app --reload --reload-include '*.json' --port 8000
+pytest -q                     # 38 test phải xanh
+python -m scripts.check_content   # báo dữ liệu còn thiếu gì
 ```
 
 **Frontend** (cổng 3000):
@@ -46,13 +48,15 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Không có `GEMINI_API_KEY` thì app vẫn chạy: try-on trả về ảnh trong `backend/data/fallback/<garment_id>.png`.
+Không có `GEMINI_API_KEY` thì app vẫn chạy: try-on trả về ảnh trong `backend/content/media/fallback/<garment_id>.png`.
+
+**Muốn thêm/sửa nội dung?** Đọc [docs/BACKEND.md](docs/BACKEND.md) mục 4 – chỉ cần sửa file JSON trong `backend/content/`.
 
 ## Nguyên tắc
 
 - **Luật quyết định, Gemini thể hiện.** Compass chạy trước mọi lệnh gọi AI; look ⛔ không bao giờ được gửi sang Nano Banana, hệ thống dựng phương án thay thế.
 - 4 trạng thái Compass: `fit` (Authentic) · `adapted` (Adapted) · `review` (Inspired) · `distorted` (không vào Du Ký).
-- Mọi dữ kiện văn hóa trong `backend/data` phải có `source_id` trỏ về Research Report trước khi demo (hiện đang `"verified": false`).
+- Mọi dữ kiện văn hóa trong `backend/content` phải có nguồn trong `sources.json` và được đổi `"verified": true` sau khi đối chiếu Research.
 - Bản đồ phải có **Hoàng Sa và Trường Sa**.
 - Ảnh người dùng chỉ xử lý trong bộ nhớ, không lưu trên server.
 

@@ -1,39 +1,34 @@
+"""Request/response shapes of the API (content file shapes live in app/content/schemas.py)."""
+
 from typing import Literal
 
 from pydantic import BaseModel, Field
 
-State = Literal["fit", "adapted", "review", "distorted"]
+from .content.schemas import QuizAnswer, State
 
-# Severity order: the heaviest triggered state wins
 SEVERITY: dict[str, int] = {"fit": 0, "adapted": 1, "review": 2, "distorted": 3}
-
-LABELS: dict[str, str | None] = {
-    "fit": "Authentic",
-    "adapted": "Adapted",
-    "review": "Inspired",
-    "distorted": None,  # never enters Du Ký
-}
+LABELS: dict[str, str | None] = {"fit": "Authentic", "adapted": "Adapted", "review": "Inspired", "distorted": None}
 
 
 class Modification(BaseModel):
     zone: str
-    change: str
+    change: str = ""
 
 
 class Selection(BaseModel):
     garment_id: str
     occasion_id: str
     vibe: Literal["traditional", "minimal", "modern", "festival"] = "traditional"
-    colors: list[str] = Field(default_factory=list)
-    accessories: list[str] = Field(default_factory=list)
+    colors: list[str] = Field(default_factory=list, max_length=2)
+    accessories: list[str] = Field(default_factory=list, max_length=6)
     modifications: list[Modification] = Field(default_factory=list)
 
 
 class Trigger(BaseModel):
-    rule_id: str
     type: str
     state: State
-    target: str  # accessory id, zone name or color id that triggered it
+    target: str
+    target_name: str
     ti: str
     teo: str
     why: str
@@ -46,8 +41,34 @@ class CompassResult(BaseModel):
     triggers: list[Trigger]
     harmony_notes: list[str]
     alternative: Selection | None = None
+    alternative_state: State | None = None
+
+
+class CompareRequest(BaseModel):
+    selections: list[Selection] = Field(min_length=2, max_length=3)
 
 
 class AskRequest(BaseModel):
     garment_id: str
-    question: str
+    question: str = Field(min_length=2, max_length=300)
+
+
+class AskResponse(BaseModel):
+    answer: str
+    sources: list[str]
+    grounded: bool
+
+
+class QuizAnswerRequest(BaseModel):
+    id: str
+    answer: QuizAnswer
+
+
+class TryOnResponse(BaseModel):
+    compass: CompassResult
+    rendered_alternative: bool
+    rendered_selection: Selection
+    image_base64: str | None
+    fallback_url: str | None
+    cached: bool
+    label_note: str = "Ảnh minh họa AI – cấu trúc chuẩn xem ở Story Card"

@@ -1,0 +1,31 @@
+{
+  "id": "ao-ngu-than",
+  "region": "hue",
+  "name_vi": "Áo ngũ thân",
+  "name_en": "Five-panel robe",
+  "group": "dan-gian",
+  "period": "Định chế ở Đàng Trong năm 1744",
+  "summary": "Tiền thân của áo dài hiện đại, từng là thường phục chung của người Việt.",
+  "facts": [
+    {"text": "Năm 1744, Chúa Nguyễn Phúc Khoát định chế trang phục ở Đàng Trong; áo ngũ thân cài khuy thành thường phục chung.", "sources": ["ref-03", "ref-12"]},
+    {"text": "Vua Minh Mạng (1826–1837) phổ biến áo ngũ thân ra cả nước.", "sources": ["ref-11"]}
+  ],
+  "occasions": ["tet-chua", "le-hoi", "di-tich", "dam-cuoi"],
+  "zones": [
+    {"part": "số thân áo (5 thân)", "level": "keep"},
+    {"part": "cổ áo", "level": "keep"},
+    {"part": "độ dài tay", "level": "caution"},
+    {"part": "màu vải", "level": "free"},
+    {"part": "chất liệu", "level": "free"}
+  ],
+  "colors": ["tim-hue", "xanh-thien-thanh", "do-son", "xanh-mint", "vang-nghe"],
+  "default_colors": ["tim-hue", "xanh-thien-thanh"],
+  "accessories": ["khan-van", "quat-giay", "sneakers-trang", "tui-tote", "kinh-mat", "obi", "no-jeogori", "mu-canh-chuon"],
+  "must_keep": ["five panels", "button closure", "Vietnamese standing collar"],
+  "must_avoid": ["hanfu cross collar", "Japanese obi", "Korean jeogori ribbon"],
+  "reference_image": "ref/ao-ngu-than.png",
+  "hot_weather_tip": "Chọn vải mỏng, thoáng; giữ đủ năm thân và cổ áo.",
+  "wearing_steps": [],
+  "sources": ["ref-03", "ref-12", "research-6"],
+  "verified": false
+}

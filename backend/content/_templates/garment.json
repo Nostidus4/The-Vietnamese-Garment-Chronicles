@@ -1,0 +1,30 @@
+{
+  "id": "ten-trang-phuc-khong-dau",
+  "region": "hue",
+  "name_vi": "Tên tiếng Việt",
+  "name_en": "English name (gửi cho Nano Banana)",
+  "group": "dan-gian",
+  "period": "Thời kỳ / bối cảnh",
+  "summary": "Một câu giới thiệu ngắn hiện trên Story Card.",
+  "facts": [
+    {"text": "Mỗi dữ kiện một câu, luôn có nguồn.", "sources": ["ref-16"]}
+  ],
+  "occasions": ["tet-chua", "le-hoi"],
+  "zones": [
+    {"part": "phần nhận diện", "level": "keep", "note": "keep = đổi là ⛔"},
+    {"part": "phần linh hoạt có giới hạn", "level": "caution", "note": "caution = đổi là ⚠️"},
+    {"part": "màu vải", "level": "free", "note": "free = đổi là ✨"}
+  ],
+  "colors": ["tim-hue", "trang"],
+  "default_colors": ["tim-hue"],
+  "accessories": ["khan-van", "sneakers-trang"],
+  "must_keep": ["English: structural features that must stay"],
+  "must_avoid": ["English: elements that must never appear"],
+  "reference_image": "ref/ten-trang-phuc-khong-dau.png",
+  "hot_weather_tip": "Gợi ý khi trời nóng (không bắt buộc).",
+  "wearing_steps": [
+    {"title": "Bước 1", "detail": "Mô tả ngắn", "image": null}
+  ],
+  "sources": ["ref-16"],
+  "verified": false
+}

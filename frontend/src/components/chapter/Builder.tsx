@@ -1,6 +1,6 @@
 "use client";
 
-import type { Garment, GarmentsDoc, OccasionsDoc, Selection, Vibe } from "@/lib/types";
+import type { Bootstrap, Garment, Selection, Vibe } from "@/lib/types";
 
 const VIBES: { id: Vibe; name: string }[] = [
   { id: "traditional", name: "Traditional" },
@@ -16,14 +16,12 @@ function toggle(list: string[], id: string, max = Infinity) {
 
 export function Builder({
   garment,
-  doc,
-  occasions,
+  data,
   value,
   onChange,
 }: {
   garment: Garment;
-  doc: GarmentsDoc;
-  occasions: OccasionsDoc["occasions"];
+  data: Bootstrap;
   value: Selection;
   onChange: (s: Selection) => void;
 }) {
@@ -35,7 +33,7 @@ export function Builder({
       <div>
         <h3 className="mb-2 font-semibold">Dịp</h3>
         <div className="flex flex-wrap gap-2">
-          {occasions.map((o) => (
+          {data.occasions.map((o) => (
             <button key={o.id} className={chip(value.occasion_id === o.id)} onClick={() => onChange({ ...value, occasion_id: o.id })}>
               {o.name}
             </button>
@@ -60,10 +58,10 @@ export function Builder({
           {garment.colors.map((c) => (
             <button
               key={c}
-              title={doc.colors[c]?.name}
+              title={data.colors[c]?.name}
               onClick={() => onChange({ ...value, colors: toggle(value.colors, c, 2) })}
               className={`h-9 w-9 rounded-full border-2 ${value.colors.includes(c) ? "border-stone-900 ring-2 ring-amber-400" : "border-stone-300"}`}
-              style={{ background: doc.colors[c]?.hex }}
+              style={{ background: data.colors[c]?.hex }}
             />
           ))}
         </div>
@@ -74,7 +72,7 @@ export function Builder({
         <div className="flex flex-wrap gap-2">
           {garment.accessories.map((a) => (
             <button key={a} className={chip(value.accessories.includes(a))} onClick={() => onChange({ ...value, accessories: toggle(value.accessories, a) })}>
-              {doc.accessories[a]?.name ?? a}
+              {data.accessories[a]?.name_vi ?? a}
             </button>
           ))}
         </div>
