@@ -1,0 +1,14 @@
+# Python
+backend/.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Secrets
+.env
+!.env.example
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

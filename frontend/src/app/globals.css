@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-hand: var(--font-hand);
+}
+
+:root {
+  --desk: #efe6d4;
+  --paper: #fbf6ea;
+  --ink: #2b2118;
+}
+
+body {
+  background: var(--desk);
+  color: var(--ink);
+  font-family: var(--font-body), sans-serif;
+}
+
+@layer components {
+  /* Dó-paper feel for book pages and cards */
+  .paper {
+    background-color: var(--paper);
+    background-image: radial-gradient(rgba(120, 90, 60, 0.06) 1px, transparent 1px);
+    background-size: 6px 6px;
+  }
+
+  .font-hand {
+    font-family: var(--font-hand), cursive;
+  }
+
+  .bubble {
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    padding: 6px 10px;
+    font-size: 13px;
+    line-height: 1.35;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+}

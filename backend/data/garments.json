@@ -1,0 +1,138 @@
+{
+  "_note": "Dữ liệu mẫu. Mọi dữ kiện có \"verified\": false phải được đối chiếu với Research Report (tab Bối Cảnh) và gắn source_id trước khi demo.",
+  "garments": [
+    {
+      "id": "ao-tu-than",
+      "chapter": "bac-bo",
+      "name_vi": "Áo tứ thân",
+      "name_en": "Four-panel dress",
+      "group": "dan-gian",
+      "period": "Trang phục dân gian Bắc Bộ",
+      "story": [
+        "Trang phục đời thường của phụ nữ đồng bằng Bắc Bộ, thường đi cùng yếm, nón quai thao, khăn mỏ quạ.",
+        "Màu nâu, đen, sồi của đời sống hằng ngày; ngày hội dùng màu tươi hơn."
+      ],
+      "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong"],
+      "zones": [
+        {"part": "số thân áo", "level": "keep"},
+        {"part": "yếm bên trong", "level": "caution"},
+        {"part": "màu vải", "level": "free"},
+        {"part": "chất liệu", "level": "free"}
+      ],
+      "default_colors": ["nau-non", "den"],
+      "colors": ["nau-non", "den", "hong-dao", "xanh-mint", "vang-nghe"],
+      "accessories": ["non-quai-thao", "khan-mo-qua", "sneakers-trang", "tui-tote", "obi"],
+      "must_keep": ["four front and back panels", "worn over a yem (bodice)"],
+      "must_avoid": ["cross collar of hanfu", "Japanese obi"],
+      "reference_image": "ref/ao-tu-than.png",
+      "sources": ["src-research-5-3"],
+      "verified": false
+    },
+    {
+      "id": "ao-ngu-than",
+      "chapter": "hue",
+      "name_vi": "Áo ngũ thân",
+      "name_en": "Five-panel robe",
+      "group": "dan-gian",
+      "period": "Định chế ở Đàng Trong năm 1744",
+      "story": [
+        "Năm 1744, Chúa Nguyễn Phúc Khoát định chế trang phục ở Đàng Trong; áo ngũ thân cài khuy thành thường phục chung.",
+        "Là tiền thân của áo dài hiện đại."
+      ],
+      "occasions": ["tet-chua", "le-hoi", "di-tich", "dam-cuoi"],
+      "zones": [
+        {"part": "số thân áo (5 thân)", "level": "keep"},
+        {"part": "cổ áo", "level": "keep"},
+        {"part": "độ dài tay", "level": "caution"},
+        {"part": "màu vải", "level": "free"},
+        {"part": "chất liệu", "level": "free"}
+      ],
+      "default_colors": ["tim-hue", "xanh-thien-thanh"],
+      "colors": ["tim-hue", "xanh-thien-thanh", "do-son", "xanh-mint", "vang-nghe"],
+      "accessories": ["khan-van", "quat-giay", "sneakers-trang", "tui-tote", "obi", "no-jeogori", "mu-canh-chuon"],
+      "must_keep": ["five panels", "button closure along the side", "Vietnamese collar"],
+      "must_avoid": ["hanfu cross collar", "Japanese obi", "Korean jeogori ribbon"],
+      "reference_image": "ref/ao-ngu-than.png",
+      "sources": ["src-research-5-2"],
+      "verified": false
+    },
+    {
+      "id": "ao-dai",
+      "chapter": "hue",
+      "name_vi": "Áo dài hiện đại",
+      "name_en": "Modern ao dai",
+      "group": "cach-tan",
+      "period": "Thế kỷ XX: Le Mur (Cát Tường) đầu thập niên 1930, Lê Phổ, dáng ôm Sài Gòn thập niên 1950",
+      "story": [
+        "Phát triển từ áo ngũ thân qua các lần cách tân trong thế kỷ XX.",
+        "Tri thức may và mặc áo dài Huế là Di sản văn hóa phi vật thể quốc gia (2024)."
+      ],
+      "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong", "dam-cuoi"],
+      "zones": [
+        {"part": "hai tà dài", "level": "keep"},
+        {"part": "xẻ tà hai bên", "level": "keep"},
+        {"part": "cổ áo", "level": "caution"},
+        {"part": "màu vải, họa tiết", "level": "free"},
+        {"part": "chất liệu", "level": "free"}
+      ],
+      "default_colors": ["trang", "xanh-thien-thanh"],
+      "colors": ["trang", "xanh-thien-thanh", "tim-hue", "do-son", "xanh-mint"],
+      "accessories": ["non-la", "khan-van", "sneakers-trang", "tui-tote", "obi", "no-jeogori"],
+      "must_keep": ["two long flaps front and back", "side slits from the waist", "worn over trousers"],
+      "must_avoid": ["hanfu cross collar", "Japanese obi", "Korean jeogori ribbon"],
+      "reference_image": "ref/ao-dai.png",
+      "sources": ["src-research-4-2", "src-research-6-1"],
+      "verified": false
+    },
+    {
+      "id": "ao-ba-ba",
+      "chapter": "nam-bo",
+      "name_vi": "Áo bà ba",
+      "name_en": "Ba ba shirt",
+      "group": "dan-gian",
+      "period": "Trang phục dân gian Nam Bộ",
+      "story": [
+        "Trang phục đời thường miền sông nước, nhẹ và thoáng, hợp khí hậu nóng.",
+        "Thường đi cùng khăn rằn và nón lá."
+      ],
+      "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong"],
+      "zones": [
+        {"part": "dáng áo ngắn, xẻ hông", "level": "keep"},
+        {"part": "màu vải", "level": "free"},
+        {"part": "chất liệu", "level": "free"}
+      ],
+      "default_colors": ["den", "trang"],
+      "colors": ["den", "trang", "nau-non", "xanh-mint", "hong-dao"],
+      "accessories": ["non-la", "khan-ran", "sneakers-trang", "tui-tote", "obi"],
+      "must_keep": ["short tunic with side slits", "worn with loose trousers"],
+      "must_avoid": ["Japanese obi", "hanfu elements"],
+      "reference_image": "ref/ao-ba-ba.png",
+      "sources": ["src-research-5-3"],
+      "verified": false
+    }
+  ],
+  "colors": {
+    "nau-non": {"name": "Nâu non", "hex": "#8B5A2B"},
+    "den": {"name": "Đen", "hex": "#1F1F1F"},
+    "hong-dao": {"name": "Hồng đào", "hex": "#F4A6A0"},
+    "xanh-mint": {"name": "Xanh mint", "hex": "#98D8C8"},
+    "vang-nghe": {"name": "Vàng nghệ", "hex": "#E3A21A"},
+    "tim-hue": {"name": "Tím Huế", "hex": "#6B3F7A"},
+    "xanh-thien-thanh": {"name": "Xanh thiên thanh", "hex": "#7EC8E3"},
+    "do-son": {"name": "Đỏ son", "hex": "#C0392B"},
+    "trang": {"name": "Trắng", "hex": "#FAFAFA"}
+  },
+  "accessories": {
+    "non-quai-thao": {"name": "Nón quai thao", "kind": "traditional-vn", "occasions": ["le-hoi", "tet-chua", "di-tich"]},
+    "khan-mo-qua": {"name": "Khăn mỏ quạ", "kind": "traditional-vn"},
+    "khan-van": {"name": "Khăn vấn", "kind": "traditional-vn"},
+    "quat-giay": {"name": "Quạt giấy", "kind": "traditional-vn"},
+    "non-la": {"name": "Nón lá", "kind": "traditional-vn"},
+    "khan-ran": {"name": "Khăn rằn", "kind": "traditional-vn"},
+    "sneakers-trang": {"name": "Sneakers trắng", "kind": "modern"},
+    "tui-tote": {"name": "Túi tote", "kind": "modern"},
+    "obi": {"name": "Obi (Nhật Bản)", "kind": "traditional-foreign"},
+    "no-jeogori": {"name": "Nơ jeogori (Hàn Quốc)", "kind": "traditional-foreign"},
+    "mu-canh-chuon": {"name": "Mũ cánh chuồn", "kind": "restricted"}
+  }
+}
