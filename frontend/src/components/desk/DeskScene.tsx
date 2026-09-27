@@ -68,8 +68,10 @@ export function DeskScene({ data, landing }: { data: Bootstrap; landing: Landing
             transition={{ duration: landing === "flash" ? 1.55 : 0.95, ease: [0.2, 0.8, 0.2, 1], delay: landing === "flash" ? 0.12 : 0.1 }}
           >
             <div ref={bookRef} className="absolute inset-0 [perspective:2400px]">
+              {/* contact shadow of the notebook on the table */}
+              <div className="book-shadow absolute inset-[2%]" />
               {/* first page under the cover */}
-              <div className="paper absolute inset-0 rounded-r-[6px]" style={{ boxShadow: "inset 8px 0 18px rgba(80,50,20,0.18)" }} />
+              <div className="paper absolute inset-y-[2.5%] left-[3%] right-[2.5%] rounded-r-[4px]" style={{ boxShadow: "inset 8px 0 18px rgba(80,50,20,0.18)" }} />
               <motion.div
                 ref={coverRef}
                 className={`book-closed absolute inset-0 origin-left [transform-style:preserve-3d] ${phase === "closed" ? "cursor-pointer" : ""}`}
@@ -85,7 +87,7 @@ export function DeskScene({ data, landing }: { data: Bootstrap; landing: Landing
                   <BookCover priority sizes={`${size.w}px`} />
                   {phase === "closed" && !reduced && <span className="cover-sheen" />}
                 </div>
-                <div className="paper absolute inset-0 rounded-l-[6px] [backface-visibility:hidden] [transform:rotateY(180deg)]" />
+                <div className="paper absolute inset-y-[2.5%] left-[3%] right-[2.5%] rounded-l-[4px] [backface-visibility:hidden] [transform:rotateY(180deg)]" />
               </motion.div>
             </div>
 
@@ -118,7 +120,7 @@ export function DeskScene({ data, landing }: { data: Bootstrap; landing: Landing
           </motion.div>
         ) : (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
-            <Flipbook data={data} width={size.w} height={size.h} startPage={size.portrait ? 1 : 1} />
+            <Flipbook data={data} width={size.w} height={size.h} startPage={1} portrait={size.portrait} />
           </motion.div>
         )}
       </div>
@@ -164,12 +166,10 @@ function DeskProps() {
     <div className="pointer-events-none absolute inset-0" aria-hidden>
       {/* an old photo of Bà (the S06 memory), tucked in the corner */}
       <div className="desk-photo absolute left-[4%] top-[7%] hidden w-[14vw] min-w-[140px] rotate-[-7deg] sm:block">
-        <div className="relative aspect-[4/3] w-full overflow-hidden">
-          <Image src="/opening/s06.png" alt="" fill sizes="16vw" className="object-cover object-left sepia-[.55]" />
-        </div>
+        <Image src="/opening/s06.png" alt="" width={420} height={236} sizes="16vw" className="block h-auto w-full sepia-[.55]" />
       </div>
       {/* thread spools */}
-      <svg className="absolute right-[5%] top-[6%] w-[12vw] min-w-[110px]" viewBox="0 0 120 70">
+      <svg className="absolute right-[3%] top-[18%] hidden w-[15vw] min-w-[130px] rotate-[8deg] sm:block" viewBox="0 0 120 70">
         {[
           ["#B5452E", 20],
           ["#2F4A6D", 58],
@@ -193,7 +193,7 @@ function DeskProps() {
         <path d="M5 70 C 60 20, 120 95, 180 40 S 250 30, 255 60" fill="none" stroke="#6b4a2f" strokeWidth="5" strokeDasharray="1 6" />
       </svg>
       {/* a pinned sky-blue silk swatch (the colour of Bà's áo dài) */}
-      <div className="silk-swatch absolute bottom-[8%] right-[6%] h-[16vh] w-[11vw] min-w-[100px] rotate-[9deg]" />
+      <div className="silk-swatch absolute bottom-[8%] right-[6%] hidden h-[16vh] w-[11vw] min-w-[100px] rotate-[9deg] sm:block" />
       {/* tailor's chalk */}
       <div className="absolute bottom-[26%] right-[14%] h-5 w-9 rotate-[-18deg] rounded-sm bg-[#f4efe4] shadow-md" style={{ clipPath: "polygon(0 0, 100% 0, 88% 100%, 12% 100%)" }} />
     </div>

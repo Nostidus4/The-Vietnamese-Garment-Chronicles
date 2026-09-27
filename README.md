@@ -50,6 +50,18 @@ npm run dev
 
 Không có `GEMINI_API_KEY` thì app vẫn chạy: try-on trả về ảnh trong `backend/content/media/fallback/<garment_id>.png`.
 
+**Xem và chỉnh phần mở đầu (Opening):**
+
+| Địa chỉ | Tác dụng |
+|---|---|
+| `/?opening=1` | Chạy lại mở đầu (người đã xem sẽ vào thẳng bàn may) |
+| `/?opening=1&start=s06` | Mở thẳng một screen (s01…s10) để chỉnh |
+| `/?opening=1&debug=1` | Hiện lưới % để chỉnh vị trí chữ trong `backend/content/opening.json` |
+| `/?opening=1&pace=demo` | Nhịp nhanh, tự chạy – dùng quay video |
+| `/?opening=1&pace=slow` | Chậm gấp 3 – để xem kỹ từng chuyển cảnh |
+
+Điều khiển: click / Space / → / cuộn xuống để tiếp; ← / cuộn lên để lùi; Esc hoặc "Bỏ qua" để tới cuốn sách.
+
 **Muốn thêm/sửa nội dung?** Đọc [docs/BACKEND.md](docs/BACKEND.md) mục 4 – chỉ cần sửa file JSON trong `backend/content/`.
 
 ## Nguyên tắc

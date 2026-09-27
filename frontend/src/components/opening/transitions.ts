@@ -68,19 +68,22 @@ async function zoomThrough(c: Ctx) {
     inn.style.filter = `blur(${blur}px)`;
   }
   const d = sec(t.ms, c.pace);
+  const outBlur = Math.max(blur, 7);
+  // 1. fly in: the outgoing frame speeds toward the point and melts into soft light
   const flyOut = Promise.all([
-    c.out.moveCamera({ s: t.s, x: t.x, y: t.y, mode: t.mode }, t.ms * 0.7 * c.pace, EASE_IN),
-    animate(out, { filter: [`blur(0px) brightness(1)`, `blur(${blur}px) brightness(${t.s > 1.22 ? 1.18 : 1.05})`] }, { duration: d * 0.7, ease: EASE_IN }),
+    c.out.moveCamera({ s: t.s, x: t.x, y: t.y, mode: t.mode }, t.ms * 0.62 * c.pace, EASE_IN),
+    animate(out, { filter: [`blur(0px) brightness(1)`, `blur(${outBlur}px) brightness(${t.s > 1.22 ? 1.22 : 1.1})`] }, { duration: d * 0.62, ease: EASE_IN }),
   ]);
-  await wait(t.ms * 0.42 * c.pace);
+  await wait(t.ms * 0.5 * c.pace);
+  // 2. the next frame resolves out of that blur while the old one fades underneath it
   const arrive = inn
     ? Promise.all([
-        animate(inn, { opacity: 1, filter: "blur(0px)" }, { duration: d * 0.58, ease: EASE_OUT }),
-        settleIncoming(c, t.ms * 0.75 * c.pace),
+        animate(inn, { opacity: 1, filter: "blur(0px)" }, { duration: d * 0.5, ease: EASE_OUT }),
+        settleIncoming(c, t.ms * 0.7 * c.pace),
       ])
     : Promise.resolve();
   await flyOut;
-  out.style.opacity = "0";
+  await animate(out, { opacity: 0 }, { duration: d * 0.12 });
   await arrive;
 }
 
@@ -94,17 +97,21 @@ async function iris(c: Ctx) {
   await enterFrom(c, c.next!.camera_start);
   const p2 = c.inn!.screenPoint(t.to_x, t.to_y);
   const d = sec(t.ms, c.pace);
-  c.o.dark.style.opacity = "1";
-  await animate(out, { clipPath: [`circle(${diag}px at ${p1.x}px ${p1.y}px)`, `circle(0px at ${p1.x}px ${p1.y}px)`] }, { duration: d * 0.48, ease: EASE_IO });
+  const circle = (el: HTMLElement, p: { x: number; y: number }) => (r: number) => {
+    el.style.clipPath = `circle(${Math.max(0, r)}px at ${p.x}px ${p.y}px)`;
+  };
+  // (the stage behind the scenes is already dark, so the closing circle reveals darkness)
+  // close onto the laptop, pausing a breath when only the screen is left
+  await animate(diag, 0, { duration: d * 0.5, ease: [0.45, 0, 0.7, 0.4], onUpdate: circle(out, p1) });
   out.style.opacity = "0";
-  await wait(t.ms * 0.06 * c.pace);
+  await wait(t.ms * 0.08 * c.pace);
   if (inn) {
-    inn.style.clipPath = `circle(0px at ${p2.x}px ${p2.y}px)`;
+    const setIn = circle(inn, p2);
+    setIn(0);
     inn.style.opacity = "1";
-    await animate(inn, { clipPath: [`circle(0px at ${p2.x}px ${p2.y}px)`, `circle(${diag}px at ${p2.x}px ${p2.y}px)`] }, { duration: d * 0.52, ease: EASE_OUT });
+    await animate(0, diag, { duration: d * 0.5, ease: [0.16, 1, 0.3, 1], onUpdate: setIn });
     inn.style.clipPath = "";
   }
-  c.o.dark.style.opacity = "0";
 }
 
 /** T4 – golden light pours in from the edges; the memory begins underneath. */
@@ -138,7 +145,7 @@ async function cloth(c: Ctx) {
   strip.style.opacity = "1";
   await animate(0, 1, {
     duration: sec(c.t.ms, c.pace),
-    ease: [0.45, 0.05, 0.35, 1],
+    ease: [0.33, 0.08, 0.3, 1],
     onUpdate: (p) => {
       const x = -stripW + p * (b.vw + stripW * 2); // strip left edge
       strip.style.transform = `translateX(${x}px) rotate(4deg)`;
@@ -196,15 +203,15 @@ async function coverOpen(c: Ctx) {
     animate(out, { opacity: 0 }, { duration: d * 0.18 }),
   ]);
   await wait(t.ms * 0.06 * c.pace);
-  // 3. it swings open; the unfinished pages appear behind it
+  // 3. it swings open onto the real notebook of S09, and melts away past the fold
   if (inn) inn.style.opacity = "0";
   await Promise.all([
-    animate(cover, { rotateY: [0, -168] }, { duration: d * 0.46, ease: [0.6, 0.02, 0.2, 1] }),
-    inn ? animate(inn, { opacity: 1 }, { duration: d * 0.34, delay: d * 0.12 }) : Promise.resolve(),
-    animate(c.o.dark, { opacity: 0 }, { duration: d * 0.3, delay: d * 0.16 }),
-    settleIncoming(c, t.ms * 0.5 * c.pace),
+    animate(cover, { rotateY: [0, -150] }, { duration: d * 0.5, ease: [0.55, 0.02, 0.25, 1] }),
+    animate(stage, { opacity: [1, 1, 0] }, { duration: d * 0.5, times: [0, 0.55, 1] }),
+    inn ? animate(inn, { opacity: 1 }, { duration: d * 0.34, delay: d * 0.08 }) : Promise.resolve(),
+    animate(c.o.dark, { opacity: 0 }, { duration: d * 0.34, delay: d * 0.14 }),
+    settleIncoming(c, t.ms * 0.55 * c.pace),
   ]);
-  await animate(stage, { opacity: 0 }, { duration: d * 0.1 });
 }
 
 /** T9 – the bookmark slips off the page; the camera follows it down into the next screen. */

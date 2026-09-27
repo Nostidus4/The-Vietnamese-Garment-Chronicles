@@ -14,18 +14,21 @@ interface Props {
   onFinish: () => void; // called at full white; the page swaps in the desk
   pace: number; // 1 normal, 0.6 demo
   debug: boolean;
+  noClick?: boolean;
+  startId?: string | null;
 }
 
 type Phase = "intro" | "play" | "transition";
 
-export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug }: Props) {
+export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick = false, startId = null }: Props) {
   const reduced = !!useReducedMotion();
   const [viewport, setViewport] = useState({ w: 1440, h: 810 });
-  const [idx, setIdx] = useState(0);
+  const [idx, setIdx] = useState(() => Math.max(0, screens.findIndex((s) => s.id === startId)));
   const [incoming, setIncoming] = useState<number | null>(null);
   const [shown, setShown] = useState(0);
   const [beatTimes, setBeatTimes] = useState<number[]>([]);
-  const [enteredAt, setEnteredAt] = useState(() => performance.now());
+  // Infinity until the first screen is really on stage, so nothing starts behind the paper
+  const [enteredAt, setEnteredAt] = useState(Number.POSITIVE_INFINITY);
   const [instant, setInstant] = useState(0);
   const [phase, setPhase] = useState<Phase>("intro");
 
@@ -39,7 +42,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug }: Props
   const screen = screens[idx];
   const nextBeat = screen.beats[shown];
   const compact = viewport.w < 720 || viewport.w / viewport.h < 1.05;
-  const demo = pace < 1;
+  const demo = pace < 1; // pace > 1 (slow) keeps normal clicking behaviour
 
   useEffect(() => {
     const onResize = () => setViewport({ w: window.innerWidth, h: window.innerHeight });
@@ -69,7 +72,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug }: Props
   // First screen: wait for its artwork, then rise out of a blank cream page (script S01, 0.0s)
   useEffect(() => {
     let alive = true;
-    const first = scenes.current[screens[0].id];
+    const first = scenes.current[screens[idx].id];
     const paper = ov.current.paper;
     Promise.race([first?.ready, new Promise((r) => setTimeout(r, 4000))]).then(async () => {
       if (!alive) return;
@@ -214,6 +217,11 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug }: Props
     };
   }, [advance, back, skip]);
 
+  // Expose the state for automated walkthrough tests (read-only, harmless in production)
+  useEffect(() => {
+    (window as unknown as { __vpdk?: object }).__vpdk = { screen: screen.id, shown, total: screen.beats.length, phase };
+  }, [screen, shown, phase]);
+
   // ---- render ----------------------------------------------------------------------------------
   const mounted = [idx, ...(incoming !== null ? [incoming] : [])];
   const preload = [idx + 1, idx + 2].filter((i) => i < screens.length && i !== incoming);
@@ -223,7 +231,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug }: Props
   const doneBeats = screens.slice(0, idx).reduce((n, s) => n + Math.max(1, s.beats.length), 0) + shown;
 
   return (
-    <div className="opening fixed inset-0 z-40 select-none bg-[#140c07]" onClick={advance} role="region" aria-label="Mở đầu câu chuyện Việt Phục Du Ký">
+    <div className="opening fixed inset-0 z-40 select-none bg-[#140c07]" onClick={noClick ? undefined : advance} role="region" aria-label="Mở đầu câu chuyện Việt Phục Du Ký">
       {/* incoming scene is rendered under the outgoing one only for transitions that need it on top */}
       {mounted.map((i) => (
         <Scene
@@ -275,8 +283,6 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug }: Props
         className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 [perspective:2200px]"
       >
         <div className="relative" style={{ height: "min(78vh, 62vw)", aspectRatio: "1086 / 1448" }}>
-          {/* the pages the cover reveals */}
-          <div className="paper absolute inset-0 rounded-r-md shadow-2xl" />
           <div ref={(el) => void (ov.current.cover = el!)} className="absolute inset-0 origin-left [transform-style:preserve-3d]">
             <div className="absolute inset-0 [backface-visibility:hidden]">
               <BookCover sizes="62vw" />

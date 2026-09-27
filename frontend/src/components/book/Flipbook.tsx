@@ -10,7 +10,7 @@ import { Page } from "./Page";
 import { VietnamMap } from "./VietnamMap";
 
 /** The open notebook: cover, the map spread (Bà's invitation), back cover. */
-export default function Flipbook({ data, width, height, startPage = 1 }: { data: Bootstrap; width: number; height: number; startPage?: number }) {
+export default function Flipbook({ data, width, height, startPage = 1, portrait = false }: { data: Bootstrap; width: number; height: number; startPage?: number; portrait?: boolean }) {
   const router = useRouter();
   const [hovered, setHovered] = useState<string | null>(null);
   const regions = new Map(data.regions.map((r) => [r.id, r]));
@@ -28,7 +28,7 @@ export default function Flipbook({ data, width, height, startPage = 1 }: { data:
       startPage={startPage}
       drawShadow
       flippingTime={900}
-      usePortrait={false}
+      usePortrait={portrait} // phones: one page at a time
       startZIndex={0}
       autoSize={false}
       maxShadowOpacity={0.35}

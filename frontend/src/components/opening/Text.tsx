@@ -68,6 +68,7 @@ const BOX_CLASS: Record<string, string> = {
   caption: "narration narration--caption",
   hand: "hand-note",
   "hand-large": "hand-note hand-note--large",
+  "hand-light-large": "hand-note hand-note--large hand-note--light",
 };
 
 /** Part of the image (in %) that is actually on screen; text is kept inside it. */

@@ -19,12 +19,17 @@ export interface TimedEffect extends Effect {
 export function EffectsLayer({ effects, reduced }: { effects: TimedEffect[]; reduced: boolean }) {
   const [now, setNow] = useState(() => performance.now());
 
+  // A light ticker while any effect is still waiting to start. It self-corrects when start
+  // times move (e.g. the screen's clock is reset when it becomes active).
   useEffect(() => {
-    const pending = effects.map((e) => e.startAt - performance.now()).filter((d) => d > 0);
-    if (!pending.length) return;
-    const t = setTimeout(() => setNow(performance.now()), Math.min(...pending) + 5);
-    return () => clearTimeout(t);
-  }, [effects, now]);
+    const anyPending = () => effects.some((e) => Number.isFinite(e.startAt) && e.startAt > performance.now());
+    // always tick at least once so a changed effect list is re-evaluated
+    const id = setInterval(() => {
+      setNow(performance.now());
+      if (!anyPending()) clearInterval(id);
+    }, 60);
+    return () => clearInterval(id);
+  }, [effects]);
 
   const started = effects.filter((e) => e.startAt <= now);
   const visible = started.filter((e) => {

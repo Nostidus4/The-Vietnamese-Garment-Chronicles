@@ -18,8 +18,11 @@ function initialState() {
   } catch {}
   return {
     mode: (q.get("opening") === "1" || !seen ? "opening" : "desk") as Mode,
-    pace: q.get("pace") === "demo" ? 0.6 : 1,
+    // demo = faster for the video; slow = 3× slower to study each transition
+    pace: q.get("pace") === "demo" ? 0.6 : q.get("pace") === "slow" ? 3 : 1,
     debug: q.get("debug") === "1",
+    noClick: q.get("noclick") === "1", // testing only: keyboard-driven, clicks ignored
+    start: q.get("start"), // e.g. ?opening=1&start=s05 – open straight on a screen while tuning
   };
 }
 
@@ -48,7 +51,7 @@ export default function Home() {
   return (
     <>
       {!data && <div className="fixed inset-0 z-40 bg-[#140c07]" />}
-      {mode === "opening" && data && data.opening.length > 0 && <OpeningPlayer screens={data.opening} flashEl={flashEl} onFinish={finishOpening} pace={opts.pace} debug={opts.debug} />}
+      {mode === "opening" && data && data.opening.length > 0 && <OpeningPlayer screens={data.opening} flashEl={flashEl} onFinish={finishOpening} pace={opts.pace} debug={opts.debug} noClick={opts.noClick} startId={opts.start} />}
       {(mode === "desk" || data?.opening.length === 0) && data && <DeskScene data={data} landing={landing} />}
       <div ref={setFlashEl} className="flash-layer pointer-events-none fixed inset-0 z-50 opacity-0" aria-hidden />
     </>

@@ -201,7 +201,7 @@ class Effect(Strict):
 
 
 BeatKind = Literal["narration", "speech", "title", "question", "finale"]
-BeatStyle = Literal["box", "memory", "hand", "hand-large", "title", "finale", "finale-large", "caption"]
+BeatStyle = Literal["box", "memory", "hand", "hand-large", "hand-light-large", "title", "finale", "finale-large", "caption"]
 
 
 class Beat(Strict):

@@ -93,7 +93,7 @@ export interface Effect {
 
 export interface Beat {
   kind: "narration" | "speech" | "title" | "question" | "finale";
-  style: "box" | "memory" | "hand" | "hand-large" | "title" | "finale" | "finale-large" | "caption";
+  style: "box" | "memory" | "hand" | "hand-large" | "hand-light-large" | "title" | "finale" | "finale-large" | "caption";
   speaker: string | null;
   text: string;
   x: number;

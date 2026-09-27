@@ -72,7 +72,7 @@
         {"kind": "narration", "style": "box", "text": "Rồi Tí bất chợt im lặng.", "x": 3, "y": 5, "w": 30, "delay": 800},
         {"kind": "narration", "style": "box", "text": "Một chiếc áo dài màu xanh thiên thanh xuất hiện trên màn hình.", "join": true, "delay": 1600,
          "effects": [{"type": "glow", "x": 80, "y": 85, "r": 11, "strength": 0.35, "ms": 1400}]},
-        {"kind": "narration", "style": "hand-large", "text": "Cậu nhớ đến bà.", "x": 5, "y": 76, "w": 42, "delay": 1400, "type_ms": 95}
+        {"kind": "narration", "style": "hand-light-large", "text": "Cậu nhớ đến bà.", "x": 5, "y": 76, "w": 42, "delay": 1400, "type_ms": 95}
       ],
       "exit": {"type": "gold-wash", "ms": 2200},
       "sfx": ["night"]
@@ -90,7 +90,7 @@
          "effects": [{"type": "glow", "x": 86, "y": 24, "r": 12, "strength": 0.3, "ms": 700}]},
         {"kind": "speech", "style": "memory", "speaker": "Bà", "text": "Không phải cái gì dài dài cũng là áo dài đâu con.", "x": 3, "y": 5, "w": 34, "tail": "down-right", "delay": 1500, "type_ms": 42}
       ],
-      "exit": {"type": "cloth", "ms": 1200},
+      "exit": {"type": "cloth", "ms": 1600},
       "sfx": ["sewing"]
     },
     {
@@ -164,7 +164,7 @@
          "camera": {"s": 1.3, "x": 79, "y": 56, "mode": "center", "ms": 2000}},
         {"kind": "narration", "style": "memory", "text": "Phần còn lại… có lẽ sẽ dành cho người khác.", "join": true, "delay": 1100},
         {"kind": "question", "style": "hand", "text": "Nếu là con, con sẽ mặc câu chuyện này như thế nào?", "x": 66, "y": 41, "w": 27, "delay": 1300},
-        {"kind": "narration", "text": "", "delay": 2400, "effects": [{"type": "bookmark", "x": 61, "y": 93}]}
+        {"kind": "narration", "text": "", "delay": 2400, "effects": [{"type": "bookmark", "x": 64, "y": 66}]}
       ],
       "exit": {"type": "fall", "ms": 1300},
       "sfx": ["pages"]

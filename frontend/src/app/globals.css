@@ -120,8 +120,22 @@ body {
     text-shadow: 0 0 14px rgba(251, 246, 234, 0.95), 0 0 4px rgba(251, 246, 234, 0.95), 0 0 1px rgba(251, 246, 234, 1);
   }
   .hand-note--large { font-size: clamp(26px, calc(var(--bw, 1600px) * 0.026), 48px); }
+  /* for dark scenes: warm lamp-lit ink */
+  .hand-note--light {
+    color: #fbefd2;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.75), 0 0 2px rgba(0, 0, 0, 0.8), 0 0 22px rgba(255, 190, 110, 0.35);
+  }
 
+  .finale::before {
+    content: "";
+    position: absolute;
+    inset: -40% -8%;
+    z-index: -1;
+    background: radial-gradient(ellipse at center, rgba(40, 20, 4, 0.55) 0%, rgba(40, 20, 4, 0.28) 45%, transparent 72%);
+    filter: blur(6px);
+  }
   .finale {
+    isolation: isolate;
     font-family: var(--font-display), serif;
     font-size: clamp(20px, 2.2vw, 36px);
     color: #fff8e6;
@@ -183,12 +197,18 @@ body {
       rgba(255, 226, 150, calc(var(--p) * 0.35)) calc(62% - var(--p) * 90%),
       rgba(246, 206, 120, calc(0.35 + var(--p) * 0.65)) calc(112% - var(--p) * 110%));
   }
+  /* a length of sky-blue silk: soft folds, a sheen, a slightly wavy hem, embroidered flowers */
   .silk {
     background:
-      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 3px, transparent 3px 11px),
-      linear-gradient(90deg, rgba(126, 200, 227, 0) 0%, #6fb3d8 12%, #a9dcf2 32%, #eaf8fe 44%, #9fd4ee 56%, #5ea8d0 78%, rgba(90, 160, 205, 0) 100%);
-    filter: drop-shadow(-10px 0 18px rgba(20, 40, 60, 0.35));
-    border-radius: 45% 55% 50% 50% / 8% 6% 8% 6%;
+      radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.55) 0 0.35vw, transparent 0.4vw),
+      radial-gradient(circle at 62% 58%, rgba(255, 255, 255, 0.5) 0 0.3vw, transparent 0.35vw),
+      radial-gradient(circle at 44% 81%, rgba(255, 255, 255, 0.45) 0 0.3vw, transparent 0.35vw),
+      repeating-linear-gradient(97deg, rgba(255, 255, 255, 0.05) 0 2px, transparent 2px 6px),
+      linear-gradient(90deg,
+        rgba(92, 160, 204, 0) 0%, #5ea5cf 7%, #7fbfe2 17%, #6aafd8 26%, #9fd3ee 36%, #c9e9f7 44%,
+        #8cc8e8 52%, #6db2da 62%, #93cdeb 72%, #5ea5cf 88%, rgba(92, 160, 204, 0) 100%);
+    box-shadow: -18px 0 40px rgba(18, 38, 58, 0.35), 18px 0 40px rgba(18, 38, 58, 0.25);
+    clip-path: polygon(6% 0, 94% 0, 100% 12%, 94% 26%, 100% 41%, 93% 56%, 100% 72%, 94% 86%, 99% 100%, 1% 100%, 7% 86%, 0 71%, 6% 55%, 0 40%, 7% 25%, 0 11%);
   }
   .flash-layer {
     background: radial-gradient(circle at 55% 45%, #ffffff 0%, #fff8e6 35%, #f6e2a8 70%, #e9c46a 100%);
@@ -278,6 +298,8 @@ body {
   @keyframes tassel { 0%, 100% { transform: translateX(-50%) rotate(-6deg); } 50% { transform: translateX(-50%) rotate(6deg); } }
 
   .compact-strip .bubble-v2 { font-size: 17px; }
+  .compact-strip .hand-note { font-size: 21px; }
+  .compact-strip .hand-note--large { font-size: 30px; }
 
   /* ================================================================
      Desk
@@ -292,7 +314,14 @@ body {
       repeating-linear-gradient(89deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 29px),
       linear-gradient(90deg, #5a3b25, #6e4a2f 18%, #5f3f28 35%, #72502f 52%, #5d3d27 70%, #6b482d 88%, #573923);
   }
-  .book-closed { filter: drop-shadow(0 26px 30px rgba(0, 0, 0, 0.5)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35)); }
+  .book-shadow {
+    border-radius: 6px;
+    box-shadow: 0 30px 45px -8px rgba(0, 0, 0, 0.55), 0 6px 10px rgba(0, 0, 0, 0.35);
+  }
+  /* the gutter: pages curve into the spine */
+  /* react-pageflip puts --left / --right on the page element itself (which carries .paper) */
+  .book-open .paper.--left { box-shadow: inset -26px 0 30px -18px rgba(70, 45, 20, 0.35); }
+  .book-open .paper.--right { box-shadow: inset 26px 0 30px -18px rgba(70, 45, 20, 0.35); }
   .book-open { filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5)); }
   .cover-sheen {
     position: absolute;
@@ -306,7 +335,7 @@ body {
   @keyframes sheen { 0%, 60% { background-position: 120% 0; } 100% { background-position: -40% 0; } }
   .desk-photo {
     background: #f3ead7;
-    padding: 6% 6% 16%;
+    padding: 10px 10px 30px; /* % padding would follow the screen width, not the photo */
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
   }
   .silk-swatch {
