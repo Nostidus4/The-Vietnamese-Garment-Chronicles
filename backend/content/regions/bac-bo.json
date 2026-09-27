@@ -1,0 +1,150 @@
+{
+  "listen": {
+    "people": "Cái nôi của nền văn minh lúa nước sông Hồng. Làng xã quây quần quanh cây đa, giếng nước, sân đình; người ta trọng lễ nghĩa và luôn nhớ về cội nguồn. Nhiều làng nghề đã giữ lửa hàng trăm năm.",
+    "climate": "Bốn mùa rõ rệt. Mùa đông lạnh theo gió mùa đông bắc, cuối xuân mưa phùn nồm ẩm; mùa hè nóng và mưa nhiều.",
+    "places": "Vịnh Hạ Long, Tràng An, Văn Miếu – Quốc Tử Giám, Hoàng thành Thăng Long, những cánh đồng lúa ven sông Hồng.",
+    "frames": [
+      {
+        "image": null,
+        "caption": "Sân đình ngày hội xuân",
+        "alt": "Sân đình làng Bắc Bộ với cờ ngũ sắc và cây đa lớn",
+        "prompt": "the courtyard of an old northern Vietnamese communal house (đình) on a spring festival day, five-colour festival flags, a great banyan tree, tiled roof with gently curved Vietnamese eaves"
+      },
+      {
+        "image": null,
+        "caption": "Hạ Long một sớm sương",
+        "alt": "Vịnh Hạ Long buổi sớm với những thuyền buồm nâu giữa các đảo đá vôi",
+        "prompt": "Ha Long Bay at misty dawn, limestone karst islands, two wooden junks with rust-brown sails, calm jade water"
+      },
+      {
+        "image": null,
+        "caption": "Những bản tranh đang phơi",
+        "alt": "Gian nhà làm tranh dân gian với những bản tranh phơi trên sân",
+        "prompt": "a folk woodblock print workshop yard in a northern Vietnamese village, colourful prints drying on bamboo racks, prints show roosters and pigs only, no writing"
+      }
+    ]
+  },
+  "arrive": {
+    "ba_line": "Bà lớn lên ở đây, nơi mùa xuân bắt đầu bằng tiếng trống hội.",
+    "ti_thought": "Hóa ra vùng này rộng hơn mình tưởng, từ núi Đông Bắc xuống tận biển.",
+    "landmarks": [
+      {
+        "name": "Vịnh Hạ Long",
+        "lon": 107.08,
+        "lat": 20.91,
+        "note": "Hàng nghìn đảo đá vôi giữa vịnh."
+      },
+      {
+        "name": "Tràng An",
+        "lon": 105.9,
+        "lat": 20.25,
+        "note": "Sông luồn qua hang giữa núi đá."
+      },
+      {
+        "name": "Văn Miếu",
+        "lon": 105.84,
+        "lat": 21.03,
+        "note": "Nơi thờ Khổng Tử và trường học đầu tiên của nước ta."
+      },
+      {
+        "name": "Đền Hùng",
+        "lon": 105.33,
+        "lat": 21.37,
+        "note": "Nơi người Việt về giỗ Tổ mỗi mùa xuân."
+      },
+      {
+        "name": "Làng quan họ",
+        "lon": 106.06,
+        "lat": 21.13,
+        "note": "Quê hương của những làn điệu quan họ."
+      }
+    ]
+  },
+  "live": {
+    "customs": [
+      {
+        "id": "mieng-trau",
+        "title": "Miếng trầu là đầu câu chuyện",
+        "story": "Khách đến nhà, việc đầu tiên là mời miếng trầu. Trong lễ hỏi, lễ cưới, trầu cau là lễ vật không thể thiếu, như một lời hẹn gắn bó."
+      },
+      {
+        "id": "quan-ho",
+        "title": "Hát quan họ",
+        "story": "Liền anh, liền chị hát đối đáp với nhau, người hỏi người đáp, không cần nhạc cụ. Người ta hát trong hội làng, khi tiếp bạn, và hát để giữ tình bạn giữa các làng.",
+        "unesco": 2009,
+        "sources": [
+          "unesco-ich-vn"
+        ]
+      },
+      {
+        "id": "banh-chung",
+        "title": "Tết và bánh chưng",
+        "story": "Cuối năm cả nhà quây quần gói bánh chưng, thức canh nồi bánh bên bếp lửa. Mâm cỗ Tết bày lên bàn thờ để mời tổ tiên về ăn Tết cùng con cháu."
+      }
+    ],
+    "festivals": [
+      {
+        "id": "hoi-lim",
+        "name": "Hội Lim",
+        "time": "13 tháng Giêng âm lịch",
+        "month": 1,
+        "calendar": "lunar",
+        "place": "Tiên Du, Bắc Ninh",
+        "story": "Mùa xuân, các liền anh liền chị về hội hát quan họ trên thuyền, dưới đồi và trong các gian nhà. Người đi hội không chỉ nghe hát mà còn được mời trầu, mời nước.",
+        "what_to_see": "Hát quan họ trên thuyền, các trò chơi dân gian."
+      },
+      {
+        "id": "hoi-giong",
+        "name": "Hội Gióng",
+        "time": "Mùng 9 tháng Tư âm lịch (đền Phù Đổng)",
+        "month": 4,
+        "calendar": "lunar",
+        "place": "Phù Đổng, Gia Lâm, Hà Nội",
+        "story": "Lễ hội nhớ ơn Thánh Gióng, cậu bé làng Phù Đổng lớn vụt lên cưỡi ngựa sắt đánh giặc Ân. Cả làng diễn lại trận đánh như một vở kịch lớn ngoài trời.",
+        "what_to_see": "Rước kiệu, diễn trận đánh giặc.",
+        "unesco": 2010,
+        "sources": [
+          "unesco-ich-vn"
+        ]
+      },
+      {
+        "id": "gio-to",
+        "name": "Giỗ Tổ Hùng Vương",
+        "time": "Mùng 10 tháng Ba âm lịch",
+        "month": 3,
+        "calendar": "lunar",
+        "place": "Đền Hùng, Phú Thọ",
+        "story": "Ngày cả nước nhớ về các Vua Hùng dựng nước. Người khắp nơi về đền Hùng dâng hương, gói bánh chưng, bánh giầy như truyện Lang Liêu.",
+        "what_to_see": "Lễ rước, dâng hương trên núi Nghĩa Lĩnh.",
+        "unesco": 2012,
+        "sources": [
+          "unesco-ich-vn"
+        ]
+      }
+    ],
+    "bridge_line": "Ngày hội, các liền chị mặc áo tứ thân đẹp nhất nhà. Lật trang đi, Bà chỉ con vì sao nó được may như thế."
+  },
+  "wear": {
+    "why": [
+      {
+        "because": "Mùa đông lạnh theo gió mùa đông bắc",
+        "so": "Áo tứ thân mặc nhiều lớp, khăn mỏ quạ giữ ấm đầu",
+        "from_step": "listen"
+      },
+      {
+        "because": "Quan họ và những ngày hội xuân",
+        "so": "Nón quai thao, yếm thắm, áo mớ ba mớ bảy khi đi hội",
+        "from_step": "live"
+      },
+      {
+        "because": "Đời sống lúa nước, làm đồng quanh năm",
+        "so": "Ngày thường áo nâu sồng, vạt gọn, dễ vén khi xuống ruộng",
+        "from_step": "listen"
+      }
+    ]
+  },
+  "sources": [
+    "unesco-ich-vn",
+    "unesco-whc-vn"
+  ]
+}

@@ -359,6 +359,24 @@
       "title": "Research Report – Mục 19.2 Ranh giới giữa modernisation và cultural distortion",
       "url": null,
       "note": "Tab Bối Cảnh trong Google Doc của đội"
+    },
+    {
+      "id": "unesco-ich-vn",
+      "title": "UNESCO – Di sản văn hóa phi vật thể của Việt Nam (danh sách)",
+      "url": "https://ich.unesco.org/en/state/viet-nam-VN",
+      "note": "Mở trang để đối chiếu tên và năm ghi danh từng mục trước khi bật verified"
+    },
+    {
+      "id": "unesco-whc-vn",
+      "title": "UNESCO World Heritage Centre – Việt Nam",
+      "url": "https://whc.unesco.org/en/statesparties/vn",
+      "note": "Di sản thế giới: Hạ Long, Tràng An, Huế, Hội An, Mỹ Sơn, Phong Nha – Kẻ Bàng…"
+    },
+    {
+      "id": "nq-sap-xep-tinh-2025",
+      "title": "Nghị quyết của Quốc hội về sắp xếp đơn vị hành chính cấp tỉnh (tháng 6/2025, hiệu lực 01/07/2025)",
+      "url": null,
+      "note": "Cần điền số hiệu và đường dẫn chính thức; dùng cho bảng data/province-merge-2025.json"
     }
   ]
 }

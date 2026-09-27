@@ -1,0 +1,45 @@
+minimum_pre_commit_version: "3.5.0"
+default_stages: [pre-commit]
+
+repos:
+  - repo: local
+    hooks:
+      - id: staged-whitespace
+        name: Kiểm tra khoảng trắng trong file staged
+        entry: git diff --cached --check
+        language: system
+        pass_filenames: false
+
+      - id: backend-tests
+        name: Chạy test backend
+        entry: >-
+          bash -c 'if [ -x backend/.venv/bin/python ]; then
+          exec backend/.venv/bin/python -m pytest -q backend/tests;
+          else exec python3 -m pytest -q backend/tests; fi'
+        language: system
+        pass_filenames: false
+        files: ^backend/(app|content|tests)/.*\.(py|json)$
+
+      - id: content-check
+        name: Kiểm tra dữ liệu văn hóa
+        entry: >-
+          bash -c 'cd backend && if [ -x .venv/bin/python ]; then
+          exec .venv/bin/python -m scripts.check_content;
+          else exec python3 -m scripts.check_content; fi'
+        language: system
+        pass_filenames: false
+        files: ^backend/(content/.*\.json|app/content/.*\.py|scripts/check_content\.py)$
+
+      - id: frontend-lint
+        name: Chạy ESLint frontend
+        entry: npm --prefix frontend run lint
+        language: system
+        pass_filenames: false
+        files: ^frontend/.*\.(js|jsx|mjs|ts|tsx)$
+
+      - id: compose-config
+        name: Kiểm tra Docker Compose
+        entry: docker compose config --quiet
+        language: system
+        pass_filenames: false
+        files: ^(compose\.yaml|backend/(Dockerfile|\.dockerignore)|frontend/(Dockerfile|\.dockerignore))$

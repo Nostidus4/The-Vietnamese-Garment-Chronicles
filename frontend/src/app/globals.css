@@ -305,24 +305,89 @@ body {
      Desk
      ================================================================ */
   .desk {
-    background:
-      radial-gradient(ellipse at 16% 6%, rgba(255, 214, 150, 0.30), transparent 55%),
-      linear-gradient(118deg, transparent 0 18%, rgba(255, 222, 160, 0.07) 18% 27%, transparent 27% 29%, rgba(255, 222, 160, 0.07) 29% 38%, transparent 38%),
-      radial-gradient(ellipse at 50% 55%, transparent 38%, rgba(8, 4, 2, 0.55) 100%),
-      repeating-linear-gradient(0deg, transparent 0 23.5vh, rgba(0, 0, 0, 0.28) 23.5vh calc(23.5vh + 2px), rgba(255, 255, 255, 0.04) calc(23.5vh + 2px) calc(23.5vh + 3px)),
-      repeating-linear-gradient(91deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 7px),
-      repeating-linear-gradient(89deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 29px),
-      linear-gradient(90deg, #5a3b25, #6e4a2f 18%, #5f3f28 35%, #72502f 52%, #5d3d27 70%, #6b482d 88%, #573923);
+    background: #3a2211; /* shown only until the table photo arrives */
   }
+  .desk-bg {
+    object-position: 50% 50%;
+    filter: saturate(0.92) brightness(0.9);
+  }
+  @media (max-aspect-ratio: 3/4) {
+    .desk-bg { object-position: 58% 55%; }
+  }
+  /* a soft pool of shade under the book and a darker rim so the notebook owns the centre */
+  .desk-light {
+    background:
+      radial-gradient(ellipse 60% 55% at 50% 52%, rgba(20, 8, 2, 0.28), transparent 70%),
+      radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(18, 7, 1, 0.62) 100%);
+  }
+  /* warm window light from the top left, slowly breathing */
+  .desk-light::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 45% 40% at 22% 18%, rgba(255, 210, 140, 0.2), transparent 70%);
+    mix-blend-mode: screen;
+    animation: desk-breathe 9s ease-in-out infinite alternate;
+  }
+  @keyframes desk-breathe {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
+  }
+  .sun-mote {
+    position: absolute;
+    border-radius: 999px;
+    background: rgba(255, 228, 170, 0.85);
+    box-shadow: 0 0 6px rgba(255, 210, 140, 0.8);
+    animation-name: sun-mote;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  @keyframes sun-mote {
+    0% { transform: translate(0, 0); opacity: 0; }
+    20% { opacity: 0.9; }
+    50% { transform: translate(28px, -18px); opacity: 0.6; }
+    80% { opacity: 0.85; }
+    100% { transform: translate(52px, 10px); opacity: 0; }
+  }
+  /* the stack of pages under the cover: cream, with fine page edges on the right */
+  .page-block {
+    background:
+      repeating-linear-gradient(90deg, rgba(120, 90, 50, 0.18) 0 1px, transparent 1px 3px) right / 7px 100% no-repeat,
+      #dcc9a4;
+    box-shadow: inset 10px 0 18px rgba(80, 50, 20, 0.35);
+  }
+  /* inside of the cover: navy cloth turned over the board, an aged endpaper glued on top */
+  .endpaper {
+    background:
+      radial-gradient(ellipse at 30% 25%, transparent 40%, rgba(90, 60, 25, 0.22) 100%),
+      radial-gradient(rgba(120, 90, 60, 0.08) 1px, transparent 1px) 0 0 / 6px 6px,
+      linear-gradient(#dccaa6, #dccaa6) 3% 2.5% / 94.5% 95% no-repeat,
+      #2a3f5c;
+  }
+  /* the open notebook's pages: old dó paper rather than fresh white */
+  .book-pages .paper { background-color: #eadcbc; }
   .book-shadow {
     border-radius: 6px;
-    box-shadow: 0 30px 45px -8px rgba(0, 0, 0, 0.55), 0 6px 10px rgba(0, 0, 0, 0.35);
+    /* light comes from the window at the top left, so the book throws its shadow down and right */
+    box-shadow: 22px 34px 42px -6px rgba(35, 12, 0, 0.6), 6px 8px 12px rgba(35, 12, 0, 0.45);
   }
   /* the gutter: pages curve into the spine */
   /* react-pageflip puts --left / --right on the page element itself (which carries .paper) */
-  .book-open .paper.--left { box-shadow: inset -26px 0 30px -18px rgba(70, 45, 20, 0.35); }
-  .book-open .paper.--right { box-shadow: inset 26px 0 30px -18px rgba(70, 45, 20, 0.35); }
-  .book-open { filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5)); }
+  .book-pages .paper.--left { box-shadow: inset -26px 0 30px -18px rgba(70, 45, 20, 0.35); }
+  .book-pages .paper.--right { box-shadow: inset 26px 0 30px -18px rgba(70, 45, 20, 0.35); }
+  .page-turn {
+    font-family: var(--font-hand), cursive;
+    font-size: 1.15rem;
+    color: #f3ead7;
+    background: rgba(20, 12, 7, 0.42);
+    border: 1px solid rgba(243, 234, 215, 0.22);
+    border-radius: 999px;
+    padding: 0.2rem 1rem 0.3rem;
+    backdrop-filter: blur(3px);
+    transition: background 200ms ease, opacity 300ms ease, transform 200ms ease;
+  }
+  .page-turn:hover:not(:disabled) { background: rgba(20, 12, 7, 0.62); transform: translateY(-1px); }
+  .page-turn:disabled { display: none; }
   .cover-sheen {
     position: absolute;
     inset: 0;
@@ -336,7 +401,7 @@ body {
   .desk-photo {
     background: #f3ead7;
     padding: 10px 10px 30px; /* % padding would follow the screen width, not the photo */
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+    box-shadow: 10px 16px 22px rgba(35, 12, 0, 0.5);
   }
   .silk-swatch {
     background:
@@ -356,7 +421,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .film-grain, .glow-ring, .light-shaft, .dust-mote, .thread-spark, .orbit, .bookmark-tassel, .next-hint, .cover-sheen { animation: none !important; }
+  .film-grain, .glow-ring, .light-shaft, .dust-mote, .thread-spark, .orbit, .bookmark-tassel, .next-hint, .cover-sheen, .desk-light::after { animation: none !important; }
 }
 
 .site-nav a {

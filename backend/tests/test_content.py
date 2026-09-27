@@ -48,3 +48,28 @@ def test_invalid_json_reports_line(tmp_path):
     (root / "colors.json").write_text('{"colors": [}')
     _, rep = store.load(root)
     assert any("colors.json: invalid JSON at line 1" in e for e in rep.errors)
+
+
+def test_every_region_has_a_journey(content):
+    for reg in content.regions.values():
+        assert reg.journey is not None, reg.id
+        assert reg.journey.listen.people and reg.journey.listen.climate
+
+
+def test_locked_region_cannot_have_customs_or_people(tmp_path):
+    root = _copy(tmp_path)
+    p = root / "regions" / "tay-bac.json"
+    data = json.loads(p.read_text())
+    data["live"] = {"customs": [], "festivals": [], "bridge_line": "x"}
+    data["listen"]["frames"][0]["no_people"] = False
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    _, rep = store.load(root)
+    assert any("must not have 'live'" in e for e in rep.errors)
+    assert any("no_people: true" in e for e in rep.errors)
+
+
+def test_journey_file_needs_a_known_region(tmp_path):
+    root = _copy(tmp_path)
+    (root / "regions" / "khong-co.json").write_text("{}")
+    _, rep = store.load(root)
+    assert any("no region 'khong-co'" in e for e in rep.errors)

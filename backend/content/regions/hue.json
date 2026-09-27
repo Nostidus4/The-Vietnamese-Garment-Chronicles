@@ -1,0 +1,147 @@
+{
+  "listen": {
+    "people": "Dải đất hẹp nằm giữa dãy Trường Sơn và biển. Người miền Trung chịu thương chịu khó, mỗi vùng một giọng nói riêng. Huế từng là kinh đô của triều Nguyễn; xa hơn về phía nam còn những đền tháp Chăm trầm mặc.",
+    "climate": "Mùa hè nắng gắt, Bắc Trung Bộ có gió tây khô nóng. Thu đông là mùa mưa bão, lũ. Huế mưa dầm có khi kéo dài nhiều tuần.",
+    "places": "Kinh thành Huế, sông Hương – núi Ngự, phố cổ Hội An, thánh địa Mỹ Sơn, Phong Nha – Kẻ Bàng, biển Nha Trang.",
+    "frames": [
+      {
+        "image": null,
+        "caption": "Sông Hương một chiều",
+        "alt": "Sông Hương buổi chiều với con thuyền nhỏ và cây cầu thép vòm",
+        "prompt": "the Perfume River in Huế at golden hour, a small wooden sampan, a long steel truss bridge with repeated arches in the distance, soft purple-blue water"
+      },
+      {
+        "image": null,
+        "caption": "Hội An lên đèn",
+        "alt": "Phố cổ Hội An với tường vàng và đèn lồng vải",
+        "prompt": "an old street in Hội An at dusk, ochre-yellow walls, wooden shutters, round silk lanterns glowing, bougainvillea, quiet river at the end of the street"
+      },
+      {
+        "image": null,
+        "caption": "Tháp gạch đỏ giữa nắng",
+        "alt": "Cụm tháp Chăm bằng gạch đỏ giữa rừng cây",
+        "no_people": true,
+        "prompt": "ancient red-brick Cham towers among green jungle under strong sun, no people, no figures"
+      }
+    ]
+  },
+  "arrive": {
+    "ba_line": "Bà theo ông vào Huế năm hai mươi tuổi. Ở đây mưa dạy người ta sống chậm lại.",
+    "ti_thought": "Đi hết miền Trung chắc phải mấy ngày tàu mất.",
+    "landmarks": [
+      {
+        "name": "Kinh thành Huế",
+        "lon": 107.58,
+        "lat": 16.47,
+        "note": "Kinh đô triều Nguyễn bên sông Hương."
+      },
+      {
+        "name": "Phong Nha – Kẻ Bàng",
+        "lon": 106.28,
+        "lat": 17.59,
+        "note": "Những hang động đá vôi khổng lồ."
+      },
+      {
+        "name": "Hội An",
+        "lon": 108.33,
+        "lat": 15.88,
+        "note": "Thương cảng xưa, phố đèn lồng."
+      },
+      {
+        "name": "Mỹ Sơn",
+        "lon": 108.12,
+        "lat": 15.77,
+        "note": "Thánh địa của các vương triều Chăm Pa."
+      },
+      {
+        "name": "Nha Trang",
+        "lon": 109.19,
+        "lat": 12.24,
+        "note": "Vịnh biển xanh nhiều đảo."
+      }
+    ]
+  },
+  "live": {
+    "customs": [
+      {
+        "id": "nha-nhac",
+        "title": "Nhã nhạc cung đình",
+        "story": "Âm nhạc được tấu trong các nghi lễ của triều Nguyễn. Ngày nay khách vẫn có thể nghe nhã nhạc trong Đại Nội, tiếng trống, tiếng sáo trang nghiêm giữa những mái điện xưa.",
+        "unesco": 2003,
+        "sources": [
+          "unesco-ich-vn"
+        ]
+      },
+      {
+        "id": "non-la",
+        "title": "Làng nón bài thơ",
+        "story": "Người thợ chuốt vành tre, phơi lá, khâu từng mũi. Nón Huế mỏng nhẹ, soi lên nắng thấy hình và câu thơ kẹp giữa hai lớp lá."
+      },
+      {
+        "id": "an-chay",
+        "title": "Bữa cơm nhà Huế",
+        "story": "Bữa cơm Huế nhiều món nhỏ, bày khéo. Người Huế còn có nếp ăn chay vào những ngày rằm, mồng một, món chay cũng cầu kỳ như món mặn."
+      }
+    ],
+    "festivals": [
+      {
+        "id": "cau-ngu",
+        "name": "Lễ hội Cầu Ngư",
+        "time": "Khoảng tháng Giêng đến tháng Ba âm lịch, tùy làng",
+        "month": 2,
+        "calendar": "lunar",
+        "place": "Các làng biển miền Trung",
+        "story": "Ngư dân tạ ơn cá Ông đã che chở họ trên biển và cầu một năm trời êm biển lặng, thuyền về đầy cá.",
+        "what_to_see": "Rước thuyền, hát bả trạo."
+      },
+      {
+        "id": "bai-choi",
+        "name": "Hội bài chòi",
+        "time": "Dịp Tết Nguyên Đán",
+        "month": 1,
+        "calendar": "lunar",
+        "place": "Các tỉnh Trung Bộ",
+        "story": "Người chơi ngồi trong những chòi tre, anh hiệu vừa hô vừa hát câu thai để ai có con bài trùng thì thắng. Một trò chơi mà cũng là một buổi diễn.",
+        "what_to_see": "Nghe anh hiệu hô thai.",
+        "unesco": 2017,
+        "sources": [
+          "unesco-ich-vn"
+        ]
+      },
+      {
+        "id": "festival-hue",
+        "name": "Festival Huế",
+        "time": "Thay đổi theo từng năm",
+        "month": null,
+        "calendar": "solar",
+        "place": "Thành phố Huế",
+        "story": "Nhiều ngày lễ hội văn hóa, nghệ thuật diễn ra trong và quanh Kinh thành, trong đó có tái hiện các nghi lễ cung đình xưa.",
+        "what_to_see": "Các nghi lễ cung đình được tái hiện, đêm hoàng cung."
+      }
+    ],
+    "bridge_line": "Mưa dầm, nắng gắt, rồi những lễ nghi trang trọng. Lật trang đi, Bà kể con nghe chiếc áo ngũ thân ra đời thế nào."
+  },
+  "wear": {
+    "why": [
+      {
+        "because": "Kinh đô với những nghi lễ trang trọng",
+        "so": "Áo ngũ thân năm vạt, cổ đứng, mặc chỉnh tề",
+        "from_step": "live"
+      },
+      {
+        "because": "Mưa dầm và nắng gắt",
+        "so": "Nón lá che mưa che nắng, luôn đi cùng áo dài",
+        "from_step": "listen"
+      },
+      {
+        "because": "Nếp sống chậm, kín đáo",
+        "so": "Áo dài Huế ưa màu tím nhẹ, dáng thanh, không phô",
+        "from_step": "listen"
+      }
+    ]
+  },
+  "sources": [
+    "unesco-ich-vn",
+    "unesco-whc-vn"
+  ]
+}

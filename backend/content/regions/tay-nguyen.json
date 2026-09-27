@@ -1,0 +1,62 @@
+{
+  "listen": {
+    "people": "Quê hương của nhiều dân tộc anh em với không gian văn hóa cồng chiêng. Những trang này đang chờ chính người dân nơi đây cùng viết.",
+    "climate": "Cao nguyên đất đỏ bazan với mùa mưa và mùa khô rõ rệt. Những nơi cao như Đà Lạt mát mẻ quanh năm.",
+    "places": "Thác Dray Nur, hồ Lắk, Măng Đen, cao nguyên Lâm Viên, những đồi cà phê bạt ngàn.",
+    "frames": [
+      {
+        "image": null,
+        "caption": "Thác nước giữa đại ngàn",
+        "alt": "Thác nước lớn đổ xuống giữa rừng xanh",
+        "no_people": true,
+        "prompt": "a wide waterfall pouring over black basalt rock in a green highland forest, mist and rainbow, no people, no figures"
+      },
+      {
+        "image": null,
+        "caption": "Đồi cà phê mùa hoa",
+        "alt": "Đồi cà phê nở hoa trắng trên đất đỏ",
+        "no_people": true,
+        "prompt": "coffee plantations in bloom with white flowers on red basalt soil, rolling hills, blue sky, no people, no figures"
+      },
+      {
+        "image": null,
+        "caption": "Rừng thông cao nguyên",
+        "alt": "Rừng thông và hồ nước trên cao nguyên sương mù",
+        "no_people": true,
+        "prompt": "a pine forest and a quiet lake on a misty highland plateau in the early morning, no people, no figures"
+      }
+    ]
+  },
+  "arrive": {
+    "ba_line": "Bà nhớ màu đất đỏ và mùi cà phê. Còn câu chuyện của người Tây Nguyên, để họ kể con nghe.",
+    "landmarks": [
+      {
+        "name": "Thác Dray Nur",
+        "lon": 107.9,
+        "lat": 12.53,
+        "note": "Thác nước lớn trên sông Sêrêpốk."
+      },
+      {
+        "name": "Hồ Lắk",
+        "lon": 108.18,
+        "lat": 12.42,
+        "note": "Hồ nước ngọt lớn giữa cao nguyên."
+      },
+      {
+        "name": "Măng Đen",
+        "lon": 108.27,
+        "lat": 14.6,
+        "note": "Rừng thông và hồ trên cao."
+      },
+      {
+        "name": "Cao nguyên Lâm Viên",
+        "lon": 108.44,
+        "lat": 11.94,
+        "note": "Đà Lạt mát lạnh quanh năm."
+      }
+    ]
+  },
+  "sources": [
+    "unesco-ich-vn"
+  ]
+}

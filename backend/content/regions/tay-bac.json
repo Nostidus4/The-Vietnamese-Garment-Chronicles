@@ -1,0 +1,60 @@
+{
+  "listen": {
+    "people": "Quê hương của nhiều dân tộc anh em, mỗi dân tộc một bản sắc riêng. Những trang này đang chờ chính người dân nơi đây cùng viết.",
+    "climate": "Núi cao, mùa đông lạnh, có năm băng tuyết phủ trên đỉnh cao. Mùa thu lúa chín vàng trên những thửa ruộng bậc thang.",
+    "places": "Ruộng bậc thang Mù Cang Chải, đỉnh Fansipan, đèo Pha Đin, cao nguyên Mộc Châu.",
+    "frames": [
+      {
+        "image": null,
+        "caption": "Mùa lúa trên núi",
+        "alt": "Ruộng bậc thang vàng óng trên sườn núi dốc",
+        "no_people": true,
+        "prompt": "golden terraced rice fields on steep mountains at harvest time, mist in the valley, no people, no figures"
+      },
+      {
+        "image": null,
+        "caption": "Mây trên đỉnh núi cao",
+        "alt": "Biển mây quanh đỉnh núi cao",
+        "no_people": true,
+        "prompt": "a sea of clouds around the highest mountain peak of northern Vietnam at sunrise, rocky summit, no people, no figures"
+      },
+      {
+        "image": null,
+        "caption": "Đồi chè cao nguyên",
+        "alt": "Đồi chè xanh uốn lượn trên cao nguyên",
+        "no_people": true,
+        "prompt": "rolling green tea hills on a highland plateau, white plum blossoms at the edge, soft morning light, no people, no figures"
+      }
+    ]
+  },
+  "arrive": {
+    "ba_line": "Bà mới chỉ đi ngang qua những con đèo. Bà muốn con nghe người ở đây kể, hơn là nghe Bà.",
+    "landmarks": [
+      {
+        "name": "Mù Cang Chải",
+        "lon": 104.09,
+        "lat": 21.85,
+        "note": "Ruộng bậc thang trên sườn núi."
+      },
+      {
+        "name": "Fansipan",
+        "lon": 103.78,
+        "lat": 22.3,
+        "note": "Đỉnh núi cao nhất Việt Nam."
+      },
+      {
+        "name": "Đèo Pha Đin",
+        "lon": 103.55,
+        "lat": 21.57,
+        "note": "Một trong những con đèo dài nhất miền Bắc."
+      },
+      {
+        "name": "Mộc Châu",
+        "lon": 104.68,
+        "lat": 20.84,
+        "note": "Cao nguyên chè và hoa mận."
+      }
+    ]
+  },
+  "sources": []
+}

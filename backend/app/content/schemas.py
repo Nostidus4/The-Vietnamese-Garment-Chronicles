@@ -1,7 +1,7 @@
 """Shapes of every content file in backend/content.
 
 `extra="forbid"` makes a typo in a field name a load error instead of silently ignored data.
-Field descriptions double as the data-entry guide (see docs/BACKEND.md).
+Field descriptions double as the data-entry guide (see backend/docs/BACKEND.md).
 """
 
 from datetime import date
@@ -118,6 +118,96 @@ class GeoPoint(Strict):
     lon: float
 
 
+# ---- Part 2: the journey through a region (Nghe → Đến → Sống → Mặc), one file per region in content/regions/ ----
+
+
+class Frame(Strict):
+    """A keepsake picture tucked into Bà's notebook. The caption is HTML text, never drawn by the AI."""
+
+    image: str | None = Field(None, description="Path under frontend/public, e.g. /regions/bac-bo/frame-1.png; null = placeholder")
+    caption: str
+    alt: str
+    no_people: bool = Field(False, description="Must be true for locked regions: landscapes only")
+    prompt: str | None = Field(None, description="The image prompt used, kept as evidence for Form 7")
+
+
+class Listen(Strict):
+    """Step 1 – hovering a region: people, climate, places. Never about clothes."""
+
+    people: str
+    climate: str
+    places: str
+    frames: list[Frame] = Field(default_factory=list, max_length=3)
+
+
+class Landmark(Strict):
+    name: str
+    lon: float
+    lat: float
+    note: str
+
+
+class Arrive(Strict):
+    """Step 2 – the region map with its provinces."""
+
+    ba_line: str = Field(description="What Bà wrote when she arrived")
+    ti_thought: str | None = None
+    landmarks: list[Landmark] = []
+
+
+class Custom(Strict):
+    id: Id = Field(pattern=ID_PATTERN)
+    title: str
+    story: str = Field(max_length=400)
+    unesco: int | None = Field(None, description="Year of UNESCO inscription, only with a source")
+    sources: list[Id] = []
+    verified: bool = False
+    community_review: bool = Field(False, description="True = about a community that must review it first; hidden until then")
+
+
+class Festival(Strict):
+    id: Id = Field(pattern=ID_PATTERN)
+    name: str
+    time: str = Field(description="As people say it, e.g. 13 tháng Giêng âm lịch")
+    month: int | None = Field(None, ge=1, le=12, description="For the calendar strip")
+    calendar: Literal["lunar", "solar"] = "lunar"
+    place: str
+    story: str = Field(max_length=450)
+    what_to_see: str | None = None
+    unesco: int | None = None
+    sources: list[Id] = []
+    verified: bool = False
+    community_review: bool = False
+
+
+class Live(Strict):
+    """Step 3 – customs and festivals."""
+
+    customs: list[Custom] = []
+    festivals: list[Festival] = []
+    bridge_line: str = Field(description="Bà's line that points to the clothes on the next page")
+
+
+class Why(Strict):
+    because: str
+    so: str
+    from_step: Literal["listen", "live"]
+
+
+class Wear(Strict):
+    """Step 4 – why the clothes look the way they do, then the existing try-on chapter."""
+
+    why: list[Why] = []
+
+
+class Journey(Strict):
+    listen: Listen
+    arrive: Arrive
+    live: Live | None = None
+    wear: Wear | None = None
+    sources: list[Id] = []
+
+
 class Region(Strict):
     id: Id = Field(pattern=ID_PATTERN)
     name: str
@@ -127,6 +217,7 @@ class Region(Strict):
     map_note: MapNote
     weather_point: GeoPoint | None = None
     stamp_image: str | None = None
+    journey: Journey | None = Field(None, description="Filled from content/regions/<id>.json")
 
 
 RuleType = Literal["fusion", "restricted", "core", "caution", "occasion", "flexible"]

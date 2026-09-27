@@ -64,6 +64,37 @@ export interface Region {
   garments: string[];
   map_note: { title: string; lines: string[] };
   stamp_image: string | null;
+  journey: Journey | null;
+}
+
+// ---- Part 2: the journey through a region (Nghe → Đến → Sống → Mặc) ----
+export interface Frame {
+  image: string | null;
+  caption: string;
+  alt: string;
+  no_people: boolean;
+}
+export interface Custom {
+  id: string;
+  title: string;
+  story: string;
+  unesco: number | null;
+  verified: boolean;
+  community_review: boolean;
+}
+export interface Festival extends Omit<Custom, "title"> {
+  name: string;
+  time: string;
+  month: number | null;
+  calendar: "lunar" | "solar";
+  place: string;
+  what_to_see: string | null;
+}
+export interface Journey {
+  listen: { people: string; climate: string; places: string; frames: Frame[] };
+  arrive: { ba_line: string; ti_thought: string | null; landmarks: { name: string; lon: number; lat: number; note: string }[] };
+  live: { customs: Custom[]; festivals: Festival[]; bridge_line: string } | null;
+  wear: { why: { because: string; so: string; from_step: "listen" | "live" }[] } | null;
 }
 
 export interface Camera {

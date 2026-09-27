@@ -1,5 +1,5 @@
 {
-  "_help": "Kịch bản Opening. x, y, w tính theo % ảnh 16:9 (space=image) hoặc % màn hình (space=screen). delay = ms sau câu trước; wait_click = chờ người xem bấm. Chỉnh vị trí bằng http://localhost:3000/?opening=1&debug=1. Xem docs/OPENING_PLAN.md.",
+  "_help": "Kịch bản Opening. x, y, w tính theo % ảnh 16:9 (space=image) hoặc % màn hình (space=screen). delay = ms sau câu trước; wait_click = chờ người xem bấm. Chỉnh vị trí bằng http://localhost:3000/?opening=1&debug=1. Xem frontend/docs/OPENING_PLAN.md.",
   "screens": [
     {
       "id": "s01",

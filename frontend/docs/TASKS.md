@@ -9,7 +9,7 @@ Mỗi người làm trên branch riêng (`feat/a-...`, `feat/b-...`), mở Pull 
 - [x] Flipbook: bìa → 4 trang truyện (placeholder) → trang bản đồ → trang cuối; nút "Bỏ qua truyện"
 - [x] Trang bản đồ: vùng hover/click, chữ viết tay hiện dần, Tây Bắc khóa, có Hoàng Sa/Trường Sa (bản đồ **tạm**)
 - [x] Chapter: chọn trang phục (Huế có 2), Story Card + Style Freedom Map, Builder (dịp, vibe, màu, phụ kiện)
-- [x] **Backend hoàn chỉnh** (xem docs/BACKEND.md): Compass 4 trạng thái, compare (F1), phối màu (F2), try-on Nano Banana có cache + giới hạn tốc độ + fallback, Hỏi Tèo (F8), quiz (F5), danh bạ (F7), thời tiết (F4), báo cáo dữ liệu – 38 test
+- [x] **Backend hoàn chỉnh** (xem [tài liệu backend](../../backend/docs/BACKEND.md)): Compass 4 trạng thái, compare (F1), phối màu (F2), try-on Nano Banana có cache + giới hạn tốc độ + fallback, Hỏi Tèo (F8), quiz (F5), danh bạ (F7), thời tiết (F4), báo cáo dữ liệu – 38 test
 - [x] Dữ liệu mẫu: 4 trang phục, 12 phụ kiện, 71 nguồn từ Research, 8 trang truyện, 1 tiệm, 2 câu quiz
 - [x] Du Ký của tôi: lưu localStorage, thêm ảnh mặc thật (chọn trang phục + dịp), thẻ văn hóa, xuất PNG
 

@@ -1,0 +1,143 @@
+{
+  "listen": {
+    "people": "Vùng đất mở cõi hơn ba trăm năm. Người Nam Bộ phóng khoáng, hiếu khách, nói thẳng thật lòng. Người Kinh, Hoa, Khmer, Chăm cùng chung sống; đời sống gắn với dòng sông, xuồng ghe và những phiên chợ trên nước.",
+    "climate": "Nắng nóng quanh năm, chỉ có mùa mưa và mùa khô. Cuối năm, đồng bằng sông Cửu Long vào mùa nước nổi, đồng ruộng thành biển nước.",
+    "places": "Chợ nổi Cái Răng, rừng tràm Trà Sư, mũi Cà Mau, đảo Phú Quốc, Côn Đảo, rừng ngập mặn Cần Giờ.",
+    "frames": [
+      {
+        "image": null,
+        "caption": "Chợ nổi lúc bình minh",
+        "alt": "Chợ nổi trên sông với những ghe chở trái cây",
+        "prompt": "a floating market on the Mekong at sunrise, wooden boats loaded with fruit, a tall bamboo pole on a boat with fruit hanging from it, calm brown river"
+      },
+      {
+        "image": null,
+        "caption": "Rừng tràm mùa nước nổi",
+        "alt": "Chiếc xuồng nhỏ len giữa rừng tràm ngập nước",
+        "prompt": "a small wooden canoe gliding through a flooded cajeput forest, green duckweed carpet on the water, sunlight through the trees"
+      },
+      {
+        "image": null,
+        "caption": "Mũi đất cuối trời",
+        "alt": "Rừng đước và bãi bồi nơi mũi Cà Mau",
+        "no_people": true,
+        "prompt": "the southern tip of Vietnam, mangrove forest meeting a wide tidal mudflat and the sea at sunset, no people, no figures"
+      }
+    ]
+  },
+  "arrive": {
+    "ba_line": "Lần đầu xuống miền Tây, Bà được mời ăn cơm từ nhà này sang nhà khác, không ai cho về.",
+    "ti_thought": "Đến cả đảo Phú Quốc với Côn Đảo cũng là Nam Bộ!",
+    "landmarks": [
+      {
+        "name": "Chợ nổi Cái Răng",
+        "lon": 105.75,
+        "lat": 10.0,
+        "note": "Ghe bán gì thì treo món đó lên cây bẹo."
+      },
+      {
+        "name": "Rừng tràm Trà Sư",
+        "lon": 105.05,
+        "lat": 10.58,
+        "note": "Rừng ngập nước phủ bèo xanh."
+      },
+      {
+        "name": "Núi Sam",
+        "lon": 105.08,
+        "lat": 10.68,
+        "note": "Nơi có miếu Bà Chúa Xứ."
+      },
+      {
+        "name": "Cần Giờ",
+        "lon": 106.88,
+        "lat": 10.41,
+        "note": "Rừng ngập mặn ngay cạnh thành phố."
+      },
+      {
+        "name": "Mũi Cà Mau",
+        "lon": 104.72,
+        "lat": 8.6,
+        "note": "Điểm cực nam trên đất liền."
+      }
+    ]
+  },
+  "live": {
+    "customs": [
+      {
+        "id": "don-ca-tai-tu",
+        "title": "Đờn ca tài tử",
+        "story": "Xong việc đồng áng, bạn bè tụ lại đờn và ca vọng cổ, không cần sân khấu. Một cây đàn kìm, một cây đàn tranh là đủ cho một đêm vui.",
+        "unesco": 2013,
+        "sources": [
+          "unesco-ich-vn"
+        ]
+      },
+      {
+        "id": "tet-miet-vuon",
+        "title": "Tết miệt vườn",
+        "story": "Tết đến, nhà nào cũng có mâm ngũ quả với mãng cầu, dừa, đu đủ, xoài, nghe như lời cầu mong đủ đầy. Khách tới nhà là được mời ăn, mời uống."
+      },
+      {
+        "id": "song-voi-nuoc",
+        "title": "Sống cùng mùa nước",
+        "story": "Người miền Tây không chống lũ mà sống cùng lũ. Mùa nước nổi là mùa cá linh, bông điên điển, mùa của những chiếc xuồng đi khắp đồng."
+      }
+    ],
+    "festivals": [
+      {
+        "id": "via-ba-chua-xu",
+        "name": "Lễ hội Vía Bà Chúa Xứ núi Sam",
+        "time": "Từ 23 đến 27 tháng Tư âm lịch",
+        "month": 4,
+        "calendar": "lunar",
+        "place": "Châu Đốc, An Giang",
+        "story": "Người khắp nơi về núi Sam dâng hương Bà Chúa Xứ, người được tin là che chở cho vùng biên giới. Lễ tắm Bà và rước Bà diễn ra trang nghiêm giữa đêm.",
+        "what_to_see": "Lễ tắm Bà, rước Bà."
+      },
+      {
+        "id": "nghinh-ong",
+        "name": "Lễ Nghinh Ông",
+        "time": "Khoảng giữa tháng Tám âm lịch (Cần Giờ)",
+        "month": 8,
+        "calendar": "lunar",
+        "place": "Cần Giờ và các làng biển Nam Bộ",
+        "story": "Ngư dân rước cá Ông trên biển bằng đoàn ghe trang hoàng rực rỡ, cầu cho mùa biển bình an.",
+        "what_to_see": "Đoàn ghe rước Ông trên biển."
+      },
+      {
+        "id": "ok-om-bok",
+        "name": "Lễ Ok Om Bok và đua ghe ngo",
+        "time": "Rằm tháng Mười âm lịch",
+        "month": 10,
+        "calendar": "lunar",
+        "place": "Sóc Trăng và các vùng có đồng bào Khmer",
+        "story": "Lễ cúng trăng của đồng bào Khmer.",
+        "community_review": true
+      }
+    ],
+    "bridge_line": "Nắng quanh năm, làm việc dưới nước, ngồi xuồng cả ngày. Lật trang đi, con sẽ hiểu vì sao áo bà ba lại gọn nhẹ như vậy."
+  },
+  "wear": {
+    "why": [
+      {
+        "because": "Nắng nóng, ẩm quanh năm",
+        "so": "Áo bà ba may vải mỏng, thoáng, tay áo rộng",
+        "from_step": "listen"
+      },
+      {
+        "because": "Làm việc dưới nước, ngồi xuồng ghe",
+        "so": "Áo ngắn qua hông, không vướng khi chèo, khi lội",
+        "from_step": "live"
+      },
+      {
+        "because": "Đi đồng, đi chợ nổi dưới nắng",
+        "so": "Khăn rằn quàng cổ, che đầu, lau mồ hôi, đủ việc",
+        "from_step": "live"
+      }
+    ]
+  },
+  "sources": [
+    "unesco-ich-vn",
+    "unesco-whc-vn"
+  ]
+}

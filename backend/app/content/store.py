@@ -15,6 +15,7 @@ from .schemas import (
     Accessory,
     Color,
     Garment,
+    Journey,
     Occasion,
     OpeningScreen,
     QuizItem,
@@ -126,11 +127,24 @@ def load(root: Path = CONTENT_DIR) -> tuple[Content, Report]:
         shops=_index(lst("shops.json", "shops", Shop), "shops.json", r),
         opening=lst("opening.json", "screens", OpeningScreen),
     )
+    for jf in sorted((root / "regions").glob("*.json")) if (root / "regions").is_dir() else []:
+        raw = _read(jf, r)
+        if raw is None:
+            continue
+        reg = c.regions.get(jf.stem)
+        if reg is None:
+            r.errors.append(f"regions/{jf.name}: no region '{jf.stem}' in regions.json")
+            continue
+        parsed = _parse_list({"x": [raw]}, "x", Journey, f"regions/{jf.name}", r)
+        if parsed:
+            reg.journey = parsed[0]
     _check_refs(c, r)
     return c, r
 
 
 def _check_refs(c: Content, r: Report) -> None:
+    frontend_public = c.root.parents[1] / "frontend" / "public"
+
     def need(ids: list[str] | None, pool: dict, where: str, what: str) -> None:
         for i in ids or []:
             if i not in pool:
@@ -191,6 +205,29 @@ def _check_refs(c: Content, r: Report) -> None:
         if reg.status == "locked" and not reg.lock_note:
             r.warnings.append(f"{w}: locked region should explain why (lock_note)")
         media(reg.stamp_image, w)
+        j = reg.journey
+        if j is None:
+            r.warnings.append(f"{w}: no journey yet (content/regions/{reg.id}.json)")
+            continue
+        wj = f"regions/{reg.id}.json"
+        srcs(j.sources, wj)
+        if reg.status == "locked":
+            # locked regions are written with their communities: landscapes only, no customs or clothes yet
+            if j.live or j.wear:
+                r.errors.append(f"{wj}: locked region must not have 'live' or 'wear'")
+            for f in j.listen.frames:
+                if not f.no_people:
+                    r.errors.append(f"{wj}: locked region frames must be landscapes (no_people: true)")
+        for f in j.listen.frames:
+            if f.image and frontend_public.exists() and not (frontend_public / f.image.lstrip("/")).is_file():
+                r.warnings.append(f"{wj}: frame image not found at frontend/public{f.image}")
+        if j.live:
+            for item in [*j.live.customs, *j.live.festivals]:
+                need(item.sources, c.sources, wj, "source")
+                if not item.verified:
+                    r.warnings.append(f"{wj} [{item.id}]: not verified")
+                if item.unesco and not item.sources:
+                    r.warnings.append(f"{wj} [{item.id}]: UNESCO year needs a source")
 
     for q in c.quiz.values():
         w = f"quiz.json [{q.id}]"
@@ -204,7 +241,6 @@ def _check_refs(c: Content, r: Report) -> None:
         if not s.verified:
             r.warnings.append(f"{w}: not verified")
 
-    frontend_public = c.root.parents[1] / "frontend" / "public"
     ids = [s.id for s in c.opening]
     if len(ids) != len(set(ids)):
         r.errors.append("opening.json: duplicate screen id")
