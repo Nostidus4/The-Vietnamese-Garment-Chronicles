@@ -2,12 +2,12 @@ import { forwardRef, type ReactNode } from "react";
 
 // react-pageflip needs every page to forward its ref to a DOM node.
 // It also rewrites the outer node's display/size, so layout classes go on the inner div.
-export const Page = forwardRef<HTMLDivElement, { children: ReactNode; className?: string }>(function Page(
-  { children, className = "" },
+export const Page = forwardRef<HTMLDivElement, { children: ReactNode; className?: string; bare?: boolean }>(function Page(
+  { children, className = "", bare = false },
   ref,
 ) {
   return (
-    <div ref={ref} className="paper overflow-hidden">
+    <div ref={ref} className={bare ? "overflow-hidden" : "paper overflow-hidden"}>
       <div className={`h-full w-full ${className}`}>{children}</div>
     </div>
   );

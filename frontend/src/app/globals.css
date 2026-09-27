@@ -25,6 +25,10 @@ body {
     background-size: 6px 6px;
   }
 
+  .font-display {
+    font-family: var(--font-display), serif;
+  }
+
   .font-hand {
     font-family: var(--font-hand), cursive;
   }

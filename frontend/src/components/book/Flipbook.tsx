@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import HTMLFlipBook from "react-pageflip";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -54,10 +55,14 @@ export default function Flipbook({ data }: { data: Bootstrap }) {
         className="shadow-2xl"
         style={{}}
       >
-        <Page className="flex flex-col items-center justify-center gap-4 bg-[#6b4f3a] text-amber-100">
-          <p className="text-sm tracking-[0.3em]">SỔ TAY CỦA BÀ</p>
-          <h1 className="font-hand text-5xl">Việt Phục Du Ký</h1>
-          <p className="text-sm opacity-80">Lật trang để bắt đầu →</p>
+        <Page bare className="relative">
+          {/* public/page/title-page.png: indigo linen cover with an empty embroidered label */}
+          <Image src="/page/title-page.png" alt="Bìa sổ Việt Phục Du Ký" fill priority sizes="560px" className="object-cover" />
+          {/* Title sits inside the label: 20.8–88.3% × 27.5–49% of the cover */}
+          <div className="absolute flex flex-col items-center justify-center text-center" style={{ left: "20.8%", top: "27.5%", width: "67.5%", height: "21.5%" }}>
+            <p className="text-[10px] tracking-[0.35em] text-[#2F4A6D]/70">SỔ TAY CỦA BÀ</p>
+            <h1 className="font-display text-[clamp(1.4rem,4.2vw,2.4rem)] leading-tight text-[#2F4A6D]">Việt Phục Du Ký</h1>
+          </div>
         </Page>
 
         {pages.map((p) => (
