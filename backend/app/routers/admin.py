@@ -20,7 +20,7 @@ def content_report() -> dict:
         "accessories": len(c.accessories),
         "quiz": len(c.quiz),
         "shops": len(c.shops),
-        "comic_pages": len(c.comic),
+        "opening_screens": len(c.opening),
     }
     return rep
 

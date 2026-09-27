@@ -12,7 +12,7 @@ from app.content import store
 def main() -> int:
     content, rep = store.load()
     print(f"Nguồn: {len(content.sources)} · Trang phục: {len(content.garments)} · Phụ kiện: {len(content.accessories)} "
-          f"· Quiz: {len(content.quiz)} · Tiệm: {len(content.shops)} · Trang truyện: {len(content.comic)}\n")
+          f"· Quiz: {len(content.quiz)} · Tiệm: {len(content.shops)} · Opening: {len(content.opening)} screen\n")
 
     if rep.errors:
         print(f"❌ {len(rep.errors)} LỖI (server sẽ không chạy cho tới khi sửa):")

@@ -66,19 +66,79 @@ export interface Region {
   stamp_image: string | null;
 }
 
-export interface Bubble {
-  speaker: string;
+export interface Camera {
+  s: number;
+  x: number;
+  y: number;
+  mode: "anchor" | "center";
+  ms: number;
+  ease: "linear" | "inOut" | "out" | "in";
+}
+
+export type EffectType =
+  | "spotlight" | "desaturate" | "vignette" | "glow" | "glow-ring" | "light-sweep" | "dust"
+  | "light-shaft" | "thread" | "particles" | "bookmark" | "shake" | "sweat" | "label";
+
+export interface Effect {
+  type: EffectType;
+  x: number;
+  y: number;
+  r: number;
+  ms: number;
+  strength: number;
+  text: string | null;
+  rotate: number;
+  at: number;
+}
+
+export interface Beat {
+  kind: "narration" | "speech" | "title" | "question" | "finale";
+  style: "box" | "memory" | "hand" | "hand-large" | "title" | "finale" | "finale-large" | "caption";
+  speaker: string | null;
   text: string;
   x: number;
   y: number;
+  w: number;
+  space: "image" | "screen";
+  tail: "none" | "down" | "down-left" | "down-right" | "up" | "left" | "right";
+  rotate: number;
+  join: boolean;
+  inline: boolean;
+  clear: boolean;
+  delay: number;
+  wait_click: boolean;
+  type_ms: number;
+  camera: Camera | null;
+  effects: Effect[];
 }
 
-export interface ComicPage {
-  n: number;
-  priority: "P0" | "P1";
+export interface Transition {
+  type: "crossfade" | "zoom-through" | "iris" | "gold-wash" | "cloth" | "paper" | "cover-open" | "fall" | "flash";
+  ms: number;
+  x: number;
+  y: number;
+  to_x: number;
+  to_y: number;
+  s: number;
+  mode: "anchor" | "center";
+  to_s: number;
+}
+
+export interface OpeningScreen {
+  id: string;
+  title: string;
   image: string;
-  scene: string;
-  bubbles: Bubble[];
+  mood: "present" | "memory";
+  focal: { x: number; y: number };
+  camera_start: Camera;
+  camera: Camera | null;
+  skippable: boolean;
+  hide_progress: boolean;
+  auto_exit_ms: number | null;
+  beats: Beat[];
+  effects: Effect[];
+  exit: Transition;
+  sfx: string[];
 }
 
 export interface Bootstrap {
@@ -88,7 +148,7 @@ export interface Bootstrap {
   colors: Record<string, { id: string; name: string; hex: string; restricted: boolean }>;
   accessories: Record<string, { id: string; name_vi: string; kind: string }>;
   sources: Record<string, { id: string; title: string; url: string | null }>;
-  comic: ComicPage[];
+  opening: OpeningScreen[];
 }
 
 export interface TryOnResult {

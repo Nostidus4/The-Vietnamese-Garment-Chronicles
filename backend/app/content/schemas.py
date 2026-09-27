@@ -170,16 +170,90 @@ class Shop(Strict):
     last_checked: date | None = None
 
 
-class Bubble(Strict):
-    speaker: str
-    text: str
-    x: float = Field(ge=0, le=100, description="% from left")
-    y: float = Field(ge=0, le=100, description="% from top")
+class Camera(Strict):
+    """s = zoom; (x, y) = point on the image in %. anchor keeps that point still while zooming,
+    center brings it to the middle of the screen."""
+
+    s: float = Field(1.0, ge=1.0, le=4.0)
+    x: float = Field(50, ge=0, le=100)
+    y: float = Field(50, ge=0, le=100)
+    mode: Literal["anchor", "center"] = "anchor"
+    ms: int = Field(0, ge=0, description="Duration of the move; 0 = jump")
+    ease: Literal["linear", "inOut", "out", "in"] = "inOut"
 
 
-class ComicPage(Strict):
-    n: int
-    priority: Literal["P0", "P1"]
-    image: str
-    scene: str
-    bubbles: list[Bubble] = []
+EffectType = Literal[
+    "spotlight", "desaturate", "vignette", "glow", "glow-ring", "light-sweep", "dust",
+    "light-shaft", "thread", "particles", "bookmark", "shake", "sweat", "label",
+]
+
+
+class Effect(Strict):
+    type: EffectType
+    x: float = 50
+    y: float = 50
+    r: float = Field(12, description="Radius or size in % of image width")
+    ms: int = 700
+    strength: float = Field(0.5, ge=0, le=1)
+    text: str | None = None
+    rotate: float = 0
+    at: int = Field(0, ge=0, description="Start this many ms after the beat/screen appears")
+
+
+BeatKind = Literal["narration", "speech", "title", "question", "finale"]
+BeatStyle = Literal["box", "memory", "hand", "hand-large", "title", "finale", "finale-large", "caption"]
+
+
+class Beat(Strict):
+    kind: BeatKind = "narration"
+    style: BeatStyle = "box"
+    speaker: str | None = None
+    text: str = ""
+    x: float = Field(4, ge=-10, le=100, description="% of image (or screen when space=screen)")
+    y: float = Field(5, ge=-10, le=100)
+    w: float = Field(32, gt=0, le=100, description="Box width in %")
+    space: Literal["image", "screen"] = "image"
+    tail: Literal["none", "down", "down-left", "down-right", "up", "left", "right"] = "none"
+    rotate: float = 0
+    join: bool = Field(False, description="New line inside the previous box/bubble")
+    inline: bool = Field(False, description="Continue on the same line of the previous box")
+    clear: bool = Field(False, description="Remove earlier text of this screen first")
+    delay: int = Field(700, ge=0, description="ms after the previous beat (ignored when wait_click)")
+    wait_click: bool = False
+    type_ms: int = Field(0, ge=0, description="Per-character reveal; 0 = fade the whole line")
+    camera: Camera | None = None
+    effects: list[Effect] = []
+
+
+TransitionType = Literal[
+    "crossfade", "zoom-through", "iris", "gold-wash", "cloth", "paper", "cover-open", "fall", "flash",
+]
+
+
+class Transition(Strict):
+    type: TransitionType = "crossfade"
+    ms: int = 900
+    x: float = 50
+    y: float = 50
+    to_x: float = 50
+    to_y: float = 50
+    s: float = 1.2
+    mode: Literal["anchor", "center"] = "anchor"
+    to_s: float = 1.06
+
+
+class OpeningScreen(Strict):
+    id: Id = Field(pattern=ID_PATTERN)
+    title: str
+    image: str = Field(description="Path under frontend/public, e.g. /opening/s01.png")
+    mood: Literal["present", "memory"] = "present"
+    focal: dict[str, float] = Field(default_factory=lambda: {"x": 50, "y": 50})
+    camera_start: Camera = Camera()
+    camera: Camera | None = Field(None, description="Automatic move when the screen enters")
+    skippable: bool = True
+    hide_progress: bool = False
+    auto_exit_ms: int | None = Field(None, description="Leave by itself this long after the last beat")
+    beats: list[Beat] = []
+    effects: list[Effect] = Field(default_factory=list, description="Ambient effects for the whole screen")
+    exit: Transition = Transition()
+    sfx: list[str] = []

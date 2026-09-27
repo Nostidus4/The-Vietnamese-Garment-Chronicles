@@ -1,9 +1,13 @@
-import { BookLoader } from "@/components/book/BookLoader";
+"use client";
 
-export default function Home() {
-  return (
-    <main className="flex flex-col items-center px-4 pb-10">
-      <BookLoader />
-    </main>
-  );
+import dynamic from "next/dynamic";
+
+// The opening and the desk are browser-only (viewport maths, localStorage, react-pageflip)
+const Home = dynamic(() => import("@/components/home/Home"), {
+  ssr: false,
+  loading: () => <div className="fixed inset-0 bg-[#140c07]" />,
+});
+
+export default function Page() {
+  return <Home />;
 }

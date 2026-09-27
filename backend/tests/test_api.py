@@ -20,7 +20,7 @@ def test_health(client):
 
 def test_bootstrap_has_everything_the_frontend_needs(client):
     b = client.get("/content/bootstrap").json()
-    assert {"regions", "garments", "occasions", "colors", "accessories", "sources", "comic"} <= b.keys()
+    assert {"regions", "garments", "occasions", "colors", "accessories", "sources", "opening"} <= b.keys()
     assert any(r["status"] == "locked" for r in b["regions"])
 
 

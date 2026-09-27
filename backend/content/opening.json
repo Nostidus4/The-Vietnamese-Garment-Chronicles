@@ -1,0 +1,191 @@
+{
+  "_help": "Kịch bản Opening. x, y, w tính theo % ảnh 16:9 (space=image) hoặc % màn hình (space=screen). delay = ms sau câu trước; wait_click = chờ người xem bấm. Chỉnh vị trí bằng http://localhost:3000/?opening=1&debug=1. Xem docs/OPENING_PLAN.md.",
+  "screens": [
+    {
+      "id": "s01",
+      "title": "Ngày hội Sắc Việt",
+      "image": "/opening/s01.png",
+      "focal": {"x": 64, "y": 50},
+      "skippable": false,
+      "camera_start": {"s": 1.0, "x": 62, "y": 50},
+      "camera": {"s": 1.035, "x": 62, "y": 50, "ms": 9000, "ease": "linear"},
+      "effects": [
+        {"type": "spotlight", "x": 52, "y": 30, "r": 16, "strength": 0.28, "ms": 1200, "at": 500},
+        {"type": "label", "x": 52.5, "y": 10.5, "text": "Ngày hội Sắc Việt", "rotate": -2, "ms": 700, "at": 600}
+      ],
+      "beats": [
+        {"kind": "narration", "style": "box", "text": "Năm nay, mỗi đội sẽ lựa chọn một vùng văn hóa Việt Nam…", "x": 3, "y": 5, "w": 33, "delay": 1300},
+        {"kind": "narration", "style": "box", "text": "Tìm hiểu một loại trang phục truyền thống…", "join": true, "delay": 1000},
+        {"kind": "narration", "style": "box", "text": "Và đề xuất cách để người trẻ có thể mặc nó hôm nay.", "join": true, "delay": 1000},
+        {"kind": "speech", "speaker": "Tí", "text": "Áo dài thôi. Quá dễ!", "x": 55, "y": 17, "w": 21, "tail": "down-right", "wait_click": true}
+      ],
+      "exit": {"type": "zoom-through", "ms": 1100, "x": 76, "y": 66, "s": 1.2, "to_x": 72, "to_y": 58, "to_s": 1.07},
+      "sfx": ["classroom"]
+    },
+    {
+      "id": "s02",
+      "title": "Tại sao?",
+      "image": "/opening/s02.png",
+      "focal": {"x": 66, "y": 50},
+      "beats": [
+        {"kind": "speech", "speaker": "Tèo", "text": "Tại sao lại là áo dài?", "x": 72, "y": 26, "w": 24, "tail": "down-right", "delay": 500},
+        {"kind": "speech", "speaker": "Tí", "text": "Vì… đẹp?", "x": 21, "y": 37, "w": 16, "tail": "down-right", "wait_click": true},
+        {"kind": "speech", "speaker": "Tèo", "text": "Còn gì nữa?", "x": 77, "y": 34.5, "w": 17, "tail": "down-right", "delay": 900},
+        {"kind": "speech", "speaker": "Tí", "text": "…rất Việt Nam?", "x": 20, "y": 46, "w": 19, "tail": "down-right", "wait_click": true,
+         "effects": [{"type": "sweat", "x": 51, "y": 53, "ms": 500}, {"type": "shake", "ms": 320, "strength": 0.4}]}
+      ],
+      "exit": {"type": "zoom-through", "ms": 950, "x": 72, "y": 22, "s": 1.28, "to_x": 50, "to_y": 30, "to_s": 1.08},
+      "sfx": ["classroom"]
+    },
+    {
+      "id": "s03",
+      "title": "Một Việt Nam mà mình chưa biết",
+      "image": "/opening/s03.png",
+      "focal": {"x": 50, "y": 45},
+      "camera": {"s": 1.025, "x": 50, "y": 40, "ms": 14000, "ease": "linear"},
+      "beats": [
+        {"kind": "narration", "style": "box", "text": "Chỉ sau một lúc, hàng loạt cái tên xuất hiện…", "x": 62, "y": 79, "w": 34, "delay": 500},
+        {"kind": "narration", "style": "box", "text": "Áo tứ thân.", "join": true, "delay": 1000,
+         "effects": [{"type": "glow", "x": 23, "y": 24, "r": 9, "strength": 0.55, "ms": 500}]},
+        {"kind": "narration", "style": "box", "text": " Áo ngũ thân.", "inline": true, "delay": 650,
+         "effects": [{"type": "glow", "x": 70, "y": 25, "r": 9, "strength": 0.55, "ms": 500}]},
+        {"kind": "narration", "style": "box", "text": " Nhật Bình.", "inline": true, "delay": 650,
+         "effects": [{"type": "glow", "x": 15, "y": 55, "r": 9, "strength": 0.55, "ms": 500}]},
+        {"kind": "narration", "style": "box", "text": " Áo bà ba…", "inline": true, "delay": 650,
+         "effects": [{"type": "glow", "x": 88, "y": 47, "r": 9, "strength": 0.55, "ms": 500}]},
+        {"kind": "speech", "speaker": "Tèo", "text": "Bộ này của vùng nào?", "x": 52, "y": 31, "w": 24, "tail": "down", "wait_click": true,
+         "effects": [{"type": "spotlight", "x": 57, "y": 55, "r": 16, "strength": 0.25, "ms": 600}]},
+        {"kind": "speech", "speaker": "Tí", "text": "…không biết.", "x": 5, "y": 62, "w": 16, "tail": "down-right", "delay": 900,
+         "effects": [{"type": "desaturate", "x": 53, "y": 77, "r": 14, "strength": 0.7, "ms": 1100}]}
+      ],
+      "exit": {"type": "iris", "ms": 1400, "x": 53, "y": 77, "to_x": 78, "to_y": 44},
+      "sfx": ["keyboard"]
+    },
+    {
+      "id": "s04",
+      "title": "Chiếc áo màu xanh",
+      "image": "/opening/s04.png",
+      "focal": {"x": 55, "y": 50},
+      "camera": {"s": 1.035, "x": 45, "y": 45, "ms": 12000, "ease": "linear"},
+      "effects": [{"type": "vignette", "strength": 0.45, "ms": 3500, "at": 400}],
+      "beats": [
+        {"kind": "narration", "style": "box", "text": "Rồi Tí bất chợt im lặng.", "x": 3, "y": 5, "w": 30, "delay": 800},
+        {"kind": "narration", "style": "box", "text": "Một chiếc áo dài màu xanh thiên thanh xuất hiện trên màn hình.", "join": true, "delay": 1600,
+         "effects": [{"type": "glow", "x": 80, "y": 85, "r": 11, "strength": 0.35, "ms": 1400}]},
+        {"kind": "narration", "style": "hand-large", "text": "Cậu nhớ đến bà.", "x": 5, "y": 76, "w": 42, "delay": 1400, "type_ms": 95}
+      ],
+      "exit": {"type": "gold-wash", "ms": 2200},
+      "sfx": ["night"]
+    },
+    {
+      "id": "s05",
+      "title": "Tiếng máy may bên cửa sổ",
+      "image": "/opening/s05.png",
+      "mood": "memory",
+      "focal": {"x": 45, "y": 45},
+      "camera": {"s": 1.03, "x": 40, "y": 45, "ms": 11000, "ease": "linear"},
+      "beats": [
+        {"kind": "speech", "style": "memory", "speaker": "Tí nhỏ", "text": "Bà ơi…", "x": 40, "y": 5, "w": 26, "tail": "down-right", "delay": 1000},
+        {"kind": "speech", "style": "memory", "text": "Cái này có phải áo dài không?", "join": true, "delay": 900,
+         "effects": [{"type": "glow", "x": 86, "y": 24, "r": 12, "strength": 0.3, "ms": 700}]},
+        {"kind": "speech", "style": "memory", "speaker": "Bà", "text": "Không phải cái gì dài dài cũng là áo dài đâu con.", "x": 3, "y": 5, "w": 34, "tail": "down-right", "delay": 1500, "type_ms": 42}
+      ],
+      "exit": {"type": "cloth", "ms": 1200},
+      "sfx": ["sewing"]
+    },
+    {
+      "id": "s06",
+      "title": "Chúng còn để nhớ",
+      "image": "/opening/s06.png",
+      "mood": "memory",
+      "focal": {"x": 45, "y": 55},
+      "hide_progress": true,
+      "camera": {"s": 1.022, "x": 30, "y": 50, "ms": 16000, "ease": "linear"},
+      "effects": [
+        {"type": "light-shaft", "x": 14, "y": 0, "r": 22, "rotate": 16, "strength": 0.22},
+        {"type": "dust", "x": 30, "y": 40, "r": 30}
+      ],
+      "beats": [
+        {"kind": "speech", "style": "memory", "speaker": "Tí", "text": "Sao bà giữ bộ này kỹ vậy?", "x": 60, "y": 52, "w": 27, "tail": "down-left", "delay": 800},
+        {"kind": "speech", "style": "memory", "speaker": "Bà", "text": "Vì nó là bộ bà trân trọng nhất.", "x": 62, "y": 63, "w": 29, "tail": "up", "wait_click": true},
+        {"kind": "narration", "style": "hand", "text": "Có những bộ quần áo không chỉ để mặc.", "x": 60, "y": 76, "w": 38, "delay": 1100, "type_ms": 45},
+        {"kind": "narration", "style": "hand-large", "text": "Chúng còn để nhớ.", "x": 60, "y": 84, "w": 38, "delay": 1300, "type_ms": 115}
+      ],
+      "exit": {"type": "paper", "ms": 2500},
+      "sfx": ["birds"]
+    },
+    {
+      "id": "s07",
+      "title": "Căn nhà cũ",
+      "image": "/opening/s07.png",
+      "focal": {"x": 50, "y": 55},
+      "camera_start": {"s": 1.35, "x": 17, "y": 55, "mode": "center"},
+      "beats": [
+        {"kind": "narration", "style": "box", "text": "Chiều hôm đó, Tí và Tèo quay lại căn nhà cũ của bà.", "space": "screen", "x": 3, "y": 80, "w": 40, "delay": 700},
+        {"kind": "narration", "style": "box", "text": "Mọi thứ dường như vẫn còn ở nguyên vị trí.", "space": "screen", "x": 3, "y": 80, "w": 40, "wait_click": true, "clear": true,
+         "camera": {"s": 1.35, "x": 48, "y": 44, "mode": "center", "ms": 1600}},
+        {"kind": "narration", "style": "box", "text": "Và dưới chiếc áo màu xanh…", "space": "screen", "x": 3, "y": 80, "w": 34, "wait_click": true, "clear": true,
+         "camera": {"s": 1.75, "x": 90, "y": 82, "mode": "center", "ms": 1900},
+         "effects": [{"type": "glow-ring", "x": 93, "y": 90, "r": 3.2, "at": 1700}]}
+      ],
+      "exit": {"type": "zoom-through", "ms": 1300, "x": 93, "y": 90, "s": 3.4, "mode": "center", "to_x": 60, "to_y": 52, "to_s": 1.14},
+      "sfx": ["gate", "box"]
+    },
+    {
+      "id": "s08",
+      "title": "Việt Phục Du Ký",
+      "image": "/opening/s08.png",
+      "focal": {"x": 55, "y": 50},
+      "beats": [
+        {"kind": "title", "style": "title", "text": "Việt Phục Du Ký", "x": 60.6, "y": 52.8, "w": 20, "rotate": 12, "delay": 800},
+        {"kind": "narration", "text": "", "delay": 700, "effects": [{"type": "light-sweep", "x": 60, "y": 52, "r": 30, "ms": 1400, "rotate": 12}]},
+        {"kind": "narration", "style": "caption", "text": "Cuốn sổ bà vẫn để trên bàn may ngày trước.", "x": 4, "y": 86, "w": 40, "delay": 800}
+      ],
+      "exit": {"type": "cover-open", "ms": 2900, "x": 60.6, "y": 52.8},
+      "sfx": ["cloth"]
+    },
+    {
+      "id": "s09",
+      "title": "Những trang bà chưa viết xong",
+      "image": "/opening/s09.png",
+      "mood": "present",
+      "focal": {"x": 55, "y": 55},
+      "camera_start": {"s": 1.22, "x": 32, "y": 58, "mode": "center"},
+      "beats": [
+        {"kind": "narration", "style": "memory", "text": "Bà bắt đầu học may vì muốn làm ra những bộ quần áo đẹp.", "space": "screen", "x": 3, "y": 78, "w": 44, "delay": 700,
+         "effects": [
+           {"type": "spotlight", "x": 20, "y": 45, "r": 11, "strength": 0.3, "ms": 600, "at": 0},
+           {"type": "spotlight", "x": 48, "y": 44, "r": 11, "strength": 0.3, "ms": 600, "at": 900},
+           {"type": "spotlight", "x": 20, "y": 71, "r": 11, "strength": 0.3, "ms": 600, "at": 1800},
+           {"type": "spotlight", "x": 49, "y": 71, "r": 11, "strength": 0.3, "ms": 600, "at": 2700}
+         ]},
+        {"kind": "narration", "style": "memory", "text": "Sau này bà mới hiểu… đẹp chỉ là một phần rất nhỏ.", "join": true, "wait_click": true},
+        {"kind": "narration", "style": "memory", "text": "Bà đã đi qua một phần của hành trình này.", "space": "screen", "x": 3, "y": 78, "w": 44, "wait_click": true, "clear": true,
+         "camera": {"s": 1.3, "x": 79, "y": 56, "mode": "center", "ms": 2000}},
+        {"kind": "narration", "style": "memory", "text": "Phần còn lại… có lẽ sẽ dành cho người khác.", "join": true, "delay": 1100},
+        {"kind": "question", "style": "hand", "text": "Nếu là con, con sẽ mặc câu chuyện này như thế nào?", "x": 66, "y": 41, "w": 27, "delay": 1300},
+        {"kind": "narration", "text": "", "delay": 2400, "effects": [{"type": "bookmark", "x": 61, "y": 93}]}
+      ],
+      "exit": {"type": "fall", "ms": 1300},
+      "sfx": ["pages"]
+    },
+    {
+      "id": "s10",
+      "title": "Hành trình của con bắt đầu",
+      "image": "/opening/s10.png",
+      "focal": {"x": 55, "y": 50},
+      "camera": {"s": 1.07, "x": 60, "y": 45, "ms": 6500, "ease": "in"},
+      "auto_exit_ms": 2000,
+      "effects": [
+        {"type": "thread", "text": "s10-swirl", "ms": 2000, "at": 250},
+        {"type": "particles", "x": 57, "y": 45, "r": 34, "at": 400}
+      ],
+      "beats": [
+        {"kind": "finale", "style": "finale", "text": "Hành trình của bà đã kết thúc.", "space": "screen", "x": 50, "y": 9, "w": 70, "delay": 1300},
+        {"kind": "finale", "style": "finale-large", "text": "Hành trình của con bắt đầu từ đây.", "space": "screen", "x": 50, "y": 44, "w": 86, "delay": 1300}
+      ],
+      "exit": {"type": "flash", "ms": 3000},
+      "sfx": ["wind", "drums"]
+    }
+  ]
+}

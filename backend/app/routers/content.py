@@ -21,7 +21,7 @@ def bootstrap() -> dict:
         "colors": {k: v.model_dump() for k, v in c.colors.items()},
         "accessories": {k: v.model_dump() for k, v in c.accessories.items()},
         "sources": {k: v.model_dump() for k, v in c.sources.items()},
-        "comic": [p.model_dump() for p in c.comic],
+        "opening": [s.model_dump() for s in c.opening],
     }
 
 
@@ -67,6 +67,6 @@ def sources() -> list[dict]:
     return _dump(store.get().sources)
 
 
-@router.get("/comic")
-def comic() -> list[dict]:
-    return [p.model_dump() for p in store.get().comic]
+@router.get("/opening")
+def opening() -> list[dict]:
+    return [s.model_dump() for s in store.get().opening]

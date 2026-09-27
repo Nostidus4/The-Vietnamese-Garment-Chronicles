@@ -14,9 +14,9 @@ from pydantic import BaseModel, ValidationError
 from .schemas import (
     Accessory,
     Color,
-    ComicPage,
     Garment,
     Occasion,
+    OpeningScreen,
     QuizItem,
     Region,
     Rule,
@@ -49,7 +49,7 @@ class Content:
     rules: dict[str, Rule]
     quiz: dict[str, QuizItem]
     shops: dict[str, Shop]
-    comic: list[ComicPage]
+    opening: list[OpeningScreen]
 
     def media_exists(self, rel: str | None) -> bool:
         return bool(rel) and (self.root / "media" / rel).is_file()
@@ -124,7 +124,7 @@ def load(root: Path = CONTENT_DIR) -> tuple[Content, Report]:
         rules=_index(lst("rules.json", "rules", Rule), "rules.json", r, key="type"),
         quiz=_index(lst("quiz.json", "items", QuizItem), "quiz.json", r),
         shops=_index(lst("shops.json", "shops", Shop), "shops.json", r),
-        comic=sorted(lst("comic.json", "pages", ComicPage), key=lambda p: p.n),
+        opening=lst("opening.json", "screens", OpeningScreen),
     )
     _check_refs(c, r)
     return c, r
@@ -204,8 +204,13 @@ def _check_refs(c: Content, r: Report) -> None:
         if not s.verified:
             r.warnings.append(f"{w}: not verified")
 
-    for p in c.comic:
-        media(p.image, f"comic.json [page {p.n}]")
+    frontend_public = c.root.parents[1] / "frontend" / "public"
+    ids = [s.id for s in c.opening]
+    if len(ids) != len(set(ids)):
+        r.errors.append("opening.json: duplicate screen id")
+    for s in c.opening:
+        if frontend_public.exists() and not (frontend_public / s.image.lstrip("/")).is_file():
+            r.warnings.append(f"opening.json [{s.id}]: image not found at frontend/public{s.image}")
 
     avatar = "avatars/default.png"
     if not c.media_exists(avatar):
