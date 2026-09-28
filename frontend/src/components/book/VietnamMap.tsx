@@ -190,6 +190,10 @@ export function VietnamMap({
               d={CHAPTER_FILL[c.id]}
               fillRule="evenodd"
               fill={isLocked ? "url(#vm-hatch)" : isActive ? GOLD : c.tint}
+              // an invisible 10px rim widens the tap target: Miền Trung is a thin strip on a phone
+              stroke="transparent"
+              strokeWidth={10}
+              vectorEffect="non-scaling-stroke"
               style={{ transition: "fill 260ms ease" }}
             />
             <motion.path
@@ -278,23 +282,13 @@ export function VietnamMap({
                 key={p.name}
                 x={p.at[0]}
                 y={p.at[1]}
-                fontSize={8.6 * s}
+                fontSize={7 * s}
                 fill={hotProvince === p.name ? "#5a3408" : INK}
                 stroke="#f6efe0"
                 strokeWidth={2.2 * s}
                 paintOrder="stroke"
               >
                 {p.name}
-                {p.partial && (
-                  <tspan
-                    x={p.at[0]}
-                    dy={7.5 * s}
-                    fontSize={6.2 * s}
-                    opacity="0.75"
-                  >
-                    (một phần)
-                  </tspan>
-                )}
               </text>
             ))}
           </motion.g>
@@ -315,7 +309,7 @@ export function VietnamMap({
                     x={x + 3.6 * s}
                     y={y + 2.3 * s}
                     className="font-hand"
-                    fontSize={6.8 * s}
+                    fontSize={5.8 * s}
                     fill="#8a2f1c"
                     stroke="#f6efe0"
                     strokeWidth={1.8 * s}

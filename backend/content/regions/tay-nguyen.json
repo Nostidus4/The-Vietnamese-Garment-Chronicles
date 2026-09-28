@@ -1,12 +1,55 @@
 {
-  "listen": {
-    "people": "Quê hương của nhiều dân tộc anh em với không gian văn hóa cồng chiêng. Những trang này đang chờ chính người dân nơi đây cùng viết.",
-    "climate": "Cao nguyên đất đỏ bazan với mùa mưa và mùa khô rõ rệt. Những nơi cao như Đà Lạt mát mẻ quanh năm.",
-    "places": "Thác Dray Nur, hồ Lắk, Măng Đen, cao nguyên Lâm Viên, những đồi cà phê bạt ngàn.",
+  "hover_line": "“Tôi nhớ màu đất đỏ và mùi cà phê. Còn câu chuyện của người Tây Nguyên, để họ kể.”",
+  "arrive": {
+    "date": "Trên đường lên cao nguyên, mùa khô",
+    "entry": "Đất ở đây đỏ au, bụi bám đầy vạt áo. Hai bên đường là đồi cà phê nối nhau không dứt. Tôi chỉ ghé qua ít hôm, uống ly cà phê đặc sánh, nghe tiếng thác đổ từ xa.",
+    "margin": "Bà mới thấy Tây Nguyên qua cửa sổ xe thôi, con ạ.",
+    "keepsake": "stamp",
+    "landmarks": [
+      {
+        "name": "Thác Dray Nur",
+        "lon": 107.9,
+        "lat": 12.53,
+        "note": "Thác lớn trên sông Sêrêpốk."
+      },
+      {
+        "name": "Hồ Lắk",
+        "lon": 108.18,
+        "lat": 12.42,
+        "note": "Hồ nước ngọt giữa cao nguyên."
+      },
+      {
+        "name": "Măng Đen",
+        "lon": 108.27,
+        "lat": 14.6,
+        "note": "Rừng thông và hồ trên cao."
+      },
+      {
+        "name": "Lâm Viên",
+        "lon": 108.44,
+        "lat": 11.94,
+        "note": "Đà Lạt mát lạnh quanh năm."
+      }
+    ]
+  },
+  "look": {
+    "date": "Đà Lạt, một buổi sớm sương",
+    "entry": "Cao nguyên có hai mùa, mưa và khô. Nơi cao như Đà Lạt thì mát quanh năm, sáng nào sương cũng giăng trên rừng thông. Đây là quê hương của nhiều dân tộc với không gian cồng chiêng riêng. Tôi chỉ ghi lại cảnh vật, phần còn lại xin để người nơi đây kể.",
+    "keepsake": "photo",
+    "teo": [
+      {
+        "text": "Không gian văn hóa Cồng chiêng Tây Nguyên được UNESCO công nhận.",
+        "sources": [
+          "unesco-ich-vn"
+        ],
+        "verified": false,
+        "unesco": 2005
+      }
+    ],
     "frames": [
       {
         "image": null,
-        "caption": "Thác nước giữa đại ngàn",
+        "caption": "Thác giữa đại ngàn",
         "alt": "Thác nước lớn đổ xuống giữa rừng xanh",
         "no_people": true,
         "prompt": "a wide waterfall pouring over black basalt rock in a green highland forest, mist and rainbow, no people, no figures"
@@ -27,34 +70,8 @@
       }
     ]
   },
-  "arrive": {
-    "ba_line": "Bà nhớ màu đất đỏ và mùi cà phê. Còn câu chuyện của người Tây Nguyên, để họ kể con nghe.",
-    "landmarks": [
-      {
-        "name": "Thác Dray Nur",
-        "lon": 107.9,
-        "lat": 12.53,
-        "note": "Thác nước lớn trên sông Sêrêpốk."
-      },
-      {
-        "name": "Hồ Lắk",
-        "lon": 108.18,
-        "lat": 12.42,
-        "note": "Hồ nước ngọt lớn giữa cao nguyên."
-      },
-      {
-        "name": "Măng Đen",
-        "lon": 108.27,
-        "lat": 14.6,
-        "note": "Rừng thông và hồ trên cao."
-      },
-      {
-        "name": "Cao nguyên Lâm Viên",
-        "lon": 108.44,
-        "lat": 11.94,
-        "note": "Đà Lạt mát lạnh quanh năm."
-      }
-    ]
+  "own": {
+    "invite": "Những trang này chờ người ở đây viết."
   },
   "sources": [
     "unesco-ich-vn"

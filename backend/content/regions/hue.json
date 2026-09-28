@@ -1,19 +1,74 @@
 {
-  "listen": {
-    "people": "Dải đất hẹp nằm giữa dãy Trường Sơn và biển. Người miền Trung chịu thương chịu khó, mỗi vùng một giọng nói riêng. Huế từng là kinh đô của triều Nguyễn; xa hơn về phía nam còn những đền tháp Chăm trầm mặc.",
-    "climate": "Mùa hè nắng gắt, Bắc Trung Bộ có gió tây khô nóng. Thu đông là mùa mưa bão, lũ. Huế mưa dầm có khi kéo dài nhiều tuần.",
-    "places": "Kinh thành Huế, sông Hương – núi Ngự, phố cổ Hội An, thánh địa Mỹ Sơn, Phong Nha – Kẻ Bàng, biển Nha Trang.",
+  "hover_line": "“Tôi theo anh vào Huế năm hai mươi tuổi. Ở đây, mưa dạy người ta sống chậm lại.”",
+  "arrive": {
+    "date": "Huế, một chiều mưa tháng Ba",
+    "entry": "Tàu vào ga Huế lúc trời đã chập choạng. Mưa không to mà cứ rả rích mãi. Anh đưa tôi đi qua cầu, dưới kia sông Hương xanh và lặng đến lạ. Tôi mới hai mươi tuổi, chưa từng đi xa nhà đến thế. Đêm đầu tiên tôi không ngủ được, nằm nghe mưa trên mái ngói.",
+    "margin": "“Anh” là ông của con đấy. Hồi ấy ông gầy lắm.",
+    "ti": "Đi hết miền Trung chắc phải mấy ngày tàu.",
+    "keepsake": "stamp",
+    "landmarks": [
+      {
+        "name": "Kinh thành Huế",
+        "lon": 107.58,
+        "lat": 16.47,
+        "note": "Hoàng thành bên sông Hương."
+      },
+      {
+        "name": "Phong Nha",
+        "lon": 106.28,
+        "lat": 17.59,
+        "note": "Những hang động khổng lồ."
+      },
+      {
+        "name": "Hội An",
+        "lon": 108.33,
+        "lat": 15.88,
+        "note": "Phố đèn lồng bên sông."
+      },
+      {
+        "name": "Mỹ Sơn",
+        "lon": 108.12,
+        "lat": 15.77,
+        "note": "Tháp gạch đỏ giữa rừng."
+      },
+      {
+        "name": "Nha Trang",
+        "lon": 109.19,
+        "lat": 12.24,
+        "note": "Vịnh biển nhiều đảo."
+      }
+    ]
+  },
+  "look": {
+    "date": "Đi dọc miền Trung, mùa hè",
+    "entry": "Dải đất này hẹp lắm, bên kia là núi, bên này là biển. Người ở đây chịu thương chịu khó, nói giọng nặng mà lòng thì nhẹ. Mùa hè nắng như đổ lửa, có gió Lào khô rát. Thu sang lại mưa bão, lũ về trắng đồng. Tôi đi Hội An, thấy phố cũ treo đèn lồng, rồi vào tận Mỹ Sơn đứng dưới những ngọn tháp gạch đỏ không biết đã bao nhiêu trăm năm.",
+    "margin": "Tấm ảnh tháp Chăm Bà chụp mà không có ai trong khung, vì hôm ấy vắng lắm.",
+    "keepsake": "photo",
+    "teo": [
+      {
+        "text": "Quần thể di tích Cố đô Huế, phố cổ Hội An, thánh địa Mỹ Sơn và Phong Nha – Kẻ Bàng đều là Di sản Thế giới.",
+        "sources": [
+          "unesco-whc-vn"
+        ],
+        "verified": false
+      },
+      {
+        "text": "Gió Lào là gió tây khô nóng thổi vào Bắc Trung Bộ đầu mùa hè.",
+        "sources": [],
+        "verified": false
+      }
+    ],
     "frames": [
       {
         "image": null,
         "caption": "Sông Hương một chiều",
-        "alt": "Sông Hương buổi chiều với con thuyền nhỏ và cây cầu thép vòm",
+        "alt": "Sông Hương buổi chiều với con đò nhỏ và cây cầu thép nhiều nhịp",
         "prompt": "the Perfume River in Huế at golden hour, a small wooden sampan, a long steel truss bridge with repeated arches in the distance, soft purple-blue water"
       },
       {
         "image": null,
         "caption": "Hội An lên đèn",
-        "alt": "Phố cổ Hội An với tường vàng và đèn lồng vải",
+        "alt": "Phố cổ Hội An với tường vàng và đèn lồng",
         "prompt": "an old street in Hội An at dusk, ochre-yellow walls, wooden shutters, round silk lanterns glowing, bougainvillea, quiet river at the end of the street"
       },
       {
@@ -25,123 +80,129 @@
       }
     ]
   },
-  "arrive": {
-    "ba_line": "Bà theo ông vào Huế năm hai mươi tuổi. Ở đây mưa dạy người ta sống chậm lại.",
-    "ti_thought": "Đi hết miền Trung chắc phải mấy ngày tàu mất.",
-    "landmarks": [
+  "life": {
+    "date": "Nhà chồng, những ngày đầu làm dâu",
+    "entry": "Mẹ chồng tôi dạy nấu cơm Huế: món nào cũng ít một, bày cho khéo. Rằm với mồng một cả nhà ăn chay, mà món chay cũng cầu kỳ như món mặn. Buổi sáng tôi hay ra đầu ngõ ăn bát bún bò, cay xé lưỡi mà vẫn muốn ăn thêm. Chiều thì theo mấy chị trong xóm đi chuốt vành nón.",
+    "margin": "Con thấy chưa, Bà học làm nón trước cả học may.",
+    "keepsake": "recipe",
+    "items": [
       {
-        "name": "Kinh thành Huế",
-        "lon": 107.58,
-        "lat": 16.47,
-        "note": "Kinh đô triều Nguyễn bên sông Hương."
-      },
-      {
-        "name": "Phong Nha – Kẻ Bàng",
-        "lon": 106.28,
-        "lat": 17.59,
-        "note": "Những hang động đá vôi khổng lồ."
-      },
-      {
-        "name": "Hội An",
-        "lon": 108.33,
-        "lat": 15.88,
-        "note": "Thương cảng xưa, phố đèn lồng."
-      },
-      {
-        "name": "Mỹ Sơn",
-        "lon": 108.12,
-        "lat": 15.77,
-        "note": "Thánh địa của các vương triều Chăm Pa."
-      },
-      {
-        "name": "Nha Trang",
-        "lon": 109.19,
-        "lat": 12.24,
-        "note": "Vịnh biển xanh nhiều đảo."
-      }
-    ]
-  },
-  "live": {
-    "customs": [
-      {
-        "id": "nha-nhac",
-        "title": "Nhã nhạc cung đình",
-        "story": "Âm nhạc được tấu trong các nghi lễ của triều Nguyễn. Ngày nay khách vẫn có thể nghe nhã nhạc trong Đại Nội, tiếng trống, tiếng sáo trang nghiêm giữa những mái điện xưa.",
-        "unesco": 2003,
-        "sources": [
-          "unesco-ich-vn"
-        ]
+        "id": "com-hue",
+        "kind": "custom",
+        "title": "Mâm cơm nhiều món nhỏ",
+        "text": "Người Huế ăn ít mà nhiều món, món nào cũng bày như để ngắm trước rồi mới ăn."
       },
       {
         "id": "non-la",
-        "title": "Làng nón bài thơ",
-        "story": "Người thợ chuốt vành tre, phơi lá, khâu từng mũi. Nón Huế mỏng nhẹ, soi lên nắng thấy hình và câu thơ kẹp giữa hai lớp lá."
+        "kind": "custom",
+        "title": "Chuốt vành nón",
+        "text": "Vành tre chuốt tròn, lá phơi trắng, khâu từng mũi. Soi nón lên nắng còn thấy hình và câu thơ kẹp bên trong."
       },
       {
-        "id": "an-chay",
-        "title": "Bữa cơm nhà Huế",
-        "story": "Bữa cơm Huế nhiều món nhỏ, bày khéo. Người Huế còn có nếp ăn chay vào những ngày rằm, mồng một, món chay cũng cầu kỳ như món mặn."
+        "id": "bun-bo-hue",
+        "kind": "dish",
+        "title": "Bát bún bò buổi sáng",
+        "text": "Nước dùng thơm sả, cay màu ớt, sợi bún to. Trời mưa mà có bát bún nóng thì chẳng còn gì bằng."
       }
     ],
-    "festivals": [
+    "teo": [
       {
-        "id": "cau-ngu",
-        "name": "Lễ hội Cầu Ngư",
-        "time": "Khoảng tháng Giêng đến tháng Ba âm lịch, tùy làng",
-        "month": 2,
-        "calendar": "lunar",
-        "place": "Các làng biển miền Trung",
-        "story": "Ngư dân tạ ơn cá Ông đã che chở họ trên biển và cầu một năm trời êm biển lặng, thuyền về đầy cá.",
-        "what_to_see": "Rước thuyền, hát bả trạo."
-      },
+        "text": "Nón bài thơ là nón lá Huế có kẹp hình hoặc câu thơ giữa hai lớp lá.",
+        "sources": [],
+        "verified": false
+      }
+    ]
+  },
+  "festivals": {
+    "date": "Làng biển Thuận An, tháng Hai",
+    "entry": "Tôi theo chị hàng xóm ra làng biển xem lễ cầu ngư. Người ta rước thuyền, hát bả trạo, tạ ơn cá Ông đã che chở người đi biển. Tết thì cả xóm kéo nhau đi chơi bài chòi, anh hiệu hô câu thai nghe mà bật cười. Tối về, anh đưa tôi đi nghe nhã nhạc, tiếng trống tiếng sáo trang nghiêm giữa những mái điện xưa.",
+    "keepsake": "ticket",
+    "festivals": [
       {
         "id": "bai-choi",
         "name": "Hội bài chòi",
         "time": "Dịp Tết Nguyên Đán",
         "month": 1,
-        "calendar": "lunar",
         "place": "Các tỉnh Trung Bộ",
-        "story": "Người chơi ngồi trong những chòi tre, anh hiệu vừa hô vừa hát câu thai để ai có con bài trùng thì thắng. Một trò chơi mà cũng là một buổi diễn.",
-        "what_to_see": "Nghe anh hiệu hô thai.",
-        "unesco": 2017,
-        "sources": [
-          "unesco-ich-vn"
-        ]
+        "text": "Ngồi trong chòi tre, chờ anh hiệu hô trúng con bài của mình. Vừa là trò chơi, vừa là một buổi diễn."
       },
       {
-        "id": "festival-hue",
-        "name": "Festival Huế",
-        "time": "Thay đổi theo từng năm",
-        "month": null,
-        "calendar": "solar",
-        "place": "Thành phố Huế",
-        "story": "Nhiều ngày lễ hội văn hóa, nghệ thuật diễn ra trong và quanh Kinh thành, trong đó có tái hiện các nghi lễ cung đình xưa.",
-        "what_to_see": "Các nghi lễ cung đình được tái hiện, đêm hoàng cung."
+        "id": "cau-ngu",
+        "name": "Lễ cầu ngư",
+        "time": "Tháng Giêng đến tháng Ba âm lịch, tùy làng",
+        "month": 2,
+        "place": "Các làng biển miền Trung",
+        "text": "Rước thuyền, hát bả trạo, cầu một năm trời êm biển lặng, thuyền về đầy cá."
       }
     ],
-    "bridge_line": "Mưa dầm, nắng gắt, rồi những lễ nghi trang trọng. Lật trang đi, Bà kể con nghe chiếc áo ngũ thân ra đời thế nào."
-  },
-  "wear": {
-    "why": [
+    "teo": [
       {
-        "because": "Kinh đô với những nghi lễ trang trọng",
-        "so": "Áo ngũ thân năm vạt, cổ đứng, mặc chỉnh tề",
-        "from_step": "live"
+        "text": "Nhã nhạc cung đình Huế được UNESCO công nhận.",
+        "sources": [
+          "unesco-ich-vn"
+        ],
+        "verified": false,
+        "unesco": 2003
       },
       {
-        "because": "Mưa dầm và nắng gắt",
-        "so": "Nón lá che mưa che nắng, luôn đi cùng áo dài",
-        "from_step": "listen"
-      },
-      {
-        "because": "Nếp sống chậm, kín đáo",
-        "so": "Áo dài Huế ưa màu tím nhẹ, dáng thanh, không phô",
-        "from_step": "listen"
+        "text": "Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh.",
+        "sources": [
+          "unesco-ich-vn"
+        ],
+        "verified": false,
+        "unesco": 2017
       }
-    ]
+    ],
+    "bridge": "Ở kinh đô, lễ nghi nào cũng cần áo chỉnh tề. Lật trang đi, Bà kể con nghe chiếc áo ngũ thân."
+  },
+  "wear": [
+    {
+      "garment": "ao-ngu-than",
+      "date": "Ngày giỗ bên nhà chồng",
+      "entry": "Mẹ chồng đưa tôi chiếc áo ngũ thân của bà, bảo mặc cho đúng lễ. Áo có năm vạt, cổ đứng, cài khuy bên phải. Mẹ nói năm vạt áo là cha, mẹ, vợ chồng và bản thân mình, còn năm khuy là năm điều phải giữ. Tôi mặc vào, tự nhiên thấy mình đứng thẳng hơn.",
+      "margin": "Chỗ nào được phá cách, chỗ nào phải giữ, Tèo ghi giúp Bà ở bên cạnh rồi đấy.",
+      "keepsake": "fabric",
+      "teo": [
+        {
+          "text": "Vì là kinh đô với nhiều nghi lễ → áo ngũ thân cổ đứng, năm vạt, mặc chỉnh tề.",
+          "sources": [],
+          "verified": false
+        },
+        {
+          "text": "Nghệ thuật may, mặc áo dài Huế được công nhận là Di sản văn hóa phi vật thể quốc gia.",
+          "sources": [
+            "ref-08"
+          ],
+          "verified": false
+        }
+      ]
+    },
+    {
+      "garment": "ao-dai",
+      "date": "Huế, sáng mùng Một Tết",
+      "entry": "Tôi may cho mình chiếc áo dài xanh nhạt, màu da trời sau mưa. Áo ôm người hơn áo ngũ thân, hai tà dài bay theo gió khi đạp xe qua cầu. Anh bảo tôi mặc áo ấy đẹp nhất. Chiếc áo này về sau tôi cất vào hộp gỗ, giữ đến tận bây giờ.",
+      "margin": "Chiếc áo xanh trong hộp gỗ đó, con nhớ không?",
+      "keepsake": "fabric",
+      "teo": [
+        {
+          "text": "Vì mưa dầm và nắng gắt → áo dài luôn đi cùng nón lá.",
+          "sources": [],
+          "verified": false
+        },
+        {
+          "text": "Áo dài hiện đại phát triển từ áo ngũ thân, tà dài và ôm dáng hơn.",
+          "sources": [],
+          "verified": false
+        }
+      ]
+    }
+  ],
+  "own": {
+    "invite": "Bà mặc áo xanh ở Huế. Còn con, con muốn mặc thế nào?"
   },
   "sources": [
     "unesco-ich-vn",
-    "unesco-whc-vn"
+    "unesco-whc-vn",
+    "ref-08"
   ]
 }

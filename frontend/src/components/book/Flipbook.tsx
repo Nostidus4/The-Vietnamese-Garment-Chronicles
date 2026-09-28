@@ -5,27 +5,34 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Bootstrap } from "@/lib/types";
-import { HandwrittenText } from "./HandwrittenText";
 import {
-  ArrivePage,
+  ArriveDiary,
   BlankPage,
-  CustomsPage,
-  FestivalsPage,
-  ListenPage,
-  StampsPage,
-  WearPage,
-} from "./Journey";
+  Bookmarks,
+  FestivalDiary,
+  HoverPage,
+  LifeDiary,
+  LookDiary,
+  OwnDiary,
+  WearDiary,
+  type Tab,
+} from "./Diary";
+import { HandwrittenText } from "./HandwrittenText";
 import { Page } from "./Page";
 import { VietnamMap } from "./VietnamMap";
 
-const PAGES = 6; // map · right page · Nếp sống · Lễ hội · Vì sao · Tem — the count never changes, only what is written
+// The page count never changes (page-flip keeps the DOM nodes it was given); only what is written on them does.
+// map · Đến · Nhìn quanh · Nếp sống · Lễ hội · Mặc ×2 · Trang của con
+const PAGES = 8;
+
+export type Resume = { region: string; page: "own" | "wear" } | null;
 
 /**
  * The inside of Bà's notebook. Only paper pages live here and they turn like paper (drag a corner, or the arrows).
  * The covers are not part of this flipbook: the desk opens and closes them with its own hard-cover swing.
  *
- * Part 2 lives on these pages: hover a region → Bà tells about it (Nghe); click → the map zooms into its provinces
- * and the journal opens (Đến); turn the page → customs and festivals (Sống); again → why the clothes (Mặc).
+ * Part 2 is Bà's diary: hover a region → one line from her diary; click → the map zooms into its provinces and the
+ * "Đến" entry opens; then Nhìn quanh → Sống (nếp sống, lễ hội) → Mặc → Trang của con. Bookmarks jump between them.
  */
 export default function Flipbook({
   data,
@@ -33,6 +40,7 @@ export default function Flipbook({
   height,
   portrait = false,
   active = true,
+  resume = null,
   onClose,
 }: {
   data: Bootstrap;
@@ -40,6 +48,7 @@ export default function Flipbook({
   height: number;
   portrait?: boolean;
   active?: boolean; // false while hidden behind the desk copy: ignore the keyboard
+  resume?: Resume; // come back from the try-on straight to a page of a region
   onClose?: () => void; // "Gấp sổ" on the first page: the desk swings the cover shut
 }) {
   const router = useRouter();
@@ -48,7 +57,7 @@ export default function Flipbook({
     .filter((r) => r.status === "locked")
     .map((r) => r.id);
 
-  // Nghe: the region under the pointer, with a short dwell so sweeping across the map does not flicker
+  // hover: the region under the pointer, with a short dwell so sweeping across the map does not flicker
   const [hovered, setHovered] = useState<string | null>(null);
   const dwell = useRef<ReturnType<typeof setTimeout>>(undefined);
   const onHover = (id: string | null) => {
@@ -57,25 +66,55 @@ export default function Flipbook({
   };
   useEffect(() => () => clearTimeout(dwell.current), []);
 
-  // Đến: the region the map is zoomed into; phones first show a preview card (no hover on touch)
-  const [focus, setFocus] = useState<string | null>(null);
+  // the region the map is zoomed into; phones first show a preview card (no hover on touch)
+  const [focus, setFocus] = useState<string | null>(resume?.region ?? null);
   const [preview, setPreview] = useState<string | null>(null);
   const [hotProvince, setHotProvince] = useState<string | null>(null);
   const region = focus ? regions.get(focus) : undefined;
-  const journeyOpen =
-    !!region && region.status === "open" && !!region.journey?.live;
+  const j = region?.journey ?? null;
   const listening = !focus && hovered ? regions.get(hovered) : undefined;
+
+  // what each page carries for this region, and where the bookmarks point
+  const tryOn = (garment: string) =>
+    region && router.push(`/chapter/${region.id}?garment=${garment}`);
+  const content: ReactNode[] = [];
+  const tabs: Tab[] = [];
+  if (region && j) {
+    tabs.push({ label: "Đến", page: 1 });
+    tabs.push({ label: "Nhìn quanh", page: content.length + 2 });
+    content.push(<LookDiary region={region} data={data} />);
+    if (j.life) {
+      tabs.push({ label: "Sống", page: content.length + 2 });
+      content.push(<LifeDiary region={region} data={data} />);
+    }
+    if (j.festivals)
+      content.push(<FestivalDiary region={region} data={data} />);
+    if (j.wear.length) tabs.push({ label: "Mặc", page: content.length + 2 });
+    j.wear.forEach((_, i) =>
+      content.push(
+        <WearDiary region={region} index={i} data={data} onTry={tryOn} />,
+      ),
+    );
+    tabs.push({
+      label: region.status === "open" ? "Trang của con" : "Trang để trống",
+      page: content.length + 2,
+    });
+    content.push(
+      <OwnDiary key={region.id} region={region} data={data} onTry={tryOn} />,
+    );
+  }
+  const used = 2 + content.length;
 
   const [page, setPage] = useState(0);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- react-pageflip ships no type for its instance
   const bookRef = useRef<any>(null);
   const perView = portrait ? 1 : 2;
-  const reachable = journeyOpen ? PAGES : 2; // without an open region there is nothing to turn to
+  const reachable = focus ? used + (portrait ? 0 : used % 2) : 2; // without a region there is nothing to turn to
   const atStart = page < perView;
   const atEnd = page + perView >= reachable;
   const [fading, setFading] = useState(false);
 
-  // page-flip cannot animate a jump or a backward turn in single-page mode: dip the page out and back instead
+  // page-flip cannot animate every jump (backward turns in single-page mode, far jumps): dip the page out and back
   const jump = (to: number, then?: () => void) => {
     const pf = bookRef.current?.pageFlip();
     setFading(true);
@@ -86,10 +125,20 @@ export default function Flipbook({
       setFading(false);
     }, 180);
   };
-  const go = (id: string) => {
+  const turnTo = (to: number) => {
+    const pf = bookRef.current?.pageFlip();
+    if (!pf) return;
+    const left = portrait ? to : to - (to % 2);
+    if (left === page) return;
+    if (!portrait && Math.abs(left - page) === 2)
+      return left > page ? pf.flipNext("bottom") : pf.flipPrev("bottom");
+    jump(left);
+  };
+  const go = (id: string, then?: () => void) => {
     setPreview(null);
     setHovered(null);
     setFocus(id);
+    if (then) setTimeout(then, 1100); // after the map has zoomed in
   };
   const toCountry = () => {
     setHotProvince(null);
@@ -102,6 +151,26 @@ export default function Flipbook({
     jump(page - 1);
   };
   const next = () => !atEnd && bookRef.current?.pageFlip()?.flipNext("bottom");
+
+  // "Tôi sắp tham gia sự kiện": open Huế and turn straight to the áo dài page
+  const toEvent = () => {
+    const hue = regions.get("hue")?.journey;
+    const idx = hue?.wear.findIndex((w) => w.garment === "ao-dai") ?? -1;
+    if (!hue || idx < 0) return router.push("/chapter/hue?entry=event");
+    const wearAt = 2 + 1 + (hue.life ? 1 : 0) + (hue.festivals ? 1 : 0) + idx;
+    go("hue", () => turnTo(wearAt));
+  };
+
+  // back from the try-on: open the region on its Mặc page or on "Trang của con"
+  const resumed = useRef(false);
+  useEffect(() => {
+    if (!resume || resumed.current || !j) return;
+    resumed.current = true;
+    const tab = tabs.find(
+      (t) => t.label === (resume.page === "own" ? "Trang của con" : "Mặc"),
+    );
+    if (tab) setTimeout(() => turnTo(tab.page), 1200);
+  });
 
   // ← → turn pages, Esc leaves the region (ignored while typing in a field)
   const keys = useRef({ prev, next, active, toCountry, focus });
@@ -128,22 +197,23 @@ export default function Flipbook({
     portrait && preview !== id ? setPreview(id) : go(id);
   const previewRegion = preview ? regions.get(preview) : undefined;
 
-  // what the right-hand page of the first spread says right now
+  // the right-hand page of the first spread
   const rightKey = region
     ? `arrive-${region.id}`
     : listening
-      ? `listen-${listening.id}`
+      ? `hover-${listening.id}`
       : "welcome";
   const right = region ? (
-    <ArrivePage
+    <ArriveDiary
       region={region}
+      data={data}
       hotProvince={hotProvince}
       onProvinceHover={setHotProvince}
     />
   ) : listening ? (
-    <ListenPage region={listening} />
+    <HoverPage region={listening} />
   ) : (
-    <WelcomeBody onEvent={() => router.push("/chapter/hue?entry=event")} />
+    <WelcomeBody onEvent={toEvent} />
   );
 
   return (
@@ -186,12 +256,12 @@ export default function Flipbook({
               onHover={onHover}
               onSelect={onSelect}
               focus={focus}
-              landmarks={region?.journey?.arrive.landmarks}
+              landmarks={j?.arrive.landmarks}
               hotProvince={hotProvince}
               onProvinceHover={setHotProvince}
               onBack={toCountry}
             />
-            {/* phones: the "Bà kể" card slides up over the map, with the way in */}
+            {/* phones: Bà's line slides up over the map, with the way in */}
             <AnimatePresence>
               {portrait && previewRegion && !focus && (
                 <motion.div
@@ -210,9 +280,8 @@ export default function Flipbook({
                   >
                     ×
                   </button>
-                  <ListenPage
+                  <HoverPage
                     region={previewRegion}
-                    compact
                     onGo={() => go(previewRegion.id)}
                   />
                 </motion.div>
@@ -222,7 +291,7 @@ export default function Flipbook({
         </Page>
 
         <Page className="h-full">
-          <MaybeNoTurn block={!journeyOpen}>
+          <MaybeNoTurn block={!focus}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={rightKey}
@@ -238,39 +307,24 @@ export default function Flipbook({
           </MaybeNoTurn>
         </Page>
 
-        <Page className="flex flex-col p-[8%]">
-          {journeyOpen && region ? (
-            <CustomsPage region={region} />
-          ) : (
-            <BlankPage />
-          )}
-        </Page>
-        <Page className="flex flex-col p-[8%]">
-          {journeyOpen && region ? (
-            <FestivalsPage region={region} />
-          ) : (
-            <BlankPage />
-          )}
-        </Page>
-        <Page className="flex flex-col p-[8%]">
-          {journeyOpen && region ? (
-            <WearPage
-              region={region}
-              data={data}
-              onTry={() => router.push(`/chapter/${region.id}`)}
-            />
-          ) : (
-            <BlankPage />
-          )}
-        </Page>
-        <Page className="flex flex-col p-[8%]">
-          {journeyOpen && region ? (
-            <StampsPage key={region.id} data={data} current={region.id} onCountry={toCountry} />
-          ) : (
-            <BlankPage />
-          )}
-        </Page>
+        {Array.from({ length: PAGES - 2 }, (_, i) => (
+          <Page key={`p${i + 2}`} className="flex flex-col p-[8%]">
+            {/* text fields and buttons inside a diary page must not start a page turn */}
+            <MaybeNoTurn block={i === content.length - 1}>
+              {content[i] ?? <BlankPage />}
+            </MaybeNoTurn>
+          </Page>
+        ))}
       </HTMLFlipBook>
+
+      {focus && tabs.length > 0 && (
+        <Bookmarks
+          tabs={tabs}
+          current={page}
+          onJump={turnTo}
+          portrait={portrait}
+        />
+      )}
 
       {/* page turning under the book: on the first page "‹" leaves the region, or closes the notebook */}
       <div className="absolute left-0 right-0 top-full mt-5 flex items-center justify-center gap-6">

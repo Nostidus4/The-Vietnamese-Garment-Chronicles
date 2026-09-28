@@ -12,7 +12,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Bootstrap } from "@/lib/types";
 import { BookCover } from "../book/BookCover";
-import Flipbook, { WelcomeBody } from "../book/Flipbook";
+import Flipbook, { WelcomeBody, type Resume } from "../book/Flipbook";
 import { VietnamMap } from "../book/VietnamMap";
 
 type Landing = "flash" | "soft";
@@ -54,6 +54,13 @@ export function DeskScene({
   // heavy things (the flipbook, the map pages) are built quietly while the book waits on the table,
   // so nothing mounts at the moment of the tap and the cover never stutters
   const [prepared, setPrepared] = useState(false);
+  // back from the try-on (/?region=hue&page=own): open the book by itself and turn to that page
+  const [resume] = useState<Resume>(() => {
+    const q = new URLSearchParams(window.location.search);
+    const region = q.get("region");
+    if (!region) return null;
+    return { region, page: q.get("page") === "wear" ? "wear" : "own" };
+  });
   const bookRef = useRef<HTMLDivElement>(null);
   const underRef = useRef<HTMLDivElement>(null);
   const locked = data.regions
@@ -153,6 +160,18 @@ export function DeskScene({
     setPhase("closed");
   }
 
+  useEffect(() => {
+    if (resume) window.history.replaceState(null, "", "/"); // a reload later starts on the closed book again
+  }, [resume]);
+  const autoOpened = useRef(false);
+  useEffect(() => {
+    if (!resume || autoOpened.current || phase !== "closed" || !prepared)
+      return;
+    autoOpened.current = true;
+    const t = setTimeout(open, 350);
+    return () => clearTimeout(t);
+  });
+
   // → (or Enter) opens the book from the keyboard while it lies closed
   useEffect(() => {
     if (phase !== "closed") return;
@@ -210,6 +229,7 @@ export function DeskScene({
               </div>
             )}
             <Flipbook
+              resume={resume}
               data={data}
               width={size.w}
               height={size.h}

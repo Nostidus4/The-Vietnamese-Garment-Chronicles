@@ -1,8 +1,61 @@
 {
-  "listen": {
-    "people": "Vùng đất mở cõi hơn ba trăm năm. Người Nam Bộ phóng khoáng, hiếu khách, nói thẳng thật lòng. Người Kinh, Hoa, Khmer, Chăm cùng chung sống; đời sống gắn với dòng sông, xuồng ghe và những phiên chợ trên nước.",
-    "climate": "Nắng nóng quanh năm, chỉ có mùa mưa và mùa khô. Cuối năm, đồng bằng sông Cửu Long vào mùa nước nổi, đồng ruộng thành biển nước.",
-    "places": "Chợ nổi Cái Răng, rừng tràm Trà Sư, mũi Cà Mau, đảo Phú Quốc, Côn Đảo, rừng ngập mặn Cần Giờ.",
+  "hover_line": "“Xuống miền Tây, tôi được mời ăn cơm từ nhà này sang nhà khác, không ai cho về.”",
+  "arrive": {
+    "date": "Cần Thơ, mùa nước nổi tháng Chín",
+    "entry": "Tôi theo anh xuống miền Tây thăm người quen. Xe đò đi mãi, qua mấy bến phà, đến đâu cũng thấy nước. Người ta đón tôi như người nhà, mời ở lại ăn cơm, ăn xong nhà bên lại kéo sang ăn tiếp. Tôi chưa bao giờ thấy ai hiếu khách đến thế.",
+    "margin": "Đảo Phú Quốc với Côn Đảo cũng thuộc vùng này đấy con.",
+    "ti": "Nam Bộ mà có cả đảo xa như vậy!",
+    "keepsake": "stamp",
+    "landmarks": [
+      {
+        "name": "Chợ nổi Cái Răng",
+        "lon": 105.75,
+        "lat": 10.0,
+        "note": "Bán gì treo nấy lên cây bẹo."
+      },
+      {
+        "name": "Rừng tràm Trà Sư",
+        "lon": 105.05,
+        "lat": 10.58,
+        "note": "Rừng ngập nước phủ bèo xanh."
+      },
+      {
+        "name": "Núi Sam",
+        "lon": 105.08,
+        "lat": 10.68,
+        "note": "Miếu Bà Chúa Xứ."
+      },
+      {
+        "name": "Cần Giờ",
+        "lon": 106.88,
+        "lat": 10.41,
+        "note": "Rừng ngập mặn sát thành phố."
+      },
+      {
+        "name": "Mũi Cà Mau",
+        "lon": 104.72,
+        "lat": 8.6,
+        "note": "Đất liền tận cùng phía nam."
+      }
+    ]
+  },
+  "look": {
+    "date": "Trên chiếc xuồng ba lá, một sáng sớm",
+    "entry": "Người miền Tây nói thẳng, cười to, thương ai là thương thật. Ở đây không có mùa đông, chỉ có mùa mưa với mùa khô, nắng quanh năm. Cuối năm nước lên trắng đồng, người ta không sợ mà đi xuồng khắp nơi. Tôi dậy từ tờ mờ sáng để ra chợ nổi. Ghe chở đầy trái cây, bán gì thì treo món đó lên cây sào cho người ta thấy từ xa.",
+    "margin": "Ảnh mũi Cà Mau là Bà nhờ người khác chụp, lúc đó Bà say sóng quá.",
+    "keepsake": "photo",
+    "teo": [
+      {
+        "text": "Cây bẹo là cây sào treo hàng hóa để khách ở xa biết ghe bán gì.",
+        "sources": [],
+        "verified": false
+      },
+      {
+        "text": "Mùa nước nổi ở đồng bằng sông Cửu Long thường vào khoảng tháng 8 đến tháng 11 dương lịch.",
+        "sources": [],
+        "verified": false
+      }
+    ],
     "frames": [
       {
         "image": null,
@@ -25,119 +78,112 @@
       }
     ]
   },
-  "arrive": {
-    "ba_line": "Lần đầu xuống miền Tây, Bà được mời ăn cơm từ nhà này sang nhà khác, không ai cho về.",
-    "ti_thought": "Đến cả đảo Phú Quốc với Côn Đảo cũng là Nam Bộ!",
-    "landmarks": [
-      {
-        "name": "Chợ nổi Cái Răng",
-        "lon": 105.75,
-        "lat": 10.0,
-        "note": "Ghe bán gì thì treo món đó lên cây bẹo."
-      },
-      {
-        "name": "Rừng tràm Trà Sư",
-        "lon": 105.05,
-        "lat": 10.58,
-        "note": "Rừng ngập nước phủ bèo xanh."
-      },
-      {
-        "name": "Núi Sam",
-        "lon": 105.08,
-        "lat": 10.68,
-        "note": "Nơi có miếu Bà Chúa Xứ."
-      },
-      {
-        "name": "Cần Giờ",
-        "lon": 106.88,
-        "lat": 10.41,
-        "note": "Rừng ngập mặn ngay cạnh thành phố."
-      },
-      {
-        "name": "Mũi Cà Mau",
-        "lon": 104.72,
-        "lat": 8.6,
-        "note": "Điểm cực nam trên đất liền."
-      }
-    ]
-  },
-  "live": {
-    "customs": [
+  "life": {
+    "date": "Nhà người quen, những đêm trăng",
+    "entry": "Xong việc đồng, tối nào hàng xóm cũng tụ lại, người đờn người ca vọng cổ, chẳng cần sân khấu gì. Mùa nước nổi thì có cá linh nấu canh chua với bông điên điển vàng rực. Bà chủ nhà còn đổ bánh xèo cho tôi ăn, bánh to bằng cái chảo, cuốn rau rừng chấm nước mắm.",
+    "margin": "Canh chua cá linh đó, Bà về Bắc rồi nấu mãi không ra vị.",
+    "keepsake": "recipe",
+    "items": [
       {
         "id": "don-ca-tai-tu",
-        "title": "Đờn ca tài tử",
-        "story": "Xong việc đồng áng, bạn bè tụ lại đờn và ca vọng cổ, không cần sân khấu. Một cây đàn kìm, một cây đàn tranh là đủ cho một đêm vui.",
-        "unesco": 2013,
-        "sources": [
-          "unesco-ich-vn"
-        ]
-      },
-      {
-        "id": "tet-miet-vuon",
-        "title": "Tết miệt vườn",
-        "story": "Tết đến, nhà nào cũng có mâm ngũ quả với mãng cầu, dừa, đu đủ, xoài, nghe như lời cầu mong đủ đầy. Khách tới nhà là được mời ăn, mời uống."
+        "kind": "custom",
+        "title": "Đờn ca dưới hiên nhà",
+        "text": "Một cây đàn kìm, một cây đàn tranh, vài người bạn là đủ cho một đêm vui."
       },
       {
         "id": "song-voi-nuoc",
+        "kind": "custom",
         "title": "Sống cùng mùa nước",
-        "story": "Người miền Tây không chống lũ mà sống cùng lũ. Mùa nước nổi là mùa cá linh, bông điên điển, mùa của những chiếc xuồng đi khắp đồng."
+        "text": "Người ở đây không chống lũ mà sống cùng lũ. Nước lên là mùa cá, mùa bông điên điển."
+      },
+      {
+        "id": "canh-chua-ca-linh",
+        "kind": "dish",
+        "title": "Canh chua cá linh",
+        "text": "Cá linh non mùa nước nổi, bông điên điển vàng, vị chua của me. Ăn một lần là nhớ."
       }
     ],
+    "teo": [
+      {
+        "text": "Đờn ca tài tử Nam Bộ được UNESCO ghi danh.",
+        "sources": [
+          "unesco-ich-vn"
+        ],
+        "verified": false,
+        "unesco": 2013
+      }
+    ]
+  },
+  "festivals": {
+    "date": "Núi Sam, cuối tháng Tư",
+    "entry": "Tôi theo đoàn người lên núi Sam dâng hương Bà Chúa Xứ. Đêm ấy người đông như nước, ai cũng thành tâm. Mấy tháng sau, tôi lại được xem lễ Nghinh Ông ở làng biển, đoàn ghe cờ xí rực rỡ ra khơi rước Ông. Người miền biển bảo: có Ông che chở thì mới dám đi xa.",
+    "keepsake": "ticket",
     "festivals": [
       {
         "id": "via-ba-chua-xu",
-        "name": "Lễ hội Vía Bà Chúa Xứ núi Sam",
-        "time": "Từ 23 đến 27 tháng Tư âm lịch",
+        "name": "Vía Bà Chúa Xứ núi Sam",
+        "time": "23 đến 27 tháng Tư âm lịch",
         "month": 4,
-        "calendar": "lunar",
         "place": "Châu Đốc, An Giang",
-        "story": "Người khắp nơi về núi Sam dâng hương Bà Chúa Xứ, người được tin là che chở cho vùng biên giới. Lễ tắm Bà và rước Bà diễn ra trang nghiêm giữa đêm.",
-        "what_to_see": "Lễ tắm Bà, rước Bà."
+        "text": "Người khắp nơi về dâng hương. Lễ tắm Bà diễn ra trang nghiêm giữa đêm."
       },
       {
         "id": "nghinh-ong",
         "name": "Lễ Nghinh Ông",
-        "time": "Khoảng giữa tháng Tám âm lịch (Cần Giờ)",
+        "time": "Khoảng giữa tháng Tám âm lịch",
         "month": 8,
-        "calendar": "lunar",
-        "place": "Cần Giờ và các làng biển Nam Bộ",
-        "story": "Ngư dân rước cá Ông trên biển bằng đoàn ghe trang hoàng rực rỡ, cầu cho mùa biển bình an.",
-        "what_to_see": "Đoàn ghe rước Ông trên biển."
+        "place": "Cần Giờ và các làng biển",
+        "text": "Đoàn ghe trang hoàng rực rỡ ra biển rước Ông, cầu một mùa biển bình an."
       },
       {
         "id": "ok-om-bok",
-        "name": "Lễ Ok Om Bok và đua ghe ngo",
+        "name": "Lễ Ok Om Bok",
         "time": "Rằm tháng Mười âm lịch",
         "month": 10,
-        "calendar": "lunar",
-        "place": "Sóc Trăng và các vùng có đồng bào Khmer",
-        "story": "Lễ cúng trăng của đồng bào Khmer.",
+        "place": "Sóc Trăng",
+        "text": "Lễ cúng trăng của đồng bào Khmer.",
         "community_review": true
       }
     ],
-    "bridge_line": "Nắng quanh năm, làm việc dưới nước, ngồi xuồng cả ngày. Lật trang đi, con sẽ hiểu vì sao áo bà ba lại gọn nhẹ như vậy."
-  },
-  "wear": {
-    "why": [
+    "teo": [
       {
-        "because": "Nắng nóng, ẩm quanh năm",
-        "so": "Áo bà ba may vải mỏng, thoáng, tay áo rộng",
-        "from_step": "listen"
-      },
-      {
-        "because": "Làm việc dưới nước, ngồi xuồng ghe",
-        "so": "Áo ngắn qua hông, không vướng khi chèo, khi lội",
-        "from_step": "live"
-      },
-      {
-        "because": "Đi đồng, đi chợ nổi dưới nắng",
-        "so": "Khăn rằn quàng cổ, che đầu, lau mồ hôi, đủ việc",
-        "from_step": "live"
+        "text": "Lễ hội Vía Bà Chúa Xứ núi Sam là một trong những lễ hội lớn nhất Nam Bộ.",
+        "sources": [],
+        "verified": false
       }
-    ]
+    ],
+    "bridge": "Nắng quanh năm, ngồi xuồng cả ngày. Lật trang đi, con sẽ hiểu vì sao áo bà ba lại gọn nhẹ như thế."
+  },
+  "wear": [
+    {
+      "garment": "ao-ba-ba",
+      "date": "Trước ngày về, ở bến đò",
+      "entry": "Bà chủ nhà tặng tôi một chiếc áo bà ba may bằng vải mỏng, mặc vào mát rượi. Áo ngắn qua hông, không có tà dài, tay rộng, cổ tròn, hai túi phía trước. Chị bảo: mặc thế này mới ngồi xuồng, lội ruộng được. Chị còn quàng lên cổ tôi chiếc khăn rằn, dặn che nắng, lau mồ hôi, việc gì cũng dùng được.",
+      "margin": "Chiếc khăn rằn ấy Bà vẫn giữ trong hộp gỗ, cạnh áo xanh.",
+      "keepsake": "fabric",
+      "teo": [
+        {
+          "text": "Vì nắng nóng, ẩm quanh năm → áo bà ba vải mỏng, tay rộng cho thoáng.",
+          "sources": [],
+          "verified": false
+        },
+        {
+          "text": "Vì ngồi xuồng, lội nước → áo ngắn qua hông, không vướng khi chèo.",
+          "sources": [],
+          "verified": false
+        },
+        {
+          "text": "Vì đi đồng dưới nắng → khăn rằn quàng cổ, trùm đầu, lau mồ hôi.",
+          "sources": [],
+          "verified": false
+        }
+      ]
+    }
+  ],
+  "own": {
+    "invite": "Miền Tây tặng Bà một chiếc áo. Con sẽ mặc nó đi đâu?"
   },
   "sources": [
-    "unesco-ich-vn",
-    "unesco-whc-vn"
+    "unesco-ich-vn"
   ]
 }

@@ -1,34 +1,10 @@
 {
-  "listen": {
-    "people": "Quê hương của nhiều dân tộc anh em, mỗi dân tộc một bản sắc riêng. Những trang này đang chờ chính người dân nơi đây cùng viết.",
-    "climate": "Núi cao, mùa đông lạnh, có năm băng tuyết phủ trên đỉnh cao. Mùa thu lúa chín vàng trên những thửa ruộng bậc thang.",
-    "places": "Ruộng bậc thang Mù Cang Chải, đỉnh Fansipan, đèo Pha Đin, cao nguyên Mộc Châu.",
-    "frames": [
-      {
-        "image": null,
-        "caption": "Mùa lúa trên núi",
-        "alt": "Ruộng bậc thang vàng óng trên sườn núi dốc",
-        "no_people": true,
-        "prompt": "golden terraced rice fields on steep mountains at harvest time, mist in the valley, no people, no figures"
-      },
-      {
-        "image": null,
-        "caption": "Mây trên đỉnh núi cao",
-        "alt": "Biển mây quanh đỉnh núi cao",
-        "no_people": true,
-        "prompt": "a sea of clouds around the highest mountain peak of northern Vietnam at sunrise, rocky summit, no people, no figures"
-      },
-      {
-        "image": null,
-        "caption": "Đồi chè cao nguyên",
-        "alt": "Đồi chè xanh uốn lượn trên cao nguyên",
-        "no_people": true,
-        "prompt": "rolling green tea hills on a highland plateau, white plum blossoms at the edge, soft morning light, no people, no figures"
-      }
-    ]
-  },
+  "hover_line": "“Tôi chỉ đi ngang qua những con đèo này. Tôi muốn nghe người ở đây kể hơn.”",
   "arrive": {
-    "ba_line": "Bà mới chỉ đi ngang qua những con đèo. Bà muốn con nghe người ở đây kể, hơn là nghe Bà.",
+    "date": "Trên đèo, một sớm cuối thu",
+    "entry": "Xe leo dốc mãi, mây trôi ngang cửa kính. Tôi chỉ đi ngang qua vùng này vài ngày, không đủ để hiểu gì nhiều. Tôi thấy những thửa ruộng xếp tầng lên tận lưng núi, lúa chín vàng, và nghe nói mùa đông trên đỉnh cao có năm tuyết rơi.",
+    "margin": "Bà biết quá ít về nơi này để viết thay người ở đây, con ạ.",
+    "keepsake": "stamp",
     "landmarks": [
       {
         "name": "Mù Cang Chải",
@@ -46,7 +22,7 @@
         "name": "Đèo Pha Đin",
         "lon": 103.55,
         "lat": 21.57,
-        "note": "Một trong những con đèo dài nhất miền Bắc."
+        "note": "Con đèo dài giữa núi."
       },
       {
         "name": "Mộc Châu",
@@ -55,6 +31,44 @@
         "note": "Cao nguyên chè và hoa mận."
       }
     ]
+  },
+  "look": {
+    "date": "Qua cao nguyên, tháng Mười",
+    "entry": "Ở đây là quê hương của nhiều dân tộc anh em, mỗi dân tộc một tiếng nói, một nếp sống riêng. Tôi chỉ dám chụp lại núi, ruộng và mây. Những câu chuyện còn lại, tôi để dành cho chính người nơi đây kể.",
+    "keepsake": "photo",
+    "teo": [
+      {
+        "text": "Fansipan là đỉnh núi cao nhất Việt Nam.",
+        "sources": [],
+        "verified": false
+      }
+    ],
+    "frames": [
+      {
+        "image": null,
+        "caption": "Mùa lúa trên núi",
+        "alt": "Ruộng bậc thang vàng óng trên sườn núi dốc",
+        "no_people": true,
+        "prompt": "golden terraced rice fields on steep mountains at harvest time, mist in the valley, no people, no figures"
+      },
+      {
+        "image": null,
+        "caption": "Mây trên đỉnh cao",
+        "alt": "Biển mây quanh đỉnh núi cao",
+        "no_people": true,
+        "prompt": "a sea of clouds around the highest mountain peak of northern Vietnam at sunrise, rocky summit, no people, no figures"
+      },
+      {
+        "image": null,
+        "caption": "Đồi chè cao nguyên",
+        "alt": "Đồi chè xanh uốn lượn trên cao nguyên",
+        "no_people": true,
+        "prompt": "rolling green tea hills on a highland plateau, white plum blossoms at the edge, soft morning light, no people, no figures"
+      }
+    ]
+  },
+  "own": {
+    "invite": "Những trang này chờ người ở đây viết."
   },
   "sources": []
 }

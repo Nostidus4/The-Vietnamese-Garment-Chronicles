@@ -1,6 +1,15 @@
 import { ChapterView } from "@/components/chapter/ChapterView";
 
-export default async function ChapterPage({ params }: PageProps<"/chapter/[id]">) {
+export default async function ChapterPage({
+  params,
+  searchParams,
+}: PageProps<"/chapter/[id]">) {
   const { id } = await params;
-  return <ChapterView regionId={id} />;
+  const { garment } = await searchParams;
+  return (
+    <ChapterView
+      regionId={id}
+      garmentId={typeof garment === "string" ? garment : undefined}
+    />
+  );
 }

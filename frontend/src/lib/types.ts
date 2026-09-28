@@ -67,34 +67,41 @@ export interface Region {
   journey: Journey | null;
 }
 
-// ---- Part 2: the journey through a region (Nghe → Đến → Sống → Mặc) ----
+// ---- Part 2: Bà's diary of a region (young Bà's entries, old Bà's margin notes, Tèo's sticky notes, Tí's pencil) ----
 export interface Frame {
   image: string | null;
   caption: string;
   alt: string;
   no_people: boolean;
 }
-export interface Custom {
-  id: string;
-  title: string;
-  story: string;
+export interface TeoNote {
+  text: string;
   unesco: number | null;
+  sources: string[];
   verified: boolean;
-  community_review: boolean;
 }
-export interface Festival extends Omit<Custom, "title"> {
-  name: string;
-  time: string;
-  month: number | null;
-  calendar: "lunar" | "solar";
-  place: string;
-  what_to_see: string | null;
+export type Keepsake = "stamp" | "photo" | "leaf" | "recipe" | "ticket" | "fabric";
+export interface DiaryPage {
+  date: string;
+  entry: string;
+  margin: string | null;
+  ti: string | null;
+  teo: TeoNote[];
+  keepsake: Keepsake | null;
 }
 export interface Journey {
-  listen: { people: string; climate: string; places: string; frames: Frame[] };
-  arrive: { ba_line: string; ti_thought: string | null; landmarks: { name: string; lon: number; lat: number; note: string }[] };
-  live: { customs: Custom[]; festivals: Festival[]; bridge_line: string } | null;
-  wear: { why: { because: string; so: string; from_step: "listen" | "live" }[] } | null;
+  hover_line: string;
+  arrive: DiaryPage & { landmarks: { name: string; lon: number; lat: number; note: string }[] };
+  look: DiaryPage & { frames: Frame[] };
+  life: (DiaryPage & { items: { id: string; kind: "custom" | "dish"; title: string; text: string; community_review: boolean }[] }) | null;
+  festivals:
+    | (DiaryPage & {
+        festivals: { id: string; name: string; time: string; month: number | null; place: string; text: string; community_review: boolean }[];
+        bridge: string;
+      })
+    | null;
+  wear: (DiaryPage & { garment: string })[];
+  own: { invite: string };
 }
 
 export interface Camera {

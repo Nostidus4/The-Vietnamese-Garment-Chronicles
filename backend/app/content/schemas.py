@@ -118,26 +118,28 @@ class GeoPoint(Strict):
     lon: float
 
 
-# ---- Part 2: the journey through a region (Nghe → Đến → Sống → Mặc), one file per region in content/regions/ ----
+# ---- Part 2: Bà's diary of a region, one file per region in content/regions/ ----
+# Three voices: young Bà writes the entries ("tôi", season and month only, never a year); old Bà adds margin notes
+# for Tí ("Bà", "con"); Tèo sticks notes with the facts and their sources. Tí adds at most one pencil thought.
 
 
 class Frame(Strict):
-    """A keepsake picture tucked into Bà's notebook. The caption is HTML text, never drawn by the AI."""
+    """A keepsake picture tucked into the diary. The caption is HTML text, never drawn by the AI."""
 
-    image: str | None = Field(None, description="Path under frontend/public, e.g. /regions/bac-bo/frame-1.png; null = placeholder")
+    image: str | None = Field(None, description="Path under frontend/public, e.g. /regions/bac-bo/frame-1.png; null = pencil placeholder")
     caption: str
     alt: str
     no_people: bool = Field(False, description="Must be true for locked regions: landscapes only")
     prompt: str | None = Field(None, description="The image prompt used, kept as evidence for Form 7")
 
 
-class Listen(Strict):
-    """Step 1 – hovering a region: people, climate, places. Never about clothes."""
+class TeoNote(Strict):
+    """Tèo's sticky note: the only place where facts live. Hidden until verified unless ?draft=1."""
 
-    people: str
-    climate: str
-    places: str
-    frames: list[Frame] = Field(default_factory=list, max_length=3)
+    text: str = Field(max_length=260)
+    unesco: int | None = Field(None, description="Year of UNESCO inscription, only with a source")
+    sources: list[Id] = []
+    verified: bool = False
 
 
 class Landmark(Strict):
@@ -147,22 +149,26 @@ class Landmark(Strict):
     note: str
 
 
-class Arrive(Strict):
-    """Step 2 – the region map with its provinces."""
-
-    ba_line: str = Field(description="What Bà wrote when she arrived")
-    ti_thought: str | None = None
-    landmarks: list[Landmark] = []
+Keepsake = Literal["stamp", "photo", "leaf", "recipe", "ticket", "fabric"]
 
 
-class Custom(Strict):
+class DiaryPage(Strict):
+    """One diary page: young Bà's entry, an optional margin note from old Bà, Tèo's notes, Tí's pencil thought."""
+
+    date: str = Field(description="Where and when, season/month only, e.g. 'Huế, một chiều mưa tháng Ba'")
+    entry: str = Field(max_length=700, description="Young Bà, first person 'tôi'")
+    margin: str | None = Field(None, max_length=200, description="Old Bà writing to Tí ('Bà', 'con')")
+    ti: str | None = Field(None, max_length=120, description="Tí's pencil thought")
+    teo: list[TeoNote] = Field(default_factory=list, max_length=3)
+    keepsake: Keepsake | None = None
+
+
+class LifeItem(Strict):
     id: Id = Field(pattern=ID_PATTERN)
+    kind: Literal["custom", "dish"]
     title: str
-    story: str = Field(max_length=400)
-    unesco: int | None = Field(None, description="Year of UNESCO inscription, only with a source")
-    sources: list[Id] = []
-    verified: bool = False
-    community_review: bool = Field(False, description="True = about a community that must review it first; hidden until then")
+    text: str = Field(max_length=300, description="In young Bà's voice")
+    community_review: bool = Field(False, description="About a community that must review it first; hidden until then")
 
 
 class Festival(Strict):
@@ -170,41 +176,46 @@ class Festival(Strict):
     name: str
     time: str = Field(description="As people say it, e.g. 13 tháng Giêng âm lịch")
     month: int | None = Field(None, ge=1, le=12, description="For the calendar strip")
-    calendar: Literal["lunar", "solar"] = "lunar"
     place: str
-    story: str = Field(max_length=450)
-    what_to_see: str | None = None
-    unesco: int | None = None
-    sources: list[Id] = []
-    verified: bool = False
+    text: str = Field(max_length=350, description="In young Bà's voice")
     community_review: bool = False
 
 
-class Live(Strict):
-    """Step 3 – customs and festivals."""
+class ArrivePage(DiaryPage):
+    landmarks: list[Landmark] = []
 
-    customs: list[Custom] = []
+
+class LookPage(DiaryPage):
+    frames: list[Frame] = Field(default_factory=list, max_length=3)
+
+
+class LifePage(DiaryPage):
+    items: list[LifeItem] = []
+
+
+class FestivalPage(DiaryPage):
     festivals: list[Festival] = []
-    bridge_line: str = Field(description="Bà's line that points to the clothes on the next page")
+    bridge: str = Field(description="Bà's line that points to the clothes on the next page")
 
 
-class Why(Strict):
-    because: str
-    so: str
-    from_step: Literal["listen", "live"]
+class WearPage(DiaryPage):
+    garment: Id
 
 
-class Wear(Strict):
-    """Step 4 – why the clothes look the way they do, then the existing try-on chapter."""
+class OwnPage(Strict):
+    """The blank page Bà left at the end of the region."""
 
-    why: list[Why] = []
+    invite: str = Field(description="Old Bà's line on the blank page, e.g. 'Trang này để con viết.'")
 
 
 class Journey(Strict):
-    listen: Listen
-    arrive: Arrive
-    live: Live | None = None
-    wear: Wear | None = None
+    hover_line: str = Field(max_length=140, description="One line from the diary, shown when the region is hovered")
+    arrive: ArrivePage
+    look: LookPage
+    life: LifePage | None = None
+    festivals: FestivalPage | None = None
+    wear: list[WearPage] = Field(default_factory=list, max_length=2)
+    own: OwnPage
     sources: list[Id] = []
 
 

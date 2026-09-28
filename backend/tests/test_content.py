@@ -50,22 +50,32 @@ def test_invalid_json_reports_line(tmp_path):
     assert any("colors.json: invalid JSON at line 1" in e for e in rep.errors)
 
 
-def test_every_region_has_a_journey(content):
+def test_every_region_has_a_diary(content):
     for reg in content.regions.values():
         assert reg.journey is not None, reg.id
-        assert reg.journey.listen.people and reg.journey.listen.climate
+        assert reg.journey.hover_line and reg.journey.arrive.entry and reg.journey.own.invite
 
 
-def test_locked_region_cannot_have_customs_or_people(tmp_path):
+def test_locked_region_cannot_have_life_or_people(tmp_path):
     root = _copy(tmp_path)
     p = root / "regions" / "tay-bac.json"
     data = json.loads(p.read_text())
-    data["live"] = {"customs": [], "festivals": [], "bridge_line": "x"}
-    data["listen"]["frames"][0]["no_people"] = False
+    data["life"] = {"date": "x", "entry": "x", "items": []}
+    data["look"]["frames"][0]["no_people"] = False
     p.write_text(json.dumps(data, ensure_ascii=False))
     _, rep = store.load(root)
-    assert any("must not have 'live'" in e for e in rep.errors)
+    assert any("must not have 'life'" in e for e in rep.errors)
     assert any("no_people: true" in e for e in rep.errors)
+
+
+def test_wear_page_must_use_a_garment_of_the_region(tmp_path):
+    root = _copy(tmp_path)
+    p = root / "regions" / "nam-bo.json"
+    data = json.loads(p.read_text())
+    data["wear"][0]["garment"] = "ao-tu-than"
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    _, rep = store.load(root)
+    assert any("'ao-tu-than' is not listed for this region" in e for e in rep.errors)
 
 
 def test_journey_file_needs_a_known_region(tmp_path):

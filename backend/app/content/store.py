@@ -207,27 +207,35 @@ def _check_refs(c: Content, r: Report) -> None:
         media(reg.stamp_image, w)
         j = reg.journey
         if j is None:
-            r.warnings.append(f"{w}: no journey yet (content/regions/{reg.id}.json)")
+            r.warnings.append(f"{w}: no diary yet (content/regions/{reg.id}.json)")
             continue
         wj = f"regions/{reg.id}.json"
         srcs(j.sources, wj)
+        pages = [p for p in (j.arrive, j.look, j.life, j.festivals, *j.wear) if p]
         if reg.status == "locked":
-            # locked regions are written with their communities: landscapes only, no customs or clothes yet
-            if j.live or j.wear:
-                r.errors.append(f"{wj}: locked region must not have 'live' or 'wear'")
-            for f in j.listen.frames:
+            # locked regions are written with their communities: a passing entry and landscapes, nothing else yet
+            if j.life or j.festivals or j.wear:
+                r.errors.append(f"{wj}: locked region must not have 'life', 'festivals' or 'wear'")
+            for f in j.look.frames:
                 if not f.no_people:
                     r.errors.append(f"{wj}: locked region frames must be landscapes (no_people: true)")
-        for f in j.listen.frames:
+        else:
+            if not j.wear:
+                r.errors.append(f"{wj}: open region needs at least one 'wear' page")
+            for wp in j.wear:
+                need([wp.garment], c.garments, wj, "garment")
+                if wp.garment not in reg.garments:
+                    r.errors.append(f"{wj}: wear page garment '{wp.garment}' is not listed for this region")
+        for f in j.look.frames:
             if f.image and frontend_public.exists() and not (frontend_public / f.image.lstrip("/")).is_file():
                 r.warnings.append(f"{wj}: frame image not found at frontend/public{f.image}")
-        if j.live:
-            for item in [*j.live.customs, *j.live.festivals]:
-                need(item.sources, c.sources, wj, "source")
-                if not item.verified:
-                    r.warnings.append(f"{wj} [{item.id}]: not verified")
-                if item.unesco and not item.sources:
-                    r.warnings.append(f"{wj} [{item.id}]: UNESCO year needs a source")
+        for pg in pages:
+            for n in pg.teo:
+                need(n.sources, c.sources, wj, "source")
+                if not n.verified:
+                    r.warnings.append(f"{wj}: Tèo note not verified: {n.text[:40]}…")
+                if n.unesco and not n.sources:
+                    r.warnings.append(f"{wj}: UNESCO year needs a source: {n.text[:40]}…")
 
     for q in c.quiz.values():
         w = f"quiz.json [{q.id}]"
