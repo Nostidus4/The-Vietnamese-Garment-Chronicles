@@ -58,6 +58,8 @@ File `.env` ở thư mục gốc được Docker Compose tự động đọc và
 | `GEMINI_IMAGE_MODEL` | `gemini-2.5-flash-image` | Model tạo ảnh |
 | `GEMINI_TEXT_MODEL` | `gemini-2.5-flash` | Model trả lời văn bản |
 | `NEXT_PUBLIC_API_URL` | `http://localhost:8000` | URL API mà trình duyệt truy cập; được nhúng lúc build frontend |
+| `NEXT_PUBLIC_SUPABASE_URL` | URL dự án Supabase | URL Supabase cho frontend; được nhúng lúc build |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key của dự án | Khóa công khai Supabase cho frontend; được nhúng lúc build |
 | `CORS_ORIGINS` | `http://localhost:3000` | Danh sách origin, phân cách bằng dấu phẩy |
 | `ADMIN_TOKEN` | rỗng | Bật endpoint `POST /admin/reload` |
 | `TRYON_PER_MINUTE` | `6` | Giới hạn số lần thử đồ mỗi phút |
@@ -99,6 +101,8 @@ npm ci
 cp .env.example .env.local
 npm run dev
 ```
+
+Cấu hình Supabase cho phát triển local nằm trong `frontend/.env.local` (không commit). Chạy `npm install` trong `frontend/` khi thêm package mới. Ứng dụng dùng Next.js 16 nên session refresh nằm ở `frontend/src/proxy.ts`.
 
 ## Pre-commit
 
