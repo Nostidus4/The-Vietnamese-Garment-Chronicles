@@ -1,12 +1,24 @@
 """Thin wrapper around google-genai so services and tests don't depend on the SDK directly."""
 
 import json
+import logging
+import time
 
 from ..config import settings
+
+log = logging.getLogger("gemini")
 
 
 class GeminiUnavailable(Exception):
     pass
+
+
+def _error_code(e: Exception) -> str:
+    """429 = quota, 504/timeout = too slow; anything else is logged by class name."""
+    code = getattr(e, "code", None)
+    if code:
+        return str(code)
+    return "timeout" if "timeout" in type(e).__name__.lower() or "timed out" in str(e).lower() else type(e).__name__
 
 
 class GeminiClient:
@@ -21,34 +33,51 @@ class GeminiClient:
     def available(self) -> bool:
         return self._client is not None
 
-    def generate_image(self, prompt: str, images: list[tuple[bytes, str]]) -> bytes:
+    def generate_image(self, prompt: str, images: list[tuple[bytes, str]], aspect_ratio: str | None = None) -> bytes:
         """images: (bytes, mime_type) pairs sent after the prompt. Returns the first image in the reply."""
         if not self._client:
             raise GeminiUnavailable("GEMINI_API_KEY not set")
         from google.genai import types
 
         parts: list = [prompt] + [types.Part.from_bytes(data=b, mime_type=m) for b, m in images]
+        config = types.GenerateContentConfig(
+            http_options=types.HttpOptions(timeout=int(settings.image_timeout_s * 1000)),
+            image_config=types.ImageConfig(aspect_ratio=aspect_ratio) if aspect_ratio else None,
+        )
+        start = time.perf_counter()
         try:
-            resp = self._client.models.generate_content(model=settings.image_model, contents=parts)
+            resp = self._client.models.generate_content(model=settings.image_model, contents=parts, config=config)
             for part in resp.candidates[0].content.parts:
                 if part.inline_data and part.inline_data.data:
+                    log.info("image ok %.1fs", time.perf_counter() - start)
                     return part.inline_data.data
-        except Exception as e:  # quota, safety block, network
+        except Exception as e:  # quota, safety block, network, timeout
+            log.warning("image failed %.1fs code=%s: %s", time.perf_counter() - start, _error_code(e), e)
             raise GeminiUnavailable(str(e)) from e
+        log.warning("image failed %.1fs code=no_image", time.perf_counter() - start)
         raise GeminiUnavailable("No image in response")
 
     def generate_json(self, prompt: str) -> dict:
         if not self._client:
             raise GeminiUnavailable("GEMINI_API_KEY not set")
+        from google.genai import types
+
+        start = time.perf_counter()
         try:
             resp = self._client.models.generate_content(
                 model=settings.text_model,
                 contents=prompt,
-                config={"response_mime_type": "application/json"},
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    http_options=types.HttpOptions(timeout=int(settings.text_timeout_s * 1000)),
+                ),
             )
-            return json.loads(resp.text)
+            out = json.loads(resp.text)
         except Exception as e:
+            log.warning("json failed %.1fs code=%s: %s", time.perf_counter() - start, _error_code(e), e)
             raise GeminiUnavailable(str(e)) from e
+        log.info("json ok %.1fs", time.perf_counter() - start)
+        return out
 
 
 _client: GeminiClient | None = None

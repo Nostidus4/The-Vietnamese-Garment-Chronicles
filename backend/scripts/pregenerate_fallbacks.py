@@ -7,6 +7,7 @@ Cần GEMINI_API_KEY và content/media/avatars/default.png.
 
 import argparse
 import base64
+import logging
 
 from app.content import store
 from app.models import Selection
@@ -14,6 +15,7 @@ from app.services import tryon
 
 
 def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="[%(name)s] %(message)s")
     ap = argparse.ArgumentParser()
     ap.add_argument("--variants", type=int, default=3)
     args = ap.parse_args()

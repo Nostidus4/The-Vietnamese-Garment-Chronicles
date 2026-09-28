@@ -3,6 +3,7 @@
 import json
 
 from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
+from fastapi.concurrency import run_in_threadpool
 from pydantic import ValidationError
 
 from ..config import settings
@@ -60,7 +61,8 @@ async def run_tryon(
         cache_key = f"avatar:{avatar_id}"
 
     try:
-        return tryon.run(sel, person, cache_key)
+        # Gemini is a blocking call of ~10 s; keep it off the event loop
+        return await run_in_threadpool(tryon.run, sel, person, cache_key)
     except SelectionError as e:
         raise HTTPException(422, str(e))
 
