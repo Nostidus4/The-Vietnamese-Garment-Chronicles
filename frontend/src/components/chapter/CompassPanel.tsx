@@ -28,7 +28,12 @@ export function CompassPanel({ result }: { result: CompassResult | null }) {
         </div>
       )}
       {result.state === "distorted" && result.alternative && (
-        <p className="mt-3 text-sm">Gợi ý: bỏ món gây sai lệch. Khi thử lên người, hệ thống sẽ dựng phương án thay thế.</p>
+        <p className="mt-3 text-sm">
+          Khi thử lên người, hệ thống sẽ không dựng look này mà dựng phương án thay thế: bỏ hoặc đổi đúng món gây sai lệch ({result.triggers
+            .filter((t) => t.state === "distorted")
+            .map((t) => t.target_name)
+            .join(", ")}).
+        </p>
       )}
       {result.harmony_notes.map((n) => (
         <p key={n} className="mt-2 text-sm"><b>Tí (màu sắc):</b> {n}</p>

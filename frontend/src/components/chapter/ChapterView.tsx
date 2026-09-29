@@ -114,7 +114,7 @@ export function ChapterView({
           onChange={setSel}
         />
         <CompassPanel result={compass} />
-        <TryOnPanel selection={current} regionId={regionId} />
+        <TryOnPanel selection={current} regionId={regionId} data={data} />
       </div>
     </main>
   );
