@@ -23,14 +23,14 @@
     },
     {
       "id": "hue",
-      "name": "Huế",
+      "name": "Huế / Miền Trung",
       "status": "open",
       "garments": [
         "ao-ngu-than",
         "ao-dai"
       ],
       "map_note": {
-        "title": "Huế",
+        "title": "Huế / Miền Trung",
         "lines": [
           "Cố đô bên sông Hương.",
           "Áo ngũ thân từ năm 1744, rồi áo dài của thế kỷ XX.",

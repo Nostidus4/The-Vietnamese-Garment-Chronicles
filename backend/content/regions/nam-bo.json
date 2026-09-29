@@ -122,17 +122,17 @@
       {
         "id": "via-ba-chua-xu",
         "name": "Vía Bà Chúa Xứ núi Sam",
-        "time": "23 đến 27 tháng Tư âm lịch",
+        "time": "22 đến 27 tháng Tư âm lịch",
         "month": 4,
-        "place": "Châu Đốc, An Giang",
+        "place": "Núi Sam, An Giang",
         "text": "Người khắp nơi về dâng hương. Lễ tắm Bà diễn ra trang nghiêm giữa đêm."
       },
       {
         "id": "nghinh-ong",
         "name": "Lễ Nghinh Ông",
-        "time": "Khoảng giữa tháng Tám âm lịch",
+        "time": "14 đến 16 tháng Tám âm lịch",
         "month": 8,
-        "place": "Cần Giờ và các làng biển",
+        "place": "Xã Cần Giờ, TP. Hồ Chí Minh",
         "text": "Đoàn ghe trang hoàng rực rỡ ra biển rước Ông, cầu một mùa biển bình an."
       },
       {
@@ -140,7 +140,7 @@
         "name": "Lễ Ok Om Bok",
         "time": "Rằm tháng Mười âm lịch",
         "month": 10,
-        "place": "Cần Thơ (Sóc Trăng cũ)",
+        "place": "Phường Sóc Trăng, Cần Thơ",
         "text": "Lễ cúng trăng của đồng bào Khmer.",
         "community_review": true
       }
