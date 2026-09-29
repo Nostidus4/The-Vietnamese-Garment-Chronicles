@@ -25,7 +25,7 @@ Modern full-color comic illustration for a Vietnamese storybook. Clean, confiden
 ```
 
 ```
-AVOID: any text, letters, numbers, captions, logos or watermarks; Chinese, Japanese or Korean traditional clothing, hairstyles or architecture (no hanfu cross collars, no kimono or obi, no hanbok, no pagoda roofs with upturned Chinese-style eaves unless specified); 3D render look; photorealism; neon colors; heavy black outlines; cluttered backgrounds.
+AVOID: any text, letters, numbers, captions, logos or watermarks; Chinese, Japanese or Korean traditional clothing, hairstyles or architecture (no hanfu cross collars, no kimono or obi, no hanbok, no pagoda roofs with upturned Chinese-style eaves unless specified; no Chinese frog buttons or knotted "pankou" closures; no Chinese mandarin-collar jackets or qipao styling); 3D render look; photorealism; neon colors; heavy black outlines; cluttered backgrounds.
 ```
 
 | Màu | Mã | Dùng cho |
@@ -526,4 +526,59 @@ Color: {màu mặc định}. No person, no accessories, no text.
 - Tây Bắc không có người và trang phục.
 - Màu nằm trong bảng màu Mục 1; chỗ trống cho chữ và bong bóng thoại đúng vị trí.
 - Đã lưu prompt + ảnh được chọn vào tab Tổng hợp Prompt.
+
+## 9. Tạo lại ảnh Opening S05 và S08 (ticket #7)
+
+Hai ảnh hiện tại có yếu tố Trung Hoa, mâu thuẫn với chính thông điệp của app:
+- `s05.png`: áo đỏ trên ma-nơ-canh và áo đang may có **khuy tết kiểu áo Tàu** (frog buttons). Áo của Bà và của Tí cũng dùng kiểu khuy này.
+- `s08.png`: góc bìa sổ có **chùa mái cong kiểu Trung Hoa**; áo xanh trên ma-nơ-canh phía sau cũng có khuy tết; bìa sổ khác bố cục `title-page.png`.
+
+**Quy trình:**
+1. Dán `{STYLE}` và `{AVOID}` (đã bổ sung frog buttons và mái cong) lên đầu prompt.
+2. Đính kèm ảnh tham chiếu:
+   - S05: ảnh hiện tại (giữ bố cục).
+   - S08: ảnh hiện tại **và** `frontend/public/page/title-page.png` (để bìa khớp cuốn sách trên bàn).
+3. Chọn khung 16:9, xuất đúng **1672×941**.
+4. Người phụ trách nội dung soát theo checklist bên dưới và đối chiếu Research 6.2 trước khi thay file.
+5. Thay `frontend/public/opening/s05.png`, `s08.png`, rồi bỏ ⚠️ của S05 và S08 trong bảng ở `OPENING_PLAN.md`.
+
+### 9.1 S05 — Tiếng máy may bên cửa sổ (ký ức)
+
+```
+{STYLE}
+{AVOID}
+Recreate the attached scene with the same composition, characters, lighting and memory mood (soft sepia, film grain).
+Keep: the grandmother (Bà) sewing at an old treadle sewing machine by the window, little Tí beside her, the two cut-in panels.
+Change ONLY the garments so they are correctly Vietnamese:
+- The red garment on the dress form and the one being sewn: a Vietnamese áo ngũ thân (five-panel tunic) with a low
+  standing collar, the front panel closing diagonally to the RIGHT side with a few small round cloth-covered buttons,
+  knee length, side slits, worn over wide trousers. No knotted frog buttons, no mandarin-collar jacket, no qipao cut.
+- Bà wears a simple Vietnamese áo bà ba or áo dài with small plain buttons; Tí wears a plain modern shirt.
+No text anywhere.
+```
+
+**Checklist soát S05:**
+- [ ] Không còn khuy tết / khuy nút thắt kiểu Tàu trên mọi áo trong ảnh (ma-nơ-canh, áo đang may, Bà, Tí).
+- [ ] Áo trên ma-nơ-canh có cấu trúc áo ngũ thân: cổ đứng thấp, vạt cài chéo sang phải, xẻ tà, dài qua gối.
+- [ ] Bố cục, nhân vật, hai khung cut-in giữ như cũ (chuyển cảnh T4, T5 không đổi).
+
+### 9.2 S08 — Việt Phục Du Ký
+
+```
+{STYLE}
+{AVOID}
+Recreate the attached scene with the same composition: Tí holding an old embroidered notebook, a cut-in of golden thread.
+The notebook cover must match the second reference image (title page) exactly: indigo fabric, the same embroidered
+lotus-and-cloud border, the same empty cream label in the same place. The label stays EMPTY (the title is added in HTML).
+Remove the curved-roof pagoda: if the corner needs a motif, use lotus leaves or a Vietnamese village communal-house
+roof with gently curved Vietnamese eaves, or leave it plain.
+The blue garment on the dress form in the background: a Vietnamese áo dài with small plain buttons, no frog buttons.
+No text anywhere.
+```
+
+**Checklist soát S08:**
+- [ ] Bìa sổ khớp `title-page.png` (màu chàm, hoa văn viền, vị trí ô nhãn), ô nhãn để trống.
+- [ ] Không còn chùa mái cong kiểu Trung Hoa hay họa tiết Trung Hoa khác.
+- [ ] Áo trên ma-nơ-canh phía sau không có khuy tết.
+- [ ] Chuyển cảnh T7 (zoom vào góc bìa S07 → S08) và T8 (bìa xoay mở) chạy không giật: xem `/?opening=1&start=s07`.
 
