@@ -16,7 +16,9 @@ async function json<T>(res: Response): Promise<T> {
 // All content in one request, cached for the session
 let bootstrapPromise: Promise<Bootstrap> | null = null;
 export function getBootstrap(): Promise<Bootstrap> {
-  bootstrapPromise ??= fetch(`${API_URL}/content/bootstrap`)
+  // wait for a sleeping server to wake instead of failing the first load
+  bootstrapPromise ??= serverReady()
+    .then(() => fetch(`${API_URL}/content/bootstrap`))
     .then((r) => json<Bootstrap>(r))
     .catch((e) => {
       bootstrapPromise = null;
@@ -62,3 +64,24 @@ export const getWeather = (regionId: string) =>
   fetch(`${API_URL}/weather/${regionId}`).then((r) =>
     json<{ available: boolean; temperature_c?: number; is_hot?: boolean; tips?: { garment_id: string; tip: string }[] }>(r),
   );
+
+// ---- cold start: the free backend sleeps; wake it once and let everyone wait on the same promise ----
+let readyPromise: Promise<boolean> | null = null;
+/** Resolves true once GET /health answers (polling up to ~2 minutes), false if it never does. */
+export function serverReady(): Promise<boolean> {
+  readyPromise ??= (async () => {
+    const until = Date.now() + 120_000;
+    while (Date.now() < until) {
+      try {
+        const r = await fetch(`${API_URL}/health`, { signal: AbortSignal.timeout(15_000), cache: "no-store" });
+        if (r.ok) return true;
+      } catch {
+        // still waking up
+      }
+      await new Promise((r) => setTimeout(r, 2000));
+    }
+    readyPromise = null; // let a later retry start over
+    return false;
+  })();
+  return readyPromise;
+}

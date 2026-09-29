@@ -66,7 +66,9 @@ export default function DuKyView() {
                 <img src={e.image} alt="" className="aspect-[3/4] w-full rounded object-cover" />
                 {e.kind === "ai" ? (
                   // burned into the exported PNG, on the photo itself: cropping the picture keeps the label
-                  <span className="absolute bottom-2 left-2 rounded bg-black/65 px-2 py-1 text-sm font-semibold text-white">Ảnh minh họa AI</span>
+                  <span className="absolute bottom-2 left-2 rounded bg-black/65 px-2 py-1 text-sm font-semibold text-white">
+                    {e.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI"}
+                  </span>
                 ) : (
                   <span className="font-hand absolute right-2 top-2 rotate-[-8deg] rounded-md border-2 border-[#B5452E] bg-white/80 px-2 py-0.5 text-lg text-[#B5452E]">
                     Đã mặc thật
@@ -79,7 +81,7 @@ export default function DuKyView() {
               <p className="text-[10px] text-stone-400">Nguồn: {garmentById.get(e.garment_id)?.sources.slice(0, 2).join(", ")}</p>
               {e.kind === "ai" ? (
                 <p className="text-xs text-stone-500">
-                  Ảnh minh họa AI · Compass: {e.label ? `${VERDICT[e.label] ?? ""} ${e.label}` : "—"}
+                  {e.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI"} · Compass: {e.label ? `${VERDICT[e.label] ?? ""} ${e.label}` : "—"}
                 </p>
               ) : (
                 // the app never checks a real photo, so it claims nothing about it

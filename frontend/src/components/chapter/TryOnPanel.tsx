@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { API_URL, tryOn } from "@/lib/api";
+import { API_URL, serverReady, tryOn } from "@/lib/api";
 import { saveToDuKy } from "@/lib/duky";
 import { sourceOf } from "@/lib/sources";
 import type { Bootstrap, CompassState, Selection, TryOnResult } from "@/lib/types";
@@ -47,6 +47,8 @@ export function TryOnPanel({
       ? `${API_URL}${result.fallback_url}` // e.g. /media/fallback/ao-dai.png
       : null;
 
+  // no fresh render, only the pre-made fallback: it must never pass as an AI image of this look
+  const isSample = !!result && !result.image_base64 && !!result.fallback_url;
   // ⛔ looks are never rendered; their alternative is, and it can be saved with its own verdict
   const saveLabel = result
     ? result.rendered_alternative
@@ -59,6 +61,8 @@ export function TryOnPanel({
     setSaved(false);
     setError(null);
     try {
+      // a sleeping server must wake before the try-on clock starts, or the first try falls back
+      if (!(await serverReady())) throw new Error("Máy chủ chưa thức dậy. Bạn thử lại sau ít phút nhé.");
       setResult(
         await tryOn(selection, photo ? { photo } : { avatarId: "default" }),
       );
@@ -109,8 +113,13 @@ export function TryOnPanel({
             className="max-h-[480px] rounded"
           />
           <figcaption className="text-xs text-stone-500">
-            {result?.label_note}
+            {isSample ? "Ảnh mẫu tạo sẵn (máy chủ AI đang bận)" : result?.label_note}
           </figcaption>
+          {isSample && (
+            <button onClick={run} disabled={busy} className="mt-1 text-sm underline disabled:opacity-50">
+              Thử dựng lại bằng AI
+            </button>
+          )}
         </figure>
       )}
       {image && result && saveLabel && (
@@ -123,6 +132,7 @@ export function TryOnPanel({
               garment_id: result.rendered_selection.garment_id,
               occasion_id: result.rendered_selection.occasion_id,
               label: saveLabel, // the alternative is saved with the verdict of what was actually rendered
+              sample: isSample,
             });
             setSaved(true);
           }}

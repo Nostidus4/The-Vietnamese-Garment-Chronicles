@@ -188,4 +188,8 @@ Dữ liệu chính nằm trong `backend/content/`.
 
 - Frontend: có thể triển khai trên Vercel với root directory là `frontend` và biến `NEXT_PUBLIC_API_URL` trỏ tới backend public.
 - Backend: có thể triển khai trên Render hoặc Railway bằng lệnh `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
+- **Giữ backend Render luôn thức:** workflow `.github/workflows/keep-awake.yml` ping `/health` mỗi 10 phút.
+  - Bật: GitHub → Settings → Secrets and variables → Actions → **Variables** → thêm `BACKEND_URL` = URL Render (không có `/` ở cuối). Có thể bấm "Run workflow" để thử ngay.
+  - Tắt: xóa biến `BACKEND_URL`, hoặc vào tab Actions → "Keep backend awake" → Disable workflow.
+  - Frontend vẫn tự xử lý khi máy chủ đang ngủ: sau 3 giây không có phản hồi sẽ hiện màn "Đang đánh thức máy chủ…".
 - Thiết lập `CORS_ORIGINS` thành URL frontend thật và gọi `/health` trước buổi demo nếu dịch vụ có chế độ ngủ.
