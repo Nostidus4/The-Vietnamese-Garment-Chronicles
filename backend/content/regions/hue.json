@@ -4,7 +4,7 @@
     "date": "Huế, một chiều mưa tháng Ba",
     "entry": "Tàu vào ga Huế lúc trời đã chập choạng. Mưa không to mà cứ rả rích mãi. Anh đưa tôi đi qua cầu, dưới kia sông Hương xanh và lặng đến lạ. Tôi mới hai mươi tuổi, chưa từng đi xa nhà đến thế. Đêm đầu tiên tôi không ngủ được, nằm nghe mưa trên mái ngói.",
     "margin": "“Anh” là ông của con đấy. Hồi ấy ông gầy lắm.",
-    "ti": "Đi hết miền Trung chắc phải mấy ngày tàu.",
+    "ti": "Bà mới hai mươi tuổi đã đi xa nhà thế này. Mình thì chưa đi đâu một mình bao giờ.",
     "keepsake": "stamp",
     "landmarks": [
       {
@@ -41,8 +41,8 @@
   },
   "look": {
     "date": "Đi dọc miền Trung, mùa hè",
-    "entry": "Dải đất này hẹp lắm, bên kia là núi, bên này là biển. Người ở đây chịu thương chịu khó, nói giọng nặng mà lòng thì nhẹ. Mùa hè nắng như đổ lửa, có gió Lào khô rát. Thu sang lại mưa bão, lũ về trắng đồng. Tôi đi Hội An, thấy phố cũ treo đèn lồng, rồi vào tận Mỹ Sơn đứng dưới những ngọn tháp gạch đỏ không biết đã bao nhiêu trăm năm.",
-    "margin": "Tấm ảnh tháp Chăm Bà chụp mà không có ai trong khung, vì hôm ấy vắng lắm.",
+    "entry": "Dải đất này hẹp lắm, bên kia là núi, bên này là biển. Người ở đây chịu thương chịu khó, quen với nắng gió nên ít khi than. Mùa hè nắng như đổ lửa, có gió Lào khô rát. Thu sang lại mưa bão, lũ về trắng đồng. Tôi đi Hội An, thấy phố cũ treo đèn lồng, rồi vào tận Mỹ Sơn đứng dưới những ngọn tháp gạch đỏ không biết đã bao nhiêu trăm năm.",
+    "margin": "Hôm Bà đến Mỹ Sơn vắng lắm, cả khu tháp chỉ có tiếng ve.",
     "keepsake": "photo",
     "teo": [
       {
@@ -114,8 +114,8 @@
     ]
   },
   "festivals": {
-    "date": "Làng biển Thuận An, tháng Hai",
-    "entry": "Tôi theo chị hàng xóm ra làng biển xem lễ cầu ngư. Người ta rước thuyền, hát bả trạo, tạ ơn cá Ông đã che chở người đi biển. Tết thì cả xóm kéo nhau đi chơi bài chòi, anh hiệu hô câu thai nghe mà bật cười. Tối về, anh đưa tôi đi nghe nhã nhạc, tiếng trống tiếng sáo trang nghiêm giữa những mái điện xưa.",
+    "date": "Làng biển gần cửa Thuận An, đầu xuân",
+    "entry": "Tôi theo chị hàng xóm ra làng biển xem lễ cầu ngư. Người ta rước thuyền, hát bả trạo, cầu cho người đi biển được bình an. Tết thì cả xóm kéo nhau đi chơi bài chòi, anh hiệu hô câu thai nghe mà bật cười. Phải nhiều năm sau, anh mới đưa tôi đi nghe nhã nhạc, tiếng trống tiếng sáo trang nghiêm giữa những mái điện xưa.",
     "keepsake": "ticket",
     "festivals": [
       {
@@ -151,6 +151,11 @@
         ],
         "verified": false,
         "unesco": 2017
+      },
+      {
+        "text": "Áo Nhật Bình là trang phục của phụ nữ hoàng tộc và cung phi triều Nguyễn.",
+        "sources": [],
+        "verified": false
       }
     ],
     "bridge": "Ở kinh đô, lễ nghi nào cũng cần áo chỉnh tề. Lật trang đi, Bà kể con nghe chiếc áo ngũ thân."
@@ -159,34 +164,30 @@
     {
       "garment": "ao-ngu-than",
       "date": "Ngày giỗ bên nhà chồng",
-      "entry": "Mẹ chồng đưa tôi chiếc áo ngũ thân của bà, bảo mặc cho đúng lễ. Áo có năm vạt, cổ đứng, cài khuy bên phải. Mẹ nói năm vạt áo là cha, mẹ, vợ chồng và bản thân mình, còn năm khuy là năm điều phải giữ. Tôi mặc vào, tự nhiên thấy mình đứng thẳng hơn.",
-      "margin": "Chỗ nào được phá cách, chỗ nào phải giữ, Tèo ghi giúp Bà ở bên cạnh rồi đấy.",
+      "entry": "Mẹ chồng đưa tôi chiếc áo ngũ thân của mẹ, bảo mặc cho đúng lễ. Áo có năm thân, cổ đứng, cài khuy bên phải. Mẹ nói bốn thân lớn là cha mẹ mình và cha mẹ chồng, thân thứ năm nằm bên trong là bản thân mình, còn năm khuy là nhân, lễ, nghĩa, trí, tín. Tôi mặc vào, tự nhiên thấy mình đứng thẳng hơn.",
+      "margin": "Mặc áo này không cần cầu kỳ, chỉ cần ngay ngắn. Con giữ năm thân và cái cổ đứng là được.",
       "keepsake": "fabric",
       "teo": [
         {
           "text": "Vì là kinh đô với nhiều nghi lễ → áo ngũ thân cổ đứng, năm vạt, mặc chỉnh tề.",
           "sources": [],
           "verified": false
-        },
-        {
-          "text": "Nghệ thuật may, mặc áo dài Huế được công nhận là Di sản văn hóa phi vật thể quốc gia.",
-          "sources": [
-            "ref-08"
-          ],
-          "verified": false
         }
-      ]
+      ],
+      "ti": "Cái áo đỏ Bà may hôm mình hỏi “có phải áo dài không”… là áo ngũ thân."
     },
     {
       "garment": "ao-dai",
       "date": "Huế, sáng mùng Một Tết",
-      "entry": "Tôi may cho mình chiếc áo dài xanh nhạt, màu da trời sau mưa. Áo ôm người hơn áo ngũ thân, hai tà dài bay theo gió khi đạp xe qua cầu. Anh bảo tôi mặc áo ấy đẹp nhất. Chiếc áo này về sau tôi cất vào hộp gỗ, giữ đến tận bây giờ.",
+      "entry": "Tôi may cho mình chiếc áo dài xanh thiên thanh, màu da trời sau mưa. Áo ôm người hơn áo ngũ thân, hai tà dài bay theo gió khi đạp xe qua cầu. Anh bảo tôi mặc áo ấy đẹp nhất. Chiếc áo này về sau tôi cất vào hộp gỗ, giữ đến tận bây giờ.",
       "margin": "Chiếc áo xanh trong hộp gỗ đó, con nhớ không?",
       "keepsake": "fabric",
       "teo": [
         {
-          "text": "Vì mưa dầm và nắng gắt → áo dài luôn đi cùng nón lá.",
-          "sources": [],
+          "text": "Tri thức may, mặc áo dài Huế được công nhận là Di sản văn hóa phi vật thể quốc gia năm 2024.",
+          "sources": [
+            "ref-09"
+          ],
           "verified": false
         },
         {
@@ -194,7 +195,8 @@
           "sources": [],
           "verified": false
         }
-      ]
+      ],
+      "ti": "Chiếc áo xanh thiên thanh hôm ấy làm mình nhớ Bà. Giờ mình mới biết nó bắt đầu từ đâu."
     }
   ],
   "own": {
@@ -203,6 +205,6 @@
   "sources": [
     "unesco-ich-vn",
     "unesco-whc-vn",
-    "ref-08"
+    "ref-09"
   ]
 }

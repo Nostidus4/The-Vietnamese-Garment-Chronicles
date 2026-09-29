@@ -4,7 +4,7 @@
     "date": "Cần Thơ, mùa nước nổi tháng Chín",
     "entry": "Tôi theo anh xuống miền Tây thăm người quen. Xe đò đi mãi, qua mấy bến phà, đến đâu cũng thấy nước. Người ta đón tôi như người nhà, mời ở lại ăn cơm, ăn xong nhà bên lại kéo sang ăn tiếp. Tôi chưa bao giờ thấy ai hiếu khách đến thế.",
     "margin": "Đảo Phú Quốc với Côn Đảo cũng thuộc vùng này đấy con.",
-    "ti": "Nam Bộ mà có cả đảo xa như vậy!",
+    "ti": "Được mời cơm hết nhà này sang nhà khác. Đọc thôi mà mình cũng thấy ấm.",
     "keepsake": "stamp",
     "landmarks": [
       {
@@ -42,7 +42,7 @@
   "look": {
     "date": "Trên chiếc xuồng ba lá, một sáng sớm",
     "entry": "Người miền Tây nói thẳng, cười to, thương ai là thương thật. Ở đây không có mùa đông, chỉ có mùa mưa với mùa khô, nắng quanh năm. Cuối năm nước lên trắng đồng, người ta không sợ mà đi xuồng khắp nơi. Tôi dậy từ tờ mờ sáng để ra chợ nổi. Ghe chở đầy trái cây, bán gì thì treo món đó lên cây sào cho người ta thấy từ xa.",
-    "margin": "Ảnh mũi Cà Mau là Bà nhờ người khác chụp, lúc đó Bà say sóng quá.",
+    "margin": "Ra tới mũi Cà Mau thì Bà say sóng, tấm ảnh ấy chụp vội nên chẳng có ai trong khung.",
     "keepsake": "photo",
     "teo": [
       {
@@ -140,16 +140,19 @@
         "name": "Lễ Ok Om Bok",
         "time": "Rằm tháng Mười âm lịch",
         "month": 10,
-        "place": "Sóc Trăng",
+        "place": "Cần Thơ (Sóc Trăng cũ)",
         "text": "Lễ cúng trăng của đồng bào Khmer.",
         "community_review": true
       }
     ],
     "teo": [
       {
-        "text": "Lễ hội Vía Bà Chúa Xứ núi Sam là một trong những lễ hội lớn nhất Nam Bộ.",
-        "sources": [],
-        "verified": false
+        "text": "Lễ hội Vía Bà Chúa Xứ núi Sam được UNESCO ghi danh.",
+        "sources": [
+          "unesco-ich-vn"
+        ],
+        "verified": false,
+        "unesco": 2024
       }
     ],
     "bridge": "Nắng quanh năm, ngồi xuồng cả ngày. Lật trang đi, con sẽ hiểu vì sao áo bà ba lại gọn nhẹ như thế."
@@ -158,7 +161,7 @@
     {
       "garment": "ao-ba-ba",
       "date": "Trước ngày về, ở bến đò",
-      "entry": "Bà chủ nhà tặng tôi một chiếc áo bà ba may bằng vải mỏng, mặc vào mát rượi. Áo ngắn qua hông, không có tà dài, tay rộng, cổ tròn, hai túi phía trước. Chị bảo: mặc thế này mới ngồi xuồng, lội ruộng được. Chị còn quàng lên cổ tôi chiếc khăn rằn, dặn che nắng, lau mồ hôi, việc gì cũng dùng được.",
+      "entry": "Bà chủ nhà tặng tôi một chiếc áo bà ba may bằng vải mỏng, mặc vào mát rượi. Áo ngắn qua hông, xẻ hai bên, không có tà dài, tay rộng, cổ tròn, hai túi phía trước. Chị bảo: mặc thế này mới ngồi xuồng, lội ruộng được. Chị còn quàng lên cổ tôi chiếc khăn rằn, dặn che nắng, lau mồ hôi, việc gì cũng dùng được.",
       "margin": "Chiếc khăn rằn ấy Bà vẫn giữ trong hộp gỗ, cạnh áo xanh.",
       "keepsake": "fabric",
       "teo": [
@@ -177,7 +180,8 @@
           "sources": [],
           "verified": false
         }
-      ]
+      ],
+      "ti": "Áo gọn thế này thì mặc đi học, đi chơi hôm nay cũng hợp chứ nhỉ?"
     }
   ],
   "own": {

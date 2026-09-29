@@ -4,7 +4,7 @@
     "date": "Kinh Bắc, một sáng mưa phùn tháng Giêng",
     "entry": "Tôi viết những dòng đầu tiên của cuốn sổ này ở chính quê mình. Sáng nay mưa phùn mỏng như bụi, đường làng trơn, mà người đi hội vẫn nườm nượp. Tôi đi dọc bờ đê, qua cây đa đầu làng, nghe trống đình vọng lại. Mẹ bảo: đi xa đến đâu thì cũng phải nhớ đường về chỗ này.",
     "margin": "Con à, Bà đánh dấu mấy nơi này để con biết quê mình không chỉ có ruộng lúa đâu.",
-    "ti": "Hóa ra Bà viết cuốn sổ này từ hồi còn trẻ hơn cả chị mình.",
+    "ti": "Hóa ra Bà bắt đầu viết cuốn sổ này khi chỉ lớn hơn mình vài tuổi.",
     "keepsake": "stamp",
     "landmarks": [
       {
@@ -46,7 +46,7 @@
     "keepsake": "photo",
     "teo": [
       {
-        "text": "Vịnh Hạ Long là Di sản Thế giới; Tràng An cũng vậy. Tớ ghi nguồn ở dưới để cậu kiểm tra năm công nhận nhé.",
+        "text": "Vịnh Hạ Long (1994) và Quần thể danh thắng Tràng An (2014) đều là Di sản Thế giới.",
         "sources": [
           "unesco-whc-vn"
         ],
@@ -188,7 +188,8 @@
           "sources": [],
           "verified": false
         }
-      ]
+      ],
+      "ti": "Bốn vạt áo. Lần sau nhìn thấy, mình sẽ nhận ra ngay."
     }
   ],
   "own": {
