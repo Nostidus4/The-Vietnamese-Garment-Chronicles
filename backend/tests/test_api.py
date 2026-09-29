@@ -4,7 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.services import ratelimit
+from app.services import ask as ask_service
+from app.services import gemini_client, ratelimit
 
 
 @pytest.fixture
@@ -105,3 +106,71 @@ def test_content_report(client):
 
 def test_reload_disabled_without_token(client):
     assert client.post("/admin/reload").status_code == 403
+
+
+class _Scripted(gemini_client.GeminiClient):
+    """Returns whatever the test says Gemini answered."""
+
+    def __init__(self, out):
+        self.out = out
+        self.prompts: list[str] = []
+
+    @property
+    def available(self) -> bool:
+        return True
+
+    def generate_json(self, prompt):
+        self.prompts.append(prompt)
+        return self.out
+
+
+@pytest.fixture
+def scripted():
+    def use(out):
+        fake = _Scripted(out)
+        gemini_client.set_client(fake)
+        return fake
+
+    yield use
+    gemini_client.set_client(gemini_client.GeminiClient(api_key=None))
+
+
+@pytest.mark.parametrize(
+    "out",
+    [
+        ["ref-03"],  # a list
+        "Áo ngũ thân có từ 1744",  # a string
+        42,  # a number
+        {"answer": {"text": "x"}, "sources": ["ref-03"]},  # answer is an object
+        {"answer": "Có từ 1744.", "sources": "ref-03"},  # sources is a string
+    ],
+)
+def test_ask_wrong_shapes_refuse_without_500(client, scripted, out):
+    scripted(out)
+    r = client.post("/ask", json={"garment_id": "ao-ngu-than", "question": "Có từ khi nào?"})
+    assert r.status_code == 200
+    assert r.json() == {"answer": ask_service.NO_SOURCE, "sources": [], "grounded": False}
+
+
+def test_ask_keeps_real_sources_and_refuses_when_none_left(client, scripted):
+    scripted({"answer": "Năm 1744.", "sources": ["ref-03", "ref-made-up"]})
+    r = client.post("/ask", json={"garment_id": "ao-ngu-than", "question": "Có từ khi nào?"}).json()
+    assert r["sources"] == ["ref-03"] and r["grounded"] is True
+    scripted({"answer": "Năm 1744.", "sources": ["ref-made-up"]})
+    r = client.post("/ask", json={"garment_id": "ao-ngu-than", "question": "Có từ khi nào?"}).json()
+    assert r["grounded"] is False and r["sources"] == []
+
+
+def test_ask_refusal_is_never_grounded(client, scripted):
+    scripted({"answer": ask_service.NO_SOURCE, "sources": ["ref-03"]})
+    r = client.post("/ask", json={"garment_id": "ao-ngu-than", "question": "Thời tiết mai?"}).json()
+    assert r == {"answer": ask_service.NO_SOURCE, "sources": [], "grounded": False}
+
+
+def test_ask_can_compare_two_garments(client, scripted, content):
+    tu, ngu = content.garments["ao-tu-than"], content.garments["ao-ngu-than"]
+    fake = scripted({"answer": "Tứ thân 4 vạt, ngũ thân 5 vạt.", "sources": [tu.sources[0], ngu.sources[0]]})
+    r = client.post("/ask", json={"garment_id": "ao-tu-than", "question": "Tứ thân khác ngũ thân chỗ nào?"}).json()
+    assert r["grounded"] is True and set(r["sources"]) == {tu.sources[0], ngu.sources[0]}
+    prompt = fake.prompts[0]
+    assert "ao-ngu-than" in prompt and prompt.index('"id": "ao-tu-than"') < prompt.index('"id": "ao-ngu-than"')
