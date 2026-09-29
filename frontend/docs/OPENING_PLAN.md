@@ -21,10 +21,10 @@ Tên file ảnh đang lệch số với kịch bản (không có Screen-6, có S
 | S02 "Tại sao?" | Screen-2.png | Cùng lớp học, 3 bong bóng ý nghĩ (áo dài, nón lá, dải lụa), cut-in Tí | Khung cảnh trùng S01 → dùng được cú "match cut" |
 | S03 Một Việt Nam mình chưa biết | Screen-3.png | Laptop, 6 card trang phục, 3 cut-in Tí | Card nào là trang phục nào cần B xác nhận để làm spotlight đúng tên |
 | S04 Chiếc áo màu xanh | Screen-4.png | Đêm, đèn bàn, laptop áo dài xanh, cut-in mắt Tí | – |
-| S05 Tiếng máy may | Screen-5.png | Bà may áo, Tí nhỏ, 2 cut-in | ⚠️ Áo đỏ trên ma-nơ-canh (cut-in) có khuy tết kiểu áo Tàu – cần đối chiếu cấu trúc áo ngũ thân (Research 6.2) hoặc tạo lại |
+| S05 Tiếng máy may | Screen-5.png | Bà may áo, Tí nhỏ, 2 cut-in | ✅ Đã tạo lại (29/09): bỏ khuy tết trên mọi áo; áo đỏ theo cấu trúc áo ngũ thân, Bà mặc áo cánh, Tí mặc sơ mi cổ bẻ. Chờ người phụ trách nội dung đối chiếu Research 6.2 |
 | S06 "Chúng còn để nhớ" | Screen-7.png | Bà trẻ áo dài xanh, bà già cất áo vào hộp, Tí nhỏ; nửa phải là khoảng trống | Khoảng trống bên phải rất hợp để đặt 4 câu thoại |
 | S07 Căn nhà cũ | Screen-8.png | Ba nhịp ngang: cổng → phòng may → hộp gỗ | Bố cục ngang → dùng camera pan thay cho parallax 3 lớp |
-| S08 Việt Phục Du Ký | Screen-9.png | Tí cầm cuốn sổ, ô nhãn trống, cut-in chỉ thêu | ⚠️ Bìa khác title-page (bố cục khác, có một ngôi chùa mái cong kiểu Trung Hoa ở góc). Nên tạo lại dùng title-page làm ảnh tham chiếu để liền mạch và tránh yếu tố Fusion |
+| S08 Việt Phục Du Ký | Screen-9.png | Tí cầm cuốn sổ, ô nhãn trống, cut-in chỉ thêu | ✅ Đã tạo lại (29/09): bìa khớp title-page, bỏ chùa mái cong; áo trên ma-nơ-canh và trong khung ảnh là áo dài, không khuy tết. Chờ người phụ trách nội dung xác nhận |
 | S09 Những trang chưa viết xong | Screen-10.png | Sách mở: 4 phác thảo vùng + trang trống bên phải, sợi chỉ vàng | – |
 | S10 Hành trình bắt đầu | Screen-11.png | Vòng xoáy giấy/vải, Tí cầm bookmark, làng hội Kinh Bắc | – |
 | Bìa sách chính | page/title-page.png | Bìa vải chàm tách nền, ô nhãn trống | ✅ Đã gắn vào web |
