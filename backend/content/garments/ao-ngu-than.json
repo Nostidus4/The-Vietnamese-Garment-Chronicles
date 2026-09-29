@@ -25,7 +25,12 @@
   "must_avoid": ["hanfu cross collar", "Japanese obi", "Korean jeogori ribbon"],
   "reference_image": "ref/ao-ngu-than.png",
   "hot_weather_tip": "Chọn vải mỏng, thoáng; giữ đủ năm thân và cổ áo.",
-  "wearing_steps": [],
+  "wearing_steps": [
+    {"title": "Mặc quần", "detail": "Quần dài ống rộng, thường màu trắng hoặc cùng màu áo."},
+    {"title": "Mặc áo", "detail": "Vạt con nằm bên trong, vạt cả phủ ra ngoài."},
+    {"title": "Cài khuy", "detail": "Cài từ cổ đứng xuống, qua vai sang nách phải."},
+    {"title": "Khăn", "detail": "Nữ vấn khăn vấn, nam đội khăn đóng khi dự lễ."}
+  ],
   "sources": ["ref-03", "ref-12", "research-6"],
   "verified": false
 }

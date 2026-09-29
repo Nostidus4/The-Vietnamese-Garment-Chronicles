@@ -4,7 +4,7 @@
     "date": "Kinh Bắc, một sáng mưa phùn tháng Giêng",
     "entry": "Tôi viết những dòng đầu tiên của cuốn sổ này ở chính quê mình. Sáng nay mưa phùn mỏng như bụi, đường làng trơn, mà người đi hội vẫn nườm nượp. Tôi đi dọc bờ đê, qua cây đa đầu làng, nghe trống đình vọng lại. Mẹ bảo: đi xa đến đâu thì cũng phải nhớ đường về chỗ này.",
     "margin": "Con à, Bà đánh dấu mấy nơi này để con biết quê mình không chỉ có ruộng lúa đâu.",
-    "ti": "Hóa ra Bà viết cuốn sổ này từ hồi còn trẻ hơn cả chị mình.",
+    "ti": "Hóa ra Bà bắt đầu viết cuốn sổ này khi chỉ lớn hơn mình vài tuổi.",
     "keepsake": "stamp",
     "landmarks": [
       {
@@ -46,16 +46,18 @@
     "keepsake": "photo",
     "teo": [
       {
-        "text": "Vịnh Hạ Long là Di sản Thế giới; Tràng An cũng vậy. Tớ ghi nguồn ở dưới để cậu kiểm tra năm công nhận nhé.",
+        "text": "Vịnh Hạ Long (1994) và Quần thể danh thắng Tràng An (2014) đều là Di sản Thế giới.",
         "sources": [
           "unesco-whc-vn"
         ],
-        "verified": false
+        "verified": true
       },
       {
-        "text": "Gió mùa đông bắc làm miền Bắc có mùa đông lạnh nhất cả nước (trừ vùng núi cao).",
-        "sources": [],
-        "verified": false
+        "text": "Gió mùa đông bắc thổi từ khoảng tháng 11 đến tháng 4, làm miền Bắc có mùa đông lạnh nhất cả nước.",
+        "sources": [
+          "ref-75"
+        ],
+        "verified": true
       }
     ],
     "frames": [
@@ -102,19 +104,35 @@
         "kind": "dish",
         "title": "Cốm gói lá sen",
         "text": "Hạt cốm xanh non, dẻo, gói trong lá sen cho giữ mùi. Mùa thu Hà Nội có cốm là đủ."
+      },
+      {
+        "id": "nhuom-cu-nau",
+        "kind": "custom",
+        "title": "Nhuộm áo bằng củ nâu",
+        "text": "Mẹ gọt củ nâu, giã lấy nước, ngâm vải rồi đem phơi, ngâm rồi lại phơi, mấy lượt mới lên màu. Vải nhuộm nâu cứng lại, mặc ra đồng mấy mùa vẫn bền."
       }
     ],
     "teo": [
       {
-        "text": "Người Việt coi trầu cau là lễ vật không thể thiếu trong lễ hỏi, lễ cưới.",
-        "sources": [],
-        "verified": false
+        "text": "Trầu cau có mặt khi tiếp khách, trong lễ hỏi và lễ cưới của người Việt.",
+        "sources": [
+          "ref-78"
+        ],
+        "verified": true
+      },
+      {
+        "text": "Củ nâu là thuốc nhuộm dân gian: vải ngâm nước củ nâu nhiều lượt sẽ lên màu nâu bền, cứng vải.",
+        "sources": [
+          "ref-69"
+        ],
+        "verified": true
       }
-    ]
+    ],
+    "ti": "Màu nâu của áo tứ thân là từ củ nâu thật. Mình cứ tưởng chỉ là tên một màu."
   },
   "festivals": {
     "date": "Hội Lim, ngày 13 tháng Giêng",
-    "entry": "Năm ấy tôi theo chị họ đi hội Lim. Các liền anh đội khăn xếp, các liền chị đội nón quai thao, hát đối đáp với nhau từ trên thuyền. Tôi đứng nghe mãi không muốn về. Một liền chị mời tôi miếng trầu, cười bảo: “Em đi hội mà mặc áo đẹp thế này, ai cũng tưởng em là người hát đấy.”",
+    "entry": "Năm ấy tôi theo chị họ đi hội Lim. Các liền anh mặc áo the đen, đội khăn xếp, cầm ô. Các liền chị mặc áo mớ ba, vấn khăn mỏ quạ, đội nón quai thao, hát đối đáp với nhau từ trên thuyền. Tôi đứng nghe mãi không muốn về. Một liền chị mời tôi miếng trầu, cười bảo: “Em đi hội mà mặc áo đẹp thế này, ai cũng tưởng em là người hát đấy.”",
     "keepsake": "ticket",
     "festivals": [
       {
@@ -148,7 +166,7 @@
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
+        "verified": true,
         "unesco": 2009
       },
       {
@@ -156,7 +174,7 @@
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
+        "verified": true,
         "unesco": 2010
       },
       {
@@ -164,11 +182,12 @@
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
+        "verified": true,
         "unesco": 2012
       }
     ],
-    "bridge": "Ngày hội, các liền chị mặc áo tứ thân đẹp nhất nhà. Lật trang đi, Bà kể con nghe chiếc áo ấy."
+    "bridge": "Ngày hội, các liền chị mặc mấy lớp áo đẹp nhất nhà. Lật trang đi, Bà kể con nghe chiếc áo tứ thân.",
+    "ti": "Liền anh cũng mặc áo dài, đội khăn xếp. Hóa ra cổ phục đâu chỉ dành cho con gái."
   },
   "wear": [
     {
@@ -179,16 +198,21 @@
       "keepsake": "fabric",
       "teo": [
         {
-          "text": "Vì mùa đông lạnh theo gió bấc → áo mặc nhiều lớp, khăn mỏ quạ giữ ấm.",
-          "sources": [],
-          "verified": false
+          "text": "Hai vạt trước áo tứ thân để hở một phần ngực, bên trong che bằng chiếc yếm.",
+          "sources": [
+            "ref-80"
+          ],
+          "verified": true
         },
         {
-          "text": "Vì làm đồng quanh năm → ngày thường mặc áo nâu, vạt gọn, dễ vén.",
-          "sources": [],
-          "verified": false
+          "text": "Vải nhuộm nâu kỹ là màu hợp với người lao động; váy đi cùng thường màu đen.",
+          "sources": [
+            "ref-80"
+          ],
+          "verified": true
         }
-      ]
+      ],
+      "ti": "Bốn vạt áo. Lần sau nhìn thấy, mình sẽ nhận ra ngay."
     }
   ],
   "own": {
@@ -196,7 +220,12 @@
   },
   "sources": [
     "unesco-ich-vn",
-    "unesco-whc-vn"
+    "unesco-whc-vn",
+    "ref-69",
+    "ref-68",
+    "ref-75",
+    "ref-78",
+    "ref-80"
   ],
   "check": {
     "pre": {

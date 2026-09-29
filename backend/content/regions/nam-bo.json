@@ -4,7 +4,7 @@
     "date": "Cần Thơ, mùa nước nổi tháng Chín",
     "entry": "Tôi theo anh xuống miền Tây thăm người quen. Xe đò đi mãi, qua mấy bến phà, đến đâu cũng thấy nước. Người ta đón tôi như người nhà, mời ở lại ăn cơm, ăn xong nhà bên lại kéo sang ăn tiếp. Tôi chưa bao giờ thấy ai hiếu khách đến thế.",
     "margin": "Đảo Phú Quốc với Côn Đảo cũng thuộc vùng này đấy con.",
-    "ti": "Nam Bộ mà có cả đảo xa như vậy!",
+    "ti": "Được mời cơm hết nhà này sang nhà khác. Đọc thôi mà mình cũng thấy ấm.",
     "keepsake": "stamp",
     "landmarks": [
       {
@@ -42,18 +42,22 @@
   "look": {
     "date": "Trên chiếc xuồng ba lá, một sáng sớm",
     "entry": "Người miền Tây nói thẳng, cười to, thương ai là thương thật. Ở đây không có mùa đông, chỉ có mùa mưa với mùa khô, nắng quanh năm. Cuối năm nước lên trắng đồng, người ta không sợ mà đi xuồng khắp nơi. Tôi dậy từ tờ mờ sáng để ra chợ nổi. Ghe chở đầy trái cây, bán gì thì treo món đó lên cây sào cho người ta thấy từ xa.",
-    "margin": "Ảnh mũi Cà Mau là Bà nhờ người khác chụp, lúc đó Bà say sóng quá.",
+    "margin": "Ra tới mũi Cà Mau thì Bà say sóng, tấm ảnh ấy chụp vội nên chẳng có ai trong khung.",
     "keepsake": "photo",
     "teo": [
       {
-        "text": "Cây bẹo là cây sào treo hàng hóa để khách ở xa biết ghe bán gì.",
-        "sources": [],
-        "verified": false
+        "text": "Cây bẹo là cây sào dựng trên ghe ở chợ nổi, treo gì bán nấy để khách ở xa biết ghe bán gì.",
+        "sources": [
+          "ref-73"
+        ],
+        "verified": true
       },
       {
         "text": "Mùa nước nổi ở đồng bằng sông Cửu Long thường vào khoảng tháng 8 đến tháng 11 dương lịch.",
-        "sources": [],
-        "verified": false
+        "sources": [
+          "ref-74"
+        ],
+        "verified": true
       }
     ],
     "frames": [
@@ -101,6 +105,12 @@
         "kind": "dish",
         "title": "Canh chua cá linh",
         "text": "Cá linh non mùa nước nổi, bông điên điển vàng, vị chua của me. Ăn một lần là nhớ."
+      },
+      {
+        "id": "lanh-my-a",
+        "kind": "custom",
+        "title": "Quần lãnh đen bóng",
+        "text": "Chị chủ nhà có một chiếc quần lãnh Mỹ A, chỉ mặc ngày Tết. Chị kể lụa ấy dệt ở Tân Châu, nhuộm bằng trái mặc nưa, nhuộm rồi phơi hàng chục lượt mới đen bóng như vậy."
       }
     ],
     "teo": [
@@ -109,10 +119,18 @@
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
+        "verified": true,
         "unesco": 2013
+      },
+      {
+        "text": "Lãnh Mỹ A là lụa tơ tằm Tân Châu (An Giang), nhuộm đen bằng nhựa trái mặc nưa qua nhiều lượt ngâm, phơi.",
+        "sources": [
+          "ref-67"
+        ],
+        "verified": true
       }
-    ]
+    ],
+    "ti": "Màu đen bóng ấy là từ trái cây. Mình cứ tưởng là thuốc nhuộm hóa học."
   },
   "festivals": {
     "date": "Núi Sam, cuối tháng Tư",
@@ -122,17 +140,17 @@
       {
         "id": "via-ba-chua-xu",
         "name": "Vía Bà Chúa Xứ núi Sam",
-        "time": "23 đến 27 tháng Tư âm lịch",
+        "time": "22 đến 27 tháng Tư âm lịch",
         "month": 4,
-        "place": "Châu Đốc, An Giang",
+        "place": "Núi Sam, An Giang",
         "text": "Người khắp nơi về dâng hương. Lễ tắm Bà diễn ra trang nghiêm giữa đêm."
       },
       {
         "id": "nghinh-ong",
         "name": "Lễ Nghinh Ông",
-        "time": "Khoảng giữa tháng Tám âm lịch",
+        "time": "14 đến 16 tháng Tám âm lịch",
         "month": 8,
-        "place": "Cần Giờ và các làng biển",
+        "place": "Xã Cần Giờ, TP. Hồ Chí Minh",
         "text": "Đoàn ghe trang hoàng rực rỡ ra biển rước Ông, cầu một mùa biển bình an."
       },
       {
@@ -140,16 +158,19 @@
         "name": "Lễ Ok Om Bok",
         "time": "Rằm tháng Mười âm lịch",
         "month": 10,
-        "place": "Sóc Trăng",
+        "place": "Phường Sóc Trăng, Cần Thơ",
         "text": "Lễ cúng trăng của đồng bào Khmer.",
         "community_review": true
       }
     ],
     "teo": [
       {
-        "text": "Lễ hội Vía Bà Chúa Xứ núi Sam là một trong những lễ hội lớn nhất Nam Bộ.",
-        "sources": [],
-        "verified": false
+        "text": "Lễ hội Vía Bà Chúa Xứ núi Sam được UNESCO ghi danh.",
+        "sources": [
+          "unesco-ich-vn"
+        ],
+        "verified": true,
+        "unesco": 2024
       }
     ],
     "bridge": "Nắng quanh năm, ngồi xuồng cả ngày. Lật trang đi, con sẽ hiểu vì sao áo bà ba lại gọn nhẹ như thế."
@@ -158,33 +179,37 @@
     {
       "garment": "ao-ba-ba",
       "date": "Trước ngày về, ở bến đò",
-      "entry": "Bà chủ nhà tặng tôi một chiếc áo bà ba may bằng vải mỏng, mặc vào mát rượi. Áo ngắn qua hông, không có tà dài, tay rộng, cổ tròn, hai túi phía trước. Chị bảo: mặc thế này mới ngồi xuồng, lội ruộng được. Chị còn quàng lên cổ tôi chiếc khăn rằn, dặn che nắng, lau mồ hôi, việc gì cũng dùng được.",
+      "entry": "Bà chủ nhà tặng tôi một chiếc áo bà ba may bằng vải mỏng, mặc vào mát rượi. Áo ngắn qua hông, xẻ hai bên, không có tà dài, tay rộng, cổ tròn, hai túi phía trước. Chị bảo: mặc thế này mới ngồi xuồng, lội ruộng được. Chị còn quàng lên cổ tôi chiếc khăn rằn, dặn che nắng, lau mồ hôi, việc gì cũng dùng được.",
       "margin": "Chiếc khăn rằn ấy Bà vẫn giữ trong hộp gỗ, cạnh áo xanh.",
       "keepsake": "fabric",
       "teo": [
         {
-          "text": "Vì nắng nóng, ẩm quanh năm → áo bà ba vải mỏng, tay rộng cho thoáng.",
-          "sources": [],
-          "verified": false
+          "text": "Áo bà ba dài ngang hông, ôm hờ theo người, dễ cử động khi làm lụng.",
+          "sources": [
+            "ref-79"
+          ],
+          "verified": true
         },
         {
-          "text": "Vì ngồi xuồng, lội nước → áo ngắn qua hông, không vướng khi chèo.",
-          "sources": [],
-          "verified": false
-        },
-        {
-          "text": "Vì đi đồng dưới nắng → khăn rằn quàng cổ, trùm đầu, lau mồ hôi.",
-          "sources": [],
-          "verified": false
+          "text": "Khăn rằn để che nắng, che mưa, lau mồ hôi; đàn ông còn cột ngang trán hoặc ngang hông cho gọn.",
+          "sources": [
+            "ref-79"
+          ],
+          "verified": true
         }
-      ]
+      ],
+      "ti": "Áo gọn thế này thì mặc đi học, đi chơi hôm nay cũng hợp chứ nhỉ?"
     }
   ],
   "own": {
     "invite": "Miền Tây tặng Bà một chiếc áo. Con sẽ mặc nó đi đâu?"
   },
   "sources": [
-    "unesco-ich-vn"
+    "unesco-ich-vn",
+    "ref-67",
+    "ref-73",
+    "ref-74",
+    "ref-79"
   ],
   "check": {
     "pre": {

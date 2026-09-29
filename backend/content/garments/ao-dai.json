@@ -26,7 +26,11 @@
   "must_avoid": ["hanfu cross collar", "Japanese obi", "Korean jeogori ribbon", "Chinese qipao styling"],
   "reference_image": "ref/ao-dai.png",
   "hot_weather_tip": "Áo dài vải lụa mỏng hoặc voan nhẹ vẫn giữ hai tà và đường xẻ.",
-  "wearing_steps": [],
+  "wearing_steps": [
+    {"title": "Mặc quần", "detail": "Quần dài, thường trắng hoặc cùng màu áo."},
+    {"title": "Mặc áo", "detail": "Cài khuy hoặc kéo khóa bên sườn phải cho áo ôm vừa người."},
+    {"title": "Chỉnh hai tà", "detail": "Vuốt thẳng tà trước và tà sau, đường xẻ nằm đúng hai bên hông."}
+  ],
   "sources": ["ref-04", "ref-08", "research-6"],
   "verified": false
 }
