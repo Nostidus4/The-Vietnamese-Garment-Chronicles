@@ -156,6 +156,11 @@ export function TryOnPanel({
           Dán ảnh vào sổ của Bà →
         </a>
       )}
+      {saved && (
+        <a href="#shops" className="block text-sm underline">
+          Muốn mặc thật? Xem nơi thuê hoặc may ↓
+        </a>
+      )}
     </section>
   );
 }
