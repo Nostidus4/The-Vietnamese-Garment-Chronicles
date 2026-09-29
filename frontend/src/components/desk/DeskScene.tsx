@@ -16,6 +16,8 @@ import Flipbook, { WelcomeBody, type Resume } from "../book/Flipbook";
 import { VietnamMap } from "../book/VietnamMap";
 import { pageSize, useBookScale, useViewport } from "@/lib/bookScale";
 import { BookSizeControl } from "./BookSizeControl";
+import { useDuKy } from "@/lib/dukyBook";
+import { DuKyCover } from "../duky/DuKyCover";
 
 type Landing = "flash" | "soft";
 type Phase = "landing" | "closed" | "opening" | "open" | "closing";
@@ -204,6 +206,7 @@ export function DeskScene({
       />
       {!reduced && <SunDust />}
       <DeskProps />
+      <DuKyOnDesk />
 
       {/* the real flipbook, mounted as soon as the cover starts moving so it is fully laid out before the hand-over */}
       {(prepared || phase === "open") && (
@@ -462,6 +465,25 @@ function DeskProps() {
         />
       </div>
     </div>
+  );
+}
+
+/** The reader's own notebook lies on the table too, in the colour they chose: a way to /du-ky. */
+function DuKyOnDesk() {
+  const { cover, pages } = useDuKy();
+  return (
+    <a
+      href="/du-ky"
+      className="group absolute bottom-[6%] left-[4%] z-10 hidden w-[8vw] min-w-[86px] max-w-[132px] rotate-[8deg] transition-transform hover:-translate-y-1 hover:rotate-[5deg] md:block"
+      aria-label="Mở Du Ký của con"
+    >
+      <div className="relative aspect-[3/4] shadow-[10px_16px_22px_rgba(20,8,0,0.55)]">
+        <DuKyCover name={cover.name} color={cover.color} />
+      </div>
+      <span className="font-hand mt-2 block text-center text-[#F3EAD7]/85 group-hover:text-[#F3EAD7]">
+        Du Ký của con{pages.length ? ` · ${pages.length}` : ""}
+      </span>
+    </a>
   );
 }
 

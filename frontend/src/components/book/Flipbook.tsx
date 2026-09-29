@@ -7,6 +7,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Bootstrap } from "@/lib/types";
 import {
   ArriveDiary,
+  AskDiary,
   BlankPage,
   Bookmarks,
   FestivalDiary,
@@ -22,8 +23,8 @@ import { Page } from "./Page";
 import { VietnamMap } from "./VietnamMap";
 
 // The page count never changes (page-flip keeps the DOM nodes it was given); only what is written on them does.
-// map · Đến · Nhìn quanh · Nếp sống · Lễ hội · Mặc ×2 · Trang của con
-const PAGES = 8;
+// map · Đến · Nhìn quanh · Nếp sống · Lễ hội · Mặc ×3 · Bà hỏi con · Trang của con (Huế is the longest)
+const PAGES = 10;
 
 // where the reader is, kept across a rebuild of the book (a new size means a new page-flip instance)
 const memo = { focus: null as string | null, page: 0 };
@@ -100,6 +101,10 @@ export default function Flipbook({
         <WearDiary region={region} index={i} data={data} onTry={tryOn} />,
       ),
     );
+    if (j.check && region.status === "open") {
+      tabs.push({ label: "Bà hỏi", page: content.length + 2 });
+      content.push(<AskDiary key={`ask-${region.id}`} region={region} />);
+    }
     tabs.push({
       label: region.status === "open" ? "Trang của con" : "Trang để trống",
       page: content.length + 2,
@@ -319,7 +324,7 @@ export default function Flipbook({
         {Array.from({ length: PAGES - 2 }, (_, i) => (
           <Page key={`p${i + 2}`} className="flex flex-col p-[8%]">
             {/* text fields and buttons inside a diary page must not start a page turn */}
-            <MaybeNoTurn block={i === content.length - 1}>
+            <MaybeNoTurn block={i >= content.length - 2}>
               {content[i] ?? <BlankPage />}
             </MaybeNoTurn>
           </Page>
@@ -367,7 +372,7 @@ export default function Flipbook({
 }
 
 /** Pressing or dragging inside this area never starts a page turn (the map needs its clicks and hovers). */
-function NoPageTurn({ children }: { children: ReactNode }) {
+export function NoPageTurn({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current;
