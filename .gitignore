@@ -12,3 +12,6 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+
+# anonymous events written locally when Supabase is not configured
+backend/data/

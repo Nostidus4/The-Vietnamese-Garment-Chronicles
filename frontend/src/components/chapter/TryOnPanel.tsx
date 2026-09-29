@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { API_URL, serverReady, tryOn } from "@/lib/api";
 import { saveToDuKy } from "@/lib/duky";
+import { track } from "@/lib/track";
 import { sourceOf } from "@/lib/sources";
 import type { Bootstrap, CompassState, Selection, TryOnResult } from "@/lib/types";
 
@@ -63,9 +64,13 @@ export function TryOnPanel({
     try {
       // a sleeping server must wake before the try-on clock starts, or the first try falls back
       if (!(await serverReady())) throw new Error("Máy chủ chưa thức dậy. Bạn thử lại sau ít phút nhé.");
-      setResult(
-        await tryOn(selection, photo ? { photo } : { avatarId: "default" }),
-      );
+      const r = await tryOn(selection, photo ? { photo } : { avatarId: "default" });
+      setResult(r);
+      track("tryon", {
+        garment_id: r.rendered_selection.garment_id,
+        alternative: r.rendered_alternative,
+        sample: !r.image_base64 && !!r.fallback_url,
+      });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Không dựng được ảnh");
     } finally {
@@ -134,6 +139,7 @@ export function TryOnPanel({
               label: saveLabel, // the alternative is saved with the verdict of what was actually rendered
               sample: isSample,
             });
+            track("duky_save", { kind: "ai", garment_id: result.rendered_selection.garment_id });
             setSaved(true);
           }}
           className="rounded-full border border-stone-800 px-4 py-2 text-sm"

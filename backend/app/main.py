@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .config import settings
 from .content import store
-from .routers import admin, content, extras, styling
+from .routers import admin, content, events, extras, styling
 from .services.gemini_client import get_client
 
 
@@ -31,7 +31,7 @@ app.add_middleware(
 )
 app.mount("/media", StaticFiles(directory=store.CONTENT_DIR / "media"), name="media")
 
-for r in (content.router, styling.router, extras.router, admin.router):
+for r in (content.router, styling.router, extras.router, admin.router, events.router):
     app.include_router(r)
 
 

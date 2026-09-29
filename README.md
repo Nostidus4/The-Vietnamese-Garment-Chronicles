@@ -188,6 +188,12 @@ Dữ liệu chính nằm trong `backend/content/`.
 
 - Frontend: có thể triển khai trên Vercel với root directory là `frontend` và biến `NEXT_PUBLIC_API_URL` trỏ tới backend public.
 - Backend: có thể triển khai trên Render hoặc Railway bằng lệnh `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
+- **Sự kiện ẩn danh cho phần Impact (`POST /events`):**
+  1. Supabase → SQL Editor → chạy `backend/supabase/events.sql` (tạo bảng `events`, bật RLS, không có policy nên key công khai không đọc/ghi được).
+  2. Thêm `SUPABASE_URL` và `SUPABASE_SERVICE_ROLE_KEY` vào biến môi trường của backend trên Render (và `backend/.env` nếu muốn thử local với Supabase).
+  3. Xem số liệu: `python -m scripts.event_stats` (tỉ lệ chọn đúng dịp, điểm quiz trước/sau, tỉ lệ look ⚠️/⛔ được sửa). Thêm `--json` để lấy số thô.
+  - Không cấu hình Supabase thì sự kiện ghi vào `backend/data/events.jsonl` (không commit), chỉ để thử local.
+  - Không lưu IP; nếu muốn log của Render cũng không có IP, chạy uvicorn với `--no-access-log`.
 - **Giữ backend Render luôn thức:** workflow `.github/workflows/keep-awake.yml` ping `/health` mỗi 10 phút.
   - Bật: GitHub → Settings → Secrets and variables → Actions → **Variables** → thêm `BACKEND_URL` = URL Render (không có `/` ở cuối). Có thể bấm "Run workflow" để thử ngay.
   - Tắt: xóa biến `BACKEND_URL`, hoặc vào tab Actions → "Keep backend awake" → Disable workflow.
