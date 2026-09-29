@@ -22,7 +22,11 @@
   "must_avoid": ["Japanese obi", "hanfu elements"],
   "reference_image": "ref/ao-ba-ba.png",
   "hot_weather_tip": "Áo bà ba vốn đã hợp trời nóng – chọn cotton hoặc lụa mỏng.",
-  "wearing_steps": [],
+  "wearing_steps": [
+    {"title": "Mặc quần", "detail": "Quần dài ống rộng cho dễ ngồi, dễ lội nước."},
+    {"title": "Mặc áo", "detail": "Cài hàng khuy chạy dọc giữa thân trước."},
+    {"title": "Khăn rằn", "detail": "Quàng cổ hoặc trùm đầu khi ra nắng, đội thêm nón lá."}
+  ],
   "sources": ["research-5-3", "ref-01"],
   "verified": false
 }

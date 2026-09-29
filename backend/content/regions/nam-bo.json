@@ -101,6 +101,12 @@
         "kind": "dish",
         "title": "Canh chua cá linh",
         "text": "Cá linh non mùa nước nổi, bông điên điển vàng, vị chua của me. Ăn một lần là nhớ."
+      },
+      {
+        "id": "lanh-my-a",
+        "kind": "custom",
+        "title": "Quần lãnh đen bóng",
+        "text": "Chị chủ nhà có một chiếc quần lãnh Mỹ A, chỉ mặc ngày Tết. Chị kể lụa ấy dệt ở Tân Châu, nhuộm bằng trái mặc nưa, nhuộm rồi phơi hàng chục lượt mới đen bóng như vậy."
       }
     ],
     "teo": [
@@ -111,8 +117,16 @@
         ],
         "verified": false,
         "unesco": 2013
+      },
+      {
+        "text": "Lãnh Mỹ A là lụa tơ tằm Tân Châu (An Giang), nhuộm đen bằng nhựa trái mặc nưa qua nhiều lượt ngâm, phơi.",
+        "sources": [
+          "ref-67"
+        ],
+        "verified": false
       }
-    ]
+    ],
+    "ti": "Màu đen bóng ấy là từ trái cây. Mình cứ tưởng là thuốc nhuộm hóa học."
   },
   "festivals": {
     "date": "Núi Sam, cuối tháng Tư",
@@ -188,6 +202,7 @@
     "invite": "Miền Tây tặng Bà một chiếc áo. Con sẽ mặc nó đi đâu?"
   },
   "sources": [
-    "unesco-ich-vn"
+    "unesco-ich-vn",
+    "ref-67"
   ]
 }

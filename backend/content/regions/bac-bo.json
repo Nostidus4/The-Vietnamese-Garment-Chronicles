@@ -102,6 +102,12 @@
         "kind": "dish",
         "title": "Cốm gói lá sen",
         "text": "Hạt cốm xanh non, dẻo, gói trong lá sen cho giữ mùi. Mùa thu Hà Nội có cốm là đủ."
+      },
+      {
+        "id": "nhuom-cu-nau",
+        "kind": "custom",
+        "title": "Nhuộm áo bằng củ nâu",
+        "text": "Mẹ gọt củ nâu, giã lấy nước, ngâm vải rồi đem phơi, ngâm rồi lại phơi, mấy lượt mới lên màu. Vải nhuộm nâu cứng lại, mặc ra đồng mấy mùa vẫn bền."
       }
     ],
     "teo": [
@@ -109,12 +115,20 @@
         "text": "Người Việt coi trầu cau là lễ vật không thể thiếu trong lễ hỏi, lễ cưới.",
         "sources": [],
         "verified": false
+      },
+      {
+        "text": "Củ nâu là thuốc nhuộm dân gian: vải ngâm nước củ nâu nhiều lượt sẽ lên màu nâu bền, cứng vải.",
+        "sources": [
+          "ref-69"
+        ],
+        "verified": false
       }
-    ]
+    ],
+    "ti": "Màu nâu của áo tứ thân là từ củ nâu thật. Mình cứ tưởng chỉ là tên một màu."
   },
   "festivals": {
     "date": "Hội Lim, ngày 13 tháng Giêng",
-    "entry": "Năm ấy tôi theo chị họ đi hội Lim. Các liền anh đội khăn xếp, các liền chị đội nón quai thao, hát đối đáp với nhau từ trên thuyền. Tôi đứng nghe mãi không muốn về. Một liền chị mời tôi miếng trầu, cười bảo: “Em đi hội mà mặc áo đẹp thế này, ai cũng tưởng em là người hát đấy.”",
+    "entry": "Năm ấy tôi theo chị họ đi hội Lim. Các liền anh mặc áo the đen, đội khăn xếp, cầm ô. Các liền chị mặc áo mớ ba, vấn khăn mỏ quạ, đội nón quai thao, hát đối đáp với nhau từ trên thuyền. Tôi đứng nghe mãi không muốn về. Một liền chị mời tôi miếng trầu, cười bảo: “Em đi hội mà mặc áo đẹp thế này, ai cũng tưởng em là người hát đấy.”",
     "keepsake": "ticket",
     "festivals": [
       {
@@ -168,7 +182,8 @@
         "unesco": 2012
       }
     ],
-    "bridge": "Ngày hội, các liền chị mặc áo tứ thân đẹp nhất nhà. Lật trang đi, Bà kể con nghe chiếc áo ấy."
+    "bridge": "Ngày hội, các liền chị mặc mấy lớp áo đẹp nhất nhà. Lật trang đi, Bà kể con nghe chiếc áo tứ thân.",
+    "ti": "Liền anh cũng mặc áo dài, đội khăn xếp. Hóa ra cổ phục đâu chỉ dành cho con gái."
   },
   "wear": [
     {
@@ -197,6 +212,8 @@
   },
   "sources": [
     "unesco-ich-vn",
-    "unesco-whc-vn"
+    "unesco-whc-vn",
+    "ref-69",
+    "ref-68"
   ]
 }

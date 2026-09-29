@@ -24,7 +24,13 @@
   "must_avoid": ["hanfu cross collar", "Japanese obi"],
   "reference_image": "ref/ao-tu-than.png",
   "hot_weather_tip": "Chọn vải lanh hoặc cotton mỏng – vẫn giữ bốn thân áo, đây là cách tân có chủ đích.",
-  "wearing_steps": [],
+  "wearing_steps": [
+    {"title": "Mặc yếm", "detail": "Yếm là lớp trong cùng, buộc dây sau cổ và sau lưng."},
+    {"title": "Mặc váy hoặc quần", "detail": "Ngày xưa là váy dài đen; ngày nay có thể thay bằng quần dài."},
+    {"title": "Khoác áo tứ thân", "detail": "Hai vạt trước để thả hoặc buộc lại với nhau trước bụng, để lộ yếm."},
+    {"title": "Thắt lưng", "detail": "Thắt lưng lụa buộc ngang eo, để hai đầu buông xuống phía trước."},
+    {"title": "Khăn và nón", "detail": "Vấn khăn mỏ quạ, đi hội thì đội thêm nón quai thao."}
+  ],
   "sources": ["research-5-3", "ref-01"],
   "verified": false
 }
