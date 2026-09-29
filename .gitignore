@@ -15,3 +15,6 @@ __pycache__/
 
 # anonymous events written locally when Supabase is not configured
 backend/data/
+# voice-over drafts: candidates and voice-design samples are for /voice-review only, never shipped
+frontend/public/opening/voice-*/_candidates/
+frontend/public/opening/voice-design/
