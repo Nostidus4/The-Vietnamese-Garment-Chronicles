@@ -5,11 +5,15 @@
 //   with sources) · at most one pencil thought from Tí · one keepsake glued on the page.
 // All words come from backend/content/regions/<id>.json.
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useState, type ReactNode } from "react";
-import { latestPhoto, loadOwn, saveOwn, type OwnPage } from "@/lib/own";
+import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState, type ReactNode } from "react";
+import { ensureMigrated, pagesOf, useDuKy } from "@/lib/dukyBook";
+import { markStamp } from "@/lib/stamps";
+import { track } from "@/lib/track";
+import { Photo as DuKyPhoto } from "../duky/DuKyPageView";
 import type {
   Bootstrap,
+  CheckQuestion,
   DiaryPage,
   Frame,
   Garment,
@@ -373,6 +377,12 @@ export function ArriveDiary({
   const reduced = !!useReducedMotion();
   const j = region.journey!;
   const sheet = FOCUS[region.id];
+  const pre = j.check?.pre;
+  const [asking, setAsking] = useState(() => !!pre && (pre.verified || DRAFT) && !preAsked(region.id));
+  useEffect(() => {
+    if (!asking) markStamp("arrived", region.id); // "đã đến": the reader has opened this region's first entry
+  }, [asking, region.id]);
+  if (asking) return <PreQuestion region={region} onDone={() => setAsking(false)} />;
   return (
     <Sheet
       page={j.arrive}
@@ -632,8 +642,168 @@ export function WearDiary({
   );
 }
 
+/* ---------- 4½ · Bà hỏi con (#23) ---------- */
+
+/** The choices in a stable shuffled order (the content keeps the right answer first). */
+function shuffled(q: CheckQuestion) {
+  const order = q.choices.map((_, i) => i);
+  const seed = [...q.id].reduce((a, c) => a + c.charCodeAt(0), 0);
+  for (let i = order.length - 1; i > 0; i--) {
+    const k = (seed * (i + 7)) % (i + 1);
+    [order[i], order[k]] = [order[k], order[i]];
+  }
+  return order;
+}
+
+/** One question of Bà: pick, see right or wrong and why. Unverified questions show only while drafting. */
+function Question({
+  q,
+  regionId,
+  phase,
+  onAnswer,
+}: {
+  q: CheckQuestion;
+  regionId: string;
+  phase: "pre" | "post";
+  onAnswer?: (correct: boolean) => void;
+}) {
+  const [picked, setPicked] = useState<number | null>(null);
+  const answered = picked !== null;
+  return (
+    <div className="mt-2">
+      <p className="m-0 text-[0.86rem] leading-snug" style={{ color: YOUNG }}>
+        {q.q}
+      </p>
+      <div className="mt-1 flex flex-col gap-1">
+        {shuffled(q).map((i) => {
+          const right = i === q.answer;
+          const tone = !answered
+            ? "border-stone-300 hover:bg-amber-50"
+            : right
+              ? "border-[#5E7F4A] bg-[#5E7F4A]/10"
+              : picked === i
+                ? "border-[#B5452E] bg-[#B5452E]/10"
+                : "border-stone-200 opacity-60";
+          return (
+            <button
+              key={i}
+              type="button"
+              disabled={answered}
+              onClick={() => {
+                setPicked(i);
+                track("quiz_answer", { phase, item_id: q.id, correct: right, region_id: regionId });
+                onAnswer?.(right);
+              }}
+              className={`rounded border px-2 py-1 text-left text-[0.76rem] leading-snug text-stone-800 ${tone}`}
+            >
+              {answered && right ? "✓ " : answered && picked === i ? "✗ " : ""}
+              {q.choices[i]}
+            </button>
+          );
+        })}
+      </div>
+      {answered && (
+        <p className="font-hand m-0 mt-1 text-[0.92rem] leading-snug" style={{ color: OLD }}>
+          {picked === q.answer ? "Đúng rồi. " : "Chưa đúng. "}
+          {q.explain}
+        </p>
+      )}
+    </div>
+  );
+}
+
+const PRE_KEY = "vpdk-pre-asked";
+function preAsked(regionId: string) {
+  try {
+    return (JSON.parse(localStorage.getItem(PRE_KEY) ?? "[]") as string[]).includes(regionId);
+  } catch {
+    return true;
+  }
+}
+function setPreAsked(regionId: string) {
+  try {
+    const s = JSON.parse(localStorage.getItem(PRE_KEY) ?? "[]") as string[];
+    localStorage.setItem(PRE_KEY, JSON.stringify([...new Set([...s, regionId])]));
+  } catch {
+    // private mode: asked again next time
+  }
+}
+
+/** Before the "Đến" entry, once per region: Bà asks what the reader already guesses. */
+function PreQuestion({ region, onDone }: { region: Region; onDone: () => void }) {
+  const q = region.journey!.check!.pre;
+  const [answered, setAnswered] = useState(false);
+  const done = () => {
+    setPreAsked(region.id);
+    onDone();
+  };
+  return (
+    <div className="flex h-full flex-col">
+      <p className="m-0 text-[0.62rem] tracking-[0.3em] text-stone-500">TRƯỚC KHI ĐỌC</p>
+      <p className="font-hand m-0 mt-1 text-[1.2rem] leading-snug" style={{ color: OLD }}>
+        Con đoán thử xem, rồi mình cùng đọc. — Bà
+      </p>
+      <Question q={q} regionId={region.id} phase="pre" onAnswer={() => setAnswered(true)} />
+      <div className="mt-auto flex items-center gap-4 pt-3">
+        {answered ? (
+          <button type="button" onClick={done} className="rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
+            Đọc nhật ký →
+          </button>
+        ) : (
+          <button type="button" onClick={done} className="text-sm text-stone-500 underline">
+            Bỏ qua
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** "Bà hỏi con": three questions after reading; answering all of them earns the "đã hiểu" stamp. */
+export function AskDiary({ region }: { region: Region }) {
+  const qs = region.journey!.check!.post.filter((q) => q.verified || DRAFT);
+  const [count, setCount] = useState(0);
+  const all = count >= qs.length && qs.length > 0;
+  return (
+    <div className="relative flex h-full flex-col">
+      <p className="font-hand m-0 text-[1.2rem] leading-snug" style={{ color: OLD }}>
+        Đọc xong rồi, Bà hỏi con mấy câu nhé.
+      </p>
+      <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+        {qs.map((q) => (
+          <Question
+            key={q.id}
+            q={q}
+            regionId={region.id}
+            phase="post"
+            onAnswer={() =>
+              setCount((c) => {
+                if (c + 1 >= qs.length) markStamp("understood", region.id);
+                return c + 1;
+              })
+            }
+          />
+        ))}
+        {qs.length === 0 && <p className="text-sm text-stone-500">Câu hỏi đang được kiểm tra lại.</p>}
+      </div>
+      {all && (
+        <motion.div
+          className="pointer-events-none absolute right-[2%] top-[-2%] flex h-[3.6rem] w-[3.6rem] rotate-[12deg] flex-col items-center justify-center rounded-full border-[2.5px] border-[#5E7F4A]/80 text-center text-[#5E7F4A]"
+          initial={{ opacity: 0, scale: 1.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 420, damping: 16 }}
+        >
+          <span className="text-[0.45rem] tracking-[0.2em]">ĐÃ HIỂU</span>
+          <span className="font-display px-1 text-[0.6rem] leading-tight">{place(region)}</span>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
 /* ---------- 5 · Trang của con ---------- */
 
+/** Bà's blank page now points to the reader's own notebook: the newest Du Ký page of this region. */
 export function OwnDiary({
   region,
   data,
@@ -645,21 +815,15 @@ export function OwnDiary({
 }) {
   const j = region.journey!;
   const open = region.status === "open";
-  const [own, setOwn] = useState<OwnPage>(
-    () => loadOwn(region.id) ?? { text: "", sample: null },
-  );
-  const [photo] = useState(() => (open ? latestPhoto(region.garments) : null));
+  const book = useDuKy();
+  useEffect(() => {
+    ensureMigrated(data.garments);
+  }, [data.garments]);
+  const latest = pagesOf(book, region.id)[0];
   const garments = region.garments
     .map((id) => data.garments.find((g) => g.id === id))
     .filter((g) => !!g);
-  const update = (next: OwnPage) => {
-    setOwn(next);
-    saveOwn(region.id, next);
-  };
-  const sample = own.sample
-    ? data.garments.find((g) => g.id === own.sample)
-    : undefined;
-  const done = !!(photo || sample);
+  const worn = latest?.photos.some((p) => p.kind === "real");
 
   return (
     <div
@@ -678,90 +842,52 @@ export function OwnDiary({
 
       {open && (
         <>
-          <div className="mt-4 flex flex-1 items-start justify-center">
-            <AnimatePresence mode="wait">
-              {photo ? (
-                <motion.figure
-                  key="photo"
-                  className="relative m-0 w-[62%] rotate-[-2.5deg] bg-white p-2 pb-6 shadow-[0_8px_18px_rgba(60,35,10,0.3)]"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element -- a data URL from the try-on */}
-                  <img
-                    src={photo.image}
-                    alt="Ảnh con mặc thử"
-                    className="block aspect-[3/4] w-full object-cover"
-                  />
-                  <figcaption className="font-hand absolute bottom-1 left-0 right-0 text-center text-[0.8rem] text-stone-600">
-                    {photo.label ?? ""}
-                  </figcaption>
-                </motion.figure>
-              ) : sample ? (
-                <motion.div
-                  key="sample"
-                  className="w-[58%] rotate-[2deg] bg-[#fbf6ea] p-3 text-center shadow-[0_6px_14px_rgba(60,35,10,0.25)]"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <SampleFigure
-                    color={
-                      sample.default_colors
-                        .map((c) => data.colors[c]?.hex)
-                        .find(Boolean) ?? "#6fb3d8"
-                    }
-                  />
-                  <p className="font-hand m-0 mt-1 text-[0.85rem] text-stone-600">
-                    Con mặc {sample.name_vi}
-                  </p>
-                </motion.div>
-              ) : (
-                <div
-                  key="empty"
-                  className="flex w-[62%] flex-col items-center gap-2 border-2 border-dashed border-stone-300 p-4 text-center"
-                >
-                  <p className="m-0 text-[0.72rem] text-stone-500">
-                    Chỗ dán ảnh
-                  </p>
-                  {garments.map((g) => (
-                    <button
-                      key={g.id}
-                      type="button"
-                      onClick={() => onTry?.(g.id)}
-                      className="w-full rounded-full bg-[#27354f] px-3 py-1.5 text-[0.75rem] text-amber-50"
-                    >
-                      Mặc thử {g.name_vi}
-                    </button>
-                  ))}
+          <div className="mt-4 flex flex-1 flex-col items-center justify-start">
+            {latest ? (
+              <motion.div
+                key={latest.id}
+                className="w-[62%]"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                {latest.photos.length > 0 ? (
+                  <DuKyPhoto photo={latest.photos[latest.photos.length - 1]} className="rotate-[-2.5deg]" />
+                ) : (
+                  <p className="m-0 border-2 border-dashed border-stone-300 p-4 text-center text-[0.72rem] text-stone-500">Chưa có ảnh</p>
+                )}
+                <p className="font-hand m-0 mt-2 text-center text-[0.95rem]" style={{ color: "#1f3a78" }}>
+                  {latest.note ||
+                    `${data.garments.find((g) => g.id === latest.garment_id)?.name_vi ?? ""} · ${latest.status === "planned" ? "sắp đi" : "đã mặc"}`}
+                </p>
+              </motion.div>
+            ) : (
+              <div className="flex w-[62%] flex-col items-center gap-2 border-2 border-dashed border-stone-300 p-4 text-center">
+                <p className="m-0 text-[0.72rem] text-stone-500">Chỗ dán ảnh</p>
+                {garments.map((g) => (
                   <button
+                    key={g.id}
                     type="button"
-                    onClick={() =>
-                      update({ ...own, sample: garments[0]?.id ?? null })
-                    }
-                    className="text-[0.7rem] text-stone-600 underline"
+                    onClick={() => onTry?.(g.id)}
+                    className="w-full rounded-full bg-[#27354f] px-3 py-1.5 text-[0.75rem] text-amber-50"
                   >
-                    Không dùng ảnh, dán hình mẫu
+                    Mặc thử {g.name_vi}
                   </button>
-                </div>
-              )}
-            </AnimatePresence>
+                ))}
+              </div>
+            )}
           </div>
-          <label className="mt-3 block">
-            <span className="sr-only">Một dòng của con</span>
-            <input
-              value={own.text}
-              onChange={(e) =>
-                update({ ...own, text: e.target.value.slice(0, 90) })
-              }
-              placeholder="Viết một dòng của con…"
-              className="font-hand w-full border-0 border-b border-stone-400 bg-transparent text-[1.05rem] outline-none placeholder:text-stone-400"
-              style={{ color: "#1f3a78" }}
-            />
-          </label>
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+            <a href={`/du-ky?new=worn&region=${region.id}`} className="text-[0.78rem] text-stone-700 underline">
+              + Trang đã mặc
+            </a>
+            <a href={`/du-ky?region=${region.id}`} className="font-hand text-[1.05rem] text-[#8a4b2a] underline">
+              Mở Du Ký của con →
+            </a>
+          </div>
           <p className="m-0 mt-1 text-[0.55rem] text-stone-400">
-            Trang này chỉ lưu trên máy của con.
+            Du Ký chỉ lưu trên máy của con.
           </p>
-          {done && (
+          {worn && (
             <div className="pointer-events-none absolute right-[4%] top-[10%] flex h-[3.9rem] w-[3.9rem] rotate-[10deg] flex-col items-center justify-center rounded-full border-[2.5px] border-[#2F4A6D]/70 text-center text-[#2F4A6D]/80">
               <span className="text-[0.48rem] tracking-[0.2em]">ĐÃ MẶC</span>
               <span className="font-display px-1 text-[0.62rem] leading-tight">
@@ -772,28 +898,6 @@ export function OwnDiary({
         </>
       )}
     </div>
-  );
-}
-
-/** A simple ink figure wearing the garment's colour, for readers who prefer not to use a photo. */
-function SampleFigure({ color }: { color: string }) {
-  return (
-    <svg viewBox="0 0 60 90" className="mx-auto h-28" aria-hidden>
-      <circle cx="30" cy="12" r="7" fill="#3b2a1e" />
-      <path
-        d="M22 22 L38 22 L44 58 L40 86 L20 86 L16 58z"
-        fill={color}
-        stroke="#3b2a1e"
-        strokeWidth="1"
-      />
-      <path
-        d="M22 24 L10 48 M38 24 L50 48"
-        stroke={color}
-        strokeWidth="6"
-        strokeLinecap="round"
-      />
-      <path d="M30 22 L30 86" stroke="rgba(0,0,0,0.15)" strokeWidth="1" />
-    </svg>
   );
 }
 

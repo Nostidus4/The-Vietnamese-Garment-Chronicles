@@ -208,6 +208,23 @@ class OwnPage(Strict):
     invite: str = Field(description="Old Bà's line on the blank page, e.g. 'Trang này để con viết.'")
 
 
+class CheckQuestion(Strict):
+    """A question from Bà about what the reader just read (ticket #23). The page shuffles the choices."""
+
+    id: Id = Field(pattern=ID_PATTERN)
+    q: str = Field(max_length=200)
+    choices: list[str] = Field(min_length=2, max_length=4)
+    answer: int = Field(ge=0, description="Index of the right choice")
+    explain: str = Field(max_length=300, description="Bà's reply once answered")
+    sources: list[Id] = []
+    verified: bool = False
+
+
+class RegionCheck(Strict):
+    pre: CheckQuestion = Field(description="One quick guess before reading the diary (measures 'before')")
+    post: list[CheckQuestion] = Field(min_length=3, max_length=3, description="'Bà hỏi con': climate → garment, festival, what to keep")
+
+
 class Journey(Strict):
     hover_line: str = Field(max_length=140, description="One line from the diary, shown when the region is hovered")
     arrive: ArrivePage
@@ -216,6 +233,7 @@ class Journey(Strict):
     festivals: FestivalPage | None = None
     wear: list[WearPage] = Field(default_factory=list, max_length=2)
     own: OwnPage
+    check: RegionCheck | None = None
     sources: list[Id] = []
 
 

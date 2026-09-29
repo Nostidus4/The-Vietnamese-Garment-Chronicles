@@ -226,6 +226,17 @@ def _check_refs(c: Content, r: Report) -> None:
                 need([wp.garment], c.garments, wj, "garment")
                 if wp.garment not in reg.garments:
                     r.errors.append(f"{wj}: wear page garment '{wp.garment}' is not listed for this region")
+        if j.check:
+            if reg.status == "locked":
+                r.errors.append(f"{wj}: locked region must not have 'check'")
+            for q in [j.check.pre, *j.check.post]:
+                if q.answer >= len(q.choices):
+                    r.errors.append(f"{wj} [{q.id}]: answer {q.answer} has no matching choice")
+                need(q.sources, c.sources, wj, "source")
+                if not q.verified:
+                    r.warnings.append(f"{wj} [{q.id}]: question not verified")
+        elif reg.status == "open":
+            r.warnings.append(f"{wj}: no 'Bà hỏi con' questions yet (check)")
         for f in j.look.frames:
             if f.image and frontend_public.exists() and not (frontend_public / f.image.lstrip("/")).is_file():
                 r.warnings.append(f"{wj}: frame image not found at frontend/public{f.image}")

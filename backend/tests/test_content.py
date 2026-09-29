@@ -93,3 +93,19 @@ def test_journey_file_needs_a_known_region(tmp_path):
     (root / "regions" / "khong-co.json").write_text("{}")
     _, rep = store.load(root)
     assert any("no region 'khong-co'" in e for e in rep.errors)
+
+
+def test_region_check_answer_must_exist(tmp_path):
+    root = _copy(tmp_path)
+    p = root / "regions" / "hue.json"
+    data = json.loads(p.read_text())
+    data["check"]["post"][0]["answer"] = 9
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    _, rep = store.load(root)
+    assert any("answer 9 has no matching choice" in e for e in rep.errors)
+
+
+def test_open_regions_have_three_questions(content):
+    for reg in content.regions.values():
+        if reg.status == "open":
+            assert reg.journey.check and len(reg.journey.check.post) == 3

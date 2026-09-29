@@ -210,5 +210,61 @@
     "ref-73",
     "ref-74",
     "ref-79"
-  ]
+  ],
+  "check": {
+    "pre": {
+      "id": "nb-pre",
+      "q": "Con đoán xem: vì sao áo bà ba ngắn qua hông, không có tà dài?",
+      "choices": [
+        "Để ngồi xuồng, lội nước không vướng",
+        "Để tiết kiệm vải",
+        "Vì ai cũng thích áo ngắn"
+      ],
+      "answer": 0,
+      "explain": "Người miền Tây ngồi xuồng, lội ruộng cả ngày, áo ngắn thì không vướng víu.",
+      "sources": [],
+      "verified": false
+    },
+    "post": [
+      {
+        "id": "nb-khan-ran",
+        "q": "Khăn rằn của người Nam Bộ dùng để làm gì?",
+        "choices": [
+          "Che nắng, lau mồ hôi, việc gì cũng dùng được",
+          "Chỉ để trang trí",
+          "Để đựng tiền"
+        ],
+        "answer": 0,
+        "explain": "Đúng vậy, chiếc khăn rằn là người bạn đi đồng của người miền Tây.",
+        "sources": [],
+        "verified": false
+      },
+      {
+        "id": "nb-don-ca",
+        "q": "Đờn ca tài tử thường diễn ra ở đâu?",
+        "choices": [
+          "Dưới hiên nhà, sau giờ làm đồng",
+          "Chỉ trong nhà hát lớn",
+          "Chỉ trong chùa"
+        ],
+        "answer": 0,
+        "explain": "Một cây đàn kìm, một cây đàn tranh, vài người bạn dưới hiên nhà là đủ.",
+        "sources": [],
+        "verified": false
+      },
+      {
+        "id": "nb-giu",
+        "q": "Khi phối áo bà ba theo cách của con, phần nào nên giữ?",
+        "choices": [
+          "Dáng áo ngắn, xẻ hông",
+          "Màu vải",
+          "Chất liệu"
+        ],
+        "answer": 0,
+        "explain": "Màu và chất liệu con cứ đổi, còn dáng áo ngắn xẻ hông thì giữ lại.",
+        "sources": [],
+        "verified": false
+      }
+    ]
+  }
 }

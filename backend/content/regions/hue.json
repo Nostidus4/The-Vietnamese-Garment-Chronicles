@@ -220,5 +220,61 @@
     "ref-71",
     "ref-72",
     "ref-76"
-  ]
+  ],
+  "check": {
+    "pre": {
+      "id": "hue-pre",
+      "q": "Con đoán xem: vì sao ở Huế, nón lá gần như luôn đi cùng áo dài?",
+      "choices": [
+        "Vì Huế nắng gắt và mưa dầm",
+        "Vì luật bắt buộc phải đội",
+        "Vì nón lá dùng để đựng đồ"
+      ],
+      "answer": 0,
+      "explain": "Huế nắng gắt mà mưa cũng dầm, chiếc nón lá che được cả hai.",
+      "sources": [],
+      "verified": false
+    },
+    "post": [
+      {
+        "id": "hue-ngu-than",
+        "q": "Áo ngũ thân có mấy thân áo?",
+        "choices": [
+          "Năm",
+          "Bốn",
+          "Hai"
+        ],
+        "answer": 0,
+        "explain": "Năm thân, đúng như cái tên. Đó là phần nên giữ khi phối.",
+        "sources": [],
+        "verified": false
+      },
+      {
+        "id": "hue-bai-choi",
+        "q": "Bài chòi là gì?",
+        "choices": [
+          "Trò chơi và hát diễn dân gian dịp Tết ở Trung Bộ",
+          "Một món ăn của Huế",
+          "Một kiểu áo dài"
+        ],
+        "answer": 0,
+        "explain": "Người chơi ngồi trong chòi tre, chờ anh hiệu hô trúng con bài của mình. Vừa là trò chơi vừa là buổi diễn.",
+        "sources": [],
+        "verified": false
+      },
+      {
+        "id": "hue-nong",
+        "q": "Trời nóng mà vẫn muốn mặc áo ngũ thân, con nên làm gì?",
+        "choices": [
+          "Chọn vải mỏng, thoáng và giữ đủ năm thân",
+          "Cắt ngắn áo cho mát",
+          "Bỏ phần cổ áo"
+        ],
+        "answer": 0,
+        "explain": "Đổi chất vải là cách tân có chủ đích; còn năm thân và cổ áo thì giữ lại.",
+        "sources": [],
+        "verified": false
+      }
+    ]
+  }
 }

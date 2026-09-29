@@ -14,26 +14,21 @@ import type { Bootstrap } from "@/lib/types";
 import { BookCover } from "../book/BookCover";
 import Flipbook, { WelcomeBody, type Resume } from "../book/Flipbook";
 import { VietnamMap } from "../book/VietnamMap";
+import { pageSize, useBookScale, useViewport } from "@/lib/bookScale";
+import { BookSizeControl } from "./BookSizeControl";
+import { useDuKy } from "@/lib/dukyBook";
+import { DuKyCover } from "../duky/DuKyCover";
 
 type Landing = "flash" | "soft";
 type Phase = "landing" | "closed" | "opening" | "open" | "closing";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-/** Page size that lets the open spread (two pages) fit the screen. */
+/** Page size that lets the open spread (two pages) fit the screen, scaled by the reader's choice (#22). */
 function usePageSize() {
-  const [vp, setVp] = useState({ w: 1440, h: 900 });
-  useEffect(() => {
-    const on = () => setVp({ w: window.innerWidth, h: window.innerHeight });
-    on();
-    window.addEventListener("resize", on);
-    return () => window.removeEventListener("resize", on);
-  }, []);
-  const portrait = vp.w < 760;
-  const h = portrait
-    ? Math.min(vp.h * 0.7, (vp.w * 0.86) / 0.75)
-    : Math.min(vp.h * 0.76, (vp.w * 0.46) / 0.75);
-  return { w: Math.round(h * 0.75), h: Math.round(h), portrait };
+  const vp = useViewport();
+  const [scale] = useBookScale();
+  return pageSize(vp, scale);
 }
 
 /**
@@ -195,6 +190,7 @@ export function DeskScene({
 
   return (
     <main className="desk fixed inset-0 overflow-hidden">
+      {!size.portrait && <BookSizeControl />}
       <Image
         src="/page/Desk.png"
         alt=""
@@ -210,6 +206,7 @@ export function DeskScene({
       />
       {!reduced && <SunDust />}
       <DeskProps />
+      <DuKyOnDesk />
 
       {/* the real flipbook, mounted as soon as the cover starts moving so it is fully laid out before the hand-over */}
       {(prepared || phase === "open") && (
@@ -229,6 +226,9 @@ export function DeskScene({
               </div>
             )}
             <Flipbook
+              // page-flip measures once: a new size builds a new book, which reopens where the reader was
+              key={`${size.w}x${size.h}`}
+              restore={phase === "open"}
               resume={resume}
               data={data}
               width={size.w}
@@ -465,6 +465,25 @@ function DeskProps() {
         />
       </div>
     </div>
+  );
+}
+
+/** The reader's own notebook lies on the table too, in the colour they chose: a way to /du-ky. */
+function DuKyOnDesk() {
+  const { cover, pages } = useDuKy();
+  return (
+    <a
+      href="/du-ky"
+      className="group absolute bottom-[6%] left-[4%] z-10 hidden w-[8vw] min-w-[86px] max-w-[132px] rotate-[8deg] transition-transform hover:-translate-y-1 hover:rotate-[5deg] md:block"
+      aria-label="Mở Du Ký của con"
+    >
+      <div className="relative aspect-[3/4] shadow-[10px_16px_22px_rgba(20,8,0,0.55)]">
+        <DuKyCover name={cover.name} color={cover.color} />
+      </div>
+      <span className="font-hand mt-2 block text-center text-[#F3EAD7]/85 group-hover:text-[#F3EAD7]">
+        Du Ký của con{pages.length ? ` · ${pages.length}` : ""}
+      </span>
+    </a>
   );
 }
 

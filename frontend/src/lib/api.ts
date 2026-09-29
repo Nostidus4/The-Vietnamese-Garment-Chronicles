@@ -65,6 +65,46 @@ export const getWeather = (regionId: string) =>
     json<{ available: boolean; temperature_c?: number; is_hot?: boolean; tips?: { garment_id: string; tip: string }[] }>(r),
   );
 
+/** Forecast for a given day (Du Ký "Sắp đi"): only 16 days ahead; before that, how many days until it appears. */
+export type DayWeather = {
+  available: boolean;
+  date?: string;
+  max_c?: number;
+  rain_chance?: number | null;
+  is_hot?: boolean;
+  tips?: { garment_id: string; tip: string }[];
+  reason?: "no_point" | "past" | "too_far" | "unreachable";
+  days_until_forecast?: number;
+};
+export const getWeatherOn = (regionId: string, date: string) =>
+  fetch(`${API_URL}/weather/${regionId}?date=${encodeURIComponent(date)}`).then((r) => json<DayWeather>(r));
+
+// ---- public links for one Du Ký page (#27): only month, garment, occasion, note and chosen photos ----
+export type ShareMeta = {
+  region_id: string;
+  garment_id: string;
+  occasion_id: string;
+  month: string;
+  status: "planned" | "worn";
+  note: string;
+  compass_label: string | null;
+  photo_kinds: ("ai" | "real")[];
+  photo_samples: boolean[];
+};
+export type SharedPage = { id: string; meta: ShareMeta; photo_urls: string[]; created_at: string };
+
+export function createShare(meta: ShareMeta, photos: Blob[]) {
+  const form = new FormData();
+  form.append("meta", JSON.stringify(meta));
+  photos.forEach((b, i) => form.append("photos", b, `${i}.${b.type === "image/png" ? "png" : "jpg"}`));
+  return fetch(`${API_URL}/share`, { method: "POST", body: form }).then((r) => json<{ id: string; delete_key: string }>(r));
+}
+export const getShare = (id: string) => fetch(`${API_URL}/share/${encodeURIComponent(id)}`).then((r) => json<SharedPage>(r));
+export const deleteShare = (id: string, key: string) =>
+  fetch(`${API_URL}/share/${encodeURIComponent(id)}`, { method: "DELETE", headers: { "X-Delete-Key": key } }).then((r) => {
+    if (!r.ok && r.status !== 404) throw new Error(`Lỗi ${r.status}`);
+  });
+
 // ---- cold start: the free backend sleeps; wake it once and let everyone wait on the same promise ----
 let readyPromise: Promise<boolean> | null = null;
 /** Resolves true once GET /health answers (polling up to ~2 minutes), false if it never does. */

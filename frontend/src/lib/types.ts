@@ -102,6 +102,22 @@ export interface Journey {
     | null;
   wear: (DiaryPage & { garment: string })[];
   own: { invite: string };
+  check: RegionCheck | null;
+}
+
+// "Bà hỏi con" (#23): one question before reading a region, three after. choices[answer] is right; shuffle to show.
+export interface CheckQuestion {
+  id: string;
+  q: string;
+  choices: string[];
+  answer: number;
+  explain: string;
+  sources: string[];
+  verified: boolean;
+}
+export interface RegionCheck {
+  pre: CheckQuestion;
+  post: CheckQuestion[];
 }
 
 export interface Camera {

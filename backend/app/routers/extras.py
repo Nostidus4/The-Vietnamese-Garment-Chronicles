@@ -1,6 +1,7 @@
 """F5 quiz, F7 shop directory, F4 weather."""
 
 import random
+from datetime import date as date_type
 
 from fastapi import APIRouter, HTTPException, Query
 
@@ -58,8 +59,9 @@ def shops(
 
 
 @router.get("/weather/{region_id}")
-def region_weather(region_id: str) -> dict:
-    out = weather.for_region(region_id)
+def region_weather(region_id: str, date: date_type | None = None) -> dict:
+    """Today's temperature, or with ?date=YYYY-MM-DD the forecast for that day (up to 16 days ahead)."""
+    out = weather.forecast(region_id, date) if date else weather.for_region(region_id)
     if out is None:
         raise HTTPException(404, f"Không có vùng '{region_id}'")
     return out
