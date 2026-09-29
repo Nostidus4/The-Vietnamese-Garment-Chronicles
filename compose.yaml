@@ -7,7 +7,7 @@ services:
     environment:
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GEMINI_IMAGE_MODEL: ${GEMINI_IMAGE_MODEL:-gemini-2.5-flash-image}
-      GEMINI_TEXT_MODEL: ${GEMINI_TEXT_MODEL:-gemini-2.5-flash}
+      GEMINI_TEXT_MODEL: ${GEMINI_TEXT_MODEL:-gemini-3.8-flash}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
       ADMIN_TOKEN: ${ADMIN_TOKEN:-}
       TRYON_PER_MINUTE: ${TRYON_PER_MINUTE:-6}

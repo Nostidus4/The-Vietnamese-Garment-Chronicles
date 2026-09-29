@@ -56,7 +56,7 @@ File `.env` ở thư mục gốc được Docker Compose tự động đọc và
 |---|---|---|
 | `GEMINI_API_KEY` | rỗng | API key dùng cho tính năng AI |
 | `GEMINI_IMAGE_MODEL` | `gemini-2.5-flash-image` | Model tạo ảnh |
-| `GEMINI_TEXT_MODEL` | `gemini-2.5-flash` | Model trả lời văn bản |
+| `GEMINI_TEXT_MODEL` | `gemini-3.8-flash` | Model trả lời văn bản |
 | `NEXT_PUBLIC_API_URL` | `http://localhost:8000` | URL API mà trình duyệt truy cập; được nhúng lúc build frontend |
 | `NEXT_PUBLIC_SUPABASE_URL` | URL dự án Supabase | URL Supabase cho frontend; được nhúng lúc build |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key của dự án | Khóa công khai Supabase cho frontend; được nhúng lúc build |
