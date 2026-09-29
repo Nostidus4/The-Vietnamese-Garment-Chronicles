@@ -138,7 +138,7 @@ function EffectView({ e, reduced }: { e: TimedEffect; reduced: boolean }) {
     case "particles":
       return reduced ? null : <Particles x={e.x} y={e.y} r={e.r} />;
     case "bookmark":
-      return <Bookmark x={e.x} y={e.y} reduced={reduced} />;
+      return <Bookmark x={e.x} y={e.y} rotate={e.rotate} reduced={reduced} />;
     case "sweat":
       return (
         <motion.svg
@@ -274,17 +274,22 @@ function Particles({ x, y, r }: { x: number; y: number; r: number }) {
   );
 }
 
-function Bookmark({ x, y, reduced }: { x: number; y: number; reduced: boolean }) {
+// The outer box holds the tilt (so the ribbon can follow a slanted gutter); the inner one drops in and is what T9 animates.
+function Bookmark({ x, y, rotate, reduced }: { x: number; y: number; rotate: number; reduced: boolean }) {
   return (
-    <motion.div
-      data-bookmark
-      className="bookmark absolute"
-      style={{ left: `${x}%`, top: `${y}%`, width: bw(2.1), height: bw(11) }}
-      initial={{ y: reduced ? "0%" : "-70%", opacity: reduced ? 1 : 0 }}
-      animate={{ y: "0%", opacity: 1 }}
-      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+    <div
+      className="absolute"
+      style={{ left: `${x}%`, top: `${y}%`, width: bw(2.1), height: bw(11), rotate: `${rotate}deg`, transformOrigin: "top center" }}
     >
-      <span className="bookmark-tassel" />
-    </motion.div>
+      <motion.div
+        data-bookmark
+        className="bookmark absolute inset-0"
+        initial={{ y: reduced ? "0%" : "-70%", opacity: reduced ? 1 : 0 }}
+        animate={{ y: "0%", opacity: 1 }}
+        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <span className="bookmark-tassel" />
+      </motion.div>
+    </div>
   );
 }
