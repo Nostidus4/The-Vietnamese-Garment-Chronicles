@@ -6,6 +6,9 @@ import { loadDuKy, saveToDuKy } from "@/lib/duky";
 import { useBootstrap } from "@/lib/useBootstrap";
 import type { DuKyEntry } from "@/lib/types";
 
+// Compass labels saved with AI pages (backend/app/models.py LABELS) and their icons
+const VERDICT: Record<string, string> = { Authentic: "✅", Adapted: "✨", Inspired: "⚠️" };
+
 export default function DuKyView() {
   // Rendered client-only (see app/du-ky/page.tsx), so localStorage is safe here
   const [entries, setEntries] = useState<DuKyEntry[]>(loadDuKy);
@@ -58,15 +61,30 @@ export default function DuKyView() {
         {entries.map((e) => (
           <div key={e.id} className="space-y-2">
             <div ref={(el) => { refs.current[e.id] = el; }} className="paper rounded-lg p-3 shadow">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={e.image} alt="" className="aspect-[3/4] w-full rounded object-cover" />
+              <div className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={e.image} alt="" className="aspect-[3/4] w-full rounded object-cover" />
+                {e.kind === "ai" ? (
+                  // burned into the exported PNG, on the photo itself: cropping the picture keeps the label
+                  <span className="absolute bottom-2 left-2 rounded bg-black/65 px-2 py-1 text-sm font-semibold text-white">Ảnh minh họa AI</span>
+                ) : (
+                  <span className="font-hand absolute right-2 top-2 rotate-[-8deg] rounded-md border-2 border-[#B5452E] bg-white/80 px-2 py-0.5 text-lg text-[#B5452E]">
+                    Đã mặc thật
+                  </span>
+                )}
+              </div>
               <p className="mt-2 font-hand text-xl">{garmentById.get(e.garment_id)?.name_vi ?? e.garment_id}</p>
               <p className="text-xs text-stone-600">{garmentById.get(e.garment_id)?.period}</p>
               <p className="text-xs text-stone-600">{occasionName.get(e.occasion_id)}</p>
               <p className="text-[10px] text-stone-400">Nguồn: {garmentById.get(e.garment_id)?.sources.slice(0, 2).join(", ")}</p>
-              <p className="text-xs text-stone-500">
-                {e.kind === "real" ? "Tôi đã mặc thật" : "Ảnh minh họa AI"} · {e.label ?? "—"} · Mặc đúng ✓
-              </p>
+              {e.kind === "ai" ? (
+                <p className="text-xs text-stone-500">
+                  Ảnh minh họa AI · Compass: {e.label ? `${VERDICT[e.label] ?? ""} ${e.label}` : "—"}
+                </p>
+              ) : (
+                // the app never checks a real photo, so it claims nothing about it
+                <p className="text-xs text-stone-500">Ảnh mặc thật · trang phục và dịp do bạn tự ghi</p>
+              )}
             </div>
             <button onClick={() => exportEntry(e.id)} className="text-sm underline">Xuất ảnh để chia sẻ</button>
           </div>
