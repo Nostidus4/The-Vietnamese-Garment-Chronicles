@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro, Patrick_Hand, Playfair_Display } from "next/font/google";
 import Link from "next/link";
+import { ServerWake } from "@/components/ServerWake";
 import "./globals.css";
 
 const body = Be_Vietnam_Pro({ variable: "--font-body", subsets: ["vietnamese", "latin"], weight: ["400", "600"] });
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </nav>
         <div className="h-10" />
         {children}
+        <ServerWake />
       </body>
     </html>
   );

@@ -206,5 +206,6 @@ export interface DuKyEntry {
   garment_id: string;
   occasion_id: string;
   label: string | null;
+  sample?: boolean; // a pre-made fallback image (the AI server was busy), never shown as a fresh AI render
   created_at: string;
 }
