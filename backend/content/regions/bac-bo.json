@@ -62,19 +62,19 @@
     ],
     "frames": [
       {
-        "image": null,
+        "image": "/diary/bac-bo-1.png",
         "caption": "Sân đình ngày hội xuân",
         "alt": "Sân đình làng Bắc Bộ với cờ ngũ sắc và cây đa lớn",
         "prompt": "the courtyard of an old northern Vietnamese communal house (đình) on a spring festival day, five-colour festival flags, a great banyan tree, tiled roof with gently curved Vietnamese eaves"
       },
       {
-        "image": null,
+        "image": "/diary/bac-bo-2.png",
         "caption": "Hạ Long một sớm sương",
         "alt": "Vịnh Hạ Long buổi sớm với thuyền buồm nâu giữa các đảo đá vôi",
         "prompt": "Ha Long Bay at misty dawn, limestone karst islands, two wooden junks with rust-brown sails, calm jade water"
       },
       {
-        "image": null,
+        "image": "/diary/bac-bo-3.png",
         "caption": "Những bản tranh đang phơi",
         "alt": "Sân làm tranh dân gian với những bản tranh phơi trên giàn tre",
         "prompt": "a folk woodblock print workshop yard in a northern Vietnamese village, colourful prints drying on bamboo racks, prints show roosters and pigs only, no writing"
