@@ -71,5 +71,5 @@ def test_summary_numbers():
     ]
     s = summarize(rows)
     assert s["occasion_adoption"] == {"picks": 2, "fits": 1, "rate": 0.5}
-    assert s["quiz"] == {"sessions_with_both": 1, "pre_avg": 0.0, "post_avg": 1.0}
+    assert s["quiz"] == {"sessions_with_both": 1, "pre_avg": 0.0, "post_avg": 1.0, "by_region": {"hue": {"sessions": 1, "pre_avg": 0.0, "post_avg": 1.0}}}
     assert s["looks_fixed"] == {"flagged": 2, "fixed": 1, "rate": 0.5}

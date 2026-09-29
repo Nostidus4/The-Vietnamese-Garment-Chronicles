@@ -197,5 +197,61 @@
   "sources": [
     "unesco-ich-vn",
     "unesco-whc-vn"
-  ]
+  ],
+  "check": {
+    "pre": {
+      "id": "bb-pre",
+      "q": "Con đoán xem: vì sao áo tứ thân ngày xưa thường được mặc nhiều lớp?",
+      "choices": [
+        "Vì mùa đông miền Bắc lạnh theo gió bấc",
+        "Vì luật triều đình bắt buộc",
+        "Vì vải ngày xưa rất đắt"
+      ],
+      "answer": 0,
+      "explain": "Mùa đông ở quê Bà lạnh lắm con ạ, nên người ta mặc nhiều lớp áo. Ngày hội còn mặc áo mớ ba mớ bảy.",
+      "sources": [],
+      "verified": false
+    },
+    "post": [
+      {
+        "id": "bb-khan",
+        "q": "Khăn mỏ quạ của người Kinh Bắc giúp gì trong mùa đông?",
+        "choices": [
+          "Giữ ấm đầu",
+          "Che nắng gắt",
+          "Đựng trầu cau"
+        ],
+        "answer": 0,
+        "explain": "Đúng rồi, khăn mỏ quạ vấn gọn để giữ ấm đầu khi gió bấc về.",
+        "sources": [],
+        "verified": false
+      },
+      {
+        "id": "bb-hoi-lim",
+        "q": "Ở hội Lim, các liền anh liền chị làm gì?",
+        "choices": [
+          "Hát quan họ đối đáp",
+          "Đua thuyền rồng",
+          "Múa lân"
+        ],
+        "answer": 0,
+        "explain": "Họ hát quan họ đối đáp với nhau, trên thuyền, dưới đồi và trong những gian nhà.",
+        "sources": [],
+        "verified": false
+      },
+      {
+        "id": "bb-giu",
+        "q": "Khi phối áo tứ thân theo cách của con, phần nào nên giữ nguyên?",
+        "choices": [
+          "Số thân áo (bốn thân)",
+          "Màu vải",
+          "Chất liệu"
+        ],
+        "answer": 0,
+        "explain": "Màu và chất liệu con cứ đổi. Bốn thân áo thì giữ lại, vì đó là tên và là hồn của chiếc áo.",
+        "sources": [],
+        "verified": false
+      }
+    ]
+  }
 }

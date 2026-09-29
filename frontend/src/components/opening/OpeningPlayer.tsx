@@ -16,11 +16,12 @@ interface Props {
   debug: boolean;
   noClick?: boolean;
   startId?: string | null;
+  hold?: boolean; // the logo is still on screen: keep the story behind the blank page
 }
 
 type Phase = "intro" | "play" | "transition";
 
-export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick = false, startId = null }: Props) {
+export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick = false, startId = null, hold = false }: Props) {
   const reduced = !!useReducedMotion();
   const [viewport, setViewport] = useState({ w: 1440, h: 810 });
   const [idx, setIdx] = useState(() => Math.max(0, screens.findIndex((s) => s.id === startId)));
@@ -69,22 +70,31 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     [screen, pace],
   );
 
-  // First screen: wait for its artwork, then rise out of a blank cream page (script S01, 0.0s)
+  // First screen: wait for its artwork (and for the logo to start leaving), then rise out of a blank cream page
+  const [artReady, setArtReady] = useState(false);
   useEffect(() => {
     let alive = true;
     const first = scenes.current[screens[idx].id];
-    const paper = ov.current.paper;
-    Promise.race([first?.ready, new Promise((r) => setTimeout(r, 4000))]).then(async () => {
-      if (!alive) return;
-      if (paper) await animate(paper, { opacity: 0 }, { duration: reduced ? 0.3 : 1.1, ease: [0.4, 0, 0.2, 1] });
-      setEnteredAt(performance.now());
-      setPhase("play");
-    });
+    Promise.race([first?.ready, new Promise((r) => setTimeout(r, 4000))]).then(() => alive && setArtReady(true));
     return () => {
       alive = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    if (!artReady || hold || phase !== "intro") return;
+    let alive = true;
+    const paper = ov.current.paper;
+    (async () => {
+      if (paper) await animate(paper, { opacity: 0 }, { duration: reduced ? 0.3 : 1.1, ease: [0.4, 0, 0.2, 1] });
+      if (!alive) return;
+      setEnteredAt(performance.now());
+      setPhase("play");
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [artReady, hold, phase, reduced]);
 
   // Camera move that starts when a screen becomes active
   useEffect(() => {

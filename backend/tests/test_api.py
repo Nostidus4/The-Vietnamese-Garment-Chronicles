@@ -174,3 +174,30 @@ def test_ask_can_compare_two_garments(client, scripted, content):
     assert r["grounded"] is True and set(r["sources"]) == {tu.sources[0], ngu.sources[0]}
     prompt = fake.prompts[0]
     assert "ao-ngu-than" in prompt and prompt.index('"id": "ao-tu-than"') < prompt.index('"id": "ao-ngu-than"')
+
+
+def test_weather_forecast_explains_when_there_is_none(client):
+    from datetime import date, timedelta
+
+    far = (date.today() + timedelta(days=40)).isoformat()
+    past = (date.today() - timedelta(days=2)).isoformat()
+    assert client.get(f"/weather/hue?date={far}").json()["reason"] == "too_far"
+    assert client.get(f"/weather/hue?date={past}").json() == {"available": False, "reason": "past"}
+    assert client.get(f"/weather/tay-bac?date={far}").json() == {"available": False, "reason": "no_point"}
+    assert client.get("/weather/hue?date=not-a-date").status_code == 422
+
+
+def test_weather_forecast_for_a_day(client, monkeypatch):
+    from datetime import date, timedelta
+
+    from app.services import weather
+
+    class R:
+        def json(self):
+            return {"daily": {"temperature_2m_max": [34.2], "precipitation_probability_max": [20]}}
+
+    monkeypatch.setattr(weather.httpx, "get", lambda *a, **k: R())
+    weather._cache.clear()
+    d = (date.today() + timedelta(days=3)).isoformat()
+    out = client.get(f"/weather/nam-bo?date={d}").json()
+    assert out["available"] and out["max_c"] == 34.2 and out["is_hot"] and out["tips"]

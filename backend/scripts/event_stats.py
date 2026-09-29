@@ -44,6 +44,22 @@ def summarize(rows: list[dict]) -> dict:
         "post_avg": round(sum(post) / len(post), 3) if post else None,
     }
 
+    # 2b. The same per region ("Bà hỏi con": one question before the diary, three after)
+    per: dict[str, dict[str, list[float]]] = defaultdict(lambda: {"pre": [], "post": []})
+    for rs in by_session.values():
+        score: dict[str, dict[str, list[bool]]] = defaultdict(lambda: {"pre": [], "post": []})
+        for r in rs:
+            if r["type"] == "quiz_answer":
+                score[r["payload"]["region_id"]][r["payload"]["phase"]].append(r["payload"]["correct"])
+        for region, sc in score.items():
+            if sc["pre"] and sc["post"]:
+                per[region]["pre"].append(sum(sc["pre"]) / len(sc["pre"]))
+                per[region]["post"].append(sum(sc["post"]) / len(sc["post"]))
+    quiz["by_region"] = {
+        region: {"sessions": len(v["pre"]), "pre_avg": round(sum(v["pre"]) / len(v["pre"]), 3), "post_avg": round(sum(v["post"]) / len(v["post"]), 3)}
+        for region, v in sorted(per.items())
+    }
+
     # 3. Looks fixed: sessions that met ⚠️/⛔ and later reached ✅/✨ on the same garment
     met, fixed = set(), set()
     for sid, rs in by_session.items():
@@ -73,6 +89,8 @@ def main() -> None:
     print(f"Chọn đúng dịp (Occasion Adoption Rate): {pct(o['rate'])} ({o['fits']}/{o['picks']} lựa chọn cuối)")
     q = s["quiz"]
     print(f"Quiz: trước {pct(q['pre_avg'])} → sau {pct(q['post_avg'])} ({q['sessions_with_both']} phiên làm cả hai lần)")
+    for region, v in q["by_region"].items():
+        print(f"  {region}: trước {pct(v['pre_avg'])} → sau {pct(v['post_avg'])} ({v['sessions']} phiên)")
     lk = s["looks_fixed"]
     print(f"Look ⚠️/⛔ được sửa lại: {pct(lk['rate'])} ({lk['fixed']}/{lk['flagged']})")
 

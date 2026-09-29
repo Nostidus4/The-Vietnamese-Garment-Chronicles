@@ -375,6 +375,40 @@ body {
   /* react-pageflip puts --left / --right on the page element itself (which carries .paper) */
   .book-pages .paper.--left { box-shadow: inset -26px 0 30px -18px rgba(70, 45, 20, 0.35); }
   .book-pages .paper.--right { box-shadow: inset 26px 0 30px -18px rgba(70, 45, 20, 0.35); }
+  /* Du Ký của con: a cloth-bound notebook, woven texture over the chosen colour, stitched gold edge */
+  .duky-cloth {
+    background-color: var(--cloth, #7a2e2e);
+    background-image:
+      radial-gradient(ellipse at 28% 18%, rgba(255, 240, 210, 0.16), transparent 55%),
+      radial-gradient(ellipse at 80% 95%, rgba(0, 0, 0, 0.3), transparent 60%),
+      repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px);
+    border-radius: 4px 8px 8px 4px;
+    box-shadow: inset 10px 0 14px -8px rgba(0, 0, 0, 0.45), inset -2px 0 3px rgba(255, 255, 255, 0.12);
+  }
+  .duky-stitch {
+    border: 1.5px dashed rgba(217, 164, 59, 0.75);
+    border-radius: 4px;
+  }
+  .duky-label {
+    background: #f3ead7;
+    background-image: radial-gradient(rgba(120, 90, 60, 0.08) 1px, transparent 1px);
+    background-size: 5px 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(90, 60, 25, 0.25);
+  }
+  .book-size {
+    color: #f3ead7;
+    background: rgba(20, 12, 7, 0.5);
+    border: 1px solid rgba(243, 234, 215, 0.22);
+    backdrop-filter: blur(3px);
+  }
+  .book-size button {
+    border-radius: 999px;
+    padding: 0.1rem 0.55rem;
+    transition: background 150ms ease;
+  }
+  .book-size button:hover:not(:disabled) { background: rgba(243, 234, 215, 0.16); }
+  .book-size button:disabled { opacity: 0.35; }
   .page-turn {
     font-family: var(--font-hand), cursive;
     font-size: 1.15rem;

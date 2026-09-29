@@ -4,6 +4,7 @@ import { animate } from "framer-motion";
 import { useState } from "react";
 import { useBootstrap } from "@/lib/useBootstrap";
 import { DeskScene } from "../desk/DeskScene";
+import { LogoIntro } from "../opening/LogoIntro";
 import { OpeningPlayer } from "../opening/OpeningPlayer";
 
 const SEEN_KEY = "vpdk-opening-seen";
@@ -34,6 +35,8 @@ export default function Home() {
   const [mode, setMode] = useState<Mode>(opts.mode);
   const [landing, setLanding] = useState<"flash" | "soft">("soft");
   const [flashEl, setFlashEl] = useState<HTMLDivElement | null>(null);
+  // the logo opens every telling of the story; it holds the story until it starts to dissolve
+  const [logo, setLogo] = useState<"on" | "leaving" | "off">(opts.mode === "opening" ? "on" : "off");
 
   function finishOpening() {
     try {
@@ -50,8 +53,9 @@ export default function Home() {
 
   return (
     <>
-      {!data && <div className="fixed inset-0 z-40 bg-[#140c07]" />}
-      {mode === "opening" && data && data.opening.length > 0 && <OpeningPlayer screens={data.opening} flashEl={flashEl} onFinish={finishOpening} pace={opts.pace} debug={opts.debug} noClick={opts.noClick} startId={opts.start} />}
+      {!data && logo === "off" && <div className="fixed inset-0 z-40 bg-[#140c07]" />}
+      {logo !== "off" && <LogoIntro ready={!!data} onLeave={() => setLogo("leaving")} onDone={() => setLogo("off")} />}
+      {mode === "opening" && data && data.opening.length > 0 && <OpeningPlayer screens={data.opening} flashEl={flashEl} onFinish={finishOpening} pace={opts.pace} debug={opts.debug} noClick={opts.noClick} startId={opts.start} hold={logo === "on"} />}
       {(mode === "desk" || data?.opening.length === 0) && data && <DeskScene data={data} landing={landing} />}
       <div ref={setFlashEl} className="flash-layer pointer-events-none fixed inset-0 z-50 opacity-0" aria-hidden />
     </>

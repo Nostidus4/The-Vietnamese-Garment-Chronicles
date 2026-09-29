@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { API_URL, serverReady, tryOn } from "@/lib/api";
-import { saveToDuKy } from "@/lib/duky";
+import { addPage, addPhoto, dataUrlToBlob, ensureMigrated, newPage } from "@/lib/dukyBook";
 import { track } from "@/lib/track";
 import { sourceOf } from "@/lib/sources";
 import type { Bootstrap, CompassState, Selection, TryOnResult } from "@/lib/types";
@@ -130,17 +130,23 @@ export function TryOnPanel({
       {image && result && saveLabel && (
         <button
           disabled={saved}
-          onClick={() => {
-            saveToDuKy({
-              kind: "ai",
-              image,
-              garment_id: result.rendered_selection.garment_id,
-              occasion_id: result.rendered_selection.occasion_id,
-              label: saveLabel, // the alternative is saved with the verdict of what was actually rendered
-              sample: isSample,
-            });
-            track("duky_save", { kind: "ai", garment_id: result.rendered_selection.garment_id });
+          onClick={async () => {
+            // one "lần mặc" in the reader's Du Ký: Sắp đi, with this try-on as its first photo
+            const sel = result.rendered_selection;
             setSaved(true);
+            await ensureMigrated(data.garments);
+            const page = addPage(
+              newPage({
+                region_id: regionId,
+                garment_id: sel.garment_id,
+                occasion_id: sel.occasion_id,
+                look: sel,
+                compass_label: saveLabel, // the alternative is saved with the verdict of what was actually rendered
+                compass_state: result.rendered_alternative ? result.compass.alternative_state : result.compass.state,
+              }),
+            );
+            await addPhoto(page.id, await dataUrlToBlob(image), "ai", isSample);
+            track("duky_save", { kind: "ai", garment_id: sel.garment_id });
           }}
           className="rounded-full border border-stone-800 px-4 py-2 text-sm"
         >
@@ -149,12 +155,14 @@ export function TryOnPanel({
       )}
       {saved && (
          
-        <a
-          href={`/?region=${regionId}&page=own`}
-          className="font-hand self-start text-lg text-[#8a4b2a] underline"
-        >
-          Dán ảnh vào sổ của Bà →
-        </a>
+        <span className="flex flex-wrap gap-x-5">
+          <a href="/du-ky" className="font-hand text-lg text-[#8a4b2a] underline">
+            Mở Du Ký của tôi →
+          </a>
+          <a href={`/?region=${regionId}&page=own`} className="font-hand text-lg text-[#8a4b2a] underline">
+            Về sổ của Bà
+          </a>
+        </span>
       )}
       {saved && (
         <a href="#shops" className="block text-sm underline">
