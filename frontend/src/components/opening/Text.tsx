@@ -197,7 +197,9 @@ function Finale({ block, instant }: { block: Block; instant: number }) {
   );
 }
 
+/** Wraps at `max` chars, unless the text carries its own "\n" breaks – then those are the lines, so phrases stay whole. */
 function splitLines(text: string, max: number): string[] {
+  if (text.includes("\n")) return text.split("\n").map((l) => l.trim()).filter(Boolean);
   const out: string[] = [];
   let cur = "";
   for (const w of text.split(" ")) {
