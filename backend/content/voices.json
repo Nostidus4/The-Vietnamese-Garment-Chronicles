@@ -1,0 +1,127 @@
+{
+  "model": "gemini-3.8-flash-tts",
+  "voices": [
+    {
+      "id": "narrator",
+      "name": "Người dẫn truyện",
+      "voice_id": "voice_qpm5zz7zjy07",
+      "fallback": "Charon",
+      "gender": "male",
+      "rate": 3.2,
+      "base_style": "the storyteller of this film, a warm Vietnamese man around forty; calm, unhurried, intimate, never theatrical.",
+      "design_prompt": "A Vietnamese man in his early forties, native speaker with a standard Northern Vietnamese (Hà Nội) accent. A warm, deep baritone with a soft, slightly breathy texture, like the narrator of a gentle documentary or a family film. He speaks unhurriedly and clearly, with natural pauses between phrases, and a faint smile in his voice. Calm, trustworthy, a little nostalgic, never theatrical or announcer-like. Close, intimate microphone, quiet room, no music, no reverb.",
+      "test_line": "Chiều hôm đó, Tí và Tèo quay lại căn nhà cũ của bà. Mọi thứ dường như vẫn còn ở nguyên vị trí.",
+      "candidates": [
+        {
+          "key": "a",
+          "voice_id": "voice_qpm5zz7zjy07",
+          "sample": "/opening/voice-design/narrator-a.mp3"
+        }
+      ]
+    },
+    {
+      "id": "co-giao",
+      "name": "Cô giáo",
+      "voice_id": "voice_ie77msbkc93i",
+      "fallback": "Zephyr",
+      "gender": "female",
+      "rate": 3.8,
+      "base_style": "a friendly Vietnamese secondary-school teacher around twenty-eight, speaking to her whole class; bright, clear, encouraging.",
+      "design_prompt": "A Vietnamese woman about 28 years old, a friendly secondary-school teacher, native speaker with a standard Northern Vietnamese (Hà Nội) accent. Bright, clear and lively mid-range voice, speaking to a whole class with gentle enthusiasm, as if announcing an exciting school project. Well-articulated, energetic but kind, smiling. Recorded as if in a quiet classroom, no echo, no background noise.",
+      "test_line": "Năm nay, mỗi đội sẽ lựa chọn một vùng văn hóa Việt Nam, tìm hiểu một loại trang phục truyền thống.",
+      "candidates": [
+        {
+          "key": "a",
+          "voice_id": "voice_ie77msbkc93i",
+          "sample": "/opening/voice-design/co-giao-a.mp3"
+        },
+        {
+          "key": "b",
+          "voice_id": "voice_54jex20kjgnc",
+          "sample": "/opening/voice-design/co-giao-b.mp3"
+        },
+        {
+          "key": "c",
+          "voice_id": "voice_wsngkxhpy0m2",
+          "sample": "/opening/voice-design/co-giao-c.mp3"
+        }
+      ]
+    },
+    {
+      "id": "ti",
+      "name": "Tí",
+      "voice_id": "voice_13pqcn6i9x5y",
+      "fallback": "Puck",
+      "gender": "male",
+      "rate": 4.1,
+      "base_style": "Tí, a lively 13-year-old Vietnamese boy; quick and playful, a little cocky; when unsure he slows down and hesitates but stays clearly audible.",
+      "design_prompt": "A light, bright, youthful male voice with a slightly high pitch, native Vietnamese speaker with a Northern (Hà Nội) accent. Quick, playful, energetic and a little cheeky; when unsure he slows down and hesitates but stays clearly audible. Natural everyday speech, not a cartoon voice. Clean recording, no background noise.",
+      "test_line": "Áo dài thôi. Quá dễ! … Ơ, nhưng mà… bộ này của vùng nào nhỉ?",
+      "candidates": [
+        {
+          "key": "a",
+          "voice_id": "voice_13pqcn6i9x5y",
+          "sample": "/opening/voice-design/ti-a.mp3"
+        },
+        {
+          "key": "b",
+          "voice_id": "voice_d6979x5f50sj",
+          "sample": "/opening/voice-design/ti-b.mp3"
+        }
+      ]
+    },
+    {
+      "id": "teo",
+      "name": "Tèo",
+      "voice_id": null,
+      "fallback": "Iapetus",
+      "gender": "male",
+      "rate": 3.4,
+      "base_style": "Tèo, Tí's thoughtful 13-year-old best friend with glasses; calm, curious, speaks a little slower, gently amused.",
+      "design_prompt": "A soft, youthful male voice, slightly lower and calmer than an excited talker, native Vietnamese speaker with a Northern (Hà Nội) accent. Thoughtful and curious, speaks a little slowly, polite, gently amused. Natural everyday speech, not a cartoon voice. Clean recording, no background noise.",
+      "test_line": "Tại sao lại là áo dài? Còn gì nữa không?",
+      "candidates": []
+    },
+    {
+      "id": "ti-nho",
+      "name": "Tí lúc bé",
+      "voice_id": null,
+      "fallback": "Leda",
+      "gender": "male",
+      "rate": 3.0,
+      "base_style": "Tí as a small child in a warm memory: the same voice as Tí but lighter, softer, higher and slower, innocent and curious, clearly audible.",
+      "design_prompt": "A very light, small, high and soft male voice, native Vietnamese speaker with a Northern (Hà Nội) accent. Innocent-sounding, gentle and curious, speaks slowly and a little shyly; warm and natural, not a cartoon voice. Soft, warm recording, no background noise.",
+      "test_line": "Bà ơi… Cái này có phải áo dài không?",
+      "candidates": [],
+      "same_as": "ti"
+    },
+    {
+      "id": "ba",
+      "name": "Bà",
+      "voice_id": "voice_vkqs70ovfncd",
+      "fallback": "Sulafat",
+      "gender": "female",
+      "rate": 2.7,
+      "base_style": "Bà, Tí's 75-year-old grandmother from Kinh Bắc, a retired seamstress; warm, slow, tender, wise, a quiet smile in her voice.",
+      "design_prompt": "An elderly Vietnamese woman about 75 years old, a grandmother and retired seamstress from the Kinh Bắc region, native speaker with a soft Northern Vietnamese (Hà Nội / Bắc Ninh) accent. Warm, gentle and loving, with a slightly husky, aged texture but still clear. She speaks slowly and tenderly, as if talking to her grandchild beside her, with a quiet smile and a touch of nostalgia; wise, never preachy. Intimate close microphone, quiet room, no music, no reverb.",
+      "test_line": "Không phải cái gì dài dài cũng là áo dài đâu con. Hành trình của con bắt đầu từ đây.",
+      "candidates": [
+        {
+          "key": "a",
+          "voice_id": "voice_vkqs70ovfncd",
+          "sample": "/opening/voice-design/ba-a.mp3"
+        },
+        {
+          "key": "b",
+          "voice_id": "voice_hr8mqord3vkm",
+          "sample": "/opening/voice-design/ba-b.mp3"
+        },
+        {
+          "key": "c",
+          "voice_id": "voice_qf8ired5ldkh",
+          "sample": "/opening/voice-design/ba-c.mp3"
+        }
+      ]
+    }
+  ]
+}

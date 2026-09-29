@@ -12,3 +12,7 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+
+# voice-over drafts: candidates and voice-design samples are for /voice-review only, never shipped
+frontend/public/opening/voice-*/_candidates/
+frontend/public/opening/voice-design/

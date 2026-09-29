@@ -1,0 +1,110 @@
+{
+  "screen": "s05",
+  "takes": [
+    {
+      "id": "t01",
+      "voice": "ti-nho",
+      "voice_name": "",
+      "beats": [
+        0,
+        1
+      ],
+      "text": "Bà ơi… Cái này có phải áo dài không?",
+      "style": "Scene: A warm memory from years ago: little Tí at his grandmother's sewing table, the sewing machine humming. Bà gently corrects him with a smile. Speaker: Tí as a small child in a warm memory: the same voice as Tí but lighter, softer, higher and slower, innocent and curious, clearly audible. Delivery: A small child calling his grandmother softly, curious. Then: Innocent question, pointing at a long garment, wide-eyed. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 3.0,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t01-ti-nho-a.mp3",
+          "duration": 3.95,
+          "long_pauses": 0,
+          "rate": 3.16,
+          "cues": [
+            0.0,
+            1.64
+          ],
+          "cues_ok": true,
+          "score": 0.053
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t01-ti-nho-b.mp3",
+          "duration": 4.72,
+          "long_pauses": 0,
+          "rate": 2.34,
+          "cues": [
+            0.0,
+            1.43
+          ],
+          "cues_ok": true,
+          "score": 0.22
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t01-ti-nho-c.mp3",
+          "duration": 4.87,
+          "long_pauses": 0,
+          "rate": 2.46,
+          "cues": [
+            0.0,
+            1.84
+          ],
+          "cues_ok": true,
+          "score": 0.18
+        }
+      ],
+      "file": "t01-ti-nho.mp3",
+      "picked": "a",
+      "duration": 3.95,
+      "cues": [
+        0.0,
+        1.64
+      ],
+      "cues_ok": true
+    },
+    {
+      "id": "t02",
+      "voice": "ba",
+      "voice_name": "",
+      "beats": [
+        2
+      ],
+      "text": "Không phải cái gì dài dài cũng là áo dài đâu con.",
+      "style": "Scene: A warm memory from years ago: little Tí at his grandmother's sewing table, the sewing machine humming. Bà gently corrects him with a smile. Speaker: Bà, Tí's 75-year-old grandmother from Kinh Bắc, a retired seamstress; warm, slow, tender, wise, a quiet smile in her voice. Delivery: Tender and amused, gently correcting her little grandchild with a smile. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 2.7,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t02-ba-a.mp3",
+          "duration": 4.46,
+          "long_pauses": 0,
+          "rate": 2.99,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "score": 0.107
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t02-ba-b.mp3",
+          "duration": 4.25,
+          "long_pauses": 0,
+          "rate": 3.16,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "score": 0.17
+        }
+      ],
+      "file": "t02-ba.mp3",
+      "picked": "a",
+      "duration": 4.46,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    }
+  ]
+}

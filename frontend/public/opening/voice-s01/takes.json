@@ -1,0 +1,127 @@
+{
+  "screen": "s01",
+  "takes": [
+    {
+      "id": "t01",
+      "voice": "co-giao",
+      "voice_name": "voice_ie77msbkc93i",
+      "beats": [
+        0,
+        1,
+        2
+      ],
+      "text": "Năm nay, mỗi đội sẽ lựa chọn một vùng văn hóa Việt Nam… Tìm hiểu một loại trang phục truyền thống… Và đề xuất cách để người trẻ có thể mặc nó hôm nay.",
+      "style": "Scene: A bright morning classroom in a Vietnamese lower-secondary school. The teacher announces the class project 'Ngày hội Sắc Việt' to excited 13-year-old students; Tí answers at once from his desk. Speaker: a friendly Vietnamese secondary-school teacher around twenty-eight, speaking to her whole class; bright, clear, encouraging. Delivery: Bright and enthusiastic, announcing a new school project to the whole class. Then: Continuing the announcement, clear and encouraging, a small pause at the ellipsis. Then: Warm and inspiring, finishing the announcement with a smile. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 3.8,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t01-co-giao-a.mp3",
+          "duration": 10.69,
+          "rate": 3.82,
+          "cues": [
+            0.0,
+            3.85,
+            6.11
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.005
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t01-co-giao-b.mp3",
+          "duration": 11.14,
+          "rate": 3.86,
+          "cues": [
+            0.0,
+            4.42,
+            6.7
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.016
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t01-co-giao-c.mp3",
+          "duration": 11.63,
+          "rate": 4.36,
+          "cues": [
+            0.0,
+            3.79,
+            6.03
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.147
+        }
+      ],
+      "file": "t01-co-giao.mp3",
+      "picked": "a",
+      "duration": 10.69,
+      "cues": [
+        0.0,
+        3.85,
+        6.11
+      ],
+      "cues_ok": true
+    },
+    {
+      "id": "t02",
+      "voice": "ti",
+      "voice_name": "voice_13pqcn6i9x5y",
+      "beats": [
+        3
+      ],
+      "text": "Áo dài thôi. Quá dễ!",
+      "style": "Scene: A bright morning classroom in a Vietnamese lower-secondary school. The teacher announces the class project 'Ngày hội Sắc Việt' to excited 13-year-old students; Tí answers at once from his desk. Speaker: Tí, a lively 13-year-old Vietnamese boy; quick and playful, a little cocky; when unsure he slows down and hesitates but stays clearly audible. Delivery: Instantly, cocky and overconfident, a little show-off, quick. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 4.1,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t02-ti-a.mp3",
+          "duration": 2.2,
+          "rate": 2.86,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.302
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t02-ti-b.mp3",
+          "duration": 2.23,
+          "rate": 3.36,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.18
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t02-ti-c.mp3",
+          "duration": 2.23,
+          "rate": 2.81,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.315
+        }
+      ],
+      "file": "t02-ti.mp3",
+      "picked": "b",
+      "duration": 2.23,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    }
+  ]
+}

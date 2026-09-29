@@ -16,11 +16,23 @@ interface Props {
   debug: boolean;
   noClick?: boolean;
   startId?: string | null;
+  sound?: boolean | null; // ?sound=1|0 skips the "Nghe kể chuyện / Chỉ đọc" question (tests)
 }
+
+/**
+ * Voice-over made by backend/scripts/generate_voices.py: one folder per screen (/opening/voice-s01/) with takes.json.
+ * A take is one speaker's continuous lines spoken in ONE recording; cues[i] is when its i-th line starts.
+ */
+type VoiceTake = { id: string; voice: string; beats: number[]; file: string; cues: number[] };
+type Manifest = { screen: string; takes: VoiceTake[] };
+const takeOf = (m: Manifest | undefined, n: number) => {
+  const take = m?.takes.find((t) => t.beats.includes(n));
+  return take ? { take, i: take.beats.indexOf(n) } : null;
+};
 
 type Phase = "intro" | "play" | "transition";
 
-export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick = false, startId = null }: Props) {
+export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick = false, startId = null, sound: soundParam = null }: Props) {
   const reduced = !!useReducedMotion();
   const [viewport, setViewport] = useState({ w: 1440, h: 810 });
   const [idx, setIdx] = useState(() => Math.max(0, screens.findIndex((s) => s.id === startId)));
@@ -31,6 +43,82 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
   const [enteredAt, setEnteredAt] = useState(Number.POSITIVE_INFINITY);
   const [instant, setInstant] = useState(0);
   const [phase, setPhase] = useState<Phase>("intro");
+
+  // ---- voice-over: asked once on the blank page (that click also unlocks audio in the browser) ----
+  const [sound, setSound] = useState<boolean | null>(soundParam);
+  const [speaking, setSpeaking] = useState(false);
+  const audio = useRef<HTMLAudioElement | null>(null);
+  const [artReady, setArtReady] = useState(false);
+  const choose = (on: boolean) => {
+    setSound(on);
+    if (on) {
+      // prime the element inside the click so later play() calls are allowed
+      audio.current ??= new Audio();
+      audio.current.play().catch(() => {});
+    }
+  };
+  const hush = useCallback(() => {
+    audio.current?.pause();
+    setSpeaking(false);
+  }, []);
+  // every screen's takes.json, fetched once (a screen without voice-over simply has none)
+  const [manifests, setManifests] = useState<Record<string, Manifest>>({});
+  useEffect(() => {
+    let alive = true;
+    Promise.all(
+      screens.map((sc) =>
+        fetch(`/opening/voice-${sc.id}/takes.json`)
+          .then((r) => (r.ok ? (r.json() as Promise<Manifest>) : null))
+          .catch(() => null),
+      ),
+    ).then((ms) => alive && setManifests(Object.fromEntries(ms.filter((m): m is Manifest => !!m).map((m) => [m.screen, m]))));
+    return () => {
+      alive = false;
+    };
+  }, [screens]);
+  const playing = useRef<string | null>(null); // src of the take on air
+
+  const speak = useCallback(
+    (screenId: string, n: number) => {
+      const el = audio.current;
+      const hit = takeOf(manifests[screenId], n);
+      if (!el || !sound || !hit) return hit ? undefined : hush(); // an unvoiced line never cuts the take on air
+      const src = `/opening/voice-${screenId}/${hit.take.file}`;
+      const cue = hit.take.cues[hit.i] ?? 0;
+      if (playing.current === src && !el.paused) {
+        // same take still speaking: only jump if the viewer clicked ahead of the voice
+        if (el.currentTime < cue - 0.25) el.currentTime = cue;
+        return;
+      }
+      el.pause();
+      el.src = src;
+      playing.current = src;
+      el.onended = () => {
+        playing.current = null;
+        setSpeaking(false);
+      };
+      el.onerror = () => setSpeaking(false); // never block the story on a missing file
+      const start = () => {
+        el.currentTime = cue;
+        el.play().catch(() => setSpeaking(false));
+      };
+      if (cue > 0) el.addEventListener("loadedmetadata", start, { once: true });
+      else start();
+      setSpeaking(true);
+    },
+    [sound, hush, manifests],
+  );
+  /** Seconds until the voice reaches line n, if n belongs to the take on air. */
+  const cueIn = useCallback(
+    (screenId: string, n: number): number | null => {
+      const el = audio.current;
+      const hit = takeOf(manifests[screenId], n);
+      if (!el || !hit || el.paused || playing.current !== `/opening/voice-${screenId}/${hit.take.file}`) return null;
+      return Math.max(0, (hit.take.cues[hit.i] ?? 0) - el.currentTime);
+    },
+    [manifests],
+  );
+  useEffect(() => () => audio.current?.pause(), []);
 
   const scenes = useRef<Record<string, SceneHandle | null>>({});
   const ov = useRef<Partial<Overlays>>({});
@@ -56,6 +144,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     (n: number) => {
       const beat = screen.beats[n];
       setShown(n + 1);
+      speak(screen.id, n);
       setBeatTimes((t) => {
         const copy = t.slice(0, n);
         copy[n] = performance.now();
@@ -66,25 +155,33 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
       const shake = beat.effects.find((e) => e.type === "shake");
       if (shake) handle?.shake(shake.strength);
     },
-    [screen, pace],
+    [screen, pace, speak],
   );
 
-  // First screen: wait for its artwork, then rise out of a blank cream page (script S01, 0.0s)
+  // First screen: wait for its artwork (and the viewer's sound choice), then rise out of a blank cream page
   useEffect(() => {
     let alive = true;
     const first = scenes.current[screens[idx].id];
-    const paper = ov.current.paper;
-    Promise.race([first?.ready, new Promise((r) => setTimeout(r, 4000))]).then(async () => {
-      if (!alive) return;
-      if (paper) await animate(paper, { opacity: 0 }, { duration: reduced ? 0.3 : 1.1, ease: [0.4, 0, 0.2, 1] });
-      setEnteredAt(performance.now());
-      setPhase("play");
-    });
+    Promise.race([first?.ready, new Promise((r) => setTimeout(r, 4000))]).then(() => alive && setArtReady(true));
     return () => {
       alive = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    if (!artReady || sound === null || phase !== "intro") return;
+    let alive = true;
+    const paper = ov.current.paper;
+    (async () => {
+      if (paper) await animate(paper, { opacity: 0 }, { duration: reduced ? 0.3 : 1.1, ease: [0.4, 0, 0.2, 1] });
+      if (!alive) return;
+      setEnteredAt(performance.now());
+      setPhase("play");
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [artReady, sound, phase, reduced]);
 
   // Camera move that starts when a screen becomes active
   useEffect(() => {
@@ -98,6 +195,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
       if (busy.current) return;
       busy.current = true;
       if (timer.current) clearTimeout(timer.current);
+      hush();
       setPhase("transition");
       const out = scenes.current[screen.id];
       const o = { ...ov.current, flash: flashEl } as Overlays;
@@ -127,7 +225,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
       setPhase("play");
       busy.current = false;
     },
-    [screen, screens, flashEl, onFinish, reduced, pace],
+    [screen, screens, flashEl, onFinish, reduced, pace, hush],
   );
 
   const goNext = useCallback(() => {
@@ -140,18 +238,28 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     if (phase !== "play") return;
     if (timer.current) clearTimeout(timer.current);
     const next = screen.beats[shown];
+    // the next line is further along the take on air: show it exactly when the voice gets there
+    const cue = next && !next.wait_click ? cueIn(screen.id, shown) : null;
+    if (cue !== null) {
+      timer.current = setTimeout(() => showBeat(shown), cue * 1000);
+      return () => {
+        if (timer.current) clearTimeout(timer.current);
+      };
+    }
+    if (speaking) return; // let the take finish; this effect runs again when it does
+    const afterVoice = sound && shown > 0 && !!screen.beats[shown - 1]?.voice; // the reading already gave the pause
     if (!next) {
-      const auto = screen.auto_exit_ms ?? (demo ? 1500 : null);
+      const auto = screen.auto_exit_ms ?? (demo ? (afterVoice ? 700 : 1500) : null);
       if (auto !== null) timer.current = setTimeout(() => goNext(), auto * (screen.auto_exit_ms ? pace : 1));
       return;
     }
     if (next.wait_click && shown > 0 && !demo) return;
-    const delay = (next.wait_click ? 1400 : next.delay) * pace;
+    const delay = afterVoice ? 400 : (next.wait_click ? 1400 : next.delay) * pace;
     timer.current = setTimeout(() => showBeat(shown), reduced ? Math.min(delay, 400) : delay);
     return () => {
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [phase, shown, screen, pace, demo, reduced, showBeat, goNext]);
+  }, [phase, shown, screen, pace, demo, reduced, showBeat, goNext, speaking, sound, cueIn]);
 
   const advance = useCallback(() => {
     // ignore double-clicks: one press = one step
@@ -178,8 +286,9 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
 
   const skip = useCallback(() => {
     if (busy.current) return;
+    hush();
     transitionTo("finish");
-  }, [transitionTo]);
+  }, [transitionTo, hush]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -226,7 +335,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
   const mounted = [idx, ...(incoming !== null ? [incoming] : [])];
   const preload = [idx + 1, idx + 2].filter((i) => i < screens.length && i !== incoming);
   // ready for the viewer's next input: all lines shown, or the next line waits for a click
-  const waiting = phase === "play" && (!nextBeat || (nextBeat.wait_click && shown > 0 && !demo));
+  const waiting = phase === "play" && !speaking && (!nextBeat || (nextBeat.wait_click && shown > 0 && !demo));
   const totalBeats = screens.reduce((n, s) => n + Math.max(1, s.beats.length), 0);
   const doneBeats = screens.slice(0, idx).reduce((n, s) => n + Math.max(1, s.beats.length), 0) + shown;
 
@@ -292,7 +401,49 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
         </div>
       </div>
 
+      {/* ---- the first question, on the blank page ---- */}
+      <AnimatePresence>
+        {sound === null && (
+          <motion.div
+            key="voice-choice"
+            className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 px-6 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.4 } }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="font-display m-0 text-3xl text-[#2F4A6D]">Việt Phục Du Ký</p>
+            <p className="font-hand m-0 text-xl text-stone-600">Con muốn nghe kể, hay tự đọc?</p>
+            <div className="mt-2 flex flex-wrap justify-center gap-3">
+              <button type="button" autoFocus onClick={() => choose(true)} className="rounded-full bg-[#2F4A6D] px-6 py-3 text-amber-50 shadow hover:bg-[#243a57]">
+                🔊 Nghe kể chuyện
+              </button>
+              <button type="button" onClick={() => choose(false)} className="rounded-full border border-stone-500 px-6 py-3 text-stone-700 hover:bg-stone-800 hover:text-amber-50">
+                Chỉ đọc
+              </button>
+            </div>
+            <p className="m-0 mt-1 text-xs text-stone-500">Nên đeo tai nghe · Giọng đọc được tạo bằng Gemini TTS</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ---- chrome ---- */}
+      {sound !== null && phase !== "intro" && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (sound) hush();
+            else audio.current ??= new Audio();
+            setSound(!sound);
+          }}
+          className="skip-btn absolute left-5 top-4 z-10"
+          aria-label={sound ? "Tắt giọng đọc" : "Bật giọng đọc"}
+          title={sound ? "Tắt giọng đọc" : "Bật giọng đọc"}
+        >
+          {sound ? "🔊" : "🔈"}
+        </button>
+      )}
       <ThreadProgress value={doneBeats / totalBeats} hidden={screen.hide_progress} />
       <AnimatePresence>
         {waiting && phase === "play" && !screen.auto_exit_ms && (

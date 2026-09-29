@@ -306,6 +306,31 @@ BeatKind = Literal["narration", "speech", "title", "question", "finale"]
 BeatStyle = Literal["box", "memory", "hand", "hand-large", "hand-light-large", "title", "finale", "finale-large", "caption"]
 
 
+VoiceId = Literal["narrator", "co-giao", "ti", "teo", "ti-nho", "ba"]
+
+
+class VoiceCandidate(Strict):
+    key: str
+    voice_id: str
+    sample: str | None = None
+
+
+class Voice(Strict):
+    """One character voice, designed from a description in Google AI Studio (Generate speech → voice design)."""
+
+    id: VoiceId
+    name: str
+    voice_id: str | None = Field(None, description="The persistent voice_… ID from AI Studio; null until designed")
+    fallback: str = Field(description="Prebuilt Gemini voice used when voice_id is empty, e.g. Charon")
+    gender: Literal["male", "female"]
+    rate: float = Field(gt=1, lt=7, description="Target speaking rate in syllables per second (the character's own pace)")
+    base_style: str = Field(description="Who is speaking; sent with every line so the persona never drifts")
+    design_prompt: str = Field(description="The description used for voice design")
+    test_line: str = Field(description="A line to audition the voice with")
+    candidates: list[VoiceCandidate] = Field(default_factory=list, description="Designed options; voice_id is the chosen one")
+    same_as: VoiceId | None = Field(None, description="Speak with another character's chosen voice (Tí lúc bé uses Tí's)")
+
+
 class Beat(Strict):
     kind: BeatKind = "narration"
     style: BeatStyle = "box"
@@ -325,6 +350,10 @@ class Beat(Strict):
     type_ms: int = Field(0, ge=0, description="Per-character reveal; 0 = fade the whole line")
     camera: Camera | None = None
     effects: list[Effect] = []
+    # voice-over (Gemini TTS, pre-generated into frontend/public/opening/voice/<screen>-<nn>.mp3)
+    voice: VoiceId | None = Field(None, description="Who reads this line; null = silent")
+    delivery: str | None = Field(None, max_length=240, description="How to read it, sent to TTS as the style")
+    say: str | None = Field(None, description="What is spoken when it differs from the text on screen")
 
 
 TransitionType = Literal[
@@ -347,6 +376,7 @@ class Transition(Strict):
 class OpeningScreen(Strict):
     id: Id = Field(pattern=ID_PATTERN)
     title: str
+    scene: str | None = Field(None, description="Where, who, mood: sent with every voice-over line of this screen")
     image: str = Field(description="Path under frontend/public, e.g. /opening/s01.png")
     mood: Literal["present", "memory"] = "present"
     focal: dict[str, float] = Field(default_factory=lambda: {"x": 50, "y": 50})
