@@ -17,6 +17,7 @@ import type {
   Region,
   TeoNote,
 } from "@/lib/types";
+import { WeatherNote } from "../chapter/WeatherNote";
 import { FOCUS } from "./vietnam-geo";
 
 const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
@@ -391,6 +392,12 @@ export function ArriveDiary({
         </motion.div>
       }
     >
+      {region.status === "open" && region.journey?.wear[0] && (
+        <div className="mt-1.5 text-[0.85rem] [&_p]:text-[0.9rem] [&_span]:text-[0.8rem]">
+          {/* Tí's pencil, today: Bà wrote the past, the weather is now */}
+          <WeatherNote regionId={region.id} garmentId={region.journey.wear[0].garment} place={place(region)} />
+        </div>
+      )}
       {sheet && (
         <div className="mt-3">
           <p className="m-0 text-[0.6rem] tracking-[0.2em] text-stone-500">

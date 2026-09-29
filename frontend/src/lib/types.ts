@@ -209,3 +209,17 @@ export interface DuKyEntry {
   sample?: boolean; // a pre-made fallback image (the AI server was busy), never shown as a fresh AI render
   created_at: string;
 }
+
+export interface Shop {
+  id: string;
+  name: string;
+  city: string;
+  address: string | null;
+  url: string | null;
+  phone: string | null;
+  services: ("rent" | "tailor" | "buy")[];
+  garments: string[];
+  authenticity: "authentic" | "adapted" | "inspired" | "unknown";
+  note: string | null;
+  verified: boolean;
+}

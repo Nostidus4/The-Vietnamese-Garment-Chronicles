@@ -90,7 +90,14 @@ export default function DuKyView() {
                 <p className="text-xs text-stone-500">Ảnh mặc thật · trang phục và dịp do bạn tự ghi</p>
               )}
             </div>
-            <button onClick={() => exportEntry(e.id)} className="text-sm underline">Xuất ảnh để chia sẻ</button>
+            <div className="flex gap-4 text-sm">
+              <button onClick={() => exportEntry(e.id)} className="underline">Xuất ảnh để chia sẻ</button>
+              {garmentById.get(e.garment_id) && (
+                <a href={`/chapter/${garmentById.get(e.garment_id)!.region}?garment=${e.garment_id}#shops`} className="underline">
+                  Thuê ở đâu?
+                </a>
+              )}
+            </div>
           </div>
         ))}
       </div>

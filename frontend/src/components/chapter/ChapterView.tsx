@@ -6,11 +6,15 @@ import { runCompass } from "@/lib/api";
 import { track } from "@/lib/track";
 import type { CompassResult, Selection } from "@/lib/types";
 import { useBootstrap } from "@/lib/useBootstrap";
+import { AskTeo } from "./AskTeo";
 import { Builder } from "./Builder";
 import { ChapterQuiz } from "./ChapterQuiz";
+import { ComparePanel } from "./ComparePanel";
 import { CompassPanel } from "./CompassPanel";
 import { StoryCard } from "./StoryCard";
+import { ShopList } from "./ShopList";
 import { TryOnPanel } from "./TryOnPanel";
+import { WeatherNote } from "./WeatherNote";
 
 export function ChapterView({
   regionId,
@@ -108,6 +112,7 @@ export function ChapterView({
           ← Về bản đồ
         </Link>
         <h1 className="font-hand text-4xl">{region.name}</h1>
+        <WeatherNote regionId={regionId} garmentId={garment.id} place={region.name.split("/")[0].trim()} />
         <ChapterQuiz regionId={regionId} phase="pre" />
         {garments.length > 1 && (
           <div className="flex gap-2">
@@ -131,6 +136,7 @@ export function ChapterView({
           </div>
         )}
         <StoryCard garment={garment} sources={data.sources} />
+        <AskTeo key={garment.id} garment={garment} data={data} />
       </div>
       <div className="space-y-4">
         <Builder
@@ -140,7 +146,9 @@ export function ChapterView({
           onChange={setSel}
         />
         <CompassPanel result={compass} sources={data.sources} />
+        <ComparePanel current={current} data={data} onUse={setSel} />
         <TryOnPanel selection={current} regionId={regionId} data={data} />
+        <ShopList garmentId={garment.id} garmentName={garment.name_vi} />
         <ChapterQuiz regionId={regionId} phase="post" />
       </div>
     </main>

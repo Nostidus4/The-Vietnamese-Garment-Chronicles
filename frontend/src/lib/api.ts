@@ -1,4 +1,4 @@
-import type { Bootstrap, CompassResult, Selection, TryOnResult } from "./types";
+import type { Bootstrap, CompassResult, Selection, Shop, TryOnResult } from "./types";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -58,7 +58,7 @@ export const answerQuiz = (id: string, answer: string) =>
   post<{ correct: boolean; answer_name: string; explanation: string; sources: string[] }>("/quiz/answer", { id, answer });
 
 export const getShops = (params: { city?: string; garment_id?: string; service?: string }) =>
-  fetch(`${API_URL}/shops?${new URLSearchParams(params as Record<string, string>)}`).then((r) => json<unknown[]>(r));
+  fetch(`${API_URL}/shops?${new URLSearchParams(params as Record<string, string>)}`).then((r) => json<Shop[]>(r));
 
 export const getWeather = (regionId: string) =>
   fetch(`${API_URL}/weather/${regionId}`).then((r) =>

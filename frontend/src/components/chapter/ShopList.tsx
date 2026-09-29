@@ -1,0 +1,66 @@
+"use client";
+
+// F7 "Thuê / may ở đâu?": shops that rent, tailor or sell this garment, verified ones first, with an honest label.
+
+import { useEffect, useState } from "react";
+import { getShops } from "@/lib/api";
+import type { Shop } from "@/lib/types";
+
+const SERVICE: Record<string, string> = { rent: "Cho thuê", tailor: "May đo", buy: "Bán" };
+const AUTH: Record<string, { text: string; tone: string }> = {
+  authentic: { text: "Đúng chuẩn truyền thống", tone: "bg-emerald-100 text-emerald-800" },
+  adapted: { text: "Có cách tân", tone: "bg-sky-100 text-sky-800" },
+  inspired: { text: "Lấy cảm hứng", tone: "bg-amber-100 text-amber-800" },
+  unknown: { text: "Chưa đánh giá", tone: "bg-stone-200 text-stone-700" },
+};
+
+export function ShopList({ garmentId, garmentName }: { garmentId: string; garmentName: string }) {
+  const [shops, setShops] = useState<Shop[] | null>(null);
+  useEffect(() => {
+    let alive = true;
+    getShops({ garment_id: garmentId })
+      .then((r) => alive && setShops(r))
+      .catch(() => alive && setShops([]));
+    return () => {
+      alive = false;
+    };
+  }, [garmentId]);
+
+  if (!shops) return null;
+  return (
+    <section id="shops" className="paper scroll-mt-16 rounded-lg p-5">
+      <h3 className="m-0 font-semibold">Thuê hoặc may {garmentName} ở đâu?</h3>
+      {shops.length === 0 ? (
+        <p className="m-0 mt-2 text-sm text-stone-600">Nhóm đang tìm và kiểm tra các tiệm cho trang phục này.</p>
+      ) : (
+        <ul className="m-0 mt-3 list-none space-y-3 p-0">
+          {shops.map((s) => (
+            <li key={s.id} className="rounded-md bg-white/60 p-3 text-sm">
+              <p className="m-0 font-semibold">
+                {s.url ? (
+                  <a href={s.url} target="_blank" rel="noreferrer" className="underline">
+                    {s.name}
+                  </a>
+                ) : (
+                  s.name
+                )}
+                <span className="ml-2 font-normal text-stone-500">· {s.city}</span>
+              </p>
+              <div className="mt-1 flex flex-wrap gap-1.5 text-xs">
+                {s.services.map((x) => (
+                  <span key={x} className="rounded-full border border-stone-400 px-2">
+                    {SERVICE[x] ?? x}
+                  </span>
+                ))}
+                <span className={`rounded-full px-2 ${AUTH[s.authenticity]?.tone ?? AUTH.unknown.tone}`}>{AUTH[s.authenticity]?.text ?? s.authenticity}</span>
+                {!s.verified && <span className="rounded-full bg-stone-100 px-2 text-stone-500">Chưa kiểm tra tận nơi</span>}
+              </div>
+              {s.address && <p className="m-0 mt-1 text-xs text-stone-600">{s.address}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
+      <p className="m-0 mt-3 text-xs text-stone-500">Danh bạ không có quảng cáo. Nhãn mức độ truyền thống do nhóm đánh giá; tiệm chưa kiểm tra được ghi rõ.</p>
+    </section>
+  );
+}
