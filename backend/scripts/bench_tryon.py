@@ -39,7 +39,7 @@ def summarize(rows: list[tuple[str, float, str]]) -> list[str]:
     ok = [t for _, t, s in rows if s == "ok"]
     lines = [f"- Thành công: {len(ok)}/{len(rows)}"]
     if ok:
-        q = statistics.quantiles(ok, n=20) if len(ok) >= 2 else [ok[0]] * 19
+        q = statistics.quantiles(ok, n=20, method="inclusive") if len(ok) >= 2 else [ok[0]] * 19
         lines.append(
             f"- Độ trễ (chỉ lần thành công): min {min(ok):.1f}s · trung vị {statistics.median(ok):.1f}s"
             f" · p95 {q[18]:.1f}s · max {max(ok):.1f}s"
