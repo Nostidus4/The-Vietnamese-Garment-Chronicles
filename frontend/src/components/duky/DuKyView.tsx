@@ -3,6 +3,7 @@
 import { toPng } from "html-to-image";
 import { useRef, useState } from "react";
 import { loadDuKy, saveToDuKy } from "@/lib/duky";
+import { track } from "@/lib/track";
 import { useBootstrap } from "@/lib/useBootstrap";
 import type { DuKyEntry } from "@/lib/types";
 
@@ -34,6 +35,7 @@ export default function DuKyView() {
     const reader = new FileReader();
     reader.onload = () => {
       saveToDuKy({ kind: "real", image: String(reader.result), garment_id: realGarment, occasion_id: realOccasion, label: null });
+      track("duky_save", { kind: "real", garment_id: realGarment });
       setEntries(loadDuKy());
     };
     reader.readAsDataURL(file);

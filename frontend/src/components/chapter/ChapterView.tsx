@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { runCompass } from "@/lib/api";
+import { track } from "@/lib/track";
 import type { CompassResult, Selection } from "@/lib/types";
 import { useBootstrap } from "@/lib/useBootstrap";
 import { Builder } from "./Builder";
+import { ChapterQuiz } from "./ChapterQuiz";
 import { CompassPanel } from "./CompassPanel";
 import { StoryCard } from "./StoryCard";
 import { TryOnPanel } from "./TryOnPanel";
@@ -38,12 +40,35 @@ export function ChapterView({
         }
       : null);
 
+  // anonymous Impact events: which occasion was picked, and whether a flagged look got fixed
+  const lastPick = useRef("");
+  const flagged = useRef<Record<string, "review" | "distorted">>({});
+  function report(sel: Selection, r: CompassResult) {
+    track("compass_result", { state: r.state, garment_id: sel.garment_id, occasion_id: sel.occasion_id });
+    const pick = `${sel.garment_id}/${sel.occasion_id}`;
+    if (pick !== lastPick.current) {
+      lastPick.current = pick;
+      track("occasion_selected", { garment_id: sel.garment_id, occasion_id: sel.occasion_id, fits: !r.triggers.some((t) => t.type === "occasion") });
+    }
+    const was = flagged.current[sel.garment_id];
+    if (r.state === "review" || r.state === "distorted") flagged.current[sel.garment_id] = r.state;
+    else if (was) {
+      track("look_fixed", { from_state: was, to_state: r.state, garment_id: sel.garment_id });
+      delete flagged.current[sel.garment_id];
+    }
+  }
+
   // Re-run the Compass on every change
   useEffect(() => {
     if (!current) return;
     let alive = true;
-    runCompass(current)
-      .then((r) => alive && setCompass(r))
+    const sel = current;
+    runCompass(sel)
+      .then((r) => {
+        if (!alive) return;
+        setCompass(r);
+        report(sel, r);
+      })
       .catch(() => alive && setCompass(null));
     return () => {
       alive = false;
@@ -83,6 +108,7 @@ export function ChapterView({
           ← Về bản đồ
         </Link>
         <h1 className="font-hand text-4xl">{region.name}</h1>
+        <ChapterQuiz regionId={regionId} phase="pre" />
         {garments.length > 1 && (
           <div className="flex gap-2">
             {garments.map((g) => (
@@ -115,6 +141,7 @@ export function ChapterView({
         />
         <CompassPanel result={compass} sources={data.sources} />
         <TryOnPanel selection={current} regionId={regionId} data={data} />
+        <ChapterQuiz regionId={regionId} phase="post" />
       </div>
     </main>
   );
