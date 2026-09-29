@@ -38,12 +38,12 @@
     "keepsake": "photo",
     "teo": [
       {
-        "text": "Không gian văn hóa Cồng chiêng Tây Nguyên được UNESCO công nhận.",
+        "text": "Không gian văn hóa Cồng chiêng Tây Nguyên được UNESCO công nhận là Kiệt tác di sản truyền khẩu và phi vật thể.",
+        "unesco": 2005,
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
-        "unesco": 2005
+        "verified": true
       }
     ],
     "frames": [

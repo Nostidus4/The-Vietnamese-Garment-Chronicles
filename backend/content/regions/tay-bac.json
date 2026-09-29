@@ -39,8 +39,10 @@
     "teo": [
       {
         "text": "Fansipan là đỉnh núi cao nhất Việt Nam.",
-        "sources": [],
-        "verified": false
+        "sources": [
+          "ref-77"
+        ],
+        "verified": true
       }
     ],
     "frames": [
@@ -70,5 +72,7 @@
   "own": {
     "invite": "Những trang này chờ người ở đây viết."
   },
-  "sources": []
+  "sources": [
+    "ref-77"
+  ]
 }

@@ -46,14 +46,18 @@
     "keepsake": "photo",
     "teo": [
       {
-        "text": "Cây bẹo là cây sào treo hàng hóa để khách ở xa biết ghe bán gì.",
-        "sources": [],
-        "verified": false
+        "text": "Cây bẹo là cây sào dựng trên ghe ở chợ nổi, treo gì bán nấy để khách ở xa biết ghe bán gì.",
+        "sources": [
+          "ref-73"
+        ],
+        "verified": true
       },
       {
         "text": "Mùa nước nổi ở đồng bằng sông Cửu Long thường vào khoảng tháng 8 đến tháng 11 dương lịch.",
-        "sources": [],
-        "verified": false
+        "sources": [
+          "ref-74"
+        ],
+        "verified": true
       }
     ],
     "frames": [
@@ -115,7 +119,7 @@
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
+        "verified": true,
         "unesco": 2013
       },
       {
@@ -123,7 +127,7 @@
         "sources": [
           "ref-67"
         ],
-        "verified": false
+        "verified": true
       }
     ],
     "ti": "Màu đen bóng ấy là từ trái cây. Mình cứ tưởng là thuốc nhuộm hóa học."
@@ -165,7 +169,7 @@
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
+        "verified": true,
         "unesco": 2024
       }
     ],
@@ -180,19 +184,18 @@
       "keepsake": "fabric",
       "teo": [
         {
-          "text": "Vì nắng nóng, ẩm quanh năm → áo bà ba vải mỏng, tay rộng cho thoáng.",
-          "sources": [],
-          "verified": false
+          "text": "Áo bà ba dài ngang hông, ôm hờ theo người, dễ cử động khi làm lụng.",
+          "sources": [
+            "ref-79"
+          ],
+          "verified": true
         },
         {
-          "text": "Vì ngồi xuồng, lội nước → áo ngắn qua hông, không vướng khi chèo.",
-          "sources": [],
-          "verified": false
-        },
-        {
-          "text": "Vì đi đồng dưới nắng → khăn rằn quàng cổ, trùm đầu, lau mồ hôi.",
-          "sources": [],
-          "verified": false
+          "text": "Khăn rằn để che nắng, che mưa, lau mồ hôi; đàn ông còn cột ngang trán hoặc ngang hông cho gọn.",
+          "sources": [
+            "ref-79"
+          ],
+          "verified": true
         }
       ],
       "ti": "Áo gọn thế này thì mặc đi học, đi chơi hôm nay cũng hợp chứ nhỉ?"
@@ -203,6 +206,9 @@
   },
   "sources": [
     "unesco-ich-vn",
-    "ref-67"
+    "ref-67",
+    "ref-73",
+    "ref-74",
+    "ref-79"
   ]
 }

@@ -78,6 +78,16 @@ def test_wear_page_must_use_a_garment_of_the_region(tmp_path):
     assert any("'ao-tu-than' is not listed for this region" in e for e in rep.errors)
 
 
+def test_verified_teo_note_needs_a_source(tmp_path):
+    root = _copy(tmp_path)
+    p = root / "regions" / "tay-bac.json"
+    data = json.loads(p.read_text())
+    data["look"]["teo"][0]["sources"] = []
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    _, rep = store.load(root)
+    assert any("verified Tèo note needs a source" in e for e in rep.errors)
+
+
 def test_journey_file_needs_a_known_region(tmp_path):
     root = _copy(tmp_path)
     (root / "regions" / "khong-co.json").write_text("{}")

@@ -50,12 +50,14 @@
         "sources": [
           "unesco-whc-vn"
         ],
-        "verified": false
+        "verified": true
       },
       {
-        "text": "Gió mùa đông bắc làm miền Bắc có mùa đông lạnh nhất cả nước (trừ vùng núi cao).",
-        "sources": [],
-        "verified": false
+        "text": "Gió mùa đông bắc thổi từ khoảng tháng 11 đến tháng 4, làm miền Bắc có mùa đông lạnh nhất cả nước.",
+        "sources": [
+          "ref-75"
+        ],
+        "verified": true
       }
     ],
     "frames": [
@@ -112,16 +114,18 @@
     ],
     "teo": [
       {
-        "text": "Người Việt coi trầu cau là lễ vật không thể thiếu trong lễ hỏi, lễ cưới.",
-        "sources": [],
-        "verified": false
+        "text": "Trầu cau có mặt khi tiếp khách, trong lễ hỏi và lễ cưới của người Việt.",
+        "sources": [
+          "ref-78"
+        ],
+        "verified": true
       },
       {
         "text": "Củ nâu là thuốc nhuộm dân gian: vải ngâm nước củ nâu nhiều lượt sẽ lên màu nâu bền, cứng vải.",
         "sources": [
           "ref-69"
         ],
-        "verified": false
+        "verified": true
       }
     ],
     "ti": "Màu nâu của áo tứ thân là từ củ nâu thật. Mình cứ tưởng chỉ là tên một màu."
@@ -162,7 +166,7 @@
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
+        "verified": true,
         "unesco": 2009
       },
       {
@@ -170,7 +174,7 @@
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
+        "verified": true,
         "unesco": 2010
       },
       {
@@ -178,7 +182,7 @@
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
+        "verified": true,
         "unesco": 2012
       }
     ],
@@ -194,14 +198,18 @@
       "keepsake": "fabric",
       "teo": [
         {
-          "text": "Vì mùa đông lạnh theo gió bấc → áo mặc nhiều lớp, khăn mỏ quạ giữ ấm.",
-          "sources": [],
-          "verified": false
+          "text": "Hai vạt trước áo tứ thân để hở một phần ngực, bên trong che bằng chiếc yếm.",
+          "sources": [
+            "ref-80"
+          ],
+          "verified": true
         },
         {
-          "text": "Vì làm đồng quanh năm → ngày thường mặc áo nâu, vạt gọn, dễ vén.",
-          "sources": [],
-          "verified": false
+          "text": "Vải nhuộm nâu kỹ là màu hợp với người lao động; váy đi cùng thường màu đen.",
+          "sources": [
+            "ref-80"
+          ],
+          "verified": true
         }
       ],
       "ti": "Bốn vạt áo. Lần sau nhìn thấy, mình sẽ nhận ra ngay."
@@ -214,6 +222,9 @@
     "unesco-ich-vn",
     "unesco-whc-vn",
     "ref-69",
-    "ref-68"
+    "ref-68",
+    "ref-75",
+    "ref-78",
+    "ref-80"
   ]
 }

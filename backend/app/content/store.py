@@ -234,6 +234,8 @@ def _check_refs(c: Content, r: Report) -> None:
                 need(n.sources, c.sources, wj, "source")
                 if not n.verified:
                     r.warnings.append(f"{wj}: Tèo note not verified: {n.text[:40]}…")
+                elif not n.sources:
+                    r.errors.append(f"{wj}: verified Tèo note needs a source: {n.text[:40]}…")
                 if n.unesco and not n.sources:
                     r.warnings.append(f"{wj}: UNESCO year needs a source: {n.text[:40]}…")
 

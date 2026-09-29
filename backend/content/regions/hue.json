@@ -44,12 +44,14 @@
         "sources": [
           "unesco-whc-vn"
         ],
-        "verified": false
+        "verified": true
       },
       {
-        "text": "Gió Lào là gió tây khô nóng thổi vào Bắc Trung Bộ đầu mùa hè.",
-        "sources": [],
-        "verified": false
+        "text": "Gió Lào là gió tây nam khô nóng, vượt dãy Trường Sơn thổi vào Bắc Trung Bộ đầu mùa hè.",
+        "sources": [
+          "ref-76"
+        ],
+        "verified": true
       }
     ],
     "frames": [
@@ -101,9 +103,11 @@
     ],
     "teo": [
       {
-        "text": "Nón bài thơ là nón lá Huế có kẹp hình hoặc câu thơ giữa hai lớp lá.",
-        "sources": [],
-        "verified": false
+        "text": "Nón bài thơ là nón lá Huế có kẹp hình hoặc câu thơ giữa hai lớp lá, soi lên nắng mới thấy.",
+        "sources": [
+          "ref-72"
+        ],
+        "verified": true
       }
     ],
     "ti": "Bà học chuốt vành nón trước cả học may. Nón lá với áo dài đúng là một đôi."
@@ -132,25 +136,27 @@
     ],
     "teo": [
       {
-        "text": "Nhã nhạc cung đình Huế được UNESCO công nhận.",
+        "text": "Nhã nhạc cung đình Huế được UNESCO công nhận là Kiệt tác di sản truyền khẩu và phi vật thể.",
+        "unesco": 2003,
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
-        "unesco": 2003
+        "verified": true
       },
       {
         "text": "Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh.",
+        "unesco": 2017,
         "sources": [
           "unesco-ich-vn"
         ],
-        "verified": false,
-        "unesco": 2017
+        "verified": true
       },
       {
-        "text": "Áo Nhật Bình là trang phục của phụ nữ hoàng tộc và cung phi triều Nguyễn.",
-        "sources": [],
-        "verified": false
+        "text": "Áo Nhật Bình vốn là triều phục của hậu, phi, cung tần và công chúa triều Nguyễn; sau 1945 mới phổ biến trong dân gian.",
+        "sources": [
+          "ref-71"
+        ],
+        "verified": true
       }
     ],
     "bridge": "Ở kinh đô, lễ nghi nào cũng cần áo chỉnh tề. Lật trang đi, Bà kể con nghe chiếc áo ngũ thân."
@@ -164,9 +170,12 @@
       "keepsake": "fabric",
       "teo": [
         {
-          "text": "Vì là kinh đô với nhiều nghi lễ → áo ngũ thân cổ đứng, năm vạt, mặc chỉnh tề.",
-          "sources": [],
-          "verified": false
+          "text": "Năm 1744, chúa Nguyễn Phúc Khoát định chế y phục ở Đàng Trong; áo ngũ thân cài khuy thành thường phục chung.",
+          "sources": [
+            "ref-03",
+            "ref-12"
+          ],
+          "verified": true
         }
       ],
       "ti": "Cái áo đỏ Bà may hôm mình hỏi “có phải áo dài không”… là áo ngũ thân."
@@ -183,12 +192,15 @@
           "sources": [
             "ref-09"
           ],
-          "verified": false
+          "verified": true
         },
         {
-          "text": "Áo dài hiện đại phát triển từ áo ngũ thân, tà dài và ôm dáng hơn.",
-          "sources": [],
-          "verified": false
+          "text": "Đầu thập niên 1930, họa sĩ Cát Tường (Le Mur) cách tân áo ngũ thân thành áo dài tân thời.",
+          "sources": [
+            "ref-04",
+            "ref-70"
+          ],
+          "verified": true
         }
       ],
       "ti": "Chiếc áo xanh thiên thanh hôm ấy làm mình nhớ Bà. Giờ mình mới biết nó bắt đầu từ đâu."
@@ -200,6 +212,13 @@
   "sources": [
     "unesco-ich-vn",
     "unesco-whc-vn",
-    "ref-09"
+    "ref-09",
+    "ref-03",
+    "ref-04",
+    "ref-12",
+    "ref-70",
+    "ref-71",
+    "ref-72",
+    "ref-76"
   ]
 }
