@@ -14,26 +14,19 @@ import type { Bootstrap } from "@/lib/types";
 import { BookCover } from "../book/BookCover";
 import Flipbook, { WelcomeBody, type Resume } from "../book/Flipbook";
 import { VietnamMap } from "../book/VietnamMap";
+import { pageSize, useBookScale, useViewport } from "@/lib/bookScale";
+import { BookSizeControl } from "./BookSizeControl";
 
 type Landing = "flash" | "soft";
 type Phase = "landing" | "closed" | "opening" | "open" | "closing";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-/** Page size that lets the open spread (two pages) fit the screen. */
+/** Page size that lets the open spread (two pages) fit the screen, scaled by the reader's choice (#22). */
 function usePageSize() {
-  const [vp, setVp] = useState({ w: 1440, h: 900 });
-  useEffect(() => {
-    const on = () => setVp({ w: window.innerWidth, h: window.innerHeight });
-    on();
-    window.addEventListener("resize", on);
-    return () => window.removeEventListener("resize", on);
-  }, []);
-  const portrait = vp.w < 760;
-  const h = portrait
-    ? Math.min(vp.h * 0.7, (vp.w * 0.86) / 0.75)
-    : Math.min(vp.h * 0.76, (vp.w * 0.46) / 0.75);
-  return { w: Math.round(h * 0.75), h: Math.round(h), portrait };
+  const vp = useViewport();
+  const [scale] = useBookScale();
+  return pageSize(vp, scale);
 }
 
 /**
@@ -195,6 +188,7 @@ export function DeskScene({
 
   return (
     <main className="desk fixed inset-0 overflow-hidden">
+      {!size.portrait && <BookSizeControl />}
       <Image
         src="/page/Desk.png"
         alt=""
@@ -229,6 +223,9 @@ export function DeskScene({
               </div>
             )}
             <Flipbook
+              // page-flip measures once: a new size builds a new book, which reopens where the reader was
+              key={`${size.w}x${size.h}`}
+              restore={phase === "open"}
               resume={resume}
               data={data}
               width={size.w}

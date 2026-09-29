@@ -375,6 +375,19 @@ body {
   /* react-pageflip puts --left / --right on the page element itself (which carries .paper) */
   .book-pages .paper.--left { box-shadow: inset -26px 0 30px -18px rgba(70, 45, 20, 0.35); }
   .book-pages .paper.--right { box-shadow: inset 26px 0 30px -18px rgba(70, 45, 20, 0.35); }
+  .book-size {
+    color: #f3ead7;
+    background: rgba(20, 12, 7, 0.5);
+    border: 1px solid rgba(243, 234, 215, 0.22);
+    backdrop-filter: blur(3px);
+  }
+  .book-size button {
+    border-radius: 999px;
+    padding: 0.1rem 0.55rem;
+    transition: background 150ms ease;
+  }
+  .book-size button:hover:not(:disabled) { background: rgba(243, 234, 215, 0.16); }
+  .book-size button:disabled { opacity: 0.35; }
   .page-turn {
     font-family: var(--font-hand), cursive;
     font-size: 1.15rem;

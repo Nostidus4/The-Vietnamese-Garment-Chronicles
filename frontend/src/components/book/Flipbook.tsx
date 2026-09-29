@@ -25,6 +25,9 @@ import { VietnamMap } from "./VietnamMap";
 // map · Đến · Nhìn quanh · Nếp sống · Lễ hội · Mặc ×2 · Trang của con
 const PAGES = 8;
 
+// where the reader is, kept across a rebuild of the book (a new size means a new page-flip instance)
+const memo = { focus: null as string | null, page: 0 };
+
 export type Resume = { region: string; page: "own" | "wear" } | null;
 
 /**
@@ -41,6 +44,7 @@ export default function Flipbook({
   portrait = false,
   active = true,
   resume = null,
+  restore = false,
   onClose,
 }: {
   data: Bootstrap;
@@ -49,6 +53,7 @@ export default function Flipbook({
   portrait?: boolean;
   active?: boolean; // false while hidden behind the desk copy: ignore the keyboard
   resume?: Resume; // come back from the try-on straight to a page of a region
+  restore?: boolean; // rebuilt at a new size: reopen on the same region and page
   onClose?: () => void; // "Gấp sổ" on the first page: the desk swings the cover shut
 }) {
   const router = useRouter();
@@ -67,7 +72,7 @@ export default function Flipbook({
   useEffect(() => () => clearTimeout(dwell.current), []);
 
   // the region the map is zoomed into; phones first show a preview card (no hover on touch)
-  const [focus, setFocus] = useState<string | null>(resume?.region ?? null);
+  const [focus, setFocus] = useState<string | null>(restore ? memo.focus : (resume?.region ?? null));
   const [preview, setPreview] = useState<string | null>(null);
   const [hotProvince, setHotProvince] = useState<string | null>(null);
   const region = focus ? regions.get(focus) : undefined;
@@ -105,7 +110,11 @@ export default function Flipbook({
   }
   const used = 2 + content.length;
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(restore ? memo.page : 0);
+  useEffect(() => {
+    memo.focus = focus;
+    memo.page = page;
+  }, [focus, page]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- react-pageflip ships no type for its instance
   const bookRef = useRef<any>(null);
   const perView = portrait ? 1 : 2;
@@ -229,7 +238,7 @@ export default function Flipbook({
         maxWidth={width}
         minHeight={height}
         maxHeight={height}
-        startPage={0}
+        startPage={restore ? memo.page : 0}
         drawShadow
         flippingTime={900}
         usePortrait={portrait} // phones: one page at a time
