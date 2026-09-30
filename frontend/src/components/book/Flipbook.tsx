@@ -146,7 +146,6 @@ export default function Flipbook({
   const region = focus ? regions.get(focus) : undefined;
   const j = region?.journey ?? null;
   const trip = !!j?.stops.length;
-  const listening = !focus && hovered ? regions.get(hovered) : undefined;
 
   const tryOn = (garment: string) => region && router.push(`/chapter/${region.id}?garment=${garment}`);
   const built: Built =
@@ -293,7 +292,7 @@ export default function Flipbook({
   // the right-hand page of the map spread
   const pre = j?.check?.pre;
   const asking = !!(region && trip && reading && pre && (pre.verified || DRAFT) && !preAsked(region.id));
-  const rightKey = region ? `${reading ? (asking ? "pre" : "chapter") : "region"}-${region.id}` : listening ? `hover-${listening.id}` : "welcome";
+  const rightKey = region ? `${reading ? (asking ? "pre" : "chapter") : "region"}-${region.id}` : "welcome";
   const right = region ? (
     !reading ? (
       <RegionIntro region={region} onOpen={() => setReading(true)} onProvinceHover={setHotProvince} />
@@ -311,9 +310,8 @@ export default function Flipbook({
     ) : (
       <ArriveDiary region={region} data={data} hotProvince={hotProvince} onProvinceHover={setHotProvince} />
     )
-  ) : listening ? (
-    <HoverPage region={listening} />
   ) : (
+    // the start page stays put while the pointer moves over the map: the hovered region lights up in its list
     <StartPage
       data={data}
       tints={TINTS}

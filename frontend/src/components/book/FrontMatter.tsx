@@ -156,6 +156,7 @@ export function StartPage({
   const now = fests.filter((f) => f.month === month);
   const soon = [...fests].sort((a, b) => ((a.month! - month + 12) % 12) - ((b.month! - month + 12) % 12)).slice(0, 2);
   const shown = now.length ? now.slice(0, 2) : soon;
+  const hoveredRegion = hovered ? data.regions.find((r) => r.id === hovered) : undefined;
   const stampsOf = (id: string) =>
     [arrived.includes(id), understood.includes(id), pagesOf(book, id).some((p) => p.photos.some((ph) => ph.kind === "real"))].filter(Boolean).length;
   return (
@@ -182,7 +183,7 @@ export function StartPage({
                 onMouseLeave={() => onHover(null)}
                 onFocus={() => onHover(r.id)}
                 onBlur={() => onHover(null)}
-                className={`flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left transition-colors ${hovered === r.id ? "bg-amber-50/80" : "hover:bg-amber-50/60"}`}
+                className={`flex w-full items-center gap-2.5 rounded-md px-2 py-1 text-left transition-colors ${hovered === r.id ? "bg-amber-50/80" : "hover:bg-amber-50/60"}`}
               >
                 <span className="h-7 w-7 shrink-0 rounded-sm border border-[#5b4636]/40 shadow-inner" style={{ background: tints[r.id] }} aria-hidden />
                 <span className="min-w-0 flex-1">
@@ -203,8 +204,16 @@ export function StartPage({
         })}
       </ul>
 
-      {shown.length > 0 && (
-        <div className="mt-3 rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
+      {/* the region under the pointer: one line from Bà's diary, in place of this month's festivals */}
+      {hoveredRegion?.journey ? (
+        <div className="mt-3 h-[5.4rem] shrink-0 overflow-hidden rounded-md px-3 py-2" style={{ background: `${tints[hoveredRegion.id]}99` }}>
+          <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-600">NHẬT KÝ CỦA BÀ · {hoveredRegion.name.toUpperCase()}</p>
+          <p className="font-hand m-0 mt-0.5 text-[1rem] leading-snug" style={{ color: YOUNG }}>
+            {hoveredRegion.journey.hover_line}
+          </p>
+        </div>
+      ) : shown.length > 0 && (
+        <div className="mt-3 h-[5.4rem] shrink-0 overflow-hidden rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
           <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">{now.length ? "THÁNG NÀY TRONG SỔ CỦA BÀ" : "SẮP TỚI TRONG SỔ CỦA BÀ"}</p>
           <ul className="m-0 mt-1 list-none space-y-0.5 p-0">
             {shown.map((f) => (
@@ -220,7 +229,7 @@ export function StartPage({
 
       <div className="mt-auto flex flex-wrap items-center gap-2 pt-3">
         <button type="button" onClick={() => onRegion(suggest.id)} className="rounded-full bg-[#27354f] px-4 py-2 text-sm text-amber-50 hover:bg-[#1c2740]">
-          Lần đầu mở sổ? Bắt đầu từ {suggest.label} →
+          Bắt đầu từ {suggest.label} →
         </button>
         <button type="button" onClick={onEvent} className="rounded-full border border-stone-700 px-3 py-2 text-[0.8rem] hover:bg-stone-800 hover:text-amber-50">
           Tôi sắp tham gia sự kiện
