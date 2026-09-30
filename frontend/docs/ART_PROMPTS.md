@@ -600,7 +600,7 @@ Tranh cho các trang nhật ký của Bà trong chương Huế (cốt truyện: 
 MEMORY: this is a remembered scene from the 1970s. Slightly faded warm palette, soft edges, gentle film-like grain, a thin cream vignette at the borders. Period details only: bicycles, cyclos, wooden sampans, tiled roofs, conical hats; no modern cars, scooters, phones, plastic signs or tourists.
 ```
 
-- Tỉ lệ **4:3** cho tranh dán trong trang nhật ký (trừ khi ghi khác). Lưu ở `backend/content/media/hue/`.
+- Tỉ lệ **4:3** cho tranh dán trong trang nhật ký (trừ khi ghi khác). Lưu ở `frontend/public/regions/hue/` (đúng tên file trong bảng 13.11, web tự hiện khi có file).
 - Không vẽ chữ, không vẽ bản đồ (bản đồ lộ trình Huế là SVG do web vẽ).
 
 ### 13.0 Ông thời trẻ và mẹ Ông (character sheet)
@@ -747,19 +747,19 @@ Wide panoramic vignette of central Vietnam's narrow land: on the left green moun
 
 ### 13.11 Bảng file chương Huế
 
-| Ảnh | Tỉ lệ | File (trong `backend/content/media/`) | Dùng ở |
+| Ảnh | Tỉ lệ | File (trong `frontend/public/regions/`) | Dùng ở |
 | --- | --- | --- | --- |
-| Ông và mẹ Ông | 16:9 | characters/ong-sheet.png | tham chiếu (không hiển thị) |
+| Ông và mẹ Ông | 16:9 | `backend/content/media/characters/ong-sheet.png` | tham chiếu (không hiển thị) |
 | Ga Huế chiều mưa | 4:3 | hue/h01-ga-hue.png | Điểm 1 |
 | Sông Hương buổi sớm | 4:3 | hue/h02-song-huong-som.png | Điểm 2 |
 | Nón lá + hình ẩn | 1:1 ×2 | hue/h03a-non-la.png, hue/h03b-non-an.png | Điểm 2 (tương tác) |
 | Ngọ Môn trưa nắng | 4:3 | hue/h04-ngo-mon.png | Điểm 3 |
-| Mâm cơm ra mắt | 4:3 | hue/h05-mam-com.png | Điểm 4 |
-| Chùa Thiên Mụ | 3:4 | hue/h06-thien-mu.png | Điểm 5 |
+| Mâm cơm ra mắt | 4:3 | hue/h05-mam-com.png | Điểm 5 |
+| Chùa Thiên Mụ | 3:4 | hue/h06-thien-mu.png | Điểm 4 |
 | Đêm hoa đăng | 4:3 | hue/h07-hoa-dang.png | Điểm 6 |
-| Rương và áo ngũ thân | 3:4 | hue/h08-ruong-ao.png | Điểm 7 |
+| Rương và áo ngũ thân | 3:4 | hue/h08-ruong-ao.png | Trang Mặc (dự phòng, chưa gắn) |
 | Bưu thiếp Huế | 3:2 | hue/h09-buu-thiep.png | Phong thư cuối chương |
-| Miền Trung | 21:9 | hue/h10-mien-trung.png | Trang mở miền |
+| Miền Trung | 21:9 | hue/h10-mien-trung.png | Trang mở miền (dự phòng, chưa gắn) |
 
 Tạo xong chạy `python -m scripts.check_content`. Nhớ chép prompt và bản được chọn vào tab Tổng hợp Prompt (Form 7).
 

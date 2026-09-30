@@ -26,7 +26,7 @@ function Stamp({ label, place, look, color }: { label: string; place: string; lo
 }
 
 export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }) {
-  const { arrived, understood } = useStamps();
+  const { arrived, understood, postcard } = useStamps();
   const total = data.regions.filter((r) => r.status === "open").length;
   const worn = new Set(book.pages.filter((p) => p.photos.some((ph) => ph.kind === "real")).map((p) => p.region_id));
   const tried = new Set(book.pages.filter((p) => p.photos.length > 0).map((p) => p.region_id));
@@ -64,6 +64,11 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
                   color="#2F4A6D"
                 />
               </div>
+              {postcard.includes(r.id) && (
+                <span className="font-hand ml-auto rotate-[-4deg] text-[0.85rem] text-[#8a4b2a]" title="Bưu thiếp của Bà">
+                  ✉ bưu thiếp
+                </span>
+              )}
             </li>
           );
         })}

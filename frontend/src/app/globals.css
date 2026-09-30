@@ -396,6 +396,33 @@ body {
     background-size: 5px 5px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(90, 60, 25, 0.25);
   }
+  /* a word Tèo has a note for: dotted yellow underline, same ink as the text around it */
+  .glossary-word {
+    font: inherit;
+    color: inherit;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: help;
+    text-decoration: underline dotted #d9a43b;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .glossary-word:hover,
+  .glossary-word[aria-expanded="true"] { background: rgba(251, 233, 154, 0.55); border-radius: 2px; }
+  .glossary-word:focus-visible { outline: 2px solid #d9a43b; outline-offset: 1px; }
+  /* the light of the hour on a trip page (chapter stops) */
+  .hour-dawn { background-image: linear-gradient(180deg, rgba(170, 190, 205, 0.28), transparent 55%); }
+  .hour-morning { background-image: linear-gradient(180deg, rgba(250, 235, 190, 0.3), transparent 55%); }
+  .hour-noon { background-image: radial-gradient(ellipse at 80% 0%, rgba(255, 214, 120, 0.3), transparent 60%); }
+  .hour-afternoon { background-image: linear-gradient(200deg, rgba(235, 150, 90, 0.22), transparent 60%); }
+  .hour-evening { background-image: linear-gradient(180deg, rgba(80, 100, 140, 0.2), transparent 60%); }
+  .hour-night { background-image: linear-gradient(180deg, rgba(30, 40, 80, 0.2), rgba(255, 200, 120, 0.08) 70%, transparent); }
+  /* phones: one small page at a time, so a long diary or "Hôm nay" page scrolls instead of being cut */
+  @media (max-width: 759px) {
+    .book-open .paper > div { overflow-y: auto; overscroll-behavior: contain; }
+    .book-open .paper > div > .h-full { height: auto; min-height: 100%; }
+  }
   .book-size {
     color: #f3ead7;
     background: rgba(20, 12, 7, 0.5);

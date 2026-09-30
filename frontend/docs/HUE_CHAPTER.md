@@ -1,5 +1,7 @@
 # Chương Huế – bản thảo cốt truyện (để duyệt)
 
+> **Đã đưa vào sổ (30/09)**: nội dung chạy nằm ở `backend/content/regions/hue.json`. Khi ghép theo giờ trong ngày, thứ tự đổi thành: Ga Huế → Sông Hương · chợ Đông Ba → Đại Nội → **chùa Thiên Mụ (Ông hỏi, Bà hẹn tối trả lời)** → **bữa cơm tối ra mắt ("rứa thôi", Bà trả lời)** → lễ hội. Ga Huế thật sơn **hồng đỏ**, không phải vàng.
+>
 > Mục tiêu: người đọc **đi Huế cùng Bà**, không phải đọc tư liệu về Huế.
 > Mỗi điểm dừng có 2 lớp: **nhật ký của Bà năm hai mươi tuổi** (tranh minh họa) và **trang "Hôm nay" của Tí**, người cầm cuốn sổ đi lại đúng chỗ ấy (ảnh thật, review không khí, mẹo nhỏ).
 > Sợi chỉ đỏ xuyên suốt: chuyện Bà theo Ông về Huế ra mắt mẹ chồng, và **chiếc áo** mà bà mẹ ấy trao ở cuối chương.

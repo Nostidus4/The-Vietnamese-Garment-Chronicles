@@ -12,8 +12,8 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Bootstrap } from "@/lib/types";
 import { BookCover } from "../book/BookCover";
-import Flipbook, { WelcomeBody, type Resume } from "../book/Flipbook";
-import { VietnamMap } from "../book/VietnamMap";
+import Flipbook, { type Resume } from "../book/Flipbook";
+import { LetterPage, TocPage } from "../book/FrontMatter";
 import { pageSize, useBookScale, useViewport } from "@/lib/bookScale";
 import { BookSizeControl } from "./BookSizeControl";
 import { useDuKy } from "@/lib/dukyBook";
@@ -58,9 +58,6 @@ export function DeskScene({
   });
   const bookRef = useRef<HTMLDivElement>(null);
   const underRef = useRef<HTMLDivElement>(null);
-  const locked = data.regions
-    .filter((r) => r.status === "locked")
-    .map((r) => r.id);
 
   // cover angle drives all the light: the cover darkens as it turns away from the window,
   // its inside brightens as it lands, and the lifted cover casts a shadow on the page beneath
@@ -175,18 +172,9 @@ export function DeskScene({
     return () => window.removeEventListener("keydown", onKey);
   });
 
-  const underSide = size.portrait ? "map" : "welcome"; // phones show one page: the map sits right under the cover
-  const mapPage = (
-    <div className="h-full w-full p-4">
-      <VietnamMap
-        ink={phase === "landing" || phase === "closed" ? "wait" : "draw"} // inks in as the cover opens, stays inked until it shuts
-        active={null}
-        locked={locked}
-        onHover={() => {}}
-        onSelect={() => {}}
-      />
-    </div>
-  );
+  // the first spread under the cover is Bà's letter (left, inside the cover) and the contents (right); phones show one
+  // page, so the letter sits right under the cover. Same components as the flipbook, so the hand-over is seamless.
+  const underPage = size.portrait ? <LetterPage /> : <TocPage data={data} onRegion={() => {}} />;
 
   return (
     <main className="desk fixed inset-0 overflow-hidden">
@@ -284,15 +272,7 @@ export function DeskScene({
                 className="paper --right absolute inset-0 overflow-hidden"
                 initial={{ scale: 0.95 }}
               >
-                {prepared ? (
-                  underSide === "map" ? (
-                    mapPage
-                  ) : (
-                    <div className="flex h-full w-full flex-col p-[8%]">
-                      <WelcomeBody />
-                    </div>
-                  )
-                ) : null}
+                {prepared ? <div className="flex h-full w-full flex-col p-[8%]">{underPage}</div> : null}
                 <motion.div
                   className="pointer-events-none absolute inset-0"
                   style={{
@@ -343,7 +323,11 @@ export function DeskScene({
                     opacity: size.portrait ? coverInsideFade : 1,
                   }}
                 >
-                  {prepared && underSide !== "map" && mapPage}
+                  {prepared && !size.portrait && (
+                    <div className="flex h-full w-full flex-col p-[8%]">
+                      <LetterPage />
+                    </div>
+                  )}
                 </motion.div>
               </motion.div>
             </div>

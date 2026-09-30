@@ -5,8 +5,8 @@
 
 import { useEffect, useState } from "react";
 
-type Kind = "arrived" | "understood";
-const KEYS: Record<Kind, string> = { arrived: "vpdk-stamps", understood: "vpdk-understood" };
+type Kind = "arrived" | "understood" | "postcard";
+const KEYS: Record<Kind, string> = { arrived: "vpdk-stamps", understood: "vpdk-understood", postcard: "vpdk-postcards" };
 const EVENT = "vpdk-stamps";
 
 function read(kind: Kind): string[] {
@@ -29,9 +29,9 @@ export function markStamp(kind: Kind, regionId: string) {
 }
 
 export function useStamps() {
-  const [state, setState] = useState(() => ({ arrived: read("arrived"), understood: read("understood") }));
+  const [state, setState] = useState(() => ({ arrived: read("arrived"), understood: read("understood"), postcard: read("postcard") }));
   useEffect(() => {
-    const on = () => setState({ arrived: read("arrived"), understood: read("understood") });
+    const on = () => setState({ arrived: read("arrived"), understood: read("understood"), postcard: read("postcard") });
     window.addEventListener(EVENT, on);
     window.addEventListener("storage", on);
     return () => {

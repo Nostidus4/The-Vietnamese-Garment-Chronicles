@@ -64,6 +64,8 @@ export interface Region {
   garments: string[];
   map_note: { title: string; lines: string[] };
   stamp_image: string | null;
+  intro: { verse: string[]; verse_by: string | null; line: string } | null;
+  chapters: { province: string; status: "open" | "waiting"; title: string | null }[];
   journey: Journey | null;
 }
 
@@ -89,14 +91,56 @@ export interface DiaryPage {
   teo: TeoNote[];
   keepsake: Keepsake | null;
 }
+/** A real, credited photo on Tí's "Hôm nay" page (never AI). */
+export interface Photo {
+  image: string;
+  alt: string;
+  credit: string;
+  license: string;
+  source_url: string;
+}
+export interface Festival {
+  id: string;
+  name: string;
+  time: string;
+  month: number | null;
+  place: string;
+  text: string;
+  review: string | null;
+  photo: Photo | null;
+  community_review: boolean;
+}
+export type TimeOfDay = "dawn" | "morning" | "noon" | "afternoon" | "evening" | "night";
+/** One stop of a chapter walked like a trip: Bà's page on the left, Tí's "Hôm nay" on the right. */
+export interface Stop extends DiaryPage {
+  id: string;
+  place: string;
+  time: TimeOfDay;
+  point: { lat: number; lon: number } | null;
+  frame: Frame | null;
+  today: { title: string; text: string; tips: string[]; photo: Photo | null } | null;
+  items: { id: string; kind: "custom" | "dish"; title: string; text: string; community_review: boolean }[];
+  festivals: Festival[];
+  hat: { line: string; hat: string | null; hidden: string | null } | null;
+}
+export interface GlossaryTerm {
+  id: string;
+  term: string;
+  text: string;
+  sources: string[];
+  verified: boolean;
+}
 export interface Journey {
   hover_line: string;
-  arrive: DiaryPage & { landmarks: { name: string; lon: number; lat: number; note: string }[] };
-  look: DiaryPage & { frames: Frame[] };
+  chapter: { province: string; title: string; verse: string[]; verse_by: string; line: string } | null;
+  arrive: (DiaryPage & { landmarks: { name: string; lon: number; lat: number; note: string }[] }) | null;
+  look: (DiaryPage & { frames: Frame[] }) | null;
+  stops: Stop[];
+  letter: { text: string; image: string | null } | null;
   life: (DiaryPage & { items: { id: string; kind: "custom" | "dish"; title: string; text: string; community_review: boolean }[] }) | null;
   festivals:
     | (DiaryPage & {
-        festivals: { id: string; name: string; time: string; month: number | null; place: string; text: string; community_review: boolean }[];
+        festivals: Festival[];
         bridge: string;
       })
     | null;
@@ -203,6 +247,7 @@ export interface Bootstrap {
   accessories: Record<string, { id: string; name_vi: string; kind: string }>;
   sources: Record<string, { id: string; title: string; url: string | null }>;
   opening: OpeningScreen[];
+  glossary: Record<string, GlossaryTerm>;
 }
 
 export interface TryOnResult {

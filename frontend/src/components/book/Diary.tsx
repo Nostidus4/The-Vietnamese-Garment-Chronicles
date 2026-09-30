@@ -22,23 +22,25 @@ import type {
   TeoNote,
 } from "@/lib/types";
 import { WeatherNote } from "../chapter/WeatherNote";
+import { RichText } from "./Glossary";
 import { FOCUS } from "./vietnam-geo";
 
-const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
-const OLD = "#8a4b2a"; // old Bà: sepia, written years later
-const PENCIL = "#7b7b7b"; // Tí
+export const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
+export const OLD = "#8a4b2a"; // old Bà: sepia, written years later
+export const PENCIL = "#7b7b7b"; // Tí
 
 /** Unverified facts show while the team works (dev server or ?draft=1) and stay hidden on the real site. */
-const DRAFT =
+export const DRAFT =
   process.env.NODE_ENV === "development" ||
   (typeof window !== "undefined" &&
     new URLSearchParams(window.location.search).get("draft") === "1");
 
-const place = (r: Region) => r.name.split("/")[0].trim();
+/** The place a region's stamps are named after: its open chapter (e.g. Huế), else the region. */
+export const place = (r: Region) => r.chapters?.find((c) => c.status === "open")?.province ?? r.name.split("/")[0].trim();
 
 /* ---------- the voices ---------- */
 
-const DateLine = ({ children }: { children: ReactNode }) => (
+export const DateLine = ({ children }: { children: ReactNode }) => (
   <p
     className="font-hand m-0 border-b border-dashed pb-0.5 text-[0.95rem]"
     style={{ color: YOUNG, borderColor: "rgba(39,53,79,0.25)" }}
@@ -47,25 +49,25 @@ const DateLine = ({ children }: { children: ReactNode }) => (
   </p>
 );
 
-const Entry = ({ text, size = "0.98rem" }: { text: string; size?: string }) => (
+export const Entry = ({ text, size = "0.98rem" }: { text: string; size?: string }) => (
   <p
     className="font-hand m-0 mt-2 leading-[1.38]"
     style={{ color: YOUNG, fontSize: size }}
   >
-    {text}
+    <RichText text={text} />
   </p>
 );
 
-const Margin = ({ text }: { text: string }) => (
+export const Margin = ({ text }: { text: string }) => (
   <p
     className="font-hand m-0 mt-2 -rotate-[1.5deg] border-l-2 pl-2 text-[0.92rem] leading-snug"
     style={{ color: OLD, borderColor: "rgba(138,75,42,0.35)" }}
   >
-    {text} <span className="whitespace-nowrap">— Bà</span>
+    <RichText text={text} /> <span className="whitespace-nowrap">— Bà</span>
   </p>
 );
 
-const Pencil = ({ text }: { text: string }) => (
+export const Pencil = ({ text }: { text: string }) => (
   <p
     className="font-hand m-0 mt-1.5 rotate-[0.8deg] text-[0.85rem]"
     style={{ color: PENCIL }}
@@ -75,7 +77,7 @@ const Pencil = ({ text }: { text: string }) => (
 );
 
 /** Tèo's sticky notes: the only place facts and sources live. */
-function TeoNotes({ notes, data }: { notes: TeoNote[]; data: Bootstrap }) {
+export function TeoNotes({ notes, data }: { notes: TeoNote[]; data: Bootstrap }) {
   const shown = notes.filter((n) => n.verified || DRAFT);
   if (!shown.length) return null;
   return (
@@ -123,7 +125,7 @@ function TeoNotes({ notes, data }: { notes: TeoNote[]; data: Bootstrap }) {
 
 /* ---------- keepsakes glued on the page ---------- */
 
-function KeepsakeArt({
+export function KeepsakeArt({
   kind,
   label,
   color,
@@ -212,13 +214,13 @@ function KeepsakeArt({
 }
 
 /** A keepsake picture: the real image if the team has made it, otherwise a pencil placeholder. */
-function Polaroid({ frame, i }: { frame: Frame; i: number }) {
+export function Polaroid({ frame, i, className = "w-[31%]" }: { frame: Frame; i: number; className?: string }) {
   const reduced = !!useReducedMotion();
   const [broken, setBroken] = useState(false);
   const tilt = [-4, 2.5, -1.2][i] ?? 0;
   return (
     <motion.figure
-      className="relative m-0 w-[31%] bg-[#fbf6ea] p-[3%] pb-[2%] shadow-[0_5px_12px_rgba(60,35,10,0.28)]"
+      className={`relative m-0 ${className} bg-[#fbf6ea] p-[3%] pb-[2%] shadow-[0_5px_12px_rgba(60,35,10,0.28)]`}
       initial={
         reduced ? { opacity: 0 } : { opacity: 0, y: 26, rotate: tilt - 8 }
       }
@@ -377,6 +379,7 @@ export function ArriveDiary({
   const reduced = !!useReducedMotion();
   const j = region.journey!;
   const sheet = FOCUS[region.id];
+  const arrive = j.arrive!;
   const pre = j.check?.pre;
   const [asking, setAsking] = useState(() => !!pre && (pre.verified || DRAFT) && !preAsked(region.id));
   useEffect(() => {
@@ -385,7 +388,7 @@ export function ArriveDiary({
   if (asking) return <PreQuestion region={region} onDone={() => setAsking(false)} />;
   return (
     <Sheet
-      page={j.arrive}
+      page={arrive}
       data={data}
       keepsake={
         <motion.div
@@ -451,9 +454,9 @@ export function LookDiary({
 }) {
   const j = region.journey!;
   return (
-    <Sheet page={j.look} data={data}>
+    <Sheet page={j.look!} data={data}>
       <div className="mt-4 flex justify-between">
-        {j.look.frames.map((f, i) => (
+        {j.look!.frames.map((f, i) => (
           <Polaroid key={`${region.id}-${i}`} frame={f} i={i} />
         ))}
       </div>
@@ -656,7 +659,7 @@ function shuffled(q: CheckQuestion) {
 }
 
 /** One question of Bà: pick, see right or wrong and why. Unverified questions show only while drafting. */
-function Question({
+export function Question({
   q,
   regionId,
   phase,
@@ -713,7 +716,7 @@ function Question({
 }
 
 const PRE_KEY = "vpdk-pre-asked";
-function preAsked(regionId: string) {
+export function preAsked(regionId: string) {
   try {
     return (JSON.parse(localStorage.getItem(PRE_KEY) ?? "[]") as string[]).includes(regionId);
   } catch {
@@ -730,7 +733,7 @@ function setPreAsked(regionId: string) {
 }
 
 /** Before the "Đến" entry, once per region: Bà asks what the reader already guesses. */
-function PreQuestion({ region, onDone }: { region: Region; onDone: () => void }) {
+export function PreQuestion({ region, onDone }: { region: Region; onDone: () => void }) {
   const q = region.journey!.check!.pre;
   const [answered, setAnswered] = useState(false);
   const done = () => {

@@ -172,6 +172,29 @@ Dữ liệu chính nằm trong `backend/content/`.
 - Bản đồ phải thể hiện Hoàng Sa và Trường Sa.
 - Ảnh người dùng chỉ được xử lý trong bộ nhớ, không lưu trên server.
 
+## Viết một chương cho tỉnh của bạn
+
+Sổ của Bà chia theo **miền**, mỗi miền có **một chương cho mỗi tỉnh**. Tỉnh chưa có chương vẫn hiện trong mục lục của miền, ghi "đang chờ người viết" và dẫn tới mục này. Hiện mỗi miền mở được một chương; chương mẫu là **Huế** (`backend/content/regions/hue.json`, cốt truyện ở `frontend/docs/HUE_CHAPTER.md`).
+
+Một chương được viết như **một chuyến đi cùng Bà**. Mỗi điểm dừng (`stops`) là một trang đôi:
+
+| Trang trái: Bà (ký ức) | Trang phải: "Hôm nay" (Tí đi lại) |
+|---|---|
+| `date`, `entry` (Bà năm hai mươi tuổi, xưng "tôi", không ghi năm) | `today.title`, `today.text` (Tí xưng "mình", kể cảm giác khi đến) |
+| `margin` (Bà bây giờ, viết cho "con"), `ti` (bút chì của Tí) | `today.tips` (tối đa 3 mẹo đi) |
+| `frame`: tranh minh họa ký ức (prompt ghi trong `frontend/docs/ART_PROMPTS.md`) | `today.photo`: **ảnh thật**, ghi `credit`, `license`, `source_url` |
+| `teo`: dữ kiện có nguồn (chỉ hiện khi `verified: true`) | điểm dừng có `festivals` thì trang phải là bảng lễ hội |
+
+Các bước:
+
+1. Trong `backend/content/regions.json`, đổi tỉnh đó trong `chapters` của miền thành `"status": "open"` và thêm `title`. Mỗi miền hiện chỉ mở được một chương.
+2. Tạo `backend/content/regions/<id-miền>.json` theo mẫu `hue.json`: `chapter` (câu ca dao hoặc thơ, dòng của Bà), 4–7 `stops`, `wear` (trang phục), `check` (Bà hỏi con), `own`, `letter` (bưu thiếp cuối chương).
+3. **Ảnh thật** chỉ lấy ảnh có giấy phép cho phép dùng lại (Wikimedia Commons: CC BY, CC BY-SA, Public domain), lưu ở `frontend/public/regions/<miền>/photos/`, ghi đủ tác giả và giấy phép. **Tranh ký ức** tạo bằng AI theo `ART_PROMPTS.md`, lưu ở `frontend/public/regions/<miền>/`.
+4. **Từ khó** trong lời Bà thì đánh dấu `[[chữ hiển thị|id-thuật-ngữ]]` và thêm vào `backend/content/glossary.json`. Người đọc bấm vào sẽ hiện ghi chú của Tèo. Mỗi trang tối đa 2–3 từ.
+5. Chạy `python -m scripts.check_content` (không được có lỗi), rồi mở `/?draft=1` để xem cả những ghi chú chưa kiểm chứng.
+
+Ghi chú của Tèo và thuật ngữ chỉ hiện trên trang thật khi `verified: true` và có nguồn trong `sources.json`.
+
 ## Mở và kiểm tra đoạn opening
 
 | URL | Tác dụng |
