@@ -4,8 +4,9 @@ import HTMLFlipBook from "react-pageflip";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { markStamp } from "@/lib/stamps";
 import type { Bootstrap, Region } from "@/lib/types";
-import { ChapterEnd, ChapterTitle, LEAVE_CHAPTER, EnvelopeLetter, FestivalBoard, RegionIntro, StopDiary, StopToday } from "./Chapter";
+import { ChapterEnd, ChapterTitle, LEAVE_CHAPTER, StopGame, EnvelopeLetter, FestivalBoard, RegionIntro, StopDiary, StopToday } from "./Chapter";
 import {
   ArriveDiary,
   AskDiary,
@@ -55,9 +56,11 @@ function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) =
     j.stops.forEach((st, i) => {
       if (i === 0) tabs.push({ label: `Đi ${chapterPlace}`, page: at() });
       if (st.festivals.length) tabs.push({ label: "Lễ hội", page: at() });
-      pages.push({ node: <StopDiary stop={st} index={i} data={data} chapterPlace={chapterPlace} />, still: !!st.hat });
+      pages.push({ node: <StopDiary stop={st} index={i} data={data} chapterPlace={chapterPlace} regionId={region.id} />, still: !!st.hat });
       pages.push(
-        st.today
+        st.game && (!st.game.community_review || DRAFT)
+          ? { node: <StopGame stop={st} regionId={region.id} data={data} />, still: true }
+          : st.today
           ? { node: <StopToday stop={st} /> }
           : st.festivals.length
             ? { node: <FestivalBoard stop={st} chapterPlace={chapterPlace} />, still: true }
@@ -163,6 +166,11 @@ export default function Flipbook({
     memo.reading = reading;
     memo.page = page;
     if (focus && trip && page >= FIRST) {
+      const first = Math.floor((page - FIRST) / 2);
+      for (const i of portrait ? [first] : [first, Math.floor((page + 1 - FIRST) / 2)]) {
+        const st = j!.stops[i];
+        if (st?.stamp) markStamp("stop", `${focus}:${st.id}`);
+      }
       const n = j!.stops.length;
       reachedOf[focus] = Math.max(reachedOf[focus] ?? 0, Math.min(n, Math.floor((page - FIRST) / 2) + (portrait ? 1 : 1)));
     }

@@ -65,7 +65,7 @@ export interface Region {
   map_note: { title: string; lines: string[] };
   stamp_image: string | null;
   intro: { verse: string[]; verse_by: string | null; line: string } | null;
-  chapters: { province: string; status: "open" | "waiting"; title: string | null }[];
+  chapters: { province: string; status: "open" | "draft" | "waiting"; title: string | null }[];
   journey: Journey | null;
 }
 
@@ -110,6 +110,25 @@ export interface Festival {
   photo: Photo | null;
   community_review: boolean;
 }
+export type GameKind = "dong-ho" | "quan-ho" | "cay-beo" | "xep-do" | "khuy-bac" | "xoe" | "cong-chieng" | "det";
+export interface GameRound {
+  label: string | null;
+  item: string | null;
+  prompt: string | null;
+  choices: string[];
+  answer: number | null;
+  explain: string | null;
+}
+/** A small game on a stop's right page; winning it reveals Tí's "Hôm nay". */
+export interface Game {
+  kind: GameKind;
+  title: string;
+  intro: string;
+  rounds: GameRound[];
+  done: string;
+  teo: TeoNote | null;
+  community_review: boolean;
+}
 export type TimeOfDay = "dawn" | "morning" | "noon" | "afternoon" | "evening" | "night";
 /** One stop of a chapter walked like a trip: Bà's page on the left, Tí's "Hôm nay" on the right. */
 export interface Stop extends DiaryPage {
@@ -122,6 +141,9 @@ export interface Stop extends DiaryPage {
   items: { id: string; kind: "custom" | "dish"; title: string; text: string; community_review: boolean }[];
   festivals: Festival[];
   hat: { line: string; hat: string | null; hidden: string | null } | null;
+  game: Game | null;
+  stamp: string | null;
+  community_review: boolean;
 }
 export interface GlossaryTerm {
   id: string;
@@ -137,6 +159,7 @@ export interface Journey {
   look: (DiaryPage & { frames: Frame[] }) | null;
   stops: Stop[];
   letter: { text: string; image: string | null } | null;
+  community_review: boolean;
   life: (DiaryPage & { items: { id: string; kind: "custom" | "dish"; title: string; text: string; community_review: boolean }[] }) | null;
   festivals:
     | (DiaryPage & {

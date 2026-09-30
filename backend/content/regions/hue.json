@@ -62,7 +62,8 @@
           "license": "CC BY 4.0",
           "source_url": "https://commons.wikimedia.org/wiki/File:Ga_Hu%E1%BA%BF_(06h39_-_02.09.2026).jpg"
         }
-      }
+      },
+      "stamp": "Ga Huế"
     },
     {
       "id": "song-huong",
@@ -114,7 +115,8 @@
           "license": "CC BY 4.0",
           "source_url": "https://commons.wikimedia.org/wiki/File:Dong_Ba_Market_(Hue)_-_Ch%E1%BB%A3_%C4%90%C3%B4ng_Ba_Hu%E1%BA%BF_(July_2024)_-_img_05.jpg"
         }
-      }
+      },
+      "stamp": "Sông Hương"
     },
     {
       "id": "dai-noi",
@@ -161,7 +163,8 @@
           "license": "CC BY 4.0",
           "source_url": "https://commons.wikimedia.org/wiki/File:Hu%E1%BA%BF_(2024)_-_Meridian_Gate_-_Ng%E1%BB%8D_M%C3%B4n_(Ho%C3%A0ng_th%C3%A0nh_Hu%E1%BA%BF)_-_img_02.jpg"
         }
-      }
+      },
+      "stamp": "Đại Nội"
     },
     {
       "id": "thien-mu",
@@ -206,7 +209,8 @@
           "license": "CC BY-SA 2.0",
           "source_url": "https://commons.wikimedia.org/wiki/File:Th%C3%A1p_Ph%C6%B0%E1%BB%9Bc_Duy%C3%AAn_ch%C3%B9a_Thi%C3%AAn_M%E1%BB%A5.jpg"
         }
-      }
+      },
+      "stamp": "Thiên Mụ"
     },
     {
       "id": "bua-com",
@@ -267,7 +271,8 @@
           "license": "CC BY 4.0",
           "source_url": "https://commons.wikimedia.org/wiki/File:B%C3%BAn_b%C3%B2_Hu%E1%BA%BF_-_Ch%E1%BB%A3_%C4%90%C3%B4ng_Ba_(2024)_-_img_02.jpg"
         }
-      }
+      },
+      "stamp": "Rứa thôi"
     },
     {
       "id": "le-hoi",
@@ -363,7 +368,8 @@
           "community_review": false
         }
       ],
-      "today": null
+      "today": null,
+      "stamp": "Hoa đăng"
     }
   ],
   "letter": {

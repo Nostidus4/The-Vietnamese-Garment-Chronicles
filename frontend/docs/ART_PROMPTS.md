@@ -763,3 +763,55 @@ Wide panoramic vignette of central Vietnam's narrow land: on the left green moun
 
 Tạo xong chạy `python -m scripts.check_content`. Nhớ chép prompt và bản được chọn vào tab Tổng hợp Prompt (Form 7).
 
+## 14. Bốn chương mới: Bắc Ninh, Cần Thơ, Sơn La, Đắk Lắk (01/10)
+
+Cốt truyện ở `docs/CHAPTERS_4.md`, nội dung chạy ở `backend/content/regions/*.json`. Dùng chung khối `{STYLE}`, `MEMORY` (mục 13) và `{AVOID}`. Tỉ lệ **4:3** cho tranh trong trang nhật ký, **3:2** cho bưu thiếp. Lưu ở `frontend/public/regions/<miền>/` đúng tên file; web tự hiện khi có file.
+
+**Bắc Ninh** là quê Bà, năm Bà 18 tuổi (tham chiếu `ba-sheet.png`, bên trái, nhưng trẻ hơn một chút, mặc áo tứ thân). **Cần Thơ** là Bà và Ông đã có gia đình, khoảng 30 tuổi.
+
+> **Sơn La và Đắk Lắk đang chờ cộng đồng duyệt.** Chỉ vẽ **phong cảnh, nhà cửa, đồ vật, đôi tay**; **không vẽ cận trang phục, hoa văn hay khuôn mặt người Thái, người Ê Đê** cho tới khi có người trong cộng đồng xem và góp ý. Các ô này để `no_people: true`.
+
+### 14.1 Bắc Ninh: "Hội xuân bên sông Cầu"
+
+| File | Prompt (phần riêng, sau STYLE + MEMORY + AVOID) |
+| --- | --- |
+| bac-bo/b01-ben-song.png | Early spring dawn, fine drizzle over the Cầu river in the Red River Delta, a wooden ferry boat full of villagers in brown and indigo clothes heading to a festival. On the bank an older cousin ties a black khăn mỏ quạ headscarf (two pointed ends like a crow's beak) on young Bà's head; Bà, 18, in a brown áo tứ thân with a green sash. Misty bamboo, soft grey-green light. |
+| bac-bo/b02-dong-ho.png | A courtyard in Đông Hồ painting village: sheets of shimmering điệp paper drying on bamboo racks, an old craftsman in a brown shirt guiding young Bà as she presses a carved wooden block onto paper; small bowls of natural red, yellow, green and black pigment on a low table. Warm morning light, red pigment on Bà's fingertips. |
+| bac-bo/b03-doi-lim.png | Lim hill at the spring festival, midday: a young liền anh in a black áo the, khăn xếp turban and a black umbrella offers a betel quid with both hands; young Bà in áo tứ thân, red yếm, green sash and a wide flat nón quai thao with long silk fringes stands frozen and shy, eyes down. A crowd watches, a communal house (đình) roof behind with low heavy Vietnamese-style curved tiles. |
+| bac-bo/b04-nha-chua.png | Inside a wooden house where quan họ singers gather: a woven mat, a tray of betel and cups of tea, an older liền chị in áo mớ ba mớ bảy and khăn mỏ quạ teaching young Bà a song, hands gently keeping time; Bà concentrating, lips parted. Soft afternoon light through wooden doors. |
+| bac-bo/b05-cong-lang.png | Evening at a village gate with paper lanterns, liền anh and liền chị groups facing each other singing farewell, young Bà singing bravely for the first time, her cousin smiling beside her. Warm lantern glow, blue dusk. |
+| bac-bo/b09-buu-thiep.png | Picture side of an old hand-painted postcard: Lim hill in spring with a boat on the river, a girl in a nón quai thao and áo tứ thân, blossoms. Worn edges, small blank square at top right, no text. (3:2) |
+
+### 14.2 Cần Thơ: "Mùa nước nổi"
+
+| File | Prompt |
+| --- | --- |
+| nam-bo/n01-ninh-kieu.png | Evening at a Mekong riverside wharf in the 1980s: small boats with oil lamps, a busy waterfront, Bà (about 30, simple blouse) and Ông stepping off after a long bus-and-ferry journey, a local woman waving them to come eat. Warm lamps on dark brown water. |
+| nam-bo/n02-cho-noi.png | Dawn at a floating market on a wide brown Mekong river: dozens of wooden boats, each with a tall pole (cây bẹo) hung with what it sells — a pineapple, a winter melon, sweet potatoes, coconuts; Ông in a small canoe pointing up at the poles, Bà looking amazed. Pink-gold sunrise, mist. |
+| nam-bo/n03-ghe-ba-cu.png | On a wooden boat loaded with pineapples, an old Mekong woman in a dark áo bà ba (short, side slits, no standing collar) wraps a black-and-white checked khăn rằn scarf around young Bà's head against the sun; a teapot and small cups on the deck. Bright morning, river glitter. |
+| nam-bo/n04-nuoc-noi.png | Flood season in the Mekong delta: fields turned into a silver lake, water up to the tree trunks, a canoe gliding past yellow điên điển flowers, a stilt house in the distance. Noon light, calm. |
+| nam-bo/n05-don-ca.png | Night under the eaves of a Mekong house: a man playing a moon-shaped đàn kìm, a woman singing, a zither (đàn tranh) on a mat, a teapot, a single lamp; Bà listening with tears in her eyes. Intimate, warm, no stage. |
+| nam-bo/n06-le-hoi.png | A procession of people with incense climbing a small mountain (núi Sam) at dawn, festival flags, soft haze; seen from behind, faces not in focus. |
+| nam-bo/n09-buu-thiep.png | Picture side of an old hand-painted postcard: a floating market at sunrise, a boat with a pole hung with a pineapple, a woman in áo bà ba and khăn rằn rowing. Worn edges, blank stamp square, no text. (3:2) |
+
+### 14.3 Sơn La: "Tiếng khèn bên suối" (chờ cộng đồng duyệt, không vẽ người cận cảnh)
+
+| File | Prompt |
+| --- | --- |
+| tay-bac/t01-deo-suong.png | A mountain pass in northwest Vietnam at dawn, thick fog opening onto a valley of golden terraced rice fields, a winding road. No people. |
+| tay-bac/t02-nha-san.png | A wooden stilt house beside a clear stream in a Tây Bắc valley, a loom visible under the raised floor, bamboo and banana trees. No people, no costume detail. |
+| tay-bac/t03-dem-xoe.png | Night in a village yard: a bonfire, a ring of people seen as warm silhouettes holding hands around it, stars above the mountains. Silhouettes only, no faces or costume detail. |
+| tay-bac/t04-trao-thu.png | Close-up of two hands passing an old folded letter beside a kitchen fire in a stilt house, a teapot, smoke curling up. Hands only. |
+| tay-bac/t09-buu-thiep.png | Picture side of an old hand-painted postcard: terraced rice fields and a stilt house by a stream in the mountains. Landscape only, no people, blank stamp square, no text. (3:2) |
+
+### 14.4 Đắk Lắk: "Đêm cồng chiêng" (chờ cộng đồng duyệt, không vẽ người cận cảnh)
+
+| File | Prompt |
+| --- | --- |
+| tay-nguyen/d01-doi-ca-phe.png | Central Highlands in the dry season: rolling hills of coffee bushes in white bloom, red earth road, big blue sky. No people. |
+| tay-nguyen/d02-nha-dai.png | A very long wooden house on stilts in a Central Highlands village, a notched log staircase leading up to the veranda, morning light. No people. |
+| tay-nguyen/d03-khung-det.png | Close-up of hands at a backstrap loom under the eaves of a long house, the woven band shown only as soft blurred colours (dark, red, light), no readable pattern. Hands only. |
+| tay-nguyen/d04-cong-chieng.png | Night, a ring of people as warm silhouettes around a fire, bronze gongs glinting in the firelight. Silhouettes only, no faces or costume detail. |
+| tay-nguyen/d09-buu-thiep.png | Picture side of an old hand-painted postcard: coffee hills in bloom and a long house under a big sky. Landscape only, blank stamp square, no text. (3:2) |
+
+Tạo xong chạy `python -m scripts.check_content`, rồi chép prompt và bản được chọn vào tab Tổng hợp Prompt (Form 7).

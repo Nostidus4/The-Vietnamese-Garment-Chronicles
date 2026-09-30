@@ -8,7 +8,7 @@ import type { DuKyBook } from "@/lib/dukyBook";
 import { useStamps } from "@/lib/stamps";
 import { useState } from "react";
 import type { Bootstrap, Region } from "@/lib/types";
-import { PostcardViewer } from "./PostcardViewer";
+import { FINAL_LETTER, PostcardViewer } from "./PostcardViewer";
 
 type Look = "on" | "soft" | "off";
 
@@ -28,8 +28,14 @@ function Stamp({ label, place, look, color }: { label: string; place: string; lo
 }
 
 export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }) {
-  const { arrived, understood, postcard } = useStamps();
+  const { arrived, understood, postcard, stop } = useStamps();
   const [reading, setReading] = useState<Region | null>(null);
+  const [finalOpen, setFinalOpen] = useState(false);
+  // the chapters whose postcard can be kept (open, reviewed); all of them kept = Bà's last letter
+  const withLetter = data.regions.filter((r) => r.journey?.letter && !r.journey.community_review && r.chapters.some((c) => c.status === "open"));
+  const kept = withLetter.filter((r) => postcard.includes(r.id)).length;
+  const stopsTotal = (r: Region) => r.journey?.stops.filter((st) => st.stamp).length ?? 0;
+  const stopsGot = (r: Region) => r.journey?.stops.filter((st) => st.stamp && stop.includes(`${r.id}:${st.id}`)).length ?? 0;
   const total = data.regions.filter((r) => r.status === "open").length;
   const worn = new Set(book.pages.filter((p) => p.photos.some((ph) => ph.kind === "real")).map((p) => p.region_id));
   const tried = new Set(book.pages.filter((p) => p.photos.length > 0).map((p) => p.region_id));
@@ -56,6 +62,11 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
             <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-1">
               <a href={`/?region=${r.id}&page=own`} className="font-display w-[5.5rem] shrink-0 text-[0.8rem] leading-tight text-[#27354f] hover:underline">
                 {place}
+                {stopsTotal(r) > 0 && (
+                  <span className="block font-sans text-[0.58rem] text-stone-500">
+                    tem điểm {stopsGot(r)}/{stopsTotal(r)}
+                  </span>
+                )}
               </a>
               <div className="flex gap-1.5">
                 <Stamp label="Đã đến" place={place} look={arrived.includes(r.id) ? "on" : "off"} color="#B5452E" />
@@ -81,7 +92,20 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
           );
         })}
       </ul>
+      <div className="mt-2 flex items-center justify-between border-t border-dashed border-stone-300 pt-1.5 text-[0.7rem] text-stone-600">
+        <span>
+          Hộp thư của Bà: {kept}/{withLetter.length} bưu thiếp
+        </span>
+        {kept === withLetter.length && withLetter.length > 0 ? (
+          <button type="button" onClick={() => setFinalOpen(true)} className="font-hand rounded bg-[#B5452E] px-2 py-0.5 text-[0.9rem] text-amber-50 shadow">
+            ✉ Lá thư cuối của Bà
+          </button>
+        ) : (
+          <span className="font-hand text-[0.85rem] text-stone-400">đủ bưu thiếp sẽ mở lá thư cuối</span>
+        )}
+      </div>
       {reading && <PostcardViewer region={reading} onClose={() => setReading(null)} />}
+      {finalOpen && <PostcardViewer letter={FINAL_LETTER} title="Lá thư cuối" onClose={() => setFinalOpen(false)} />}
     </div>
   );
 }

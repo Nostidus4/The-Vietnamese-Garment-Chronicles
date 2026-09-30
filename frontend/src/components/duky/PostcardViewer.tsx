@@ -12,13 +12,29 @@ import { plain } from "../book/Glossary";
 const place = (r: Region) => r.chapters?.find((c) => c.status === "open")?.province ?? r.name;
 const CHAR_MS = 32;
 
-export function PostcardViewer({ region, onClose }: { region: Region; onClose: () => void }) {
+/** Bà's last letter, opened once every open chapter's postcard is in the mailbox. */
+export const FINAL_LETTER = {
+  text: "Con à, vậy là con đã đi hết những nơi Bà từng đi. Bà để trống những trang cuối không phải vì Bà quên, mà vì Bà muốn con viết tiếp. Áo thì con cứ mặc theo cách của con, miễn là con hiểu nó đến từ đâu. Giờ đến lượt con: mở Du Ký ra, và viết chương của riêng con.",
+  image: null as string | null,
+};
+
+export function PostcardViewer({
+  region,
+  letter: given,
+  title,
+  onClose,
+}: {
+  region?: Region;
+  letter?: { text: string; image: string | null };
+  title?: string;
+  onClose: () => void;
+}) {
   const reduced = !!useReducedMotion();
-  const letter = region.journey?.letter;
+  const letter = given ?? region?.journey?.letter;
   const [stage, setStage] = useState<"envelope" | "out" | "back">(reduced ? "back" : "envelope");
   const [front, setFront] = useState(false);
   const [imgOk, setImgOk] = useState(!!letter?.image);
-  const where = place(region);
+  const where = title ?? (region ? place(region) : "Gửi con");
 
   useEffect(() => {
     if (reduced) return;

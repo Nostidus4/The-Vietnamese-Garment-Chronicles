@@ -7,11 +7,12 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { markStamp, useStamps } from "@/lib/stamps";
+import { markStamp, unmarkStamp, useStamps } from "@/lib/stamps";
 import type { Bootstrap, Festival, Photo, Region, Stop, TimeOfDay } from "@/lib/types";
 import { WeatherNote } from "../chapter/WeatherNote";
 import { PostcardViewer } from "../duky/PostcardViewer";
 import { DateLine, DRAFT, Entry, KeepsakeArt, Margin, OLD, Pencil, place, Polaroid, TeoNotes, YOUNG } from "./Diary";
+import { GameBody } from "./Games";
 import { RichText } from "./Glossary";
 
 /** Where someone who wants to write a province's chapter starts (README, "Viết một chương cho tỉnh của bạn"). */
@@ -41,6 +42,7 @@ export function RegionIntro({
   const intro = region.intro;
   const open = region.chapters.filter((c) => c.status === "open");
   const waiting = region.chapters.filter((c) => c.status === "waiting");
+  const drafts = region.chapters.filter((c) => c.status === "draft");
   return (
     <div className="flex h-full flex-col">
       <p className="m-0 text-[0.62rem] tracking-[0.3em] text-stone-500">{region.status === "open" ? "MIỀN" : "VÙNG ĐANG CHỜ"}</p>
@@ -60,6 +62,30 @@ export function RegionIntro({
       {intro && <Margin text={intro.line} />}
 
       <p className="m-0 mt-4 text-[0.6rem] tracking-[0.3em] text-stone-500">CÁC CHƯƠNG</p>
+      {drafts.map((c) =>
+        DRAFT ? (
+          <button
+            key={c.province}
+            type="button"
+            onClick={onOpen}
+            onMouseEnter={() => onProvinceHover(c.province)}
+            onMouseLeave={() => onProvinceHover(null)}
+            className="group mt-1 flex items-baseline gap-2 rounded-md border-2 border-dashed border-[#8a4b2a] px-3 py-2 text-left"
+          >
+            <span className="font-display text-[1.05rem]" style={{ color: YOUNG }}>
+              {c.province}
+            </span>
+            <span className="font-hand min-w-0 flex-1 truncate text-[0.95rem]" style={{ color: OLD }}>
+              {c.title} · bản nháp chờ cộng đồng duyệt
+            </span>
+            <span className="text-sm">Đọc →</span>
+          </button>
+        ) : (
+          <p key={c.province} className="font-hand m-0 mt-1 rounded-md border border-dashed border-stone-400 px-3 py-2 text-[0.95rem]" style={{ color: OLD }}>
+            <b className="font-display font-normal">{c.province}</b>: {c.title}. Đang cùng người ở đó viết và đọc lại, sắp mở.
+          </p>
+        ),
+      )}
       {open.map((c) => (
         <button
           key={c.province}
@@ -202,14 +228,37 @@ function RouteSketch({ stops, reached, onStop }: { stops: Stop[]; reached: numbe
 
 /* ---------- one stop: Bà's page ---------- */
 
-export function StopDiary({ stop, index, data, chapterPlace }: { stop: Stop; index: number; data: Bootstrap; chapterPlace: string }) {
+/** Each stop has its own stamp, pressed on the page the first time the reader turns to it. */
+function StopStamp({ label, regionId, stopId }: { label: string; regionId: string; stopId: string }) {
+  const reduced = !!useReducedMotion();
+  const { stop } = useStamps();
+  const on = stop.includes(`${regionId}:${stopId}`);
+  return (
+    <motion.div
+      key={on ? "on" : "off"}
+      className={`flex h-[2.6rem] w-[2.6rem] shrink-0 flex-col items-center justify-center rounded-full border-2 text-center ${on ? "border-[#B5452E]/80 text-[#B5452E]" : "border-dashed border-stone-400/60 text-stone-400/70"}`}
+      initial={on && !reduced ? { scale: 1.9, opacity: 0, rotate: -30 } : false}
+      animate={{ scale: 1, opacity: 1, rotate: -10 }}
+      transition={{ type: "spring", stiffness: 380, damping: 15, delay: 0.5 }}
+      aria-label={on ? `Tem ${label}` : `Chỗ đóng tem ${label}`}
+    >
+      <span className="text-[0.34rem] tracking-[0.18em]">{on ? "ĐÃ ĐẾN" : "TEM"}</span>
+      <span className="font-display px-0.5 text-[0.48rem] leading-tight">{label}</span>
+    </motion.div>
+  );
+}
+
+export function StopDiary({ stop, index, data, chapterPlace, regionId }: { stop: Stop; index: number; data: Bootstrap; chapterPlace: string; regionId: string }) {
   return (
     <div className="relative flex h-full flex-col">
       <div className={`hour-${stop.time} pointer-events-none absolute -inset-[14%]`} aria-hidden />
       <div className="relative flex h-full flex-col">
-        <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">
-          ĐIỂM {index + 1} · {stop.place.toUpperCase()} · {HOUR[stop.time]}
-        </p>
+        <div className="flex items-start justify-between gap-2">
+          <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">
+            ĐIỂM {index + 1} · {stop.place.toUpperCase()} · {HOUR[stop.time]}
+          </p>
+          {stop.stamp && <StopStamp label={stop.stamp} regionId={regionId} stopId={stop.id} />}
+        </div>
         <div>
           {stop.hat ? (
             <HatReveal hat={stop.hat} />
@@ -386,6 +435,66 @@ export function StopToday({ stop }: { stop: Stop }) {
           </ul>
         </div>
       )}
+    </div>
+  );
+}
+
+/* ---------- a stop's game; winning it turns the page to Tí's "Hôm nay" ---------- */
+
+export function StopGame({ stop, regionId, data }: { stop: Stop; regionId: string; data: Bootstrap }) {
+  const game = stop.game!;
+  const { game: won } = useStamps();
+  const key = `${regionId}:${stop.id}`;
+  const [view, setView] = useState<"game" | "today">("game");
+  const [round, setRound] = useState(0); // remounts the game for "Chơi lại"
+  const isWon = won.includes(key);
+  if (view === "today" && stop.today)
+    return (
+      <div className="flex h-full flex-col">
+        <button type="button" onClick={() => setView("game")} className="self-start text-[0.7rem] text-stone-500 hover:underline">
+          ‹ {game.title}
+        </button>
+        <div className="min-h-0 flex-1">
+          <StopToday stop={stop} />
+        </div>
+      </div>
+    );
+  return (
+    <div className="flex h-full flex-col">
+      <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">TRÒ CHƠI · {stop.place.toUpperCase()}</p>
+      <p className="font-display m-0 text-[1.15rem] leading-tight" style={{ color: YOUNG }}>
+        {game.title}
+      </p>
+      <p className="m-0 mt-0.5 text-[0.72rem] leading-snug text-stone-600">
+        <RichText text={game.intro} />
+      </p>
+      <div className="mt-2 min-h-0 flex-1">
+        {isWon ? (
+          <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="flex h-full flex-col">
+            <p className="font-hand m-0 text-[1.05rem] leading-snug text-[#5E7F4A]">✓ {game.done}</p>
+            {game.teo && <TeoNotes notes={[game.teo]} data={data} />}
+            <div className="mt-auto flex flex-wrap items-center gap-3 pt-2">
+              {stop.today && (
+                <button type="button" onClick={() => setView("today")} className="rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
+                  Xem “Hôm nay” của Tí →
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  unmarkStamp("game", key);
+                  setRound((r) => r + 1);
+                }}
+                className="text-[0.75rem] text-stone-500 underline"
+              >
+                Chơi lại
+              </button>
+            </div>
+          </motion.div>
+        ) : (
+          <GameBody key={round} game={game} onWin={() => markStamp("game", key)} />
+        )}
+      </div>
     </div>
   );
 }

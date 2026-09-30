@@ -1,4 +1,6 @@
-# Bốn chương tiếp theo – kịch bản và trò chơi (để duyệt)
+# Bốn chương tiếp theo – kịch bản và trò chơi
+
+> **Đã đưa vào sổ (01/10):** nội dung ở `backend/content/regions/{bac-bo,nam-bo,tay-bac,tay-nguyen}.json`, trò chơi ở `frontend/src/components/book/Games.tsx`, prompt tranh ở `ART_PROMPTS.md` mục 14. Khác với bản thảo: Kinh Bắc là **quê Bà** (theo nội dung đã có), nên Bà 18 tuổi đi hội với chị họ; bỏ trò thắt khăn mỏ quạ và trò nhận tiếng đàn (cần âm thanh có giấy phép); Sơn La và Đắk Lắk là **bản nháp** (`status: draft`), chỉ đọc được ở `?draft=1` hoặc máy dev.
 
 > Viết theo khuôn chương Huế (`HUE_CHAPTER.md`): mỗi điểm dừng là một trang đôi, trái là **Bà** (ký ức, tranh minh họa), phải là **Hôm nay** (Tí đi lại, ảnh thật có giấy phép).
 > **Mỗi chương có một trò chơi chính riêng**, gắn với chính cách người ở đó làm và mặc, không lặp lại trò nào. Mỗi chương kết bằng **một bưu thiếp**. Đủ 5 bưu thiếp thì mở được **lá thư cuối** của Bà.
