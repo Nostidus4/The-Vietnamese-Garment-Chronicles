@@ -25,7 +25,7 @@ Modern full-color comic illustration for a Vietnamese storybook. Clean, confiden
 ```
 
 ```
-AVOID: any text, letters, numbers, captions, logos or watermarks; Chinese, Japanese or Korean traditional clothing, hairstyles or architecture (no hanfu cross collars, no kimono or obi, no hanbok, no pagoda roofs with upturned Chinese-style eaves unless specified; no Chinese frog buttons or knotted "pankou" closures; no Chinese mandarin-collar jackets or qipao styling); 3D render look; photorealism; neon colors; heavy black outlines; cluttered backgrounds.
+AVOID: any text, letters, numbers, captions, logos or watermarks; Chinese, Japanese or Korean traditional clothing, hairstyles or architecture (no hanfu cross collars, no kimono or obi, no hanbok, no pagoda roofs with upturned Chinese-style eaves unless specified; no Chinese frog buttons or knotted "pankou" closures; no Chinese mandarin-collar jackets or qipao styling; no Japanese seigaiha overlapping-semicircle wave pattern); 3D render look; photorealism; neon colors; heavy black outlines; cluttered backgrounds.
 ```
 
 | Màu | Mã | Dùng cho |
@@ -159,7 +159,7 @@ Tỉ lệ 3:4 · file: frontend/public/book/cover.png
 Front cover of an old hand-made seamstress's notebook, seen straight on, filling the frame.
 Cover material: faded indigo linen cloth, slightly worn corners, a few loose threads.
 Decoration: delicate gold-thread embroidery border of small lotus leaves, sewing scissors and a spool of thread; a small sky-blue fabric swatch stitched onto the lower right corner.
-Center area: a plain embroidered rectangular label frame left EMPTY for the title (no text).
+Center area: a plain embroidered rectangular label frame left EMPTY for the title (no text, no wave or other pattern inside the label).
 A cream ribbon bookmark hangs from the bottom edge. Soft warm light from the upper left.
 ```
 
@@ -527,7 +527,7 @@ Color: {màu mặc định}. No person, no accessories, no text.
 - Màu nằm trong bảng màu Mục 1; chỗ trống cho chữ và bong bóng thoại đúng vị trí.
 - Đã lưu prompt + ảnh được chọn vào tab Tổng hợp Prompt.
 
-## 9. Tạo lại ảnh Opening S05 và S08 (ticket #7)
+## 12. Tạo lại ảnh Opening S05 và S08 (ticket #7)
 
 Hai ảnh hiện tại có yếu tố Trung Hoa, mâu thuẫn với chính thông điệp của app:
 - `s05.png`: áo đỏ trên ma-nơ-canh và áo đang may có **khuy tết kiểu áo Tàu** (frog buttons). Áo của Bà và của Tí cũng dùng kiểu khuy này.
@@ -542,7 +542,7 @@ Hai ảnh hiện tại có yếu tố Trung Hoa, mâu thuẫn với chính thôn
 4. Người phụ trách nội dung soát theo checklist bên dưới và đối chiếu Research 6.2 trước khi thay file.
 5. Thay `frontend/public/opening/s05.png`, `s08.png`, rồi bỏ ⚠️ của S05 và S08 trong bảng ở `OPENING_PLAN.md`.
 
-### 9.1 S05 — Tiếng máy may bên cửa sổ (ký ức)
+### 12.1 S05 — Tiếng máy may bên cửa sổ (ký ức)
 
 ```
 {STYLE}
@@ -562,14 +562,15 @@ No text anywhere.
 - [ ] Áo trên ma-nơ-canh có cấu trúc áo ngũ thân: cổ đứng thấp, vạt cài chéo sang phải, xẻ tà, dài qua gối.
 - [ ] Bố cục, nhân vật, hai khung cut-in giữ như cũ (chuyển cảnh T4, T5 không đổi).
 
-### 9.2 S08 — Việt Phục Du Ký
+### 12.2 S08 — Việt Phục Du Ký
 
 ```
 {STYLE}
 {AVOID}
 Recreate the attached scene with the same composition: Tí holding an old embroidered notebook, a cut-in of golden thread.
 The notebook cover must match the second reference image (title page) exactly: indigo fabric, the same embroidered
-lotus-and-cloud border, the same empty cream label in the same place. The label stays EMPTY (the title is added in HTML).
+lotus-and-cloud border, the same empty cream label in the same place. The label stays EMPTY (the title is added in HTML):
+plain cream paper inside the gold frame, no wave band or other pattern.
 Remove the curved-roof pagoda: if the corner needs a motif, use lotus leaves or a Vietnamese village communal-house
 roof with gently curved Vietnamese eaves, or leave it plain.
 The blue garment on the dress form in the background: a Vietnamese áo dài with small plain buttons, no frog buttons.
@@ -577,8 +578,13 @@ No text anywhere.
 ```
 
 **Checklist soát S08:**
-- [ ] Bìa sổ khớp `title-page.png` (màu chàm, hoa văn viền, vị trí ô nhãn), ô nhãn để trống.
+- [ ] Bìa sổ khớp `title-page.png` (màu chàm, hoa văn viền, vị trí ô nhãn), ô nhãn để trống, không có dải sóng.
 - [ ] Không còn chùa mái cong kiểu Trung Hoa hay họa tiết Trung Hoa khác.
 - [ ] Áo trên ma-nơ-canh phía sau không có khuy tết.
 - [ ] Chuyển cảnh T7 (zoom vào góc bìa S07 → S08) và T8 (bìa xoay mở) chạy không giật: xem `/?opening=1&start=s07`.
+
+### 12.3 Vòng soát 2 (30/09)
+
+- **Dải sóng trong ô nhãn** (`title-page.png` và `s08.png`) giống sóng seigaiha của Nhật nên đã bỏ. Không tạo lại bằng AI vì bản AI làm lệch khung nhãn và mất nền trong suốt của bìa. Thay vào đó, dải sóng được phủ bằng giấy kem lấy từ phía trên ô nhãn trong chính ảnh gốc, nên phần còn lại giữ nguyên từng pixel và vị trí ô nhãn trong `BookCover.tsx` không đổi. AVOID đã thêm seigaiha.
+- **Vạt áo đỏ ở cut-in S05:** giữ nguyên. Ma-nơ-canh quay nghiêng ba phần tư và tay Tí che sườn phải, nên đoạn khuy chạy thẳng xuống là đường sườn nhìn nghiêng, không phải đường cài giữa ngực. Đã thử sửa bằng Nano Banana (6 bản), không bản nào rõ hơn ảnh gốc. Nếu cần vẽ lại, cho ma-nơ-canh quay thẳng mặt để thấy vạt đi tới nách phải.
 
