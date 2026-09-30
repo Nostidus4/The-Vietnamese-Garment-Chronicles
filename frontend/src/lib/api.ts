@@ -7,6 +7,8 @@ export const HAS_API = API_URL !== "";
 
 /** Absolute URL for a file under backend/content/media, e.g. media("comic/page-1.png") */
 export const media = (path: string) => `${API_URL}/media/${path}`;
+// every server call goes through here: with no backend it fails at once instead of hitting the Pages host
+const call: typeof fetch = (input, init) => (HAS_API ? fetch(input, init) : Promise.reject(new Error("Bản web này chưa nối máy chủ")));
 
 async function json<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -30,7 +32,7 @@ export function getBootstrap(): Promise<Bootstrap> {
 }
 
 const post = <T>(path: string, body: unknown) =>
-  fetch(`${API_URL}${path}`, {
+  call(`${API_URL}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -48,11 +50,11 @@ export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string })
   form.append("selection", JSON.stringify(sel));
   if (opts.photo) form.append("photo", opts.photo);
   if (opts.avatarId) form.append("avatar_id", opts.avatarId);
-  return fetch(`${API_URL}/tryon`, { method: "POST", body: form }).then((r) => json<TryOnResult>(r));
+  return call(`${API_URL}/tryon`, { method: "POST", body: form }).then((r) => json<TryOnResult>(r));
 }
 
 export const getQuiz = (count = 5) =>
-  fetch(`${API_URL}/quiz?count=${count}`).then((r) =>
+  call(`${API_URL}/quiz?count=${count}`).then((r) =>
     json<{ choices: Record<string, string>; items: { id: string; image: string }[] }>(r),
   );
 
@@ -60,10 +62,10 @@ export const answerQuiz = (id: string, answer: string) =>
   post<{ correct: boolean; answer_name: string; explanation: string; sources: string[] }>("/quiz/answer", { id, answer });
 
 export const getShops = (params: { city?: string; garment_id?: string; service?: string }) =>
-  fetch(`${API_URL}/shops?${new URLSearchParams(params as Record<string, string>)}`).then((r) => json<Shop[]>(r));
+  call(`${API_URL}/shops?${new URLSearchParams(params as Record<string, string>)}`).then((r) => json<Shop[]>(r));
 
 export const getWeather = (regionId: string) =>
-  fetch(`${API_URL}/weather/${regionId}`).then((r) =>
+  call(`${API_URL}/weather/${regionId}`).then((r) =>
     json<{ available: boolean; temperature_c?: number; is_hot?: boolean; tips?: { garment_id: string; tip: string }[] }>(r),
   );
 
@@ -79,7 +81,7 @@ export type DayWeather = {
   days_until_forecast?: number;
 };
 export const getWeatherOn = (regionId: string, date: string) =>
-  fetch(`${API_URL}/weather/${regionId}?date=${encodeURIComponent(date)}`).then((r) => json<DayWeather>(r));
+  call(`${API_URL}/weather/${regionId}?date=${encodeURIComponent(date)}`).then((r) => json<DayWeather>(r));
 
 // ---- public links for one Du Ký page (#27): only month, garment, occasion, note and chosen photos ----
 export type ShareMeta = {
@@ -99,11 +101,11 @@ export function createShare(meta: ShareMeta, photos: Blob[]) {
   const form = new FormData();
   form.append("meta", JSON.stringify(meta));
   photos.forEach((b, i) => form.append("photos", b, `${i}.${b.type === "image/png" ? "png" : "jpg"}`));
-  return fetch(`${API_URL}/share`, { method: "POST", body: form }).then((r) => json<{ id: string; delete_key: string }>(r));
+  return call(`${API_URL}/share`, { method: "POST", body: form }).then((r) => json<{ id: string; delete_key: string }>(r));
 }
-export const getShare = (id: string) => fetch(`${API_URL}/share/${encodeURIComponent(id)}`).then((r) => json<SharedPage>(r));
+export const getShare = (id: string) => call(`${API_URL}/share/${encodeURIComponent(id)}`).then((r) => json<SharedPage>(r));
 export const deleteShare = (id: string, key: string) =>
-  fetch(`${API_URL}/share/${encodeURIComponent(id)}`, { method: "DELETE", headers: { "X-Delete-Key": key } }).then((r) => {
+  call(`${API_URL}/share/${encodeURIComponent(id)}`, { method: "DELETE", headers: { "X-Delete-Key": key } }).then((r) => {
     if (!r.ok && r.status !== 404) throw new Error(`Lỗi ${r.status}`);
   });
 
