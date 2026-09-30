@@ -209,7 +209,21 @@ Ghi chú của Tèo và thuật ngữ chỉ hiện trên trang thật khi `verif
 
 ## Triển khai
 
-- Frontend: có thể triển khai trên Vercel với root directory là `frontend` và biến `NEXT_PUBLIC_API_URL` trỏ tới backend public.
+- **Frontend trên Vercel** (miễn phí, repo vẫn private):
+  1. Vào [vercel.com](https://vercel.com) → **Continue with GitHub** → cho phép Vercel đọc repo `The-Vietnamese-Garment-Chronicles` (chỉ chọn repo này).
+  2. **Add New… → Project → Import** repo này.
+  3. **Root Directory:** `frontend`. Framework tự nhận là Next.js; Build Command và Output để mặc định.
+  4. **Environment Variables** (áp cho Production và Preview):
+     | Tên | Giá trị |
+     |---|---|
+     | `NEXT_PUBLIC_API_URL` | URL backend trên Render, ví dụ `https://<ten-service>.onrender.com` (không có `/` ở cuối) |
+     | `NEXT_PUBLIC_SUPABASE_URL` | như trong `frontend/.env.example` |
+     | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | như trong `frontend/.env.example` (key công khai, không phải service key) |
+  5. **Deploy.** Mỗi lần merge vào `main` Vercel tự deploy bản chính; mỗi PR có một link xem thử riêng.
+  6. **Sau khi có địa chỉ Vercel** (ví dụ `https://viet-phuc-du-ky.vercel.app`):
+     - Render → backend → Environment: thêm địa chỉ đó vào `CORS_ORIGINS` (nhiều địa chỉ cách nhau bằng dấu phẩy, không có `/` ở cuối), rồi deploy lại backend.
+     - Supabase → Authentication → URL Configuration: đặt **Site URL** là địa chỉ Vercel và thêm `https://<địa-chỉ-vercel>/du-ky` vào **Redirect URLs** (để link đăng nhập "Lưu sổ lên mây" quay về đúng trang).
+  - Biến `NEXT_PUBLIC_*` được nhúng lúc build: đổi giá trị thì phải **Redeploy** mới có tác dụng.
 - Backend: có thể triển khai trên Render hoặc Railway bằng lệnh `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
 - **Sự kiện ẩn danh cho phần Impact (`POST /events`):**
   1. Supabase → SQL Editor → chạy `backend/supabase/events.sql` (tạo bảng `events`, bật RLS, không có policy nên key công khai không đọc/ghi được).
