@@ -37,6 +37,9 @@ export const DRAFT =
     new URLSearchParams(window.location.search).get("draft") === "1");
 
 /** The place a region's stamps are named after: its open chapter (e.g. Huế), else the region. */
+/** A region with a chapter anyone can read (it may still be waiting for its community's review). */
+export const hasChapter = (r: Region) => r.chapters?.some((c) => c.status === "open") ?? false;
+
 export const place = (r: Region) => r.chapters?.find((c) => c.status === "open")?.province ?? r.name.split("/")[0].trim();
 
 /* ---------- the voices ---------- */
@@ -360,7 +363,7 @@ export function HoverPage({
           {j.hover_line}
         </p>
       )}
-      {region.status === "locked" && (
+      {region.status === "locked" && !hasChapter(region) && (
         <p className="font-hand m-0 mt-3 text-[1rem]" style={{ color: OLD }}>
           Những trang này chờ người ở đây cùng viết.
         </p>

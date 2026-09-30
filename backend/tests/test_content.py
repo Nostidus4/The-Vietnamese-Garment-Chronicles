@@ -157,6 +157,11 @@ def test_every_hue_stop_photo_is_credited(content):
 
 def test_community_draft_games_must_be_reviewed_first(tmp_path):
     root = _copy(tmp_path)
+    regions = root / "regions.json"
+    rdata = json.loads(regions.read_text())
+    tn = next(r for r in rdata["regions"] if r["id"] == "tay-nguyen")
+    next(c for c in tn["chapters"] if c["province"] == "Đắk Lắk")["status"] = "draft"
+    regions.write_text(json.dumps(rdata, ensure_ascii=False))
     p = root / "regions" / "tay-nguyen.json"
     data = json.loads(p.read_text())
     next(st for st in data["stops"] if st["game"])["game"]["community_review"] = False
@@ -165,12 +170,9 @@ def test_community_draft_games_must_be_reviewed_first(tmp_path):
     assert any("games in a community draft must be community_review" in e for e in rep.errors)
 
 
-def test_a_draft_chapter_cannot_be_published_as_open(tmp_path):
-    root = _copy(tmp_path)
-    p = root / "regions.json"
-    data = json.loads(p.read_text())
-    ch = next(c for r in data["regions"] if r["id"] == "tay-bac" for c in r["chapters"] if c["status"] == "draft")
-    ch["status"] = "open"
-    p.write_text(json.dumps(data, ensure_ascii=False))
-    _, rep = store.load(root)
-    assert any("must be 'draft' until the community has reviewed it" in e for e in rep.errors)
+def test_a_chapter_published_before_community_review_is_flagged(content):
+    rep = store.report()
+    assert any("published before community review" in w for w in rep.warnings)
+    for rid in ("tay-bac", "tay-nguyen"):
+        reg = content.regions[rid]
+        assert reg.journey.community_review and any(c.status == "open" for c in reg.chapters)

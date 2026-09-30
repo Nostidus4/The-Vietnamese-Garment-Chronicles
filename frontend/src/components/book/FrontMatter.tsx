@@ -76,6 +76,7 @@ export function TocPage({ data, onRegion }: { data: Bootstrap; onRegion: (id: st
       <ol className="m-0 mt-3 flex list-none flex-col gap-1 p-0">
         {data.regions.map((r, i) => {
           const open = r.chapters.filter((c) => c.status === "open");
+          const readable = r.status === "open" || open.length > 0;
           const n = stampsOf(r.id);
           return (
             <li key={r.id}>
@@ -86,8 +87,8 @@ export function TocPage({ data, onRegion }: { data: Bootstrap; onRegion: (id: st
               >
                 <span className="font-display w-4 shrink-0 text-[0.8rem] text-stone-400">{i + 1}</span>
                 <span className="min-w-0 flex-1">
-                  <span className={`font-display block text-[1rem] ${r.status === "open" ? "text-[#27354f]" : "text-stone-400"}`}>{r.name}</span>
-                  <span className="font-hand block truncate text-[0.85rem]" style={{ color: r.status === "open" ? OLD : PENCIL }}>
+                  <span className={`font-display block text-[1rem] ${readable ? "text-[#27354f]" : "text-stone-400"}`}>{r.name}</span>
+                  <span className="font-hand block truncate text-[0.85rem]" style={{ color: readable ? OLD : PENCIL }}>
                     {open.length ? open.map((c) => `${c.province}: ${c.title ?? ""}`).join(" · ") : "chờ người ở đó cùng viết"}
                   </span>
                 </span>

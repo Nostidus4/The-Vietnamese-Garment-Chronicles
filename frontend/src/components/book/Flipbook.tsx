@@ -14,6 +14,7 @@ import {
   Bookmarks,
   DRAFT,
   FestivalDiary,
+  hasChapter,
   HoverPage,
   LifeDiary,
   LookDiary,
@@ -58,7 +59,7 @@ function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) =
       if (st.festivals.length) tabs.push({ label: "Lễ hội", page: at() });
       pages.push({ node: <StopDiary stop={st} index={i} data={data} chapterPlace={chapterPlace} regionId={region.id} />, still: !!st.hat });
       pages.push(
-        st.game && (!st.game.community_review || DRAFT)
+        st.game && (hasChapter(region) || !st.game.community_review || DRAFT)
           ? { node: <StopGame stop={st} regionId={region.id} data={data} />, still: true }
           : st.today
           ? { node: <StopToday stop={st} /> }
@@ -83,7 +84,7 @@ function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) =
     tabs.push({ label: "Bà hỏi", page: at() });
     pages.push({ node: <AskDiary key={`ask-${region.id}`} region={region} />, still: true });
   }
-  tabs.push({ label: region.status === "open" ? "Trang của con" : "Trang để trống", page: at() });
+  tabs.push({ label: region.status === "open" || hasChapter(region) ? "Trang của con" : "Trang để trống", page: at() });
   pages.push({ node: <OwnDiary key={region.id} region={region} data={data} onTry={h.tryOn} />, still: true });
   if (j.letter) {
     if (at() % 2) pages.push({ node: <BlankPage /> }); // the envelope and "Hết chương" face each other as one spread
@@ -122,7 +123,8 @@ export default function Flipbook({
 }) {
   const router = useRouter();
   const regions = new Map(data.regions.map((r) => [r.id, r]));
-  const locked = data.regions.filter((r) => r.status === "locked").map((r) => r.id);
+  // hatched on the map: regions with nothing to read yet
+  const locked = data.regions.filter((r) => r.status === "locked" && !hasChapter(r)).map((r) => r.id);
 
   // hover: the region under the pointer, with a short dwell so sweeping across the map does not flicker
   const [hovered, setHovered] = useState<string | null>(null);

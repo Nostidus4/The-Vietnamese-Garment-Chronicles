@@ -269,7 +269,7 @@ def _check_refs(c: Content, r: Report) -> None:
                 for i, rd in enumerate(g.rounds):
                     if rd.choices and (rd.answer is None or rd.answer >= len(rd.choices)):
                         r.errors.append(f"{wj} [{st.id}] game round {i}: answer has no matching choice")
-                if j.community_review and not g.community_review:
+                if j.community_review and not g.community_review and any(ch.status == "draft" for ch in reg.chapters):
                     r.errors.append(f"{wj} [{st.id}]: games in a community draft must be community_review")
             if st.hat:
                 public(st.hat.hat, "hat image")
@@ -297,8 +297,11 @@ def _check_refs(c: Content, r: Report) -> None:
         for ch in opened:
             if reg.journey is None:
                 r.errors.append(f"{w}: chapter '{ch.province}' is {ch.status} but the region has no journey")
-            elif ch.status == "open" and (reg.status == "locked" or reg.journey.community_review):
-                r.errors.append(f"{w}: chapter '{ch.province}' must be 'draft' until the community has reviewed it")
+            elif ch.status == "open" and not reg.journey.stops and reg.status == "locked":
+                r.errors.append(f"{w}: chapter '{ch.province}' is open but the locked region has no chapter to read")
+            elif ch.status == "open" and reg.journey.community_review:
+                # published with a notice at the top of the chapter; the team keeps looking for community readers
+                r.warnings.append(f"{w}: chapter '{ch.province}' is published before community review (shown with a notice)")
             elif ch.status == "draft" and not reg.journey.community_review:
                 r.errors.append(f"{w}: chapter '{ch.province}' is 'draft' but its journey is not community_review")
         if reg.status == "open" and reg.chapters and not opened:

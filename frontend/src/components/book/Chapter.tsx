@@ -45,7 +45,7 @@ export function RegionIntro({
   const drafts = region.chapters.filter((c) => c.status === "draft");
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.62rem] tracking-[0.3em] text-stone-500">{region.status === "open" ? "MIỀN" : "VÙNG ĐANG CHỜ"}</p>
+      <p className="m-0 text-[0.62rem] tracking-[0.3em] text-stone-500">{region.status === "open" || open.length ? "MIỀN" : "VÙNG ĐANG CHỜ"}</p>
       <h2 className="font-display m-0 text-[1.9rem] leading-tight" style={{ color: YOUNG }}>
         {region.name}
       </h2>
@@ -166,6 +166,14 @@ export function ChapterTitle({
         <span className="mt-0.5 block text-[0.72rem] not-italic text-stone-500">— {ch.verse_by}</span>
       </blockquote>
       <Margin text={ch.line} />
+      {j.community_review && (
+        <p className="m-0 mt-2 rounded border border-dashed border-[#8a4b2a]/60 bg-[#f7e4c8]/60 px-2 py-1 text-[0.7rem] leading-snug text-[#6b3c12]">
+          Chương này viết từ lời kể, <b>đang chờ người ở {ch.province} đọc lại và góp ý</b>. Tên gọi, ý nghĩa trang phục và nghi lễ có thể chưa chính xác.{" "}
+          <a href={CONTRIBUTE_URL} target="_blank" rel="noreferrer" className="underline">
+            Góp ý cho Bà
+          </a>
+        </p>
+      )}
       <RouteSketch stops={j.stops} reached={reached} onStop={onStop} />
       {j.wear[0] && (
         <div className="mt-auto text-[0.85rem] [&_p]:text-[0.9rem] [&_span]:text-[0.8rem]">
