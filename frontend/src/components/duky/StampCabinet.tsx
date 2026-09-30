@@ -6,7 +6,9 @@
 
 import type { DuKyBook } from "@/lib/dukyBook";
 import { useStamps } from "@/lib/stamps";
-import type { Bootstrap } from "@/lib/types";
+import { useState } from "react";
+import type { Bootstrap, Region } from "@/lib/types";
+import { PostcardViewer } from "./PostcardViewer";
 
 type Look = "on" | "soft" | "off";
 
@@ -27,6 +29,7 @@ function Stamp({ label, place, look, color }: { label: string; place: string; lo
 
 export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }) {
   const { arrived, understood, postcard } = useStamps();
+  const [reading, setReading] = useState<Region | null>(null);
   const total = data.regions.filter((r) => r.status === "open").length;
   const worn = new Set(book.pages.filter((p) => p.photos.some((ph) => ph.kind === "real")).map((p) => p.region_id));
   const tried = new Set(book.pages.filter((p) => p.photos.length > 0).map((p) => p.region_id));
@@ -65,14 +68,20 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
                 />
               </div>
               {postcard.includes(r.id) && (
-                <span className="font-hand ml-auto rotate-[-4deg] text-[0.85rem] text-[#8a4b2a]" title="Bưu thiếp của Bà">
-                  ✉ bưu thiếp
-                </span>
+                <button
+                  type="button"
+                  onClick={() => setReading(r)}
+                  className="font-hand ml-auto rotate-[-4deg] rounded bg-[#f7e4c8] px-1.5 text-[0.85rem] text-[#8a4b2a] shadow-[1px_2px_4px_rgba(60,35,10,0.25)] hover:rotate-0"
+                  title="Đọc lại thư của Bà"
+                >
+                  ✉ đọc thư
+                </button>
               )}
             </li>
           );
         })}
       </ul>
+      {reading && <PostcardViewer region={reading} onClose={() => setReading(null)} />}
     </div>
   );
 }

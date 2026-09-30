@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { markStamp, useStamps } from "@/lib/stamps";
 import type { Bootstrap, Festival, Photo, Region, Stop, TimeOfDay } from "@/lib/types";
 import { WeatherNote } from "../chapter/WeatherNote";
+import { PostcardViewer } from "../duky/PostcardViewer";
 import { DateLine, DRAFT, Entry, KeepsakeArt, Margin, OLD, Pencil, place, Polaroid, TeoNotes, YOUNG } from "./Diary";
 import { RichText } from "./Glossary";
 
@@ -464,6 +465,7 @@ export function EnvelopeLetter({ region }: { region: Region }) {
   const [open, setOpen] = useState(false);
   const [imgOk, setImgOk] = useState(!!letter.image);
   const kept = postcard.includes(region.id);
+  const [reread, setReread] = useState(false);
   return (
     <div className="flex h-full flex-col items-center justify-center">
       <AnimatePresence mode="wait">
@@ -507,17 +509,25 @@ export function EnvelopeLetter({ region }: { region: Region }) {
             <p className="font-hand m-0 mt-3 w-[90%] text-[1rem] leading-snug" style={{ color: OLD }}>
               <RichText text={letter.text} /> <span className="whitespace-nowrap">— Bà</span>
             </p>
-            <button
-              type="button"
-              disabled={kept}
-              onClick={() => markStamp("postcard", region.id)}
-              className="mt-3 rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50 disabled:opacity-60"
-            >
-              {kept ? "Đã cất vào tủ tem ✓" : "Cất bưu thiếp vào Du Ký"}
-            </button>
+            <div className="mt-3 flex items-center gap-3">
+              <button
+                type="button"
+                disabled={kept}
+                onClick={() => markStamp("postcard", region.id)}
+                className="rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50 disabled:opacity-60"
+              >
+                {kept ? "Đã cất vào Hộp thư ✓" : "Cất bưu thiếp vào Du Ký"}
+              </button>
+              {kept && (
+                <button type="button" onClick={() => setReread(true)} className="font-hand text-[1rem] text-[#8a4b2a] underline">
+                  Đọc lại thư
+                </button>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
+      {reread && <PostcardViewer region={region} onClose={() => setReread(false)} />}
     </div>
   );
 }
