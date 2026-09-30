@@ -35,32 +35,31 @@ export function RichText({ text }: { text: string }) {
   return <>{out}</>;
 }
 
-function Word({ shown, term }: { shown: string; term: GlossaryTerm }) {
-  const ctx = useContext(GlossaryContext)!;
-  const ref = useRef<HTMLButtonElement>(null);
+/**
+ * A note anchored to a button, portalled to <body> so a page never clips it. It closes on a click elsewhere, any key,
+ * scroll or resize, and when its button leaves the screen (the page turned). Shared by Tèo's words and sticky notes.
+ */
+export function useAnchored<T extends HTMLElement>(width = 260) {
+  const ref = useRef<T>(null);
   const [at, setAt] = useState<{ x: number; y: number; below: boolean } | null>(null);
-  const hover = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const id = useId();
-
   const show = () => {
     const r = ref.current?.getBoundingClientRect();
     if (!r) return;
-    const below = r.top < 190; // near the top of the screen: open under the word
-    setAt({ x: Math.min(Math.max(r.left + r.width / 2, 130), window.innerWidth - 130), y: below ? r.bottom + 8 : r.top - 8, below });
+    const below = r.top < 240; // near the top of the screen: open under it
+    const half = width / 2 + 10;
+    setAt({ x: Math.min(Math.max(r.left + r.width / 2, half), window.innerWidth - half), y: below ? r.bottom + 8 : r.top - 8, below });
   };
   const hide = () => setAt(null);
-
   useEffect(() => {
     if (!at) return;
     const away = (e: Event) => {
-      if (!(e.target instanceof Node) || !ref.current?.contains(e.target)) hide();
+      if (!(e.target instanceof Node) || (!ref.current?.contains(e.target) && !(e.target as Element).closest?.("[data-anchored]"))) hide();
     };
     const esc = (e: KeyboardEvent) => e.key !== "Tab" && hide(); // Esc, or the arrows turning the page
     window.addEventListener("pointerdown", away);
     window.addEventListener("keydown", esc);
     window.addEventListener("scroll", hide, true);
     window.addEventListener("resize", hide);
-    // the page under the word turns away (bookmark, arrows, drag): its word is no longer on screen
     const gone = setInterval(() => {
       const r = ref.current?.getBoundingClientRect();
       if (!r || !r.width || !ref.current?.checkVisibility?.({ opacityProperty: true, visibilityProperty: true })) hide();
@@ -73,6 +72,16 @@ function Word({ shown, term }: { shown: string; term: GlossaryTerm }) {
       window.removeEventListener("scroll", hide, true);
     };
   }, [at]);
+  const style = at ? { left: at.x, top: at.y, width, transform: `translate(-50%, ${at.below ? "0" : "-100%"}) rotate(-1deg)` } : undefined;
+  return { ref, at, show, hide, style };
+}
+
+function Word({ shown, term }: { shown: string; term: GlossaryTerm }) {
+  const ctx = useContext(GlossaryContext)!;
+  const { ref, at, show, hide, style } = useAnchored<HTMLButtonElement>(240);
+  const hover = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const id = useId();
+
   useEffect(() => () => clearTimeout(hover.current), []);
 
   const src = term.sources.map((s) => ctx.sources[s]).find(Boolean);
@@ -108,8 +117,9 @@ function Word({ shown, term }: { shown: string; term: GlossaryTerm }) {
           <div
             id={id}
             role="tooltip"
-            className="glossary-note fixed z-[70] w-[15rem] bg-[#fbe99a] px-3 pb-2 pt-3 text-[0.8rem] leading-snug text-[#1f3a78] shadow-[2px_6px_14px_rgba(60,40,0,0.3)]"
-            style={{ left: at.x, top: at.y, transform: `translate(-50%, ${at.below ? "0" : "-100%"}) rotate(-1.2deg)` }}
+            data-anchored
+            className="glossary-note fixed z-[70] bg-[#fbe99a] px-3 pb-2 pt-3 text-[0.8rem] leading-snug text-[#1f3a78] shadow-[2px_6px_14px_rgba(60,40,0,0.3)]"
+            style={style}
             onMouseEnter={() => clearTimeout(hover.current)}
             onMouseLeave={() => {
               hover.current = setTimeout(hide, 220);

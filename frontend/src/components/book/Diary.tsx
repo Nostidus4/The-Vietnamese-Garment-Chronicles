@@ -7,6 +7,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { ensureMigrated, pagesOf, useDuKy } from "@/lib/dukyBook";
 import { markStamp } from "@/lib/stamps";
 import { track } from "@/lib/track";
@@ -22,7 +23,7 @@ import type {
   TeoNote,
 } from "@/lib/types";
 import { WeatherNote } from "../chapter/WeatherNote";
-import { RichText } from "./Glossary";
+import { RichText, useAnchored } from "./Glossary";
 import { FOCUS } from "./vietnam-geo";
 
 export const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
@@ -76,49 +77,67 @@ export const Pencil = ({ text }: { text: string }) => (
   </p>
 );
 
-/** Tèo's sticky notes: the only place facts and sources live. */
+/**
+ * Tèo's notes: the only place facts and sources live. On the page they take one small yellow tab
+ * ("Tèo tra lại · 2"); a click opens them as sticky notes over the page, so Bà's words keep the room.
+ */
 export function TeoNotes({ notes, data }: { notes: TeoNote[]; data: Bootstrap }) {
   const shown = notes.filter((n) => n.verified || DRAFT);
+  const { ref, at, show, hide, style } = useAnchored<HTMLButtonElement>(270);
   if (!shown.length) return null;
+  const unesco = shown.find((n) => n.unesco)?.unesco;
   return (
-    <div className="mt-2 flex flex-wrap items-start gap-2">
-      {shown.map((n, i) => {
-        const src = n.sources.map((id) => data.sources[id]).find(Boolean);
-        return (
-          <div
-            key={n.text}
-            className="relative min-w-[7.5rem] flex-1 basis-0 bg-[#fbe99a] px-2 pb-1.5 pt-2 text-[0.66rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.22)]"
-            style={{
-              rotate: `${[-1.6, 1.2, -0.6][i % 3]}deg`,
-              maxWidth: shown.length === 1 ? "70%" : undefined,
-            }}
-          >
-            <span
-              className="absolute left-1/2 top-[-5px] h-2.5 w-8 -translate-x-1/2 bg-white/50"
-              aria-hidden
-            />
-            {n.unesco && (
-              <b className="mr-1 rounded-sm bg-[#1f3a78] px-1 text-[0.55rem] text-[#fbe99a]">
-                UNESCO {n.unesco}
-              </b>
-            )}
-            {n.text}
-            {/* source on its own line, Tèo's signature under it: nothing gets squeezed on a narrow note */}
-            <span className="mt-1 block truncate text-[0.55rem] opacity-80">
-              {src?.url ? (
-                <a href={src.url} target="_blank" rel="noreferrer" className="underline">
-                  nguồn: {src.title}
-                </a>
-              ) : src ? (
-                `nguồn: ${src.title}`
-              ) : (
-                "chưa có nguồn"
-              )}
-            </span>
-            <span className="block text-right text-[0.55rem] italic opacity-80">– Tèo{n.verified ? "" : ", đang kiểm tra"}</span>
-          </div>
-        );
-      })}
+    <div className="mt-2">
+      <button
+        ref={ref}
+        type="button"
+        onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (at) hide();
+          else show();
+        }}
+        aria-expanded={!!at}
+        className="teo-tab inline-flex items-center gap-1.5 bg-[#fbe99a] px-2 py-0.5 text-[0.68rem] text-[#1f3a78] shadow-[1px_2px_4px_rgba(60,40,0,0.22)]"
+      >
+        <span aria-hidden>📌</span>
+        Tèo tra lại · {shown.length}
+        {unesco && <b className="rounded-sm bg-[#1f3a78] px-1 text-[0.55rem] text-[#fbe99a]">UNESCO</b>}
+      </button>
+      {at &&
+        createPortal(
+          <div data-anchored role="dialog" aria-label="Ghi chú của Tèo" className="fixed z-[70] flex flex-col gap-2" style={style}>
+            {shown.map((n, i) => {
+              const src = n.sources.map((id) => data.sources[id]).find(Boolean);
+              return (
+                <div
+                  key={n.text}
+                  className="relative bg-[#fbe99a] px-3 pb-2 pt-3 text-[0.78rem] leading-snug text-[#1f3a78] shadow-[2px_6px_14px_rgba(60,40,0,0.3)]"
+                  style={{ rotate: `${[-1.2, 1, -0.5][i % 3]}deg` }}
+                >
+                  <span className="absolute left-1/2 top-[-5px] h-2.5 w-9 -translate-x-1/2 bg-white/55" aria-hidden />
+                  {n.unesco && (
+                    <b className="mr-1 rounded-sm bg-[#1f3a78] px-1 text-[0.6rem] text-[#fbe99a]">UNESCO {n.unesco}</b>
+                  )}
+                  {n.text}
+                  <span className="mt-1 block truncate text-[0.62rem] opacity-80">
+                    {src?.url ? (
+                      <a href={src.url} target="_blank" rel="noreferrer" className="underline">
+                        nguồn: {src.title}
+                      </a>
+                    ) : src ? (
+                      `nguồn: ${src.title}`
+                    ) : (
+                      "chưa có nguồn"
+                    )}
+                  </span>
+                  <span className="block text-right text-[0.62rem] italic opacity-80">– Tèo{n.verified ? "" : ", đang kiểm tra"}</span>
+                </div>
+              );
+            })}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
@@ -779,12 +798,11 @@ export function AskDiary({ region }: { region: Region }) {
             q={q}
             regionId={region.id}
             phase="post"
-            onAnswer={() =>
-              setCount((c) => {
-                if (c + 1 >= qs.length) markStamp("understood", region.id);
-                return c + 1;
-              })
-            }
+            onAnswer={() => {
+              // count first, stamp outside React's update: the stamp wakes up other components (the contents page)
+              if (count + 1 >= qs.length) markStamp("understood", region.id);
+              setCount((c) => c + 1);
+            }}
           />
         ))}
         {qs.length === 0 && <p className="text-sm text-stone-500">Câu hỏi đang được kiểm tra lại.</p>}

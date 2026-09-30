@@ -164,7 +164,65 @@
           "source_url": "https://commons.wikimedia.org/wiki/File:Hu%E1%BA%BF_(2024)_-_Meridian_Gate_-_Ng%E1%BB%8D_M%C3%B4n_(Ho%C3%A0ng_th%C3%A0nh_Hu%E1%BA%BF)_-_img_02.jpg"
         }
       },
-      "stamp": "Đại Nội"
+      "stamp": "Đại Nội",
+      "game": {
+        "kind": "ngu-than",
+        "title": "Ghép chiếc áo ngũ thân",
+        "intro": "Trong Đại Nội có trưng bày một chiếc áo ngũ thân tháo rời. Con chọn từng mảnh thân áo rồi đặt vào đúng chỗ. Thân thứ năm nằm khuất bên trong.",
+        "rounds": [
+          {
+            "label": "Thân trước bên trái",
+            "item": "front-left",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": "Hai thân trước, hai thân sau là bốn thân lớn."
+          },
+          {
+            "label": "Thân trước bên phải",
+            "item": "front-right",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": "Vạt trước bên phải vắt sang, cài khuy bên nách phải."
+          },
+          {
+            "label": "Thân sau bên trái",
+            "item": "back-left",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": "Hai thân sau may nối ở giữa lưng."
+          },
+          {
+            "label": "Thân sau bên phải",
+            "item": "back-right",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": "Bốn thân lớn, mẹ chồng Bà bảo, là cha mẹ mình và cha mẹ chồng."
+          },
+          {
+            "label": "Thân con (bên trong)",
+            "item": "inner",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": "Thân thứ năm nằm khuất dưới vạt trước: là bản thân mình, đứng giữa bốn người thân."
+          }
+        ],
+        "done": "Đủ năm thân rồi! Cổ đứng, khuy cài bên phải. Chiếc áo này về sau mẹ Ông trao cho Bà, con lật tới trang Mặc sẽ thấy.",
+        "teo": {
+          "text": "Năm 1744, chúa Nguyễn Phúc Khoát định chế y phục ở Đàng Trong; áo ngũ thân cài khuy thành thường phục chung.",
+          "unesco": null,
+          "sources": [
+            "ref-03",
+            "ref-12"
+          ],
+          "verified": true
+        },
+        "community_review": false
+      }
     },
     {
       "id": "thien-mu",
@@ -272,7 +330,53 @@
           "source_url": "https://commons.wikimedia.org/wiki/File:B%C3%BAn_b%C3%B2_Hu%E1%BA%BF_-_Ch%E1%BB%A3_%C4%90%C3%B4ng_Ba_(2024)_-_img_02.jpg"
         }
       },
-      "stamp": "Rứa thôi"
+      "stamp": "Rứa thôi",
+      "game": {
+        "kind": "quan-ho",
+        "title": "Bữa cơm ra mắt",
+        "intro": "Tối ấy Bà run lắm. Con giúp Bà ứng xử trong bữa cơm đầu tiên với mẹ Ông nhé.",
+        "rounds": [
+          {
+            "label": "Mẹ Ông",
+            "item": "Bà nên làm gì?",
+            "prompt": "“Con ăn đi, đừng ngại.”",
+            "choices": [
+              "Mời cả nhà trước rồi mới ăn",
+              "Cầm đũa ăn ngay cho mẹ vui",
+              "Từ chối vì ngại"
+            ],
+            "answer": 0,
+            "explain": "Trong mâm cơm, con cháu mời ông bà, cha mẹ trước rồi mới ăn."
+          },
+          {
+            "label": "Mẹ Ông",
+            "item": "Bà gắp thế nào?",
+            "prompt": "Mâm cơm có rất nhiều món, món nào cũng một ít.",
+            "choices": [
+              "Mỗi món nếm một ít, khen người nấu",
+              "Gắp thật nhiều món mình thích",
+              "Chỉ ăn cơm trắng cho lịch sự"
+            ],
+            "answer": 0,
+            "explain": "Người Huế nấu ít mà nhiều món; nếm mỗi món một chút là quý công người nấu."
+          },
+          {
+            "label": "Mẹ Ông",
+            "item": "Bà làm gì đây?",
+            "prompt": "Chiếc chén trên tay Bà rơi xuống đất. Cả nhà im phăng phắc.",
+            "choices": [
+              "Nhặt lên, xin lỗi mẹ, rồi bình tĩnh ăn tiếp",
+              "Bỏ chạy ra ngoài",
+              "Giả vờ như không có gì"
+            ],
+            "answer": 0,
+            "explain": "Rơi thì nhặt, rứa thôi."
+          }
+        ],
+        "done": "Mẹ Ông gật đầu: “Rứa là được rồi.” Tối ấy, ra đến cổng, Bà trả lời Ông.",
+        "teo": null,
+        "community_review": false
+      }
     },
     {
       "id": "le-hoi",

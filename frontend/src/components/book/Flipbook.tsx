@@ -86,6 +86,7 @@ function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) =
   tabs.push({ label: region.status === "open" ? "Trang của con" : "Trang để trống", page: at() });
   pages.push({ node: <OwnDiary key={region.id} region={region} data={data} onTry={h.tryOn} />, still: true });
   if (j.letter) {
+    if (at() % 2) pages.push({ node: <BlankPage /> }); // the envelope and "Hết chương" face each other as one spread
     tabs.push({ label: "Phong thư", page: at() });
     pages.push({ node: <EnvelopeLetter region={region} />, still: true });
     pages.push({ node: <ChapterEnd region={region} />, still: true });
@@ -264,6 +265,8 @@ export default function Flipbook({
       if (e.target instanceof HTMLElement && e.target.closest("input, textarea, [contenteditable]")) return;
       if (e.key === "ArrowRight") keys.current.next();
       if (e.key === "ArrowLeft") keys.current.prev();
+      // Esc first closes an open note of Tèo; only the next Esc steps back out of the chapter
+      if (e.key === "Escape" && document.querySelector("[data-anchored]")) return;
       if (e.key === "Escape" && keys.current.focus) (keys.current.reading ? keys.current.leaveChapter : keys.current.toCountry)();
     };
     window.addEventListener("keydown", onKey);

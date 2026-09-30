@@ -212,12 +212,12 @@ function QuanHo({ game, onWin }: Props) {
       <AnimatePresence mode="wait">
         <motion.div key={round} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }}>
           <div className="relative mt-2 rounded-lg bg-[#27354f] px-3 py-2 text-[0.82rem] leading-snug text-amber-50">
-            <span className="font-hand block text-[0.85rem] text-amber-200">Liền anh:</span>
+            <span className="font-hand block text-[0.85rem] text-amber-200">{r.label ?? "Liền anh"}:</span>
             {r.prompt}
             <span className="absolute -bottom-1.5 left-6 h-3 w-3 rotate-45 bg-[#27354f]" aria-hidden />
           </div>
           <p className="font-hand m-0 mt-3 text-[0.9rem]" style={{ color: YOUNG }}>
-            Bà đáp thế nào đây?
+            {r.item ?? "Bà đáp thế nào đây?"}
           </p>
           <div className="mt-1 flex flex-col gap-1">
             {order.map((i) => (
@@ -235,11 +235,88 @@ function QuanHo({ game, onWin }: Props) {
           {picked !== null && <Hint tone={right ? "good" : "bad"}>{right ? r.explain : "Chưa đúng lề lối rồi, liền chị lắc đầu. Con thử cách khác nhé."}</Hint>}
           {right && (
             <button type="button" onClick={next} className="mt-2 rounded-full bg-[#27354f] px-3 py-1 text-[0.75rem] text-amber-50">
-              {round + 1 >= game.rounds.length ? "Hát giã bạn →" : "Lượt tiếp →"}
+              {round + 1 >= game.rounds.length ? "Xong →" : "Lượt tiếp →"}
             </button>
           )}
         </motion.div>
       </AnimatePresence>
+    </div>
+  );
+}
+
+/* ---------- 2b · Áo ngũ thân: put the five panels where they belong ---------- */
+
+// where each panel sits on the drawn robe (front view; the two back panels peek out behind)
+const PANELS: Record<string, { d: string; z: number }> = {
+  "back-left": { d: "M30 16 L50 12 L50 92 L22 92 Z", z: 0 },
+  "back-right": { d: "M50 12 L70 16 L78 92 L50 92 Z", z: 0 },
+  inner: { d: "M50 20 L64 24 L66 90 L50 90 Z", z: 1 },
+  "front-left": { d: "M34 18 L50 14 L50 30 L46 90 L26 90 Z", z: 2 },
+  "front-right": { d: "M50 14 L66 18 L74 90 L42 90 L46 30 Z", z: 3 },
+};
+const PANEL_FILL: Record<string, string> = { "back-left": "#1d3a5c", "back-right": "#1d3a5c", inner: "#a7b8cc", "front-left": "#2F4A6D", "front-right": "#34557d" };
+
+function NguThan({ game, onWin }: Props) {
+  const tray = useMemo(() => shuffle(game.rounds.map((_, i) => i), 4), [game.rounds]);
+  const [placed, setPlaced] = useState<number[]>([]);
+  const [sel, setSel] = useState<number | null>(null);
+  const [note, setNote] = useState<{ text: string; good: boolean } | null>(null);
+  const drop = (slot: string) => {
+    if (sel === null) return setNote({ text: "Chọn một mảnh thân áo ở dưới trước đã.", good: false });
+    const r = game.rounds[sel];
+    if (r.item !== slot) return setNote({ text: `Mảnh “${r.label}” không nằm ở đó đâu con.`, good: false });
+    const next = [...placed, sel];
+    setPlaced(next);
+    setSel(null);
+    setNote({ text: r.explain ?? "", good: true });
+    if (next.length === game.rounds.length) setTimeout(onWin, 1800);
+  };
+  const filled = (slot: string) => placed.some((i) => game.rounds[i].item === slot);
+  const all = placed.length === game.rounds.length;
+  return (
+    <div>
+      <svg viewBox="0 0 100 100" className="mx-auto block w-[62%]" aria-label="Chiếc áo ngũ thân đang ghép">
+        {/* sleeves and the standing collar are always there, the panels are what we place */}
+        <path d="M34 18 L8 40 L14 48 L30 34 Z M66 18 L92 40 L86 48 L70 34 Z" fill={all ? "#2F4A6D" : "#d9ceb6"} stroke="#8a7a5c" strokeWidth=".5" />
+        <path d="M42 10 Q50 7 58 10 L58 15 Q50 12 42 15 Z" fill={all ? "#1d3a5c" : "#d9ceb6"} stroke="#8a7a5c" strokeWidth=".5" />
+        {Object.entries(PANELS)
+          .sort((a, b) => a[1].z - b[1].z)
+          .map(([slot, p]) => (
+            <path
+              key={slot}
+              d={p.d}
+              onClick={() => drop(slot)}
+              className="cursor-pointer"
+              fill={filled(slot) ? PANEL_FILL[slot] : "rgba(255,255,255,0.35)"}
+              stroke={filled(slot) ? "#10263f" : "#8a7a5c"}
+              strokeWidth=".6"
+              strokeDasharray={filled(slot) ? undefined : "2 1.5"}
+              opacity={slot === "inner" && filled("front-right") ? 0.35 : 1}
+              role="button"
+              aria-label={`Chỗ ${slot}`}
+            />
+          ))}
+        {/* the buttons along the right, once the front is closed */}
+        {all && [34, 44, 54, 64, 74].map((y) => <circle key={y} cx={y < 40 ? 58 : 62 + (y - 44) * 0.12} cy={y} r="1.4" fill="#e8d9a8" />)}
+      </svg>
+      <div className="mt-2 flex flex-wrap gap-1">
+        {tray
+          .filter((i) => !placed.includes(i))
+          .map((i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setSel(i)}
+              className={`rounded border px-2 py-0.5 text-[0.72rem] ${sel === i ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
+            >
+              {game.rounds[i].label}
+            </button>
+          ))}
+      </div>
+      <p className="m-0 mt-1 text-[0.68rem] text-stone-500">
+        Đã ghép {placed.length}/{game.rounds.length} thân · chọn mảnh rồi bấm vào chỗ trên áo
+      </p>
+      {note && <Hint tone={note.good ? "good" : "bad"}>{note.text}</Hint>}
     </div>
   );
 }
@@ -639,6 +716,7 @@ function Det({ game, onWin }: Props) {
 const KINDS: Record<Game["kind"], (p: Props) => React.ReactElement> = {
   "dong-ho": DongHo,
   "quan-ho": QuanHo,
+  "ngu-than": NguThan,
   "cay-beo": CayBeo,
   "xep-do": XepDo,
   "khuy-bac": KhuyBac,
