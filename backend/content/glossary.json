@@ -1,0 +1,67 @@
+{
+  "terms": [
+    {
+      "id": "ngo-mon",
+      "term": "Ngọ Môn",
+      "text": "Cổng chính phía nam của Hoàng thành Huế, có lầu Ngũ Phụng ở trên. “Ngọ” là hướng nam.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "nha-nhac",
+      "term": "Nhã nhạc",
+      "text": "Âm nhạc cung đình, dùng trong các lễ lớn của triều Nguyễn. Nhã nhạc cung đình Huế được UNESCO công nhận là di sản phi vật thể.",
+      "sources": [
+        "unesco-ich-vn"
+      ],
+      "verified": true
+    },
+    {
+      "id": "nha-ruong",
+      "term": "Nhà rường",
+      "text": "Kiểu nhà gỗ truyền thống của Huế, khung cột kèo ghép mộng, thường có vườn bao quanh.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "rua",
+      "term": "rứa",
+      "text": "Tiếng Huế, nghĩa là “thế”, “vậy”. “Rứa thôi” là “thế thôi”.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "hoa-dang",
+      "term": "Hoa đăng",
+      "text": "Đèn hình hoa sen, thắp nến rồi thả trôi trên sông, gửi theo một lời cầu an.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "bai-choi",
+      "term": "Bài chòi",
+      "text": "Trò chơi dân gian ngày Tết ở Trung Bộ: người chơi ngồi trong chòi tre, anh hiệu hát câu thai để xướng tên con bài. Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh.",
+      "sources": [
+        "unesco-ich-vn"
+      ],
+      "verified": true
+    },
+    {
+      "id": "ao-ngu-than",
+      "term": "Áo ngũ thân",
+      "text": "Áo năm thân, cổ đứng, cài khuy bên phải. Năm 1744, chúa Nguyễn Phúc Khoát định chế y phục ở Đàng Trong và áo ngũ thân thành thường phục chung.",
+      "sources": [
+        "ref-03",
+        "ref-12"
+      ],
+      "verified": true
+    },
+    {
+      "id": "khan-dong",
+      "term": "Khăn đóng",
+      "text": "Khăn vấn sẵn thành vòng, đội đầu khi mặc áo ngũ thân hay áo dài trong lễ, tết.",
+      "sources": [],
+      "verified": false
+    }
+  ]
+}

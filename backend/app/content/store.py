@@ -5,6 +5,7 @@ Warnings (unverified, missing image or source) are listed in GET /admin/content-
 """
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TypeVar
@@ -15,6 +16,7 @@ from .schemas import (
     Accessory,
     Color,
     Garment,
+    GlossaryTerm,
     Journey,
     Occasion,
     OpeningScreen,
@@ -51,6 +53,7 @@ class Content:
     quiz: dict[str, QuizItem]
     shops: dict[str, Shop]
     opening: list[OpeningScreen]
+    glossary: dict[str, GlossaryTerm] = field(default_factory=dict)
 
     def media_exists(self, rel: str | None) -> bool:
         return bool(rel) and (self.root / "media" / rel).is_file()
@@ -126,6 +129,7 @@ def load(root: Path = CONTENT_DIR) -> tuple[Content, Report]:
         quiz=_index(lst("quiz.json", "items", QuizItem), "quiz.json", r),
         shops=_index(lst("shops.json", "shops", Shop), "shops.json", r),
         opening=lst("opening.json", "screens", OpeningScreen),
+        glossary=_index(lst("glossary.json", "terms", GlossaryTerm), "glossary.json", r) if (root / "glossary.json").is_file() else {},
     )
     for jf in sorted((root / "regions").glob("*.json")) if (root / "regions").is_dir() else []:
         raw = _read(jf, r)
@@ -211,12 +215,13 @@ def _check_refs(c: Content, r: Report) -> None:
             continue
         wj = f"regions/{reg.id}.json"
         srcs(j.sources, wj)
-        pages = [p for p in (j.arrive, j.look, j.life, j.festivals, *j.wear) if p]
+        pages = [p for p in (j.arrive, j.look, j.life, j.festivals, *j.stops, *j.wear) if p]
+        frames = [*(j.look.frames if j.look else []), *(st.frame for st in j.stops if st.frame)]
         if reg.status == "locked":
             # locked regions are written with their communities: a passing entry and landscapes, nothing else yet
-            if j.life or j.festivals or j.wear:
-                r.errors.append(f"{wj}: locked region must not have 'life', 'festivals' or 'wear'")
-            for f in j.look.frames:
+            if j.life or j.festivals or j.wear or j.stops:
+                r.errors.append(f"{wj}: locked region must not have 'life', 'festivals', 'stops' or 'wear'")
+            for f in frames:
                 if not f.no_people:
                     r.errors.append(f"{wj}: locked region frames must be landscapes (no_people: true)")
         else:
@@ -237,9 +242,26 @@ def _check_refs(c: Content, r: Report) -> None:
                     r.warnings.append(f"{wj} [{q.id}]: question not verified")
         elif reg.status == "open":
             r.warnings.append(f"{wj}: no 'Bà hỏi con' questions yet (check)")
-        for f in j.look.frames:
-            if f.image and frontend_public.exists() and not (frontend_public / f.image.lstrip("/")).is_file():
-                r.warnings.append(f"{wj}: frame image not found at frontend/public{f.image}")
+        def public(path: str | None, what: str) -> None:
+            if path and frontend_public.exists() and not (frontend_public / path.lstrip("/")).is_file():
+                r.warnings.append(f"{wj}: {what} not found at frontend/public{path}")
+
+        for f in frames:
+            public(f.image, "frame image")
+        ids = [st.id for st in j.stops]
+        if len(ids) != len(set(ids)):
+            r.errors.append(f"{wj}: duplicate stop id")
+        for st in j.stops:
+            if st.today and st.today.photo:
+                public(st.today.photo.image, f"photo of stop '{st.id}'")
+            for fe in st.festivals:
+                if fe.photo:
+                    public(fe.photo.image, f"photo of festival '{fe.id}'")
+            if st.hat:
+                public(st.hat.hat, "hat image")
+                public(st.hat.hidden, "hidden hat image")
+        if j.letter:
+            public(j.letter.image, "postcard image")
         for pg in pages:
             for n in pg.teo:
                 need(n.sources, c.sources, wj, "source")
@@ -249,6 +271,33 @@ def _check_refs(c: Content, r: Report) -> None:
                     r.errors.append(f"{wj}: verified Tèo note needs a source: {n.text[:40]}…")
                 if n.unesco and not n.sources:
                     r.warnings.append(f"{wj}: UNESCO year needs a source: {n.text[:40]}…")
+
+    for reg in c.regions.values():
+        w = f"regions.json [{reg.id}]"
+        names = [ch.province for ch in reg.chapters]
+        if len(names) != len(set(names)):
+            r.errors.append(f"{w}: a province is listed twice in 'chapters'")
+        opened = [ch for ch in reg.chapters if ch.status == "open"]
+        if len(opened) > 1:
+            r.errors.append(f"{w}: only one chapter per region can be open for now (its journey)")
+        if opened and (reg.journey is None or reg.status == "locked"):
+            r.errors.append(f"{w}: chapter '{opened[0].province}' is open but the region has no open journey")
+        if reg.status == "open" and reg.chapters and not opened:
+            r.warnings.append(f"{w}: no chapter is marked open")
+
+    # [[shown words|term-id]] in any diary text must point to glossary.json
+    for t in c.glossary.values():
+        w = f"glossary.json [{t.id}]"
+        need(t.sources, c.sources, w, "source")
+        if t.verified and not t.sources:
+            r.errors.append(f"{w}: verified term needs a source")
+        elif not t.verified:
+            r.warnings.append(f"{w}: not verified")
+    for reg in c.regions.values():
+        if reg.journey:
+            for m in re.finditer(r"\[\[([^|\]]+)\|([^\]]+)\]\]", json.dumps(reg.journey.model_dump(), ensure_ascii=False)):
+                if m.group(2) not in c.glossary:
+                    r.errors.append(f"regions/{reg.id}.json: unknown glossary term '{m.group(2)}' (in [[{m.group(1)}|…]])")
 
     for q in c.quiz.values():
         w = f"quiz.json [{q.id}]"

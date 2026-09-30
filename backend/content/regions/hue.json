@@ -1,172 +1,381 @@
 {
   "hover_line": "“Tôi theo anh vào Huế năm hai mươi tuổi. Ở đây, mưa dạy người ta sống chậm lại.”",
-  "arrive": {
-    "date": "Huế, một chiều mưa tháng Ba",
-    "entry": "Tàu vào ga Huế lúc trời đã chập choạng. Mưa không to mà cứ rả rích mãi. Anh đưa tôi đi qua cầu, dưới kia sông Hương xanh và lặng đến lạ. Tôi mới hai mươi tuổi, chưa từng đi xa nhà đến thế. Đêm đầu tiên tôi không ngủ được, nằm nghe mưa trên mái ngói.",
-    "margin": "“Anh” là ông của con đấy. Hồi ấy ông gầy lắm.",
-    "ti": "Bà mới hai mươi tuổi đã đi xa nhà thế này. Mình thì chưa đi đâu một mình bao giờ.",
-    "keepsake": "stamp",
-    "landmarks": [
-      {
-        "name": "Kinh thành Huế",
-        "lon": 107.58,
+  "chapter": {
+    "province": "Huế",
+    "title": "Mùa mưa năm hai mươi tuổi",
+    "verse": [
+      "Núi Ngự Bình trước tròn sau méo,",
+      "Sông An Cựu nắng đục mưa trong."
+    ],
+    "verse_by": "ca dao Huế",
+    "line": "Huế không phải để đi cho hết, mà để đi cho chậm."
+  },
+  "stops": [
+    {
+      "id": "ga-hue",
+      "place": "Ga Huế",
+      "time": "evening",
+      "point": {
+        "lat": 16.456,
+        "lon": 107.578
+      },
+      "date": "Huế, một chiều mưa tháng Mười",
+      "entry": "Tàu vào ga lúc trời chập choạng. Mưa không to mà cứ rả rích mãi. Anh đỡ cái túi cho tôi, bảo: “Mai anh dẫn em đi Huế một vòng, tối về ăn cơm với mẹ.” Tôi gật đầu mà tay lạnh ngắt, không biết vì mưa hay vì sợ. Đi qua cầu Trường Tiền, tôi đếm được sáu vài, mười hai nhịp. Đêm ấy nằm nghe mưa trên mái ngói, tôi tập đi tập lại câu chào mẹ anh.",
+      "margin": "Con đừng cười. Hồi ấy Bà tập câu “Dạ, con chào mẹ” đến hai chục lần.",
+      "ti": "Bà cũng biết run à?",
+      "keepsake": "ticket",
+      "teo": [
+        {
+          "text": "Quần thể di tích Cố đô Huế là Di sản Thế giới.",
+          "unesco": 1993,
+          "sources": [
+            "unesco-whc-vn"
+          ],
+          "verified": true
+        },
+        {
+          "text": "Cầu Trường Tiền có sáu vài, mười hai nhịp, bắc qua sông Hương.",
+          "unesco": null,
+          "sources": [],
+          "verified": false
+        }
+      ],
+      "frame": {
+        "image": "/regions/hue/h01-ga-hue.png",
+        "caption": "Ga Huế, chiều mưa",
+        "alt": "Bà hai mươi tuổi đứng dưới ô của Ông trên sân ga ướt mưa",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 13 (h01-ga-hue.png)"
+      },
+      "today": {
+        "title": "Ga nhỏ, màu hồng, và mưa y như Bà kể",
+        "text": "Mình cứ tưởng ga Huế màu vàng, hóa ra sơn hồng đỏ, có cái đồng hồ to ở giữa. Ga nhỏ, cũ, yên. Bước ra là thấy ngay cái chậm của Huế. Mình đến đúng tháng Mười, mưa không to nhưng không dứt, đúng từng chữ trong sổ của Bà.",
+        "tips": [
+          "Mùa mưa Huế thường từ tháng Chín đến tháng Mười hai: mang áo mưa mỏng.",
+          "Từ ga đi bộ ra cầu Trường Tiền chừng hai mươi phút, dọc bờ sông rất đẹp.",
+          "Ngày mưa đừng mặc tà áo dài quá dài, kẻo ướt vạt."
+        ],
+        "photo": {
+          "image": "/regions/hue/photos/ga-hue.jpg",
+          "alt": "Mặt tiền ga Huế sơn hồng đỏ, có đồng hồ ở giữa",
+          "credit": "Nguyenbaotrung725",
+          "license": "CC BY 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Ga_Hu%E1%BA%BF_(06h39_-_02.09.2026).jpg"
+        }
+      }
+    },
+    {
+      "id": "song-huong",
+      "place": "Sông Hương · chợ Đông Ba",
+      "time": "dawn",
+      "point": {
+        "lat": 16.472,
+        "lon": 107.588
+      },
+      "date": "Sáng hôm sau, sương chưa tan",
+      "entry": "Anh thuê một chiếc đò từ lúc sương chưa tan. Sông Hương buổi sáng không xanh như ảnh đâu, nó xám bạc, lặng đến mức nghe được tiếng mái chèo. Đò ghé chợ Đông Ba, anh mua cho tôi một chiếc nón. Tôi chê nón trơn quá. Anh cười, bảo tôi giơ lên trời. Nắng vừa lên, trong lớp lá hiện ra bóng một cây cầu và hai câu thơ.",
+      "margin": "Hai câu thơ ấy Bà không chép ra đây đâu. Con muốn biết thì soi cái nón lên.",
+      "ti": null,
+      "keepsake": null,
+      "teo": [
+        {
+          "text": "Nón bài thơ là nón lá Huế có kẹp hình hoặc câu thơ giữa hai lớp lá, soi lên nắng mới thấy.",
+          "unesco": null,
+          "sources": [
+            "ref-72"
+          ],
+          "verified": true
+        }
+      ],
+      "frame": {
+        "image": "/regions/hue/h02-song-huong-som.png",
+        "caption": "Sông Hương buổi sớm",
+        "alt": "Chiếc đò nhỏ trên sông Hương mờ sương, xa xa là cây cầu nhiều nhịp",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 13 (h02-song-huong-som.png)"
+      },
+      "hat": {
+        "line": "Nón nghiêng che nắng sông Hương, anh nghiêng che cả con đường em đi.",
+        "hat": "/regions/hue/h03a-non-la.png",
+        "hidden": "/regions/hue/h03b-non-an.png"
+      },
+      "today": {
+        "title": "Chợ ồn hơn mình tưởng, mà dễ thương",
+        "text": "Chợ Đông Ba đông, ồn, thơm mùi mắm ruốc và trà. Cô bán nón bảo nón bài thơ phải soi nắng mới thấy, y chang Bà kể. Mình soi thử, thấy hình cây cầu, suýt la lên giữa chợ.",
+        "tips": [
+          "Đi đò sông Hương đẹp nhất lúc sáng sớm hoặc chiều muộn.",
+          "Nón bài thơ bán ở chợ Đông Ba: nhớ soi lên nắng trước khi mua.",
+          "Chợ đông nhất buổi sáng, đi sớm cho mát."
+        ],
+        "photo": {
+          "image": "/regions/hue/photos/cho-dong-ba.jpg",
+          "alt": "Lối đi trong chợ Đông Ba, hai bên là sạp hàng khô",
+          "credit": "Chainwit.",
+          "license": "CC BY 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Dong_Ba_Market_(Hue)_-_Ch%E1%BB%A3_%C4%90%C3%B4ng_Ba_Hu%E1%BA%BF_(July_2024)_-_img_05.jpg"
+        }
+      }
+    },
+    {
+      "id": "dai-noi",
+      "place": "Đại Nội",
+      "time": "noon",
+      "point": {
+        "lat": 16.468,
+        "lon": 107.578
+      },
+      "date": "Trưa hôm ấy, nắng lên gắt",
+      "entry": "Qua [[Ngọ Môn|ngo-mon]] thì nắng đã gắt. Tôi mặc cái áo dài mượn của em gái anh, hơi rộng, đi cứ phải níu vạt. Trong một góc điện, có người đang tập [[nhã nhạc|nha-nhac]]. Tiếng trống, tiếng sáo cứ chậm rãi, trang nghiêm như từ trăm năm trước vọng lại. Anh đứng nghe, quên cả che ô cho tôi.",
+      "margin": "Áo mượn mà vẫn phải mặc cho ngay ngắn, vì đó là chỗ người ta giữ gìn.",
+      "ti": "Quên che ô cho Bà. Ông ơi là Ông.",
+      "keepsake": null,
+      "teo": [
+        {
+          "text": "Nhã nhạc cung đình Huế được UNESCO công nhận là Kiệt tác di sản truyền khẩu và phi vật thể.",
+          "unesco": 2003,
+          "sources": [
+            "unesco-ich-vn"
+          ],
+          "verified": true
+        }
+      ],
+      "frame": {
+        "image": "/regions/hue/h04-ngo-mon.png",
+        "caption": "Ngọ Môn, trưa nắng",
+        "alt": "Bà níu vạt áo dài mượn, Ông mải nghe nhạc quên che ô",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 13 (h04-ngo-mon.png)"
+      },
+      "today": {
+        "title": "Rộng, nắng, mỏi chân, rồi tự nhiên đứng im",
+        "text": "Đại Nội rộng lắm, đi bộ mỏi rã chân. Nhưng lúc nghe nhã nhạc thì tự nhiên mình đứng im, giống Ông hồi đó. Có mấy bạn mặc áo dài chụp ảnh trước Ngọ Môn, ai cũng đứng thẳng lưng hơn bình thường.",
+        "tips": [
+          "Đi buổi sáng hoặc chiều muộn, bên trong ít bóng râm.",
+          "Mang nón hoặc ô: Ông quên, con đừng quên.",
+          "Hỏi lịch biểu diễn nhã nhạc ở cổng bán vé."
+        ],
+        "photo": {
+          "image": "/regions/hue/photos/ngo-mon.jpg",
+          "alt": "Ngọ Môn, cổng chính vào Hoàng thành Huế",
+          "credit": "Chainwit.",
+          "license": "CC BY 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Hu%E1%BA%BF_(2024)_-_Meridian_Gate_-_Ng%E1%BB%8D_M%C3%B4n_(Ho%C3%A0ng_th%C3%A0nh_Hu%E1%BA%BF)_-_img_02.jpg"
+        }
+      }
+    },
+    {
+      "id": "thien-mu",
+      "place": "Chùa Thiên Mụ",
+      "time": "afternoon",
+      "point": {
+        "lat": 16.453,
+        "lon": 107.545
+      },
+      "date": "Chiều, trên đồi bên sông",
+      "entry": "Chiều ấy anh đưa tôi lên chùa Thiên Mụ. Tiếng chuông ngân mãi trên mặt sông. Anh không nhìn tôi, chỉ nhìn sông, rồi hỏi: “Em có ở lại Huế được không? Ở đây mưa nhiều, buồn lắm.” Tôi không trả lời ngay. Tôi bảo: “Để tối nay em trả lời.”",
+      "margin": null,
+      "ti": "Rồi Bà có ở lại không?? Bà viết tiếp đi!",
+      "keepsake": "leaf",
+      "teo": [
+        {
+          "text": "Chùa Thiên Mụ được dựng năm 1601, thời chúa Nguyễn Hoàng; tháp Phước Duyên trước chùa có bảy tầng.",
+          "unesco": null,
+          "sources": [],
+          "verified": false
+        }
+      ],
+      "frame": {
+        "image": "/regions/hue/h06-thien-mu.png",
+        "caption": "Chùa Thiên Mụ lúc chiều",
+        "alt": "Ông và Bà đứng trên đồi nhìn xuống sông Hương, cạnh tháp bảy tầng",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 13 (h06-thien-mu.png)"
+      },
+      "today": {
+        "title": "Hoàng hôn đẹp muốn khóc",
+        "text": "Mình lên chùa lúc chiều, đúng giờ Bà ghi. Đứng cạnh tháp nhìn xuống, sông Hương uốn một vòng rất chậm. Tiếng chuông vang lên thì cả đám khách đang nói chuyện cũng im. Mình hiểu vì sao Ông chọn chỗ này để hỏi.",
+        "tips": [
+          "Chùa là nơi tu hành: mặc kín đáo, nói nhỏ.",
+          "Có thể đi đò từ trung tâm lên chùa, ngắm sông suốt đường.",
+          "Ở lại đến hoàng hôn rồi hẵng về."
+        ],
+        "photo": {
+          "image": "/regions/hue/photos/thap-phuoc-duyen.jpg",
+          "alt": "Tháp Phước Duyên của chùa Thiên Mụ giữa hàng thông",
+          "credit": "William Whyte",
+          "license": "CC BY-SA 2.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Th%C3%A1p_Ph%C6%B0%E1%BB%9Bc_Duy%C3%AAn_ch%C3%B9a_Thi%C3%AAn_M%E1%BB%A5.jpg"
+        }
+      }
+    },
+    {
+      "id": "bua-com",
+      "place": "Bữa cơm ra mắt",
+      "time": "evening",
+      "point": {
+        "lat": 16.462,
+        "lon": 107.595
+      },
+      "date": "Tối hôm ấy, ở [[nhà rường|nha-ruong]] của mẹ anh",
+      "entry": "Mâm cơm nhà anh nhiều món mà món nào cũng ít, bày khéo như để ngắm. Mẹ anh ít nói, chỉ nhìn tôi gắp. Tôi run tay làm rơi cái chén. Cả nhà im phăng phắc. Mẹ anh đứng dậy, lấy chén khác, rồi nói nhỏ: “Con gái Huế cũng làm rơi chén hoài. Rơi thì nhặt, [[rứa|rua]] thôi.” Tôi cúi mặt mà muốn khóc. Tối ấy, ra đến cổng, tôi trả lời anh.",
+      "margin": "Chữ “rứa thôi” ấy, Bà giữ đến bây giờ.",
+      "ti": "Bà trả lời gì vậy trời!",
+      "keepsake": "recipe",
+      "teo": [],
+      "frame": {
+        "image": "/regions/hue/h05-mam-com.png",
+        "caption": "Bữa cơm ra mắt",
+        "alt": "Mẹ Ông đưa Bà chiếc chén mới, cả nhà đang dừng đũa",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 13 (h05-mam-com.png)"
+      },
+      "items": [
+        {
+          "id": "com-hue",
+          "kind": "custom",
+          "title": "Mâm cơm nhiều món nhỏ",
+          "text": "Người Huế ăn ít mà nhiều món, món nào cũng bày như để ngắm trước rồi mới ăn.",
+          "community_review": false
+        },
+        {
+          "id": "an-chay",
+          "kind": "custom",
+          "title": "Rằm, mồng một ăn chay",
+          "text": "Cả nhà ăn chay ngày rằm và mồng một, mà món chay cũng cầu kỳ như món mặn.",
+          "community_review": false
+        },
+        {
+          "id": "bun-bo-hue",
+          "kind": "dish",
+          "title": "Bát bún bò buổi sáng",
+          "text": "Nước dùng thơm sả, cay màu ớt, sợi bún to. Trời mưa mà có bát bún nóng thì chẳng còn gì bằng.",
+          "community_review": false
+        }
+      ],
+      "today": {
+        "title": "Bún bò ở Huế cay hơn mình tưởng",
+        "text": "Mình không được ai mời cơm ra mắt, nên ra chợ ăn bún bò. Nước dùng thơm sả, cay đến chảy nước mắt mà vẫn húp hết. Cô bán hàng nói giọng Huế nhẹ tênh, mình nghe được đúng một chữ: “rứa”.",
+        "tips": [
+          "Bún bò ngon nhất vào buổi sáng.",
+          "Người Huế ăn cay: bảo ít ớt nếu không quen.",
+          "Học vài chữ Huế: “rứa” là thế, “mô” là đâu, “chi” là gì."
+        ],
+        "photo": {
+          "image": "/regions/hue/photos/bun-bo.jpg",
+          "alt": "Tô bún bò Huế ở chợ Đông Ba",
+          "credit": "Chainwit.",
+          "license": "CC BY 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:B%C3%BAn_b%C3%B2_Hu%E1%BA%BF_-_Ch%E1%BB%A3_%C4%90%C3%B4ng_Ba_(2024)_-_img_02.jpg"
+        }
+      }
+    },
+    {
+      "id": "le-hoi",
+      "place": "Lễ hội",
+      "time": "night",
+      "point": {
         "lat": 16.47,
-        "note": "Hoàng thành bên sông Hương."
+        "lon": 107.585
       },
-      {
-        "name": "Phong Nha",
-        "lon": 106.28,
-        "lat": 17.59,
-        "note": "Những hang động khổng lồ."
+      "date": "Rằm tháng Tư năm sau",
+      "entry": "Rằm tháng Tư năm ấy, cả nhà ra sông thả [[hoa đăng|hoa-dang]]. Mẹ đưa tôi một cái đèn, bảo tôi tự thả. Tôi ước gì thì không nói đâu. Chỉ biết đèn của tôi trôi sát đèn của mẹ. Ở Huế lâu rồi tôi mới biết, năm nào cũng có dịp để cả thành phố cùng ra đường: Tết thì đi chơi [[bài chòi|bai-choi]], tháng Ba lên điện Hòn Chén, rồi Festival với những đêm áo dài đầy phố.",
+      "margin": "Ở kinh đô, lễ nghi nào cũng cần áo chỉnh tề. Lật trang đi, Bà kể con nghe chiếc áo mẹ trao.",
+      "ti": null,
+      "keepsake": "ticket",
+      "teo": [
+        {
+          "text": "Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh.",
+          "unesco": 2017,
+          "sources": [
+            "unesco-ich-vn"
+          ],
+          "verified": true
+        }
+      ],
+      "frame": {
+        "image": "/regions/hue/h07-hoa-dang.png",
+        "caption": "Đêm thả hoa đăng",
+        "alt": "Mẹ Ông trao cho Bà một chiếc đèn hoa đăng bên bậc đá bờ sông",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 13 (h07-hoa-dang.png)"
       },
-      {
-        "name": "Hội An",
-        "lon": 108.33,
-        "lat": 15.88,
-        "note": "Phố đèn lồng bên sông."
-      },
-      {
-        "name": "Mỹ Sơn",
-        "lon": 108.12,
-        "lat": 15.77,
-        "note": "Tháp gạch đỏ giữa rừng."
-      }
-    ]
-  },
-  "look": {
-    "date": "Đi dọc miền Trung, mùa hè",
-    "entry": "Dải đất này hẹp lắm, bên kia là núi, bên này là biển. Người ở đây chịu thương chịu khó, quen với nắng gió nên ít khi than. Mùa hè nắng như đổ lửa, có gió Lào khô rát. Thu sang lại mưa bão, lũ về trắng đồng. Tôi đi Hội An, thấy phố cũ treo đèn lồng, rồi vào tận Mỹ Sơn đứng dưới những ngọn tháp gạch đỏ không biết đã bao nhiêu trăm năm.",
-    "margin": "Hôm Bà đến Mỹ Sơn vắng lắm, cả khu tháp chỉ có tiếng ve.",
-    "keepsake": "photo",
-    "teo": [
-      {
-        "text": "Quần thể di tích Cố đô Huế, phố cổ Hội An, thánh địa Mỹ Sơn và Phong Nha – Kẻ Bàng đều là Di sản Thế giới.",
-        "sources": [
-          "unesco-whc-vn"
-        ],
-        "verified": true
-      },
-      {
-        "text": "Gió Lào là gió tây nam khô nóng, vượt dãy Trường Sơn thổi vào Bắc Trung Bộ đầu mùa hè.",
-        "sources": [
-          "ref-76"
-        ],
-        "verified": true
-      }
-    ],
-    "frames": [
-      {
-        "image": null,
-        "caption": "Sông Hương một chiều",
-        "alt": "Sông Hương buổi chiều với con đò nhỏ và cây cầu thép nhiều nhịp",
-        "prompt": "the Perfume River in Huế at golden hour, a small wooden sampan, a long steel truss bridge with repeated arches in the distance, soft purple-blue water"
-      },
-      {
-        "image": null,
-        "caption": "Hội An lên đèn",
-        "alt": "Phố cổ Hội An với tường vàng và đèn lồng",
-        "prompt": "an old street in Hội An at dusk, ochre-yellow walls, wooden shutters, round silk lanterns glowing, bougainvillea, quiet river at the end of the street"
-      },
-      {
-        "image": null,
-        "caption": "Tháp gạch đỏ giữa nắng",
-        "alt": "Cụm tháp Chăm bằng gạch đỏ giữa rừng cây",
-        "no_people": true,
-        "prompt": "ancient red-brick Cham towers among green jungle under strong sun, no people, no figures"
-      }
-    ]
-  },
-  "life": {
-    "date": "Nhà chồng, những ngày đầu làm dâu",
-    "entry": "Mẹ chồng tôi dạy nấu cơm Huế: món nào cũng ít một, bày cho khéo. Rằm với mồng một cả nhà ăn chay, mà món chay cũng cầu kỳ như món mặn. Buổi sáng tôi hay ra đầu ngõ ăn bát bún bò, cay xé lưỡi mà vẫn muốn ăn thêm. Chiều thì theo mấy chị trong xóm đi chuốt vành nón.",
-    "margin": "Con thấy chưa, Bà học làm nón trước cả học may.",
-    "keepsake": "recipe",
-    "items": [
-      {
-        "id": "com-hue",
-        "kind": "custom",
-        "title": "Mâm cơm nhiều món nhỏ",
-        "text": "Người Huế ăn ít mà nhiều món, món nào cũng bày như để ngắm trước rồi mới ăn."
-      },
-      {
-        "id": "non-la",
-        "kind": "custom",
-        "title": "Chuốt vành nón",
-        "text": "Vành tre chuốt tròn, lá phơi trắng, khâu từng mũi. Soi nón lên nắng còn thấy hình và câu thơ kẹp bên trong."
-      },
-      {
-        "id": "bun-bo-hue",
-        "kind": "dish",
-        "title": "Bát bún bò buổi sáng",
-        "text": "Nước dùng thơm sả, cay màu ớt, sợi bún to. Trời mưa mà có bát bún nóng thì chẳng còn gì bằng."
-      }
-    ],
-    "teo": [
-      {
-        "text": "Nón bài thơ là nón lá Huế có kẹp hình hoặc câu thơ giữa hai lớp lá, soi lên nắng mới thấy.",
-        "sources": [
-          "ref-72"
-        ],
-        "verified": true
-      }
-    ],
-    "ti": "Bà học chuốt vành nón trước cả học may. Nón lá với áo dài đúng là một đôi."
-  },
-  "festivals": {
-    "date": "Làng biển gần cửa Thuận An, đầu xuân",
-    "entry": "Tôi theo chị hàng xóm ra làng biển xem lễ cầu ngư. Người ta rước thuyền, hát bả trạo, cầu cho người đi biển được bình an. Tết thì cả xóm kéo nhau đi chơi bài chòi, anh hiệu hô câu thai nghe mà bật cười. Phải nhiều năm sau, anh mới đưa tôi đi nghe nhã nhạc, tiếng trống tiếng sáo trang nghiêm giữa những mái điện xưa.",
-    "keepsake": "ticket",
-    "festivals": [
-      {
-        "id": "bai-choi",
-        "name": "Hội bài chòi",
-        "time": "Dịp Tết Nguyên Đán",
-        "month": 1,
-        "place": "Các tỉnh Trung Bộ",
-        "text": "Ngồi trong chòi tre, chờ anh hiệu hô trúng con bài của mình. Vừa là trò chơi, vừa là một buổi diễn."
-      },
-      {
-        "id": "cau-ngu",
-        "name": "Lễ cầu ngư",
-        "time": "Tháng Giêng đến tháng Ba âm lịch, tùy làng",
-        "month": 2,
-        "place": "Các làng biển miền Trung",
-        "text": "Rước thuyền, hát bả trạo, cầu một năm trời êm biển lặng, thuyền về đầy cá."
-      }
-    ],
-    "teo": [
-      {
-        "text": "Nhã nhạc cung đình Huế được UNESCO công nhận là Kiệt tác di sản truyền khẩu và phi vật thể.",
-        "unesco": 2003,
-        "sources": [
-          "unesco-ich-vn"
-        ],
-        "verified": true
-      },
-      {
-        "text": "Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh.",
-        "unesco": 2017,
-        "sources": [
-          "unesco-ich-vn"
-        ],
-        "verified": true
-      },
-      {
-        "text": "Áo Nhật Bình vốn là triều phục của hậu, phi, cung tần và công chúa triều Nguyễn; sau 1945 mới phổ biến trong dân gian.",
-        "sources": [
-          "ref-71"
-        ],
-        "verified": true
-      }
-    ],
-    "bridge": "Ở kinh đô, lễ nghi nào cũng cần áo chỉnh tề. Lật trang đi, Bà kể con nghe chiếc áo ngũ thân."
+      "festivals": [
+        {
+          "id": "hoa-dang",
+          "name": "Thả hoa đăng trên sông Hương",
+          "time": "Mùa Phật đản, rằm tháng Tư âm lịch",
+          "month": 5,
+          "place": "Sông Hương",
+          "text": "Cả nhà ra sông, mỗi người một chiếc đèn, thả cho trôi cùng nhau.",
+          "review": "Cả mặt sông lấm tấm đèn, trôi chầm chậm. Không ai nói to. Mình thả một cái, rồi đứng nhìn tới khi không phân biệt được đèn của mình nữa.",
+          "photo": null,
+          "community_review": false
+        },
+        {
+          "id": "festival-hue",
+          "name": "Festival Huế",
+          "time": "Nhiều mùa trong năm",
+          "month": 6,
+          "place": "Đại Nội và khắp thành phố",
+          "text": "Những đêm cả thành phố cùng về một thời, áo dài và áo tấc đầy phố.",
+          "review": "Đêm rước đèn, trống, cờ, áo cung đình đi ngang trước mặt, như cả thành phố cùng về một thời. Người xem cũng mặc áo dài, đứng chật hai bên đường.",
+          "photo": {
+            "image": "/regions/hue/photos/festival-hue.jpg",
+            "alt": "Đoàn rước trong trang phục cung đình tại Festival Huế",
+            "credit": "Lưu Ly",
+            "license": "Public domain",
+            "source_url": "https://commons.wikimedia.org/wiki/File:Festival_Hu%E1%BA%BF_2008-14.JPG"
+          },
+          "community_review": false
+        },
+        {
+          "id": "dien-hon-chen",
+          "name": "Lễ hội điện Hòn Chén",
+          "time": "Tháng Ba và tháng Bảy âm lịch",
+          "month": 4,
+          "place": "Điện Hòn Chén, bên sông Hương",
+          "text": "Rước thuyền trên sông, trống chiêng, khói hương nghi ngút.",
+          "review": "Thuyền kết hoa nối nhau trên sông, tiếng trống chiêng vọng vào vách núi. Huyền bí, rất đông, nên đi với người quen.",
+          "photo": {
+            "image": "/regions/hue/photos/dien-hon-chen.jpg",
+            "alt": "Thuyền rước trên sông Hương trước điện Hòn Chén",
+            "credit": "Lưu Ly",
+            "license": "Public domain",
+            "source_url": "https://commons.wikimedia.org/wiki/File:Le_Hoi_Dien_Hon_Chen_2012.jpg"
+          },
+          "community_review": false
+        },
+        {
+          "id": "bai-choi",
+          "name": "Hội bài chòi",
+          "time": "Dịp Tết Nguyên Đán",
+          "month": 2,
+          "place": "Các làng ở Huế và Trung Bộ",
+          "text": "Ngồi trong chòi tre, chờ anh hiệu hô trúng con bài của mình.",
+          "review": "Anh hiệu hát câu thai, cả chòi nín thở, rồi có người reo lên vì trúng. Không cần biết luật vẫn thấy vui.",
+          "photo": {
+            "image": "/regions/hue/photos/bai-choi.jpg",
+            "alt": "Các cụ ngồi trong chòi tre chơi bài chòi ở làng Thanh Toàn",
+            "credit": "Lưu Ly",
+            "license": "CC BY 3.0",
+            "source_url": "https://commons.wikimedia.org/wiki/File:B%C3%A0i_Ch%C3%B2i.jpg"
+          },
+          "community_review": false
+        }
+      ],
+      "today": null
+    }
+  ],
+  "letter": {
+    "text": "Con à, Bà đã ở lại. Mưa Huế buồn thật, nhưng có người che ô, có người bảo “rứa thôi”. Đến giờ, mỗi lần mưa, Bà vẫn nghe được tiếng mưa trên mái ngói hôm ấy. Tấm bưu thiếp này, con giữ lấy.",
+    "image": "/regions/hue/h09-buu-thiep.png"
   },
   "wear": [
     {
       "garment": "ao-ngu-than",
-      "date": "Ngày giỗ bên nhà chồng",
-      "entry": "Mẹ chồng đưa tôi chiếc áo ngũ thân của mẹ, bảo mặc cho đúng lễ. Áo có năm thân, cổ đứng, cài khuy bên phải. Mẹ nói bốn thân lớn là cha mẹ mình và cha mẹ chồng, thân thứ năm nằm bên trong là bản thân mình, còn năm khuy là nhân, lễ, nghĩa, trí, tín. Anh cũng mặc áo ngũ thân màu đen, vấn khăn đóng. Tôi mặc vào, tự nhiên thấy mình đứng thẳng hơn.",
-      "margin": "Mặc áo này không cần cầu kỳ, chỉ cần ngay ngắn. Con giữ năm thân và cái cổ đứng là được.",
+      "date": "Ngày giỗ, một năm sau",
+      "entry": "Hôm giỗ, mẹ mở rương, đưa tôi chiếc [[áo ngũ thân|ao-ngu-than]] của mẹ hồi con gái. Mẹ không nói gì. Tôi hiểu mẹ đã nhận tôi. Áo có năm thân, cổ đứng, cài khuy bên phải. Mẹ nói bốn thân lớn là cha mẹ mình và cha mẹ chồng, thân thứ năm nằm bên trong là bản thân mình. Anh mặc áo ngũ thân màu đen, vấn [[khăn đóng|khan-dong]]. Tôi mặc vào, tự nhiên thấy mình đứng thẳng hơn.",
+      "margin": "Chiếc áo ấy giờ ở trong rương. Khi nào con mặc, Bà lấy ra.",
       "keepsake": "fabric",
       "teo": [
         {
@@ -209,18 +418,6 @@
   "own": {
     "invite": "Bà mặc áo xanh ở Huế. Còn con, con muốn mặc thế nào?"
   },
-  "sources": [
-    "unesco-ich-vn",
-    "unesco-whc-vn",
-    "ref-09",
-    "ref-03",
-    "ref-04",
-    "ref-12",
-    "ref-70",
-    "ref-71",
-    "ref-72",
-    "ref-76"
-  ],
   "check": {
     "pre": {
       "id": "hue-pre",
@@ -276,5 +473,17 @@
         "verified": false
       }
     ]
-  }
+  },
+  "sources": [
+    "unesco-ich-vn",
+    "unesco-whc-vn",
+    "ref-09",
+    "ref-03",
+    "ref-04",
+    "ref-12",
+    "ref-70",
+    "ref-71",
+    "ref-72",
+    "ref-76"
+  ]
 }

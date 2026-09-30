@@ -53,7 +53,9 @@ def test_invalid_json_reports_line(tmp_path):
 def test_every_region_has_a_diary(content):
     for reg in content.regions.values():
         assert reg.journey is not None, reg.id
-        assert reg.journey.hover_line and reg.journey.arrive.entry and reg.journey.own.invite
+        j = reg.journey
+        assert j.hover_line and j.own.invite
+        assert (j.arrive and j.arrive.entry) or (j.chapter and j.stops[0].entry)
 
 
 def test_locked_region_cannot_have_life_or_people(tmp_path):
@@ -109,3 +111,43 @@ def test_open_regions_have_three_questions(content):
     for reg in content.regions.values():
         if reg.status == "open":
             assert reg.journey.check and len(reg.journey.check.post) == 3
+
+
+def test_trip_chapter_needs_a_title_page(tmp_path):
+    root = _copy(tmp_path)
+    p = root / "regions" / "hue.json"
+    data = json.loads(p.read_text())
+    del data["chapter"]
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    _, rep = store.load(root)
+    assert any("needs 'chapter'" in e for e in rep.errors)
+
+
+def test_glossary_terms_must_exist(tmp_path):
+    root = _copy(tmp_path)
+    p = root / "regions" / "hue.json"
+    data = json.loads(p.read_text())
+    data["stops"][0]["entry"] += " [[từ lạ|khong-co]]"
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    _, rep = store.load(root)
+    assert any("unknown glossary term 'khong-co'" in e for e in rep.errors)
+
+
+def test_only_one_open_chapter_per_region(tmp_path):
+    root = _copy(tmp_path)
+    p = root / "regions.json"
+    data = json.loads(p.read_text())
+    hue = next(r for r in data["regions"] if r["id"] == "hue")
+    for ch in hue["chapters"][:2]:
+        ch["status"] = "open"
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    _, rep = store.load(root)
+    assert any("only one chapter per region" in e for e in rep.errors)
+
+
+def test_every_hue_stop_photo_is_credited(content):
+    for st in content.regions["hue"].journey.stops:
+        photos = [st.today.photo] if st.today and st.today.photo else []
+        photos += [f.photo for f in st.festivals if f.photo]
+        for ph in photos:
+            assert ph.credit and ph.license and ph.source_url.startswith("https://commons.wikimedia.org/")

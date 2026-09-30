@@ -7,7 +7,7 @@ Field descriptions double as the data-entry guide (see backend/docs/BACKEND.md).
 from datetime import date
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 Id = str  # kebab-case, e.g. "ao-ngu-than"
 ID_PATTERN = r"^[a-z0-9]+(-[a-z0-9]+)*$"
@@ -171,6 +171,16 @@ class LifeItem(Strict):
     community_review: bool = Field(False, description="About a community that must review it first; hidden until then")
 
 
+class Photo(Strict):
+    """A real photo for Tí's "Hôm nay" page. Never AI-made, always credited (e.g. Wikimedia Commons, CC licence)."""
+
+    image: str = Field(description="Path under frontend/public, e.g. /regions/hue/photos/ga-hue.jpg")
+    alt: str
+    credit: str = Field(description="Author as the licence asks to name them")
+    license: str = Field(description="e.g. CC BY 4.0, CC BY-SA 2.0, Public domain")
+    source_url: str
+
+
 class Festival(Strict):
     id: Id = Field(pattern=ID_PATTERN)
     name: str
@@ -178,6 +188,8 @@ class Festival(Strict):
     month: int | None = Field(None, ge=1, le=12, description="For the calendar strip")
     place: str
     text: str = Field(max_length=350, description="In young Bà's voice")
+    review: str | None = Field(None, max_length=300, description="Tí today: what it feels like to be there")
+    photo: Photo | None = None
     community_review: bool = False
 
 
@@ -200,6 +212,67 @@ class FestivalPage(DiaryPage):
 
 class WearPage(DiaryPage):
     garment: Id
+
+
+class GlossaryTerm(Strict):
+    """Tèo's pop-up note for a hard word. Texts mark a word with [[shown words|term-id]]."""
+
+    id: Id = Field(pattern=ID_PATTERN)
+    term: str
+    text: str = Field(max_length=240, description="One or two sentences, Tèo's voice")
+    sources: list[Id] = []
+    verified: bool = False
+
+
+class Today(Strict):
+    """Tí walks to the same place today with Bà's notebook: a short review, tips and a real photo."""
+
+    title: str = Field(max_length=80)
+    text: str = Field(max_length=420, description="Tí's voice ('mình'), how it feels to be there")
+    tips: list[str] = Field(default_factory=list, max_length=3)
+    photo: Photo | None = None
+
+
+class HatReveal(Strict):
+    """Nón bài thơ: hold the hat up to the sun and the hidden picture and line appear."""
+
+    line: str = Field(max_length=120, description="The handwritten line hidden in the hat (shown by the web, not drawn)")
+    hat: str | None = Field(None, description="Hat seen against the light, under frontend/public")
+    hidden: str | None = Field(None, description="The hidden silhouette layer, under frontend/public")
+
+
+TimeOfDay = Literal["dawn", "morning", "noon", "afternoon", "evening", "night"]
+
+
+class Stop(DiaryPage):
+    """One stop of a chapter walked like a trip: Bà's page (left) and Tí's "Hôm nay" (right)."""
+
+    id: Id = Field(pattern=ID_PATTERN)
+    place: str = Field(max_length=40, description="Short name on the route, e.g. Ga Huế")
+    time: TimeOfDay = Field(description="Tints the page like the light of that hour")
+    point: GeoPoint | None = Field(None, description="Where it is, for the dotted route on the map")
+    frame: Frame | None = Field(None, description="Bà's memory, illustrated")
+    today: Today | None = None
+    items: list[LifeItem] = []
+    festivals: list[Festival] = []
+    hat: HatReveal | None = None
+
+
+class ChapterIntro(Strict):
+    """The title page of a province chapter."""
+
+    province: str = Field(description="As on the map, e.g. Huế")
+    title: str = Field(max_length=60)
+    verse: list[str] = Field(min_length=1, max_length=4, description="Ca dao or a poem about the place, one line each")
+    verse_by: str = Field(description="e.g. ca dao Huế")
+    line: str = Field(max_length=200, description="Old Bà, to the reader")
+
+
+class Letter(Strict):
+    """The envelope glued at the end of a chapter: a postcard from Bà, which the reader can keep in their Du Ký."""
+
+    text: str = Field(max_length=400)
+    image: str | None = Field(None, description="Postcard picture under frontend/public")
 
 
 class OwnPage(Strict):
@@ -226,15 +299,44 @@ class RegionCheck(Strict):
 
 
 class Journey(Strict):
+    """A chapter of Bà's diary. Old layout: arrive, look, life, festivals. Trip layout: chapter + stops + letter."""
+
     hover_line: str = Field(max_length=140, description="One line from the diary, shown when the region is hovered")
-    arrive: ArrivePage
-    look: LookPage
+    chapter: ChapterIntro | None = None
+    arrive: ArrivePage | None = None
+    look: LookPage | None = None
+    stops: list[Stop] = Field(default_factory=list, max_length=8)
+    letter: Letter | None = None
     life: LifePage | None = None
     festivals: FestivalPage | None = None
     wear: list[WearPage] = Field(default_factory=list, max_length=2)
     own: OwnPage
     check: RegionCheck | None = None
     sources: list[Id] = []
+
+    @model_validator(mode="after")
+    def one_layout(self) -> "Journey":
+        if self.stops and not self.chapter:
+            raise ValueError("a chapter with stops needs 'chapter' (its title page)")
+        if not self.stops and not (self.arrive and self.look):
+            raise ValueError("needs either 'stops' (trip layout) or both 'arrive' and 'look'")
+        return self
+
+
+class RegionIntro(Strict):
+    """The page that opens a region: a verse everyone there knows, and Bà's line."""
+
+    verse: list[str] = Field(default_factory=list, max_length=4)
+    verse_by: str | None = None
+    line: str = Field(max_length=200)
+
+
+class ChapterRef(Strict):
+    """One province in the region's table of contents; 'open' = its chapter is the region's journey."""
+
+    province: str = Field(description="Exactly as on the map (vietnam-geo FOCUS), e.g. Huế")
+    status: Literal["open", "waiting"] = "waiting"
+    title: str | None = None
 
 
 class Region(Strict):
@@ -246,6 +348,8 @@ class Region(Strict):
     map_note: MapNote
     weather_point: GeoPoint | None = None
     stamp_image: str | None = None
+    intro: RegionIntro | None = None
+    chapters: list[ChapterRef] = []
     journey: Journey | None = Field(None, description="Filled from content/regions/<id>.json")
 
 

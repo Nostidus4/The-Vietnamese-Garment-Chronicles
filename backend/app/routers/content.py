@@ -22,6 +22,7 @@ def bootstrap() -> dict:
         "accessories": {k: v.model_dump() for k, v in c.accessories.items()},
         "sources": {k: v.model_dump() for k, v in c.sources.items()},
         "opening": [s.model_dump() for s in c.opening],
+        "glossary": {k: v.model_dump() for k, v in c.glossary.items()},
     }
 
 
