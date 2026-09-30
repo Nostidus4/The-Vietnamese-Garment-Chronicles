@@ -25,16 +25,18 @@ import {
   WearDiary,
   type Tab,
 } from "./Diary";
-import { LetterPage, TocPage } from "./FrontMatter";
+import { LetterPage, StartPage, TocPage } from "./FrontMatter";
 import { GlossaryProvider } from "./Glossary";
-import { HandwrittenText } from "./HandwrittenText";
 import { Page } from "./Page";
-import { VietnamMap } from "./VietnamMap";
+import { CHAPTERS, VietnamMap } from "./VietnamMap";
 
 // Page layout: 0 Bà's letter · 1 table of contents · 2 map · 3 right of the map (welcome / region / chapter title)
 // · 4… the chapter. page-flip keeps the DOM nodes it was given, so the page count is fixed at the longest chapter.
 const MAP = 2;
 const FIRST = 4;
+const TINTS = Object.fromEntries(CHAPTERS.map((c) => [c.id, c.tint]));
+// where a first-time reader begins: the fullest chapter (→ on the map spread, and the button under the regions)
+const SUGGEST = { id: "hue", label: "Huế" };
 
 // where the reader is, kept across a rebuild of the book (a new size means a new page-flip instance)
 const memo = { focus: null as string | null, reading: false, page: 0 };
@@ -230,7 +232,10 @@ export default function Flipbook({
     if (!portrait) return bookRef.current?.pageFlip()?.flipPrev("bottom");
     jump(page - 1);
   };
-  const next = () => !atEnd && bookRef.current?.pageFlip()?.flipNext("bottom");
+  const next = () => {
+    if (!focus && (page === MAP || (portrait && page === MAP + 1))) return go(SUGGEST.id);
+    if (!atEnd) bookRef.current?.pageFlip()?.flipNext("bottom");
+  };
 
   // "Tôi sắp tham gia sự kiện": open Huế's chapter and turn straight to the áo dài page
   const toEvent = () => {
@@ -309,7 +314,15 @@ export default function Flipbook({
   ) : listening ? (
     <HoverPage region={listening} />
   ) : (
-    <WelcomeBody onEvent={toEvent} />
+    <StartPage
+      data={data}
+      tints={TINTS}
+      hovered={hovered}
+      onHover={onHover}
+      onRegion={openRegion}
+      onEvent={toEvent}
+      suggest={SUGGEST}
+    />
   );
   // the chapter's place as a single red dot while reading a trip chapter; Bà's marks otherwise
   const firstPoint = j?.stops.find((st) => st.point)?.point;
@@ -433,9 +446,15 @@ export default function Flipbook({
             <span aria-hidden>‹</span>{" "}
             {page === 0 ? "Gấp sổ" : focus && page === MAP ? (reading ? region?.name : "Bản đồ Việt Nam") : "Trang trước"}
           </button>
-          <button type="button" className="page-turn" onClick={next} disabled={atEnd} aria-label="Trang sau">
-            Trang sau <span aria-hidden>›</span>
-          </button>
+          {!focus && page >= MAP ? (
+            <button type="button" className="page-turn" onClick={next} aria-label={`Bắt đầu từ ${SUGGEST.label}`}>
+              Bắt đầu từ {SUGGEST.label} <span aria-hidden>›</span>
+            </button>
+          ) : (
+            <button type="button" className="page-turn" onClick={next} disabled={atEnd} aria-label="Trang sau">
+              Trang sau <span aria-hidden>›</span>
+            </button>
+          )}
         </div>
       </div>
     </GlossaryProvider>
@@ -476,39 +495,5 @@ function MaybeNoTurn({
     <NoPageTurn>{children}</NoPageTurn>
   ) : (
     <div className="h-full w-full">{children}</div>
-  );
-}
-
-/** Bà's page (right side of the map spread). Shared with the desk so the opening hands over seamlessly. */
-export function WelcomeBody({
-  note,
-  onEvent,
-}: {
-  note?: { title: string; lines: string[] } | null;
-  onEvent?: () => void;
-}) {
-  return (
-    <>
-      <p className="font-hand text-[1.35rem] leading-snug text-stone-800">
-        Muốn viết tiếp một câu chuyện, trước hết phải hiểu câu chuyện đã có.
-      </p>
-      <p className="font-hand mt-1 text-right text-lg text-stone-500">— Bà</p>
-      <div className="mt-6 min-h-[9rem] flex-1">
-        {note ? (
-          <HandwrittenText title={note.title} lines={note.lines} />
-        ) : (
-          <p className="font-hand text-2xl text-[#B5452E]">
-            Chọn nơi con muốn bắt đầu.
-          </p>
-        )}
-      </div>
-      <button
-        onClick={onEvent}
-        tabIndex={onEvent ? 0 : -1}
-        className="self-start rounded-full border border-stone-700 px-4 py-2 text-sm hover:bg-stone-800 hover:text-amber-50"
-      >
-        Tôi sắp tham gia sự kiện
-      </button>
-    </>
   );
 }
