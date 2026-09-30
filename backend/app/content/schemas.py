@@ -241,6 +241,32 @@ class HatReveal(Strict):
     hidden: str | None = Field(None, description="The hidden silhouette layer, under frontend/public")
 
 
+GameKind = Literal["dong-ho", "quan-ho", "cay-beo", "xep-do", "khuy-bac", "xoe", "cong-chieng", "det"]
+
+
+class GameRound(Strict):
+    """One step of a mini-game. Each kind reads the fields it needs (see frontend/src/components/book/games)."""
+
+    label: str | None = Field(None, max_length=80, description="What the player sees: a colour, a boat, an item, a button")
+    item: str | None = Field(None, max_length=80, description="Colour hex, the object hung on a boat, etc.")
+    prompt: str | None = Field(None, max_length=200, description="A line sung, a question")
+    choices: list[str] = Field(default_factory=list, max_length=4)
+    answer: int | None = Field(None, ge=0, description="Index of the right choice, or 1/0 for keep/leave")
+    explain: str | None = Field(None, max_length=240)
+
+
+class Game(Strict):
+    """A small game glued on a stop's right page. Winning it reveals Tí's "Hôm nay" page."""
+
+    kind: GameKind
+    title: str = Field(max_length=60)
+    intro: str = Field(max_length=220)
+    rounds: list[GameRound] = Field(default_factory=list, max_length=10)
+    done: str = Field(max_length=220, description="Said when the player wins")
+    teo: TeoNote | None = None
+    community_review: bool = Field(False, description="Hidden (only in drafts) until the community has reviewed it")
+
+
 TimeOfDay = Literal["dawn", "morning", "noon", "afternoon", "evening", "night"]
 
 
@@ -256,6 +282,9 @@ class Stop(DiaryPage):
     items: list[LifeItem] = []
     festivals: list[Festival] = []
     hat: HatReveal | None = None
+    game: Game | None = None
+    stamp: str | None = Field(None, max_length=24, description="Name on this stop's own stamp, e.g. Ga Huế")
+    community_review: bool = False
 
 
 class ChapterIntro(Strict):
@@ -307,6 +336,7 @@ class Journey(Strict):
     look: LookPage | None = None
     stops: list[Stop] = Field(default_factory=list, max_length=8)
     letter: Letter | None = None
+    community_review: bool = Field(False, description="A draft written with a community: shown only in drafts until reviewed")
     life: LifePage | None = None
     festivals: FestivalPage | None = None
     wear: list[WearPage] = Field(default_factory=list, max_length=2)
@@ -335,7 +365,7 @@ class ChapterRef(Strict):
     """One province in the region's table of contents; 'open' = its chapter is the region's journey."""
 
     province: str = Field(description="Exactly as on the map (vietnam-geo FOCUS), e.g. Huế")
-    status: Literal["open", "waiting"] = "waiting"
+    status: Literal["open", "draft", "waiting"] = Field("waiting", description="draft = being written with the community, shown only in drafts")
     title: str | None = None
 
 

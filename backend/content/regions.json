@@ -32,7 +32,7 @@
         {
           "province": "Bắc Ninh",
           "status": "open",
-          "title": "Mùa xuân hội quan họ"
+          "title": "Hội xuân bên sông Cầu"
         },
         {
           "province": "Hà Nội",
@@ -231,7 +231,7 @@
       "intro": {
         "verse": [],
         "verse_by": null,
-        "line": "Bà chưa đến Tây Bắc. Những trang này chờ người ở đó cùng viết. Con đi thay Bà nhé."
+        "line": "Bà chưa từng đến Tây Bắc. Chương Sơn La là lời chị Mai kể, đang chờ người Thái đọc lại. Những trang khác chờ người ở đó cùng viết."
       },
       "chapters": [
         {
@@ -248,7 +248,8 @@
         },
         {
           "province": "Sơn La",
-          "status": "waiting"
+          "status": "draft",
+          "title": "Tiếng khèn bên suối"
         },
         {
           "province": "Phú Thọ",
@@ -271,7 +272,7 @@
       "intro": {
         "verse": [],
         "verse_by": null,
-        "line": "Bà chưa đến Tây Nguyên. Những trang này chờ người ở đó cùng viết. Con đi thay Bà nhé."
+        "line": "Bà chưa từng đến Tây Nguyên. Chương Đắk Lắk là lời Ông kể, đang chờ người Ê Đê đọc lại. Những trang khác chờ người ở đó cùng viết."
       },
       "chapters": [
         {
@@ -280,7 +281,8 @@
         },
         {
           "province": "Đắk Lắk",
-          "status": "waiting"
+          "status": "draft",
+          "title": "Đêm cồng chiêng"
         },
         {
           "province": "Lâm Đồng",

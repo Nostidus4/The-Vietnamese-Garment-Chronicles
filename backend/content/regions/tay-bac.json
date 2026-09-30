@@ -1,78 +1,250 @@
 {
   "hover_line": "“Tôi chỉ đi ngang qua những con đèo này. Tôi muốn nghe người ở đây kể hơn.”",
-  "arrive": {
-    "date": "Trên đèo, một sớm cuối thu",
-    "entry": "Xe leo dốc mãi, mây trôi ngang cửa kính. Tôi chỉ đi ngang qua vùng này vài ngày, không đủ để hiểu gì nhiều. Tôi thấy những thửa ruộng xếp tầng lên tận lưng núi, lúa chín vàng, và nghe nói mùa đông trên đỉnh cao có năm tuyết rơi.",
-    "margin": "Bà biết quá ít về nơi này để viết thay người ở đây, con ạ.",
-    "keepsake": "stamp",
-    "landmarks": [
-      {
-        "name": "Mù Cang Chải",
-        "lon": 104.09,
-        "lat": 21.85,
-        "note": "Ruộng bậc thang trên sườn núi."
-      },
-      {
-        "name": "Fansipan",
-        "lon": 103.78,
-        "lat": 22.3,
-        "note": "Đỉnh núi cao nhất Việt Nam."
-      },
-      {
-        "name": "Đèo Pha Đin",
-        "lon": 103.55,
-        "lat": 21.57,
-        "note": "Con đèo dài giữa núi."
-      },
-      {
-        "name": "Mộc Châu",
-        "lon": 104.68,
-        "lat": 20.84,
-        "note": "Cao nguyên chè và hoa mận."
-      }
-    ]
-  },
-  "look": {
-    "date": "Qua cao nguyên, tháng Mười",
-    "entry": "Ở đây là quê hương của nhiều dân tộc anh em, mỗi dân tộc một tiếng nói, một nếp sống riêng. Tôi chỉ dám chụp lại núi, ruộng và mây. Những câu chuyện còn lại, tôi để dành cho chính người nơi đây kể.",
-    "keepsake": "photo",
-    "teo": [
-      {
-        "text": "Fansipan là đỉnh núi cao nhất Việt Nam.",
-        "sources": [
-          "ref-77"
-        ],
-        "verified": true
-      }
+  "chapter": {
+    "province": "Sơn La",
+    "title": "Tiếng khèn bên suối",
+    "verse": [
+      "Lá thư chị Mai: “Bao giờ lúa chín, Mai đưa Vân về bản chơi.”"
     ],
-    "frames": [
-      {
-        "image": null,
-        "caption": "Mùa lúa trên núi",
-        "alt": "Ruộng bậc thang vàng óng trên sườn núi dốc",
-        "no_people": true,
-        "prompt": "golden terraced rice fields on steep mountains at harvest time, mist in the valley, no people, no figures"
-      },
-      {
-        "image": null,
-        "caption": "Mây trên đỉnh cao",
-        "alt": "Biển mây quanh đỉnh núi cao",
-        "no_people": true,
-        "prompt": "a sea of clouds around the highest mountain peak of northern Vietnam at sunrise, rocky summit, no people, no figures"
-      },
-      {
-        "image": null,
-        "caption": "Đồi chè cao nguyên",
-        "alt": "Đồi chè xanh uốn lượn trên cao nguyên",
-        "no_people": true,
-        "prompt": "rolling green tea hills on a highland plateau, white plum blossoms at the edge, soft morning light, no people, no figures"
-      }
-    ]
+    "verse_by": "thư chị Mai gửi Bà",
+    "line": "Bà chưa từng đến Tây Bắc. Những trang này là lời chị Mai kể, Bà chỉ chép lại, và đang chờ người Thái đọc lại."
   },
+  "stops": [
+    {
+      "margin": "Năm sau rồi năm sau nữa, Bà chưa đi được lần nào. Con đi thay Bà nhé.",
+      "ti": "Bà tên Vân à? Giờ mình mới biết!",
+      "teo": [],
+      "keepsake": "leaf",
+      "point": null,
+      "frame": {
+        "image": "/regions/tay-bac/t01-deo-suong.png",
+        "caption": "Đường về bản",
+        "alt": "Con đèo mờ sương mở ra thung lũng ruộng bậc thang",
+        "no_people": true,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (t01-deo-suong.png)"
+      },
+      "today": {
+        "title": "Mình mang lá thư của Bà lên Sơn La",
+        "text": "Đi xe đêm, sáng ra đã thấy đèo và sương đúng như thư chị Mai tả. Lúc mặt trời lên, ruộng bậc thang hiện ra từng tầng một. Mình nắm chặt lá thư của Bà trong túi áo, đi tìm nhà con gái chị Mai.",
+        "tips": [
+          "Mùa lúa chín thường vào khoảng tháng 9–10.",
+          "Đường đèo nhiều sương: đi xe khách có kinh nghiệm, đừng tự lái ban đêm."
+        ],
+        "photo": {
+          "image": "/regions/tay-bac/photos/ruong-bac-thang.jpg",
+          "alt": "Ruộng bậc thang trong sương ở Sơn La",
+          "credit": "Quangpraha",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Terraced_paddy_fields,_Sonla,_Vietnam.jpg"
+        }
+      },
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": null,
+      "stamp": "Sơn La",
+      "community_review": true,
+      "id": "deo-suong",
+      "place": "Đèo, sương sớm",
+      "time": "dawn",
+      "date": "Thư chị Mai, một sớm cuối thu",
+      "entry": "Chị Mai học may cùng xưởng với tôi. Chị là người Thái ở Sơn La. Chị viết thư kể đường về bản: qua mấy con đèo, sương dày đến mức không thấy xe đi trước, rồi bỗng mở ra một thung lũng ruộng bậc thang vàng óng. Chị hẹn: “Bao giờ lúa chín, Mai đưa Vân về bản chơi.” Tôi cất lá thư vào sổ, định năm sau sẽ đi."
+    },
+    {
+      "margin": "Chỗ để trống ấy, con hỏi giúp Bà nhé.",
+      "ti": null,
+      "teo": [
+        {
+          "text": "Nội dung về trang phục người Thái trong chương này đang chờ cộng đồng góp ý; Tèo chưa ghi dữ kiện nào.",
+          "unesco": null,
+          "sources": [],
+          "verified": false
+        }
+      ],
+      "keepsake": "fabric",
+      "point": null,
+      "frame": {
+        "image": "/regions/tay-bac/t02-nha-san.png",
+        "caption": "Nhà sàn bên suối",
+        "alt": "Nhà sàn bên con suối, khung cửi dưới gầm sàn",
+        "no_people": true,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (t02-nha-san.png)"
+      },
+      "today": {
+        "title": "Gặp con gái chị Mai",
+        "text": "Con gái chị Mai đón mình ở đầu bản, rót cho mình chén nước chè. Chị chỉ cho mình cài hàng khuy trên chiếc áo của mẹ chị. Mình run tay, cài lệch mất một đôi, chị cười rồi cài lại cho.",
+        "tips": [
+          "Vào nhà sàn thì hỏi chủ nhà trước khi chụp ảnh.",
+          "Được mời nước thì nhận bằng hai tay."
+        ],
+        "photo": null
+      },
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": {
+        "kind": "khuy-bac",
+        "title": "Cài hàng khuy bạc",
+        "intro": "Con gái chị Mai đưa Tí chiếc áo, bảo cài giúp. Con cài từng đôi khuy từ trên cổ xuống, không được bỏ sót đôi nào.",
+        "rounds": [
+          {
+            "label": "Đôi khuy thứ nhất",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          },
+          {
+            "label": "Đôi khuy thứ hai",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          },
+          {
+            "label": "Đôi khuy thứ ba",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          },
+          {
+            "label": "Đôi khuy thứ tư",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          },
+          {
+            "label": "Đôi khuy thứ năm",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          },
+          {
+            "label": "Đôi khuy thứ sáu",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          }
+        ],
+        "done": "Áo khép lại, hàng khuy bạc sáng lên dưới nắng. Tên và ý nghĩa từng hình khuy sẽ do chính người Thái kể, khi trang này được duyệt.",
+        "teo": null,
+        "community_review": true
+      },
+      "stamp": "Nhà sàn",
+      "community_review": true,
+      "id": "nha-san",
+      "place": "Nhà sàn bên suối",
+      "time": "morning",
+      "date": "Lời chị Mai kể, chép lại",
+      "entry": "Chị Mai kể: con gái Thái mặc áo cóm ngắn, ôm gọn, hàng khuy bạc chạy dọc phía trước. Chị bảo khuy nào cũng có tên, có ý, mà chị chưa kịp kể hết cho tôi. Tôi chép lại lời chị, để trống một chỗ, chờ khi nào gặp chị thì hỏi tiếp."
+    },
+    {
+      "margin": null,
+      "ti": "Nắm tay người lạ mà nhảy, chắc ngại lắm… mà chắc vui lắm.",
+      "teo": [
+        {
+          "text": "Nghệ thuật Xòe Thái được UNESCO ghi danh.",
+          "unesco": 2021,
+          "sources": [
+            "unesco-ich-vn"
+          ],
+          "verified": true
+        }
+      ],
+      "keepsake": null,
+      "point": null,
+      "frame": {
+        "image": "/regions/tay-bac/t03-dem-xoe.png",
+        "caption": "Vòng xòe quanh lửa",
+        "alt": "Vòng người nắm tay quanh đống lửa giữa sân bản",
+        "no_people": true,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (t03-dem-xoe.png)"
+      },
+      "today": {
+        "title": "Mình bị kéo vào vòng xòe",
+        "text": "Tối ấy bản có khách, mọi người đốt lửa rồi xòe. Mình đứng ngoài xem, được một bạn nắm tay kéo vào. Bước đầu vấp liên tục, đến vòng thứ ba thì theo được nhịp. Vòng tay ấm, ai cũng cười.",
+        "tips": [
+          "Được mời vào vòng xòe thì cứ vào, không cần biết nhảy."
+        ],
+        "photo": null
+      },
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": {
+        "kind": "xoe",
+        "title": "Vào vòng xòe",
+        "intro": "Vòng xòe mở ra một chỗ cho con. Bấm (hoặc gõ phím cách) đúng lúc tiếng trống vang để bước cùng mọi người.",
+        "rounds": [
+          {
+            "label": "8",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          }
+        ],
+        "done": "Con đã vào vòng rồi! Không ai đếm con bước sai mấy lần, chỉ cần nắm tay nhau là đủ.",
+        "teo": null,
+        "community_review": true
+      },
+      "stamp": "Xòe",
+      "community_review": true,
+      "id": "dem-xoe",
+      "place": "Đêm xòe",
+      "time": "night",
+      "date": "Lời chị Mai kể về những đêm xòe",
+      "entry": "Chị Mai hay kể về những đêm xòe ở bản: lửa đốt giữa sân, mọi người nắm tay nhau thành vòng, cứ thế bước theo tiếng trống, tiếng chiêng. Ai đến cũng được kéo vào vòng, không phân biệt người bản hay người lạ. Chị bảo: “Vào vòng xòe rồi là người một nhà.”"
+    },
+    {
+      "margin": "Tí mang lá thư này lên rồi. Bà cảm ơn con.",
+      "ti": "Con gái chị Mai đọc to lá thư bên bếp lửa. Mẹ chị ngồi nghe, rồi khóc.",
+      "teo": [],
+      "keepsake": "stamp",
+      "point": null,
+      "frame": {
+        "image": "/regions/tay-bac/t04-trao-thu.png",
+        "caption": "Lá thư bên bếp lửa",
+        "alt": "Bàn tay đưa lá thư cũ bên bếp lửa nhà sàn",
+        "no_people": true,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (t04-trao-thu.png)"
+      },
+      "today": null,
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": null,
+      "stamp": "Lá thư",
+      "community_review": true,
+      "id": "trao-thu",
+      "place": "Trao thư",
+      "time": "morning",
+      "date": "Sáng hôm sau",
+      "entry": "Lá thư tôi viết cho chị Mai năm ấy, tôi không gửi. Tôi viết rằng tôi xin lỗi vì chưa lên được, rằng chiếc khăn chị thêu tặng tôi vẫn gấp trong rương. Tôi kẹp nó ở trang này, mong có ngày có người mang đến cho chị."
+    }
+  ],
+  "letter": {
+    "text": "Cháu chào bà. Mẹ cháu vẫn giữ tấm ảnh hai người ở xưởng may. Lá thư bà gửi, cháu đọc cho mẹ nghe bên bếp lửa. Khi nào bà lên, bản cháu vẫn đợi.",
+    "image": "/regions/tay-bac/t09-buu-thiep.png"
+  },
+  "wear": [],
   "own": {
     "invite": "Những trang này chờ người ở đây viết."
   },
+  "check": null,
   "sources": [
     "ref-77"
-  ]
+  ],
+  "community_review": true
 }

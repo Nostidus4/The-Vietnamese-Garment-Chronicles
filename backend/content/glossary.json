@@ -62,6 +62,50 @@
       "text": "Khăn vấn sẵn thành vòng, đội đầu khi mặc áo ngũ thân hay áo dài trong lễ, tết.",
       "sources": [],
       "verified": false
+    },
+    {
+      "id": "khan-mo-qua",
+      "term": "Khăn mỏ quạ",
+      "text": "Khăn vấn đầu của phụ nữ Bắc Bộ xưa, hai đầu khăn chụm lại nhọn như mỏ con quạ.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "giay-do",
+      "term": "Giấy dó",
+      "text": "Giấy làm từ vỏ cây dó, dai và bền, dùng để in tranh dân gian.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "giay-diep",
+      "term": "Điệp",
+      "text": "Bột vỏ con điệp (một loài sò) trộn hồ, quét lên giấy dó cho có ánh lấp lánh.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "non-quai-thao",
+      "term": "Nón quai thao",
+      "text": "Nón to, vành rộng, mặt phẳng, có dải quai bằng sợi tơ buông dài; liền chị quan họ đội khi đi hội.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "khan-ran",
+      "term": "Khăn rằn",
+      "text": "Khăn kẻ ô vuông của người Nam Bộ, dùng che nắng, lau mồ hôi, chít đầu.",
+      "sources": [
+        "ref-79"
+      ],
+      "verified": true
+    },
+    {
+      "id": "vong-co",
+      "term": "Vọng cổ",
+      "text": "Bài bản quen thuộc nhất của đờn ca tài tử và cải lương Nam Bộ, có những câu ngân rất dài.",
+      "sources": [],
+      "verified": false
     }
   ]
 }

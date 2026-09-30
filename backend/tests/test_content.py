@@ -63,11 +63,12 @@ def test_locked_region_cannot_have_life_or_people(tmp_path):
     p = root / "regions" / "tay-bac.json"
     data = json.loads(p.read_text())
     data["life"] = {"date": "x", "entry": "x", "items": []}
-    data["look"]["frames"][0]["no_people"] = False
+    data["community_review"] = False  # no longer a community draft: its stops and people are not allowed
     p.write_text(json.dumps(data, ensure_ascii=False))
     _, rep = store.load(root)
     assert any("must not have 'life'" in e for e in rep.errors)
-    assert any("no_people: true" in e for e in rep.errors)
+    assert any("must be a community_review draft" in e for e in rep.errors)
+    assert any("no_people: true" in e for e in rep.errors) or all(st["frame"]["no_people"] for st in data["stops"] if st["frame"])
 
 
 def test_wear_page_must_use_a_garment_of_the_region(tmp_path):
@@ -84,7 +85,8 @@ def test_verified_teo_note_needs_a_source(tmp_path):
     root = _copy(tmp_path)
     p = root / "regions" / "tay-bac.json"
     data = json.loads(p.read_text())
-    data["look"]["teo"][0]["sources"] = []
+    note = next(n for st in data["stops"] for n in st["teo"] if n["verified"])
+    note["sources"] = []
     p.write_text(json.dumps(data, ensure_ascii=False))
     _, rep = store.load(root)
     assert any("verified Tèo note needs a source" in e for e in rep.errors)
@@ -151,3 +153,24 @@ def test_every_hue_stop_photo_is_credited(content):
         photos += [f.photo for f in st.festivals if f.photo]
         for ph in photos:
             assert ph.credit and ph.license and ph.source_url.startswith("https://commons.wikimedia.org/")
+
+
+def test_community_draft_games_must_be_reviewed_first(tmp_path):
+    root = _copy(tmp_path)
+    p = root / "regions" / "tay-nguyen.json"
+    data = json.loads(p.read_text())
+    next(st for st in data["stops"] if st["game"])["game"]["community_review"] = False
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    _, rep = store.load(root)
+    assert any("games in a community draft must be community_review" in e for e in rep.errors)
+
+
+def test_a_draft_chapter_cannot_be_published_as_open(tmp_path):
+    root = _copy(tmp_path)
+    p = root / "regions.json"
+    data = json.loads(p.read_text())
+    ch = next(c for r in data["regions"] if r["id"] == "tay-bac" for c in r["chapters"] if c["status"] == "draft")
+    ch["status"] = "open"
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    _, rep = store.load(root)
+    assert any("must be 'draft' until the community has reviewed it" in e for e in rep.errors)

@@ -1,193 +1,431 @@
 {
   "hover_line": "“Mùa xuân ở quê tôi bắt đầu bằng tiếng trống hội.”",
-  "arrive": {
-    "date": "Kinh Bắc, một sáng mưa phùn tháng Giêng",
-    "entry": "Tôi viết những dòng đầu tiên của cuốn sổ này ở chính quê mình. Sáng nay mưa phùn mỏng như bụi, đường làng trơn, mà người đi hội vẫn nườm nượp. Tôi đi dọc bờ đê, qua cây đa đầu làng, nghe trống đình vọng lại. Mẹ bảo: đi xa đến đâu thì cũng phải nhớ đường về chỗ này.",
-    "margin": "Con à, Bà đánh dấu mấy nơi này để con biết quê mình không chỉ có ruộng lúa đâu.",
-    "ti": "Hóa ra Bà bắt đầu viết cuốn sổ này khi chỉ lớn hơn mình vài tuổi.",
-    "keepsake": "stamp",
-    "landmarks": [
-      {
-        "name": "Vịnh Hạ Long",
-        "lon": 107.08,
-        "lat": 20.91,
-        "note": "Nghìn hòn đảo đá giữa biển."
-      },
-      {
-        "name": "Tràng An",
-        "lon": 105.9,
-        "lat": 20.25,
-        "note": "Đò len qua những hang đá."
-      },
-      {
-        "name": "Văn Miếu",
-        "lon": 105.84,
-        "lat": 21.03,
-        "note": "Nơi học trò xưa đi thi."
-      },
-      {
-        "name": "Đền Hùng",
-        "lon": 105.33,
-        "lat": 21.37,
-        "note": "Về giỗ Tổ mỗi mùa xuân."
-      },
-      {
-        "name": "Làng quan họ",
-        "lon": 106.06,
-        "lat": 21.13,
-        "note": "Quê của những câu hát đối."
-      }
-    ]
+  "chapter": {
+    "province": "Bắc Ninh",
+    "title": "Hội xuân bên sông Cầu",
+    "verse": [
+      "Người ơi người ở đừng về…"
+    ],
+    "verse_by": "dân ca quan họ Bắc Ninh",
+    "line": "Ở Kinh Bắc, người ta không nói tạm biệt, người ta hát."
   },
-  "look": {
-    "date": "Đi thuyền ra Hạ Long, cuối tháng Ba",
-    "entry": "Người quê tôi sống với lúa, với sông Hồng, với đình làng. Họ ít nói hoa mỹ nhưng nhớ ơn rất lâu. Trời ở đây có đủ bốn mùa: đông lạnh buốt theo gió bấc, xuân nồm ẩm đến mức tường nhà cũng đổ mồ hôi, hè thì nóng và mưa rào. Lần đầu ra Hạ Long, tôi đứng lặng trên mạn thuyền. Đá mọc lên từ nước, nhiều đến mức không đếm nổi.",
-    "margin": "Ba tấm ảnh này Bà giữ mấy chục năm rồi, giấy đã ố cả.",
-    "keepsake": "photo",
-    "teo": [
-      {
-        "text": "Vịnh Hạ Long (1994) và Quần thể danh thắng Tràng An (2014) đều là Di sản Thế giới.",
-        "sources": [
-          "unesco-whc-vn"
+  "stops": [
+    {
+      "margin": "Bà viết những dòng đầu tiên của cuốn sổ này ở chính quê mình đấy, con ạ.",
+      "ti": "Mười tám tuổi mà Bà đã có sổ riêng rồi.",
+      "teo": [
+        {
+          "text": "Gió mùa đông bắc thổi từ khoảng tháng 11 đến tháng 4, làm miền Bắc có mùa đông lạnh nhất cả nước.",
+          "unesco": null,
+          "sources": [
+            "ref-75"
+          ],
+          "verified": true
+        }
+      ],
+      "keepsake": "ticket",
+      "point": {
+        "lat": 21.19,
+        "lon": 106.08
+      },
+      "frame": {
+        "image": "/regions/bac-bo/b01-ben-song.png",
+        "caption": "Bến sông Cầu mùa xuân",
+        "alt": "Chị họ vấn khăn mỏ quạ cho Bà trên bến sông mưa phùn",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (b01-ben-song.png)"
+      },
+      "today": {
+        "title": "Sông vẫn lặng như trong sổ",
+        "text": "Sông Cầu sáng sớm xám bạc, nước chảy chậm. Bây giờ đi hội bằng xe máy, ô tô, nhưng đứng ở bờ sông vẫn nghe được tiếng loa hội vọng sang. Mình thử vấn khăn mỏ quạ theo video, lần thứ ba mới ra hình cái mỏ.",
+        "tips": [
+          "Hội Lim đông nhất ngày chính hội: đi sớm, gửi xe xa một chút rồi đi bộ.",
+          "Tháng Giêng còn mưa phùn, lạnh: mang áo khoác mỏng.",
+          "Muốn mặc áo tứ thân đi hội thì hỏi thuê ở Bắc Ninh hoặc Hà Nội."
         ],
-        "verified": true
+        "photo": {
+          "image": "/regions/bac-bo/photos/song-cau.jpg",
+          "alt": "Sông Cầu đoạn chảy qua Bắc Ninh",
+          "credit": "Bacthai20",
+          "license": "CC0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Cau_River_TN_-_BG.jpg"
+        }
       },
-      {
-        "text": "Gió mùa đông bắc thổi từ khoảng tháng 11 đến tháng 4, làm miền Bắc có mùa đông lạnh nhất cả nước.",
-        "sources": [
-          "ref-75"
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": null,
+      "stamp": "Sông Cầu",
+      "community_review": false,
+      "id": "ben-song-cau",
+      "place": "Bến sông Cầu",
+      "time": "dawn",
+      "date": "Kinh Bắc, một sáng mưa phùn tháng Giêng",
+      "entry": "Năm ấy tôi mười tám. Mưa phùn mỏng như bụi, chị họ kéo tôi ra bến từ lúc gà gáy. Chị vấn cho tôi chiếc [[khăn mỏ quạ|khan-mo-qua]], hai đầu khăn nhọn như cái mỏ con quạ, bảo: “Đi hội mà đầu trần thì người ta cười cho.” Thuyền chở đầy người sang sông, ai cũng mặc đẹp, ai cũng khe khẽ hát."
+    },
+    {
+      "margin": "Tờ tranh ấy Bà dán ở trang sau đấy, màu đã phai mà con chuột vẫn cười.",
+      "ti": null,
+      "teo": [],
+      "keepsake": null,
+      "point": {
+        "lat": 21.06,
+        "lon": 106.08
+      },
+      "frame": {
+        "image": "/regions/bac-bo/b02-dong-ho.png",
+        "caption": "In tranh ở làng Đông Hồ",
+        "alt": "Bà ấn bản khắc gỗ lên tờ giấy điệp, ông cụ nghệ nhân đứng cạnh",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (b02-dong-ho.png)"
+      },
+      "today": {
+        "title": "Làng tranh giờ vẫn in tay",
+        "text": "Làng Đông Hồ bây giờ ít nhà làm tranh hơn, nhưng vẫn có những nghệ nhân in tay từng tờ. Mình được in thử một tờ, màu đỏ dính đầy ngón tay, y như Bà. Tranh gà, tranh lợn, tranh chuột treo kín tường, đứng lâu thấy vui lây.",
+        "tips": [
+          "Mua tranh ở nhà nghệ nhân, hỏi họ kể về từng bức.",
+          "Tranh in trên giấy điệp, cất nơi khô ráo."
         ],
-        "verified": true
-      }
-    ],
-    "frames": [
-      {
-        "image": null,
-        "caption": "Sân đình ngày hội xuân",
-        "alt": "Sân đình làng Bắc Bộ với cờ ngũ sắc và cây đa lớn",
-        "prompt": "the courtyard of an old northern Vietnamese communal house (đình) on a spring festival day, five-colour festival flags, a great banyan tree, tiled roof with gently curved Vietnamese eaves"
+        "photo": {
+          "image": "/regions/bac-bo/photos/tranh-dong-ho.jpg",
+          "alt": "Tranh Đám cưới chuột theo lối tranh Đông Hồ",
+          "credit": "RG72",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Pentra%C4%B5o_en_la_stilo_Dong_Ho_%22Geedzi%C4%9Do_de_ratoj%22.jpg"
+        }
       },
-      {
-        "image": null,
-        "caption": "Hạ Long một sớm sương",
-        "alt": "Vịnh Hạ Long buổi sớm với thuyền buồm nâu giữa các đảo đá vôi",
-        "prompt": "Ha Long Bay at misty dawn, limestone karst islands, two wooden junks with rust-brown sails, calm jade water"
-      },
-      {
-        "image": null,
-        "caption": "Những bản tranh đang phơi",
-        "alt": "Sân làm tranh dân gian với những bản tranh phơi trên giàn tre",
-        "prompt": "a folk woodblock print workshop yard in a northern Vietnamese village, colourful prints drying on bamboo racks, prints show roosters and pigs only, no writing"
-      }
-    ]
-  },
-  "life": {
-    "date": "Ở nhà, những ngày giáp Tết",
-    "entry": "Nhà tôi có khách, việc đầu tiên mẹ làm là têm trầu. Cuối năm cả nhà ngồi gói bánh chưng, bố canh nồi bánh suốt đêm, tôi ngủ gục bên bếp lửa. Mùa thu thì ngóng người làng Vòng mang cốm lên, gói trong lá sen, thơm đến nao lòng.",
-    "margin": "Con thử một lần ăn cốm với chuối trứng cuốc nhé. Bà vẫn nhớ vị ấy.",
-    "keepsake": "leaf",
-    "items": [
-      {
-        "id": "mieng-trau",
-        "kind": "custom",
-        "title": "Miếng trầu mở lời",
-        "text": "Khách đến thì mời trầu, hỏi vợ gả chồng cũng phải có trầu cau. Mẹ tôi bảo: miếng trầu là đầu câu chuyện."
-      },
-      {
-        "id": "banh-chung",
-        "kind": "custom",
-        "title": "Canh nồi bánh chưng",
-        "text": "Đêm cuối năm, cả nhà quây quanh bếp lửa. Mâm cỗ bày lên bàn thờ để mời ông bà về ăn Tết cùng con cháu."
-      },
-      {
-        "id": "com-lang-vong",
-        "kind": "dish",
-        "title": "Cốm gói lá sen",
-        "text": "Hạt cốm xanh non, dẻo, gói trong lá sen cho giữ mùi. Mùa thu Hà Nội có cốm là đủ."
-      },
-      {
-        "id": "nhuom-cu-nau",
-        "kind": "custom",
-        "title": "Nhuộm áo bằng củ nâu",
-        "text": "Mẹ gọt củ nâu, giã lấy nước, ngâm vải rồi đem phơi, ngâm rồi lại phơi, mấy lượt mới lên màu. Vải nhuộm nâu cứng lại, mặc ra đồng mấy mùa vẫn bền."
-      }
-    ],
-    "teo": [
-      {
-        "text": "Trầu cau có mặt khi tiếp khách, trong lễ hỏi và lễ cưới của người Việt.",
-        "sources": [
-          "ref-78"
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": {
+        "kind": "dong-ho",
+        "title": "In một tờ “Đám cưới chuột”",
+        "intro": "Tranh Đông Hồ in từng màu một, mỗi màu một bản khắc gỗ. Con chọn bản nào in trước, bản nào in sau. Nhớ lời ông cụ dặn: nét đen phải in sau cùng.",
+        "rounds": [
+          {
+            "label": "Đỏ sỏi son",
+            "item": "#b5452e",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": "Son lấy từ sỏi đỏ, nghiền thật mịn."
+          },
+          {
+            "label": "Vàng hoa hòe",
+            "item": "#d9a43b",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": "Nụ hoa hòe phơi khô, nấu ra nước vàng."
+          },
+          {
+            "label": "Xanh lá chàm",
+            "item": "#3f6f63",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": "Màu xanh ngâm từ lá chàm."
+          },
+          {
+            "label": "Đen than lá tre",
+            "item": "#2b2118",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": "Lá tre đốt thành than. In sau cùng để nét đen sắc, không bị màu khác đè lem."
+          }
         ],
-        "verified": true
+        "done": "Tranh khô rồi! Con chuột rước dâu cười toe. Bà dán tờ tranh này vào sổ cho con.",
+        "teo": {
+          "text": "Tranh Đông Hồ in trên giấy dó quét hồ điệp, màu lấy từ tự nhiên như sỏi son, hoa hòe, lá chàm, than lá tre; in từng màu một, nét đen in sau cùng.",
+          "unesco": null,
+          "sources": [],
+          "verified": false
+        },
+        "community_review": false
       },
-      {
-        "text": "Củ nâu là thuốc nhuộm dân gian: vải ngâm nước củ nâu nhiều lượt sẽ lên màu nâu bền, cứng vải.",
-        "sources": [
-          "ref-69"
+      "stamp": "Đông Hồ",
+      "community_review": false,
+      "id": "lang-dong-ho",
+      "place": "Làng tranh Đông Hồ",
+      "time": "morning",
+      "date": "Sáng hôm ấy, bên kia sông",
+      "entry": "Chị dẫn tôi qua làng tranh. Nhà nào cũng phơi tranh kín sân, giấy [[dó|giay-do]] quét lớp [[điệp|giay-diep]] lấp lánh như có ánh trăng. Ông cụ nghệ nhân cho tôi in thử một tờ “Đám cưới chuột”. Tôi đặt bản khắc lên giấy, ấn tay xuống, nhấc lên thì màu đỏ đã bám vào tờ tranh. Tay tôi đỏ lựng mấy ngày chưa hết."
+    },
+    {
+      "margin": "Bà ngượng đến mức cả buổi chiều không dám ngẩng lên nhìn ai.",
+      "ti": "Liền anh hát mời mà Bà không đáp? Tội liền anh ghê!",
+      "teo": [
+        {
+          "text": "Dân ca Quan họ Bắc Ninh được UNESCO ghi danh.",
+          "unesco": 2009,
+          "sources": [
+            "unesco-ich-vn"
+          ],
+          "verified": true
+        }
+      ],
+      "keepsake": "stamp",
+      "point": {
+        "lat": 21.14,
+        "lon": 106.02
+      },
+      "frame": {
+        "image": "/regions/bac-bo/b03-doi-lim.png",
+        "caption": "Trên đồi Lim",
+        "alt": "Liền anh áo the chìa miếng trầu, Bà mặc áo tứ thân đứng lúng túng",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (b03-doi-lim.png)"
+      },
+      "today": {
+        "title": "Hội đông mà vẫn nghe rõ tiếng hát",
+        "text": "Đồi Lim giờ có sân khấu, có loa, có hàng quán. Nhưng đi sâu vào mấy lán hát nhỏ, vẫn thấy các cụ ngồi mời trầu, hát qua hát lại như Bà kể. Có một liền anh thấy mình đứng nghe lâu, mời mình miếng trầu. Mình nhận, cảm ơn, rồi… chạy.",
+        "tips": [
+          "Chính hội là 13 tháng Giêng âm lịch.",
+          "Muốn nghe quan họ cổ thì tìm lán hát của các làng, đừng chỉ đứng ở sân khấu chính."
         ],
-        "verified": true
-      }
-    ],
-    "ti": "Màu nâu của áo tứ thân là từ củ nâu thật. Mình cứ tưởng chỉ là tên một màu."
-  },
-  "festivals": {
-    "date": "Hội Lim, ngày 13 tháng Giêng",
-    "entry": "Năm ấy tôi theo chị họ đi hội Lim. Các liền anh mặc áo the đen, đội khăn xếp, cầm ô. Các liền chị mặc áo mớ ba, vấn khăn mỏ quạ, đội nón quai thao, hát đối đáp với nhau từ trên thuyền. Tôi đứng nghe mãi không muốn về. Một liền chị mời tôi miếng trầu, cười bảo: “Em đi hội mà mặc áo đẹp thế này, ai cũng tưởng em là người hát đấy.”",
-    "keepsake": "ticket",
-    "festivals": [
-      {
-        "id": "hoi-lim",
-        "name": "Hội Lim",
-        "time": "13 tháng Giêng âm lịch",
-        "month": 1,
-        "place": "Tiên Du, Bắc Ninh",
-        "text": "Hát quan họ trên thuyền, dưới đồi, trong những gian nhà. Người đi hội được mời trầu, mời nước."
+        "photo": {
+          "image": "/regions/bac-bo/photos/hoi-lim.jpg",
+          "alt": "Cổng làng trong ngày hội Lim, người đi hội đông đúc",
+          "credit": "Nguyễn Đông Sơn",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:H%E1%BB%99i_Lim,_B%E1%BA%AFc_Ninh.JPG"
+        }
       },
-      {
-        "id": "gio-to",
-        "name": "Giỗ Tổ Hùng Vương",
-        "time": "Mùng 10 tháng Ba âm lịch",
-        "month": 3,
-        "place": "Đền Hùng, Phú Thọ",
-        "text": "Bố tôi dẫn cả nhà lên núi Nghĩa Lĩnh thắp hương, kể chuyện Lang Liêu làm bánh chưng, bánh giầy."
-      },
-      {
-        "id": "hoi-giong",
-        "name": "Hội Gióng",
-        "time": "Mùng 9 tháng Tư âm lịch",
-        "month": 4,
-        "place": "Phù Đổng, Hà Nội",
-        "text": "Cả làng diễn lại trận đánh giặc của Thánh Gióng, trống chiêng rộn cả một vùng."
-      }
-    ],
-    "teo": [
-      {
-        "text": "Dân ca Quan họ Bắc Ninh được UNESCO ghi danh.",
-        "sources": [
-          "unesco-ich-vn"
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": {
+        "kind": "quan-ho",
+        "title": "Đáp lời liền anh",
+        "intro": "Năm ấy Bà không biết đáp. Con giúp Bà nhé: mỗi lượt, chọn cách đáp đúng lề lối quan họ.",
+        "rounds": [
+          {
+            "label": null,
+            "item": null,
+            "prompt": "Liền anh chìa miếng trầu têm cánh phượng, mời bên liền chị.",
+            "choices": [
+              "Nhận trầu, cảm ơn, rồi mới hát đáp",
+              "Lắc đầu từ chối vì chưa quen",
+              "Hát ngay một bài mình thích"
+            ],
+            "answer": 0,
+            "explain": "Miếng trầu là đầu câu chuyện: nhận trầu là nhận lời hát cùng nhau."
+          },
+          {
+            "label": null,
+            "item": null,
+            "prompt": "Liền anh hát một câu, cả hội chờ bên liền chị đáp.",
+            "choices": [
+              "Đáp cùng một giọng ấy, lời mới mà ý đối lại",
+              "Đổi sang một giọng khác cho lạ",
+              "Hát lại y nguyên lời liền anh"
+            ],
+            "answer": 0,
+            "explain": "Quan họ là hát đối: bên kia hát giọng nào, bên này đáp đúng giọng ấy, lời mới mà ý phải đối."
+          },
+          {
+            "label": null,
+            "item": null,
+            "prompt": "Trời tối, đến lúc chia tay ở cổng làng.",
+            "choices": [
+              "Hát giã bạn, hẹn hội năm sau",
+              "Lặng lẽ về, không chào ai",
+              "Hát lại bài đầu tiên"
+            ],
+            "answer": 0,
+            "explain": "Hát giã bạn là lời chào nhau, hẹn mùa hội sau lại gặp."
+          }
         ],
-        "verified": true,
-        "unesco": 2009
+        "done": "Liền anh cười, nón quai thao của Bà gật gật. Năm nay Bà đáp được rồi!",
+        "teo": {
+          "text": "Quan họ là lối hát đối đáp giữa bên nam (liền anh) và bên nữ (liền chị); khách đến chơi được mời trầu, mời nước.",
+          "unesco": null,
+          "sources": [],
+          "verified": false
+        },
+        "community_review": false
       },
-      {
-        "text": "Hội Gióng ở đền Phù Đổng và đền Sóc được UNESCO ghi danh.",
-        "sources": [
-          "unesco-ich-vn"
-        ],
-        "verified": true,
-        "unesco": 2010
+      "stamp": "Hội Lim",
+      "community_review": false,
+      "id": "hoi-lim",
+      "place": "Đồi Lim",
+      "time": "noon",
+      "date": "Hội Lim, ngày 13 tháng Giêng",
+      "entry": "Tôi mặc chiếc áo tứ thân nâu non của mẹ, yếm đào bên trong, thắt lưng xanh buộc ngoài, đội [[nón quai thao|non-quai-thao]]. Trên đồi Lim, một liền anh áo the đen đứng trước mặt, chìa miếng trầu rồi cất giọng hát mời. Cả hội quay lại nhìn. Tôi đứng đờ người, không biết đáp thế nào, chỉ biết cúi mặt. Chị họ phải hát đỡ cho tôi."
+    },
+    {
+      "margin": "Miếng trầu, câu hát, cái áo: ở quê Bà, cái gì cũng để mời nhau.",
+      "ti": null,
+      "teo": [
+        {
+          "text": "Trầu cau có mặt khi tiếp khách, trong lễ hỏi và lễ cưới của người Việt.",
+          "sources": [
+            "ref-78"
+          ],
+          "verified": true
+        },
+        {
+          "text": "Củ nâu là thuốc nhuộm dân gian: vải ngâm nước củ nâu nhiều lượt sẽ lên màu nâu bền, cứng vải.",
+          "sources": [
+            "ref-69"
+          ],
+          "verified": true
+        }
+      ],
+      "keepsake": "recipe",
+      "point": null,
+      "frame": {
+        "image": "/regions/bac-bo/b04-nha-chua.png",
+        "caption": "Học hát trong nhà chứa",
+        "alt": "Liền chị dạy Bà hát, mâm trầu đặt giữa chiếu",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (b04-nha-chua.png)"
       },
-      {
-        "text": "Tín ngưỡng thờ cúng Hùng Vương ở Phú Thọ được UNESCO ghi danh.",
-        "sources": [
-          "unesco-ich-vn"
+      "today": {
+        "title": "Một câu hát học mãi chưa thuộc",
+        "text": "Mình được một cô liền chị dạy đúng một câu. Cô hát một lần, mình hát lại năm lần vẫn chưa ra. Cô cười, bảo quan họ phải nghe nhiều mới vào. Lúc về, cô dúi cho mình một miếng trầu gói lá.",
+        "tips": [
+          "Các câu lạc bộ quan họ thường hát vào tối cuối tuần, hỏi nhà văn hóa làng.",
+          "Mời trầu thì nhận bằng hai tay."
         ],
-        "verified": true,
-        "unesco": 2012
-      }
-    ],
-    "bridge": "Ngày hội, các liền chị mặc mấy lớp áo đẹp nhất nhà. Lật trang đi, Bà kể con nghe chiếc áo tứ thân.",
-    "ti": "Liền anh cũng mặc áo dài, đội khăn xếp. Hóa ra cổ phục đâu chỉ dành cho con gái."
+        "photo": {
+          "image": "/regions/bac-bo/photos/quan-ho.jpg",
+          "alt": "Liền anh liền chị hát quan họ cổ trong ngày hội",
+          "credit": "Nguyễn Đông Sơn",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Quan_h%E1%BB%8D_c%E1%BB%95_-_h%E1%BB%99i_Lim,_B%E1%BA%AFc_Ninh.JPG"
+        }
+      },
+      "items": [
+        {
+          "id": "mieng-trau",
+          "kind": "custom",
+          "title": "Miếng trầu mở lời",
+          "text": "Khách đến thì mời trầu, hỏi vợ gả chồng cũng phải có trầu cau. Mẹ tôi bảo: miếng trầu là đầu câu chuyện."
+        },
+        {
+          "id": "banh-chung",
+          "kind": "custom",
+          "title": "Canh nồi bánh chưng",
+          "text": "Đêm cuối năm, cả nhà quây quanh bếp lửa. Mâm cỗ bày lên bàn thờ để mời ông bà về ăn Tết cùng con cháu."
+        },
+        {
+          "id": "com-lang-vong",
+          "kind": "dish",
+          "title": "Cốm gói lá sen",
+          "text": "Hạt cốm xanh non, dẻo, gói trong lá sen cho giữ mùi. Mùa thu Hà Nội có cốm là đủ."
+        },
+        {
+          "id": "nhuom-cu-nau",
+          "kind": "custom",
+          "title": "Nhuộm áo bằng củ nâu",
+          "text": "Mẹ gọt củ nâu, giã lấy nước, ngâm vải rồi đem phơi, ngâm rồi lại phơi, mấy lượt mới lên màu. Vải nhuộm nâu cứng lại, mặc ra đồng mấy mùa vẫn bền."
+        }
+      ],
+      "festivals": [],
+      "hat": null,
+      "game": null,
+      "stamp": "Quan họ",
+      "community_review": false,
+      "id": "nha-chua",
+      "place": "Nhà chứa quan họ",
+      "time": "afternoon",
+      "date": "Chiều, trong gian nhà gỗ",
+      "entry": "Liền chị đưa tôi vào nhà chứa, gian nhà gỗ nơi các bọn quan họ tụ lại hát canh. Chị dạy tôi mời trầu cho khéo, ngồi cho ngay, rồi dạy từng câu, hát chậm cho tôi theo. Chị bảo hát quan họ phải có hơi, có tình, người nghe mới giữ. Tôi hát sai bét, chị vẫn gật đầu như tôi hát hay lắm."
+    },
+    {
+      "margin": "Ngày hội, các liền chị mặc mấy lớp áo đẹp nhất nhà. Lật trang đi, Bà kể con nghe chiếc áo tứ thân.",
+      "ti": "Vậy là Bà đáp được rồi! Mình biết mà.",
+      "teo": [
+        {
+          "text": "Dân ca Quan họ Bắc Ninh được UNESCO ghi danh.",
+          "sources": [
+            "unesco-ich-vn"
+          ],
+          "verified": true,
+          "unesco": 2009
+        },
+        {
+          "text": "Hội Gióng ở đền Phù Đổng và đền Sóc được UNESCO ghi danh.",
+          "sources": [
+            "unesco-ich-vn"
+          ],
+          "verified": true,
+          "unesco": 2010
+        },
+        {
+          "text": "Tín ngưỡng thờ cúng Hùng Vương ở Phú Thọ được UNESCO ghi danh.",
+          "sources": [
+            "unesco-ich-vn"
+          ],
+          "verified": true,
+          "unesco": 2012
+        }
+      ],
+      "keepsake": "ticket",
+      "point": null,
+      "frame": {
+        "image": "/regions/bac-bo/b05-cong-lang.png",
+        "caption": "Giã bạn ở cổng làng",
+        "alt": "Liền anh liền chị hát giã bạn dưới đèn lồng ở cổng làng",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (b05-cong-lang.png)"
+      },
+      "today": null,
+      "items": [],
+      "festivals": [
+        {
+          "id": "hoi-lim",
+          "name": "Hội Lim",
+          "time": "13 tháng Giêng âm lịch",
+          "month": 1,
+          "place": "Tiên Du, Bắc Ninh",
+          "text": "Hát quan họ trên thuyền, dưới đồi, trong những gian nhà. Người đi hội được mời trầu, mời nước.",
+          "review": "Người đông nghịt, mà cứ đến chỗ có câu hát là ai cũng đứng lại. Mình không hiểu hết lời, nhưng nghe cái cách hai bên hát qua hát lại thì thấy như đang trò chuyện.",
+          "photo": {
+            "image": "/regions/bac-bo/photos/giao-duyen.jpg",
+            "alt": "Liền anh liền chị hát quan họ giao duyên ở hội Lim",
+            "credit": "Nguyễn Đông Sơn",
+            "license": "CC BY-SA 3.0",
+            "source_url": "https://commons.wikimedia.org/wiki/File:Quan_h%E1%BB%8D_giao_duy%C3%AAn_-_h%E1%BB%99i_Lim,_B%E1%BA%AFc_Ninh.JPG"
+          }
+        },
+        {
+          "id": "gio-to",
+          "name": "Giỗ Tổ Hùng Vương",
+          "time": "Mùng 10 tháng Ba âm lịch",
+          "month": 3,
+          "place": "Đền Hùng, Phú Thọ",
+          "text": "Bố tôi dẫn cả nhà lên núi Nghĩa Lĩnh thắp hương, kể chuyện Lang Liêu làm bánh chưng, bánh giầy.",
+          "review": null,
+          "photo": null
+        },
+        {
+          "id": "hoi-giong",
+          "name": "Hội Gióng",
+          "time": "Mùng 9 tháng Tư âm lịch",
+          "month": 4,
+          "place": "Phù Đổng, Hà Nội",
+          "text": "Cả làng diễn lại trận đánh giặc của Thánh Gióng, trống chiêng rộn cả một vùng.",
+          "review": null,
+          "photo": null
+        }
+      ],
+      "hat": null,
+      "game": null,
+      "stamp": "Giã bạn",
+      "community_review": false,
+      "id": "le-hoi",
+      "place": "Cổng làng",
+      "time": "night",
+      "date": "Tối, ở cổng làng",
+      "entry": "Lúc chia tay, liền anh lại đứng ra hát. Lần này tôi hít một hơi, hát đáp đúng câu liền chị dạy ban chiều. Hát lạc mất một chữ, mà cả hội vẫn vỗ tay. Liền anh cười, hát câu giã bạn “Người ơi người ở đừng về”. Tôi về nhà mà tai vẫn còn nghe tiếng hát."
+    }
+  ],
+  "letter": {
+    "text": "Con à, câu đáp năm ấy Bà hát lạc mất một chữ, mà cả hội vẫn vỗ tay. Người Kinh Bắc thương người biết đáp lời, chứ không cần hát hay. Con gặp ai mời, con cứ đáp, con nhé.",
+    "image": "/regions/bac-bo/b09-buu-thiep.png"
   },
   "wear": [
     {
@@ -218,15 +456,6 @@
   "own": {
     "invite": "Trang này Bà để trống. Đến lượt con viết, con nhé."
   },
-  "sources": [
-    "unesco-ich-vn",
-    "unesco-whc-vn",
-    "ref-69",
-    "ref-68",
-    "ref-75",
-    "ref-78",
-    "ref-80"
-  ],
   "check": {
     "pre": {
       "id": "bb-pre",
@@ -282,5 +511,15 @@
         "verified": false
       }
     ]
-  }
+  },
+  "sources": [
+    "unesco-ich-vn",
+    "unesco-whc-vn",
+    "ref-69",
+    "ref-68",
+    "ref-75",
+    "ref-78",
+    "ref-80"
+  ],
+  "community_review": false
 }

@@ -219,11 +219,14 @@ def _check_refs(c: Content, r: Report) -> None:
         frames = [*(j.look.frames if j.look else []), *(st.frame for st in j.stops if st.frame)]
         if reg.status == "locked":
             # locked regions are written with their communities: a passing entry and landscapes, nothing else yet
-            if j.life or j.festivals or j.wear or j.stops:
-                r.errors.append(f"{wj}: locked region must not have 'life', 'festivals', 'stops' or 'wear'")
-            for f in frames:
-                if not f.no_people:
-                    r.errors.append(f"{wj}: locked region frames must be landscapes (no_people: true)")
+            if j.life or j.festivals or j.wear:
+                r.errors.append(f"{wj}: locked region must not have 'life', 'festivals' or 'wear'")
+            if j.stops and not j.community_review:
+                r.errors.append(f"{wj}: a locked region's chapter must be a community_review draft")
+            if not j.community_review:
+                for f in frames:
+                    if not f.no_people:
+                        r.errors.append(f"{wj}: locked region frames must be landscapes (no_people: true)")
         else:
             if not j.wear:
                 r.errors.append(f"{wj}: open region needs at least one 'wear' page")
@@ -257,6 +260,17 @@ def _check_refs(c: Content, r: Report) -> None:
             for fe in st.festivals:
                 if fe.photo:
                     public(fe.photo.image, f"photo of festival '{fe.id}'")
+            if st.game:
+                g = st.game
+                if g.teo:
+                    need(g.teo.sources, c.sources, wj, "source")
+                    if g.teo.verified and not g.teo.sources:
+                        r.errors.append(f"{wj}: verified Tèo note in game '{g.kind}' needs a source")
+                for i, rd in enumerate(g.rounds):
+                    if rd.choices and (rd.answer is None or rd.answer >= len(rd.choices)):
+                        r.errors.append(f"{wj} [{st.id}] game round {i}: answer has no matching choice")
+                if j.community_review and not g.community_review:
+                    r.errors.append(f"{wj} [{st.id}]: games in a community draft must be community_review")
             if st.hat:
                 public(st.hat.hat, "hat image")
                 public(st.hat.hidden, "hidden hat image")
@@ -277,11 +291,16 @@ def _check_refs(c: Content, r: Report) -> None:
         names = [ch.province for ch in reg.chapters]
         if len(names) != len(set(names)):
             r.errors.append(f"{w}: a province is listed twice in 'chapters'")
-        opened = [ch for ch in reg.chapters if ch.status == "open"]
+        opened = [ch for ch in reg.chapters if ch.status in ("open", "draft")]
         if len(opened) > 1:
             r.errors.append(f"{w}: only one chapter per region can be open for now (its journey)")
-        if opened and (reg.journey is None or reg.status == "locked"):
-            r.errors.append(f"{w}: chapter '{opened[0].province}' is open but the region has no open journey")
+        for ch in opened:
+            if reg.journey is None:
+                r.errors.append(f"{w}: chapter '{ch.province}' is {ch.status} but the region has no journey")
+            elif ch.status == "open" and (reg.status == "locked" or reg.journey.community_review):
+                r.errors.append(f"{w}: chapter '{ch.province}' must be 'draft' until the community has reviewed it")
+            elif ch.status == "draft" and not reg.journey.community_review:
+                r.errors.append(f"{w}: chapter '{ch.province}' is 'draft' but its journey is not community_review")
         if reg.status == "open" and reg.chapters and not opened:
             r.warnings.append(f"{w}: no chapter is marked open")
 

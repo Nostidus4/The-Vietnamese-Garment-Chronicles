@@ -1,179 +1,467 @@
 {
   "hover_line": "“Xuống miền Tây, tôi được mời ăn cơm từ nhà này sang nhà khác, không ai cho về.”",
-  "arrive": {
-    "date": "Cần Thơ, mùa nước nổi tháng Chín",
-    "entry": "Tôi theo anh xuống miền Tây thăm người quen. Xe đò đi mãi, qua mấy bến phà, đến đâu cũng thấy nước. Người ta đón tôi như người nhà, mời ở lại ăn cơm, ăn xong nhà bên lại kéo sang ăn tiếp. Tôi chưa bao giờ thấy ai hiếu khách đến thế.",
-    "margin": "Đảo Phú Quốc với Côn Đảo cũng thuộc vùng này đấy con.",
-    "ti": "Được mời cơm hết nhà này sang nhà khác. Đọc thôi mà mình cũng thấy ấm.",
-    "keepsake": "stamp",
-    "landmarks": [
-      {
-        "name": "Chợ nổi Cái Răng",
-        "lon": 105.75,
+  "chapter": {
+    "province": "Cần Thơ",
+    "title": "Mùa nước nổi",
+    "verse": [
+      "Cần Thơ gạo trắng nước trong,",
+      "Ai đi đến đó lòng không muốn về."
+    ],
+    "verse_by": "ca dao Nam Bộ",
+    "line": "Ở miền Tây, nước lên thì người ta không sợ, người ta đi chợ."
+  },
+  "stops": [
+    {
+      "margin": "Ông con kể chuyện suốt dọc đường, đến Cần Thơ thì khản cả giọng.",
+      "ti": "Đi xe đò qua mấy bến phà, chắc cả ngày trời.",
+      "teo": [],
+      "keepsake": "ticket",
+      "point": {
+        "lat": 10.03,
+        "lon": 105.79
+      },
+      "frame": {
+        "image": "/regions/nam-bo/n01-ninh-kieu.png",
+        "caption": "Bến Ninh Kiều lên đèn",
+        "alt": "Bà và Ông đứng ở bến sông, ghe xuồng lên đèn",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (n01-ninh-kieu.png)"
+      },
+      "today": {
+        "title": "Bến sông lên đèn, gió mát rượi",
+        "text": "Tối ở bến Ninh Kiều, gió sông thổi mát, ghe du lịch chớp đèn đủ màu. Người ta đi dạo, ăn vặt, nói chuyện to mà vui. Mình vừa ngồi xuống ghế đá đã có cô bán hàng hỏi “con ăn gì chưa”, y như Bà kể.",
+        "tips": [
+          "Đi dạo bến Ninh Kiều lúc chiều tối cho mát.",
+          "Hỏi đường thì cứ hỏi, người miền Tây chỉ tận tình lắm."
+        ],
+        "photo": {
+          "image": "/regions/nam-bo/photos/ninh-kieu.jpg",
+          "alt": "Bến Ninh Kiều về đêm, đèn phản chiếu trên sông",
+          "credit": "Christophe95",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Ninh_Kieu_Quay_at_night.jpg"
+        }
+      },
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": null,
+      "stamp": "Ninh Kiều",
+      "community_review": false,
+      "id": "ninh-kieu",
+      "place": "Bến Ninh Kiều",
+      "time": "evening",
+      "date": "Cần Thơ, mùa nước nổi tháng Chín",
+      "entry": "Tôi theo anh xuống miền Tây thăm người quen. Xe đò đi mãi, qua mấy bến phà, đến đâu cũng thấy nước. Người ta đón tôi như người nhà, mời ở lại ăn cơm, ăn xong nhà bên lại kéo sang ăn tiếp. Tôi chưa bao giờ thấy ai hiếu khách đến thế."
+    },
+    {
+      "margin": null,
+      "ti": "Vậy là không cần biển hiệu luôn. Hay quá!",
+      "teo": [
+        {
+          "text": "Cây bẹo là cây sào dựng trên ghe ở chợ nổi, treo gì bán nấy để khách ở xa biết ghe bán gì.",
+          "sources": [
+            "ref-73"
+          ],
+          "verified": true
+        }
+      ],
+      "keepsake": null,
+      "point": {
         "lat": 10.0,
-        "note": "Bán gì treo nấy lên cây bẹo."
+        "lon": 105.75
       },
-      {
-        "name": "Rừng tràm Trà Sư",
-        "lon": 105.05,
-        "lat": 10.58,
-        "note": "Rừng ngập nước phủ bèo xanh."
+      "frame": {
+        "image": "/regions/nam-bo/n02-cho-noi.png",
+        "caption": "Chợ nổi rạng sáng",
+        "alt": "Ghe nối ghe trên sông, cây sào treo trái cây",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (n02-cho-noi.png)"
       },
-      {
-        "name": "Núi Sam",
-        "lon": 105.08,
-        "lat": 10.68,
-        "note": "Miếu Bà Chúa Xứ."
-      },
-      {
-        "name": "Cần Giờ",
-        "lon": 106.88,
-        "lat": 10.41,
-        "note": "Rừng ngập mặn sát thành phố."
-      },
-      {
-        "name": "Mũi Cà Mau",
-        "lon": 104.72,
-        "lat": 8.6,
-        "note": "Đất liền tận cùng phía nam."
-      }
-    ]
-  },
-  "look": {
-    "date": "Trên chiếc xuồng ba lá, một sáng sớm",
-    "entry": "Người miền Tây nói thẳng, cười to, thương ai là thương thật. Ở đây không có mùa đông, chỉ có mùa mưa với mùa khô, nắng quanh năm. Cuối năm nước lên trắng đồng, người ta không sợ mà đi xuồng khắp nơi. Tôi dậy từ tờ mờ sáng để ra chợ nổi. Ghe chở đầy trái cây, bán gì thì treo món đó lên cây sào cho người ta thấy từ xa.",
-    "margin": "Ra tới mũi Cà Mau thì Bà say sóng, tấm ảnh ấy chụp vội nên chẳng có ai trong khung.",
-    "keepsake": "photo",
-    "teo": [
-      {
-        "text": "Cây bẹo là cây sào dựng trên ghe ở chợ nổi, treo gì bán nấy để khách ở xa biết ghe bán gì.",
-        "sources": [
-          "ref-73"
+      "today": {
+        "title": "Chợ nổi vẫn treo cây bẹo",
+        "text": "Chợ nổi bây giờ ít ghe hơn thời Bà, nhưng vẫn còn cây bẹo treo dưa hấu, khóm, khoai. Mình ngồi xuồng nhỏ chen giữa mấy ghe lớn, mua một trái khóm gọt sẵn, cắm que ăn ngay trên sông. Sáng sớm mà mặt trời đã chói.",
+        "tips": [
+          "Đi thật sớm, khoảng 5–6 giờ sáng là lúc chợ đông nhất.",
+          "Mặc đồ gọn, mang nón: trên sông nắng lên rất nhanh."
         ],
-        "verified": true
+        "photo": {
+          "image": "/regions/nam-bo/photos/cho-noi.jpg",
+          "alt": "Xuồng nhỏ mua trái cây giữa chợ nổi Cái Răng",
+          "credit": "Christophe95",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Cai_Rang_Floating_Market_1.jpg"
+        }
       },
-      {
-        "text": "Mùa nước nổi ở đồng bằng sông Cửu Long thường vào khoảng tháng 8 đến tháng 11 dương lịch.",
-        "sources": [
-          "ref-74"
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": {
+        "kind": "cay-beo",
+        "title": "Ghe nào bán gì?",
+        "intro": "Ở chợ nổi, ghe treo gì lên cây bẹo thì bán thứ ấy. Con chọn một tấm biển rồi bấm vào đúng chiếc ghe.",
+        "rounds": [
+          {
+            "label": "Ghe bán khóm",
+            "item": "🍍 trái khóm",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          },
+          {
+            "label": "Ghe bán bí",
+            "item": "🥒 trái bí đao",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          },
+          {
+            "label": "Ghe bán khoai",
+            "item": "🍠 củ khoai lang",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          },
+          {
+            "label": "Ghe bán dừa",
+            "item": "🥥 trái dừa",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          },
+          {
+            "label": "Ghe bán luôn cả ghe",
+            "item": "👕 cái áo cũ",
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": "Người ta kể: ghe nào treo tấm áo hay nhánh lá mà không treo nông sản là ghe đang rao bán chính chiếc ghe."
+          }
         ],
-        "verified": true
-      }
-    ],
-    "frames": [
-      {
-        "image": null,
-        "caption": "Chợ nổi lúc bình minh",
-        "alt": "Chợ nổi trên sông với những ghe chở trái cây",
-        "prompt": "a floating market on the Mekong at sunrise, wooden boats loaded with fruit, a tall bamboo pole on a boat with fruit hanging from it, calm brown river"
+        "done": "Đúng hết rồi! Ghe bà cụ bán khóm ghé lại, mời con lên ghe.",
+        "teo": null,
+        "community_review": false
       },
-      {
-        "image": null,
-        "caption": "Rừng tràm mùa nước nổi",
-        "alt": "Chiếc xuồng nhỏ len giữa rừng tràm ngập nước",
-        "prompt": "a small wooden canoe gliding through a flooded cajeput forest, green duckweed carpet on the water, sunlight through the trees"
+      "stamp": "Chợ nổi",
+      "community_review": false,
+      "id": "cho-noi",
+      "place": "Chợ nổi Cái Răng",
+      "time": "dawn",
+      "date": "Rạng sáng, trên sông Cần Thơ",
+      "entry": "Trời chưa sáng hẳn, Ông đã kéo tôi xuống xuồng ra chợ nổi. Ghe nối ghe kín mặt sông, mà lạ thay chẳng ai rao. Ghe nào cũng dựng một cây sào cao, trên đầu treo lủng lẳng trái khóm, trái bí, củ khoai. Ông cười: “Treo gì bán nấy đó em.” Tôi đứng nhìn một hồi mới đoán ra."
+    },
+    {
+      "margin": "Áo đẹp là áo làm được việc. Câu đó của bà cụ, Bà nhớ tới giờ.",
+      "ti": null,
+      "teo": [
+        {
+          "text": "Áo bà ba dài ngang hông, ôm hờ theo người, dễ cử động khi làm lụng.",
+          "sources": [
+            "ref-79"
+          ],
+          "verified": true
+        }
+      ],
+      "keepsake": "fabric",
+      "point": null,
+      "frame": {
+        "image": "/regions/nam-bo/n03-ghe-ba-cu.png",
+        "caption": "Trên ghe bà cụ",
+        "alt": "Bà cụ quấn khăn rằn lên đầu cho Bà trên chiếc ghe chở khóm",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (n03-ghe-ba-cu.png)"
       },
-      {
-        "image": null,
-        "caption": "Mũi đất cuối trời",
-        "alt": "Rừng đước và bãi bồi nơi mũi Cà Mau",
-        "no_people": true,
-        "prompt": "the southern tip of Vietnam, mangrove forest meeting a wide tidal mudflat and the sea at sunset, no people, no figures"
-      }
-    ]
-  },
-  "life": {
-    "date": "Nhà người quen, những đêm trăng",
-    "entry": "Xong việc đồng, tối nào hàng xóm cũng tụ lại, người đờn người ca vọng cổ, chẳng cần sân khấu gì. Mùa nước nổi thì có cá linh nấu canh chua với bông điên điển vàng rực. Bà chủ nhà còn đổ bánh xèo cho tôi ăn, bánh to bằng cái chảo, cuốn rau rừng chấm nước mắm.",
-    "margin": "Canh chua cá linh đó, Bà về Bắc rồi nấu mãi không ra vị.",
-    "keepsake": "recipe",
-    "items": [
-      {
-        "id": "don-ca-tai-tu",
-        "kind": "custom",
-        "title": "Đờn ca dưới hiên nhà",
-        "text": "Một cây đàn kìm, một cây đàn tranh, vài người bạn là đủ cho một đêm vui."
-      },
-      {
-        "id": "song-voi-nuoc",
-        "kind": "custom",
-        "title": "Sống cùng mùa nước",
-        "text": "Người ở đây không chống lũ mà sống cùng lũ. Nước lên là mùa cá, mùa bông điên điển."
-      },
-      {
-        "id": "canh-chua-ca-linh",
-        "kind": "dish",
-        "title": "Canh chua cá linh",
-        "text": "Cá linh non mùa nước nổi, bông điên điển vàng, vị chua của me. Ăn một lần là nhớ."
-      },
-      {
-        "id": "lanh-my-a",
-        "kind": "custom",
-        "title": "Quần lãnh đen bóng",
-        "text": "Chị chủ nhà có một chiếc quần lãnh Mỹ A, chỉ mặc ngày Tết. Chị kể lụa ấy dệt ở Tân Châu, nhuộm bằng trái mặc nưa, nhuộm rồi phơi hàng chục lượt mới đen bóng như vậy."
-      }
-    ],
-    "teo": [
-      {
-        "text": "Đờn ca tài tử Nam Bộ được UNESCO ghi danh.",
-        "sources": [
-          "unesco-ich-vn"
+      "today": {
+        "title": "Mình cũng mặc bà ba đi chợ nổi",
+        "text": "Mình thuê một bộ áo bà ba với khăn rằn ngay ở bến. Mặc vào mát hẳn, ngồi xuồng không vướng gì. Chú lái xuồng khen: “Mặc vầy mới ra dân miền Tây nè!”",
+        "tips": [
+          "Áo bà ba vải mỏng mặc mát, hợp đi sông nước.",
+          "Khăn rằn quấn đầu, vắt vai hay che mặt đều được."
         ],
-        "verified": true,
-        "unesco": 2013
+        "photo": {
+          "image": "/regions/nam-bo/photos/ghe-dua-hau.jpg",
+          "alt": "Ghe chở đầy dưa hấu ở chợ nổi Cái Răng",
+          "credit": "Christophe95",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Cai_Rang_Floating_Market_4.jpg"
+        }
       },
-      {
-        "text": "Lãnh Mỹ A là lụa tơ tằm Tân Châu (An Giang), nhuộm đen bằng nhựa trái mặc nưa qua nhiều lượt ngâm, phơi.",
-        "sources": [
-          "ref-67"
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": {
+        "kind": "xep-do",
+        "title": "Xếp đồ cho một ngày trên ghe",
+        "intro": "Bà cụ bảo mai đi ghe cả ngày. Con chọn 4 món nên mang, bỏ lại những món sẽ làm con khổ.",
+        "rounds": [
+          {
+            "label": "Áo bà ba",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": 1,
+            "explain": "Ngắn, xẻ tà, ngồi xuồng không vướng."
+          },
+          {
+            "label": "Khăn rằn",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": 1,
+            "explain": "Che nắng, lau mồ hôi, chít đầu, việc gì cũng dùng được."
+          },
+          {
+            "label": "Nón lá",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": 1,
+            "explain": "Nắng trên sông gắt lắm."
+          },
+          {
+            "label": "Dép nhẹ",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": 1,
+            "explain": "Xuống ghe, lên bờ cho tiện."
+          },
+          {
+            "label": "Áo dài tà dài",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": 0,
+            "explain": "Tà dài quét nước sông mất."
+          },
+          {
+            "label": "Giày cao gót",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": 0,
+            "explain": "Ghe chòng chành, Tí suýt té."
+          },
+          {
+            "label": "Áo khoác dày",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": 0,
+            "explain": "Miền Tây nóng quanh năm."
+          },
+          {
+            "label": "Váy xòe dài",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": 0,
+            "explain": "Bước lên ghe là vướng."
+          }
         ],
-        "verified": true
-      }
-    ],
-    "ti": "Màu đen bóng ấy là từ trái cây. Mình cứ tưởng là thuốc nhuộm hóa học."
-  },
-  "festivals": {
-    "date": "Núi Sam, cuối tháng Tư",
-    "entry": "Tôi theo đoàn người lên núi Sam dâng hương Bà Chúa Xứ. Đêm ấy người đông như nước, ai cũng thành tâm. Mấy tháng sau, tôi lại được xem lễ Nghinh Ông ở làng biển, đoàn ghe cờ xí rực rỡ ra khơi rước Ông. Người miền biển bảo: có Ông che chở thì mới dám đi xa.",
-    "keepsake": "ticket",
-    "festivals": [
-      {
-        "id": "via-ba-chua-xu",
-        "name": "Vía Bà Chúa Xứ núi Sam",
-        "time": "22 đến 27 tháng Tư âm lịch",
-        "month": 4,
-        "place": "Núi Sam, An Giang",
-        "text": "Người khắp nơi về dâng hương. Lễ tắm Bà diễn ra trang nghiêm giữa đêm."
+        "done": "Gọn gàng như người miền Tây! Bà cụ gật gù: “Vầy mới đi ghe được nè.”",
+        "teo": null,
+        "community_review": false
       },
-      {
-        "id": "nghinh-ong",
-        "name": "Lễ Nghinh Ông",
-        "time": "14 đến 16 tháng Tám âm lịch",
-        "month": 8,
-        "place": "Xã Cần Giờ, TP. Hồ Chí Minh",
-        "text": "Đoàn ghe trang hoàng rực rỡ ra biển rước Ông, cầu một mùa biển bình an."
+      "stamp": "Áo bà ba",
+      "community_review": false,
+      "id": "ghe-ba-cu",
+      "place": "Trên ghe bà cụ",
+      "time": "morning",
+      "date": "Buổi sáng, trên chiếc ghe bán khóm",
+      "entry": "Bà cụ bán khóm mời tôi lên ghe uống trà. Thấy tôi mặc áo dài, cụ cười: “Mặc vầy lên xuồng là ướt tà đó con.” Cụ chỉ cái áo bà ba cụ đang mặc: ngắn qua hông, xẻ hai bên, không có cổ đứng, cúi xuống chèo không vướng. Cụ tháo chiếc [[khăn rằn|khan-ran]] trên cổ, quấn lên đầu tôi cho khỏi nắng."
+    },
+    {
+      "margin": null,
+      "ti": null,
+      "teo": [
+        {
+          "text": "Mùa nước nổi ở đồng bằng sông Cửu Long thường vào khoảng tháng 8 đến tháng 11 dương lịch.",
+          "sources": [
+            "ref-74"
+          ],
+          "verified": true
+        }
+      ],
+      "keepsake": "recipe",
+      "point": null,
+      "frame": {
+        "image": "/regions/nam-bo/n04-nuoc-noi.png",
+        "caption": "Mùa nước nổi",
+        "alt": "Nước lên tận gốc cây, người bơi xuồng hái bông điên điển",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (n04-nuoc-noi.png)"
       },
-      {
-        "id": "ok-om-bok",
-        "name": "Lễ Ok Om Bok",
-        "time": "Rằm tháng Mười âm lịch",
-        "month": 10,
-        "place": "Phường Sóc Trăng, Cần Thơ",
-        "text": "Lễ cúng trăng của đồng bào Khmer.",
-        "community_review": true
-      }
-    ],
-    "teo": [
-      {
-        "text": "Lễ hội Vía Bà Chúa Xứ núi Sam được UNESCO ghi danh.",
-        "sources": [
-          "unesco-ich-vn"
+      "today": {
+        "title": "Canh chua cá linh, ăn một lần là nhớ",
+        "text": "Mình đến đúng mùa nước nổi. Đồng trắng nước, người ta đi xuồng như đi xe. Bữa trưa có canh chua cá linh với bông điên điển vàng rực, chua chua ngọt ngọt. Mình ăn ba chén cơm.",
+        "tips": [
+          "Mùa nước nổi thường từ tháng 8 đến tháng 11.",
+          "Muốn ăn cá linh, bông điên điển thì đi đúng mùa."
         ],
-        "verified": true,
-        "unesco": 2024
-      }
-    ],
-    "bridge": "Nắng quanh năm, ngồi xuồng cả ngày. Lật trang đi, con sẽ hiểu vì sao áo bà ba lại gọn nhẹ như thế."
+        "photo": null
+      },
+      "items": [
+        {
+          "id": "don-ca-tai-tu",
+          "kind": "custom",
+          "title": "Đờn ca dưới hiên nhà",
+          "text": "Một cây đàn kìm, một cây đàn tranh, vài người bạn là đủ cho một đêm vui."
+        },
+        {
+          "id": "song-voi-nuoc",
+          "kind": "custom",
+          "title": "Sống cùng mùa nước",
+          "text": "Người ở đây không chống lũ mà sống cùng lũ. Nước lên là mùa cá, mùa bông điên điển."
+        },
+        {
+          "id": "canh-chua-ca-linh",
+          "kind": "dish",
+          "title": "Canh chua cá linh",
+          "text": "Cá linh non mùa nước nổi, bông điên điển vàng, vị chua của me. Ăn một lần là nhớ."
+        },
+        {
+          "id": "lanh-my-a",
+          "kind": "custom",
+          "title": "Quần lãnh đen bóng",
+          "text": "Chị chủ nhà có một chiếc quần lãnh Mỹ A, chỉ mặc ngày Tết. Chị kể lụa ấy dệt ở Tân Châu, nhuộm bằng trái mặc nưa, nhuộm rồi phơi hàng chục lượt mới đen bóng như vậy."
+        }
+      ],
+      "festivals": [],
+      "hat": null,
+      "game": null,
+      "stamp": "Nước nổi",
+      "community_review": false,
+      "id": "mua-nuoc",
+      "place": "Mùa nước nổi",
+      "time": "noon",
+      "date": "Trưa, ở nhà người quen",
+      "entry": "Xong việc đồng, tối nào hàng xóm cũng tụ lại, người đờn người ca vọng cổ, chẳng cần sân khấu gì. Mùa nước nổi thì có cá linh nấu canh chua với bông điên điển vàng rực. Bà chủ nhà còn đổ bánh xèo cho tôi ăn, bánh to bằng cái chảo, cuốn rau rừng chấm nước mắm."
+    },
+    {
+      "margin": "Đêm ấy Bà mới hiểu, người miền Tây vui cũng hát, buồn cũng hát.",
+      "ti": null,
+      "teo": [
+        {
+          "text": "Đờn ca tài tử Nam Bộ được UNESCO ghi danh.",
+          "sources": [
+            "unesco-ich-vn"
+          ],
+          "verified": true,
+          "unesco": 2013
+        }
+      ],
+      "keepsake": null,
+      "point": null,
+      "frame": {
+        "image": "/regions/nam-bo/n05-don-ca.png",
+        "caption": "Đờn ca dưới hiên",
+        "alt": "Người em họ đờn kìm, cô hàng xóm ca vọng cổ dưới hiên nhà",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (n05-don-ca.png)"
+      },
+      "today": {
+        "title": "Một đêm đờn ca tài tử",
+        "text": "Mình được dẫn đến một nhà có câu lạc bộ đờn ca tài tử. Mấy chú đờn, một cô ca. Mình không hiểu hết lời, nhưng đến đoạn ngân dài thì cả nhà im phăng phắc. Một chú cho mình gõ thử cái song lang giữ nhịp, mình gõ lệch, chú vẫn cười.",
+        "tips": [
+          "Hỏi nhà văn hóa hoặc quán cà phê có đờn ca tài tử vào tối cuối tuần.",
+          "Nghe thì im lặng, hết bài mới vỗ tay."
+        ],
+        "photo": {
+          "image": "/regions/nam-bo/photos/don-ca-tai-tu.jpg",
+          "alt": "Đàn kìm và các nhạc cụ đờn ca tài tử",
+          "credit": "Ngô Trung",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Nh%E1%BA%A1c_c%E1%BB%A5_%C4%90%E1%BB%9Dn_ca_t%C3%A0i_t%E1%BB%AD.JPG"
+        }
+      },
+      "items": [],
+      "festivals": [],
+      "hat": null,
+      "game": null,
+      "stamp": "Tài tử",
+      "community_review": false,
+      "id": "don-ca",
+      "place": "Đêm đờn ca",
+      "time": "night",
+      "date": "Tối, dưới hiên nhà",
+      "entry": "Tối ấy, người em họ của Ông ôm cây đàn kìm ra hiên, cô hàng xóm mang đàn tranh sang. Không có sân khấu, không có ai bán vé, chỉ có mấy chiếc ghế nhựa với ấm trà. Cô cất giọng ca [[vọng cổ|vong-co]], ngân dài như con nước. Tôi nghe mà rơi nước mắt, không biết vì câu hát hay vì nhớ nhà."
+    },
+    {
+      "margin": "Nắng quanh năm, ngồi xuồng cả ngày. Lật trang đi, con sẽ hiểu vì sao áo bà ba lại gọn nhẹ như thế.",
+      "ti": null,
+      "teo": [
+        {
+          "text": "Lễ hội Vía Bà Chúa Xứ núi Sam được UNESCO ghi danh.",
+          "sources": [
+            "unesco-ich-vn"
+          ],
+          "verified": true,
+          "unesco": 2024
+        }
+      ],
+      "keepsake": "ticket",
+      "point": null,
+      "frame": {
+        "image": "/regions/nam-bo/n06-le-hoi.png",
+        "caption": "Lễ hội miền Tây",
+        "alt": "Đoàn người lên núi Sam dâng hương",
+        "no_people": false,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (n06-le-hoi.png)"
+      },
+      "today": null,
+      "items": [],
+      "festivals": [
+        {
+          "id": "via-ba-chua-xu",
+          "name": "Vía Bà Chúa Xứ núi Sam",
+          "time": "22 đến 27 tháng Tư âm lịch",
+          "month": 4,
+          "place": "Núi Sam, An Giang",
+          "text": "Người khắp nơi về dâng hương. Lễ tắm Bà diễn ra trang nghiêm giữa đêm.",
+          "review": null,
+          "photo": null
+        },
+        {
+          "id": "nghinh-ong",
+          "name": "Lễ Nghinh Ông",
+          "time": "14 đến 16 tháng Tám âm lịch",
+          "month": 8,
+          "place": "Xã Cần Giờ, TP. Hồ Chí Minh",
+          "text": "Đoàn ghe trang hoàng rực rỡ ra biển rước Ông, cầu một mùa biển bình an.",
+          "review": null,
+          "photo": null
+        },
+        {
+          "id": "ok-om-bok",
+          "name": "Lễ Ok Om Bok",
+          "time": "Rằm tháng Mười âm lịch",
+          "month": 10,
+          "place": "Phường Sóc Trăng, Cần Thơ",
+          "text": "Lễ cúng trăng của đồng bào Khmer.",
+          "community_review": true,
+          "review": null,
+          "photo": null
+        }
+      ],
+      "hat": null,
+      "game": null,
+      "stamp": "Miền Tây",
+      "community_review": false,
+      "id": "le-hoi",
+      "place": "Lễ hội",
+      "time": "afternoon",
+      "date": "Núi Sam, cuối tháng Tư",
+      "entry": "Tôi theo đoàn người lên núi Sam dâng hương Bà Chúa Xứ. Đêm ấy người đông như nước, ai cũng thành tâm. Mấy tháng sau, tôi lại được xem lễ Nghinh Ông ở làng biển, đoàn ghe cờ xí rực rỡ ra khơi rước Ông. Người miền biển bảo: có Ông che chở thì mới dám đi xa."
+    }
+  ],
+  "letter": {
+    "text": "Con à, bà cụ trên ghe bảo: áo đẹp là áo làm được việc. Bà mặc bà ba đi chợ nổi, thấy mình như người ở đó từ lâu. Con cũng vậy, mặc cho hợp nơi mình đến là đẹp rồi.",
+    "image": "/regions/nam-bo/n09-buu-thiep.png"
   },
   "wear": [
     {
@@ -204,13 +492,6 @@
   "own": {
     "invite": "Miền Tây tặng Bà một chiếc áo. Con sẽ mặc nó đi đâu?"
   },
-  "sources": [
-    "unesco-ich-vn",
-    "ref-67",
-    "ref-73",
-    "ref-74",
-    "ref-79"
-  ],
   "check": {
     "pre": {
       "id": "nb-pre",
@@ -266,5 +547,13 @@
         "verified": false
       }
     ]
-  }
+  },
+  "sources": [
+    "unesco-ich-vn",
+    "ref-67",
+    "ref-73",
+    "ref-74",
+    "ref-79"
+  ],
+  "community_review": false
 }
