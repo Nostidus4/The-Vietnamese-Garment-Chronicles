@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Region } from "@/lib/types";
 import { plain } from "../book/Glossary";
+import { asset } from "@/lib/base";
 
 const place = (r: Region) => r.chapters?.find((c) => c.status === "open")?.province ?? r.name;
 const CHAR_MS = 32;
@@ -98,7 +99,7 @@ export function PostcardViewer({
           <div className="absolute inset-0 overflow-hidden bg-white p-2 shadow-[0_18px_40px_rgba(0,0,0,0.45)] [backface-visibility:hidden]">
             {imgOk ? (
               // eslint-disable-next-line @next/next/no-img-element -- postcard art may not exist yet
-              <img src={letter.image!} alt={`Bưu thiếp ${where}`} className="h-full w-full object-cover" onError={() => setImgOk(false)} />
+              <img src={asset(letter.image!)} alt={`Bưu thiếp ${where}`} className="h-full w-full object-cover" onError={() => setImgOk(false)} />
             ) : (
               <div className="flex h-full w-full items-end justify-center" style={{ background: "linear-gradient(180deg, #f2b27a 0%, #e98f6f 38%, #7c8fb3 70%, #4f6d8f 100%)" }}>
                 <span className="font-display mb-3 text-2xl text-white/90 drop-shadow">{where}</span>

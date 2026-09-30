@@ -7,6 +7,7 @@ import type { OpeningScreen } from "@/lib/types";
 import { BookCover } from "../book/BookCover";
 import { IMAGE_SIZES, Scene, type SceneHandle } from "./Scene";
 import { crossfade, runTransition, type Overlays } from "./transitions";
+import { asset } from "@/lib/base";
 
 interface Props {
   screens: OpeningScreen[];
@@ -68,7 +69,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     let alive = true;
     Promise.all(
       screens.map((sc) =>
-        fetch(`/opening/voice-${sc.id}/takes.json`)
+        fetch(asset(`/opening/voice-${sc.id}/takes.json`))
           .then((r) => (r.ok ? (r.json() as Promise<Manifest>) : null))
           .catch(() => null),
       ),
@@ -86,7 +87,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
       const el = audio.current;
       const hit = takeOf(manifests[screenId], n);
       if (!el || !sound || !hit) return hit ? undefined : hush(); // an unvoiced line never cuts the take on air
-      const src = `/opening/voice-${screenId}/${hit.take.file}`;
+      const src = asset(`/opening/voice-${screenId}/${hit.take.file}`);
       const cue = hit.take.cues[hit.i] ?? 0;
       if (playing.current === src && !el.paused) {
         // same take still speaking: only jump if the viewer clicked ahead of the voice
@@ -116,7 +117,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     (screenId: string, n: number): number | null => {
       const el = audio.current;
       const hit = takeOf(manifests[screenId], n);
-      if (!el || !hit || el.paused || playing.current !== `/opening/voice-${screenId}/${hit.take.file}`) return null;
+      if (!el || !hit || el.paused || playing.current !== asset(`/opening/voice-${screenId}/${hit.take.file}`)) return null;
       return Math.max(0, (hit.take.cues[hit.i] ?? 0) - el.currentTime);
     },
     [manifests],
@@ -372,7 +373,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
       {/* preload the next screens with the same sizes so the browser reuses the optimised files */}
       <div className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0" aria-hidden>
         {preload.map((i) => (
-          <Image key={screens[i].id} src={screens[i].image} alt="" width={1672} height={941} sizes={IMAGE_SIZES} quality={88} />
+          <Image key={screens[i].id} src={asset(screens[i].image)} alt="" width={1672} height={941} sizes={IMAGE_SIZES} quality={88} />
         ))}
       </div>
 

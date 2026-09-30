@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AmbientSound } from "@/components/AmbientSound";
 import { ServerWake } from "@/components/ServerWake";
 import "./globals.css";
+import { asset } from "@/lib/base";
 
 const body = Be_Vietnam_Pro({ variable: "--font-body", subsets: ["vietnamese", "latin"], weight: ["400", "600"] });
 const hand = Patrick_Hand({ variable: "--font-hand", subsets: ["vietnamese", "latin"], weight: "400" });
@@ -22,8 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Link href="/">Sách</Link>
           <Link href="/du-ky">Du Ký của tôi</Link>
           {/* full reload on purpose so the opening restarts from the first screen */}
-          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-          <a href="/?opening=1">Xem lại mở đầu</a>
+          <a href={asset("/?opening=1")}>Xem lại mở đầu</a>
           <AmbientSound />
         </nav>
         <div className="h-10" />

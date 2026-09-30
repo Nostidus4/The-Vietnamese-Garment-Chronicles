@@ -15,6 +15,7 @@ import { DateLine, DRAFT, Entry, KeepsakeArt, Margin, OLD, Pencil, place, Polaro
 import { GameBody, HOW_TO } from "./Games";
 import { TeoPin } from "./TeoPin";
 import { RichText } from "./Glossary";
+import { asset } from "@/lib/base";
 
 /** Where someone who wants to write a province's chapter starts (README, "Viết một chương cho tỉnh của bạn"). */
 export const CONTRIBUTE_URL = "https://github.com/Nostidus4/The-Vietnamese-Garment-Chronicles#viết-một-chương-cho-tỉnh-của-bạn";
@@ -363,14 +364,14 @@ function HatReveal({ hat }: { hat: NonNullable<Stop["hat"]> }) {
         />
         {hatOk ? (
           // eslint-disable-next-line @next/next/no-img-element -- optional art; falls back to the drawn hat
-          <img src={hat.hat!} alt="" className="absolute inset-0 h-full w-full rounded-full object-cover" onError={() => setHatOk(false)} />
+          <img src={asset(hat.hat!)} alt="" className="absolute inset-0 h-full w-full rounded-full object-cover" onError={() => setHatOk(false)} />
         ) : (
           <HatSvg lit={lit} />
         )}
         <motion.span className="absolute inset-[16%]" animate={{ opacity: lit ? 0.85 : 0 }} transition={{ duration: 0.6 }} aria-hidden>
           {hiddenOk ? (
             // eslint-disable-next-line @next/next/no-img-element -- optional art; falls back to the drawn silhouette
-            <img src={hat.hidden!} alt="" className="h-full w-full object-contain mix-blend-multiply" onError={() => setHiddenOk(false)} />
+            <img src={asset(hat.hidden!)} alt="" className="h-full w-full object-contain mix-blend-multiply" onError={() => setHiddenOk(false)} />
           ) : (
             <HiddenSvg />
           )}
@@ -434,7 +435,7 @@ function TodayPhoto({ photo, tilt = 1.5 }: { photo: Photo; tilt?: number }) {
   return (
     <figure className="m-0 bg-white p-1.5 pb-1 shadow-[0_6px_14px_rgba(40,30,20,0.25)]" style={{ rotate: `${tilt}deg` }}>
       {/* eslint-disable-next-line @next/next/no-img-element -- a real credited photo from content */}
-      <img src={photo.image} alt={photo.alt} className="block aspect-[4/3] w-full object-cover" loading="lazy" />
+      <img src={asset(photo.image)} alt={photo.alt} className="block aspect-[4/3] w-full object-cover" loading="lazy" />
       <PhotoCredit photo={photo} />
     </figure>
   );
@@ -666,7 +667,7 @@ export function EnvelopeLetter({ region }: { region: Region }) {
             <div className="relative aspect-[3/2] w-[86%] rotate-[1.5deg] overflow-hidden bg-white p-1.5 shadow-[0_10px_22px_rgba(60,35,10,0.3)]">
               {imgOk ? (
                 // eslint-disable-next-line @next/next/no-img-element -- postcard art may not exist yet
-                <img src={letter.image!} alt={`Bưu thiếp ${chapterPlace}`} className="h-full w-full object-cover" onError={() => setImgOk(false)} />
+                <img src={asset(letter.image!)} alt={`Bưu thiếp ${chapterPlace}`} className="h-full w-full object-cover" onError={() => setImgOk(false)} />
               ) : (
                 <div
                   className="flex h-full w-full items-end justify-center"
@@ -725,7 +726,7 @@ export function ChapterEnd({ region }: { region: Region }) {
         <button type="button" onClick={onBack} className="rounded-full border border-stone-700 px-4 py-1.5 text-sm hover:bg-stone-800 hover:text-amber-50">
           ‹ Về trang {region.name}
         </button>
-        <a href="/du-ky" className="font-hand text-[1.05rem] text-[#8a4b2a] underline">
+        <a href={asset("/du-ky")} className="font-hand text-[1.05rem] text-[#8a4b2a] underline">
           Mở Du Ký của con →
         </a>
         <a href={CONTRIBUTE_URL} target="_blank" rel="noreferrer" className="text-[0.78rem] text-stone-500 underline">

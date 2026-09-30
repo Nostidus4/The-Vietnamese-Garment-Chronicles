@@ -6,8 +6,9 @@
 // - The choice (on / off) is remembered on this device. While the opening's voice-over speaks, the music ducks.
 
 import { useEffect, useRef, useState } from "react";
+import { asset } from "@/lib/base";
 
-const SRC = "/audio/ambient.mp3";
+const SRC = asset("/audio/ambient.mp3");
 const KEY = "vpdk-bgm";
 const VOLUME = 0.22;
 const DUCKED = 0.06;

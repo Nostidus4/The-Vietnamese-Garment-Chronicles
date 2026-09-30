@@ -1,6 +1,9 @@
+import { asset } from "./base";
 import type { Bootstrap, CompassResult, Selection, Shop, TryOnResult } from "./types";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+/** Built without a backend (GitHub Pages with no NEXT_PUBLIC_API_URL): the book reads content bundled at build time. */
+export const HAS_API = API_URL !== "";
 
 /** Absolute URL for a file under backend/content/media, e.g. media("comic/page-1.png") */
 export const media = (path: string) => `${API_URL}/media/${path}`;
@@ -17,8 +20,7 @@ async function json<T>(res: Response): Promise<T> {
 let bootstrapPromise: Promise<Bootstrap> | null = null;
 export function getBootstrap(): Promise<Bootstrap> {
   // wait for a sleeping server to wake instead of failing the first load
-  bootstrapPromise ??= serverReady()
-    .then(() => fetch(`${API_URL}/content/bootstrap`))
+  bootstrapPromise ??= (HAS_API ? serverReady().then(() => fetch(`${API_URL}/content/bootstrap`)) : fetch(asset("/bootstrap.json")))
     .then((r) => json<Bootstrap>(r))
     .catch((e) => {
       bootstrapPromise = null;
@@ -109,6 +111,7 @@ export const deleteShare = (id: string, key: string) =>
 let readyPromise: Promise<boolean> | null = null;
 /** Resolves true once GET /health answers (polling up to ~2 minutes), false if it never does. */
 export function serverReady(): Promise<boolean> {
+  if (!HAS_API) return Promise.resolve(false);
   readyPromise ??= (async () => {
     const until = Date.now() + 120_000;
     while (Date.now() < until) {

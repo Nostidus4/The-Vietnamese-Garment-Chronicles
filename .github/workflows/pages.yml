@@ -1,0 +1,73 @@
+# Build the site as static files and publish it on GitHub Pages:
+#   https://<owner>.github.io/<repo>/
+#
+# Runs on every push to main (and to the preview branch listed below), and by hand (Actions → "Deploy to GitHub Pages" → Run workflow, any branch).
+# The book's content is exported from backend/content at build time, so reading works without a server.
+# Optional repository variables (Settings → Secrets and variables → Actions → Variables):
+#   API_URL       backend on Render, e.g. https://xxx.onrender.com: turns on Compass, try-on, Hỏi Tèo, weather, shops
+#   SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY   public Supabase values (defaults to the project's public ones)
+# After changing a variable, run the workflow again: NEXT_PUBLIC_* values are baked in at build time.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    # feat/so-cua-ba-5-chuong: preview the new book before it is merged (remove once merged)
+    branches: [main, feat/so-cua-ba-5-chuong]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Export the book's content
+        working-directory: backend
+        run: |
+          pip install -r requirements.txt
+          python -m scripts.export_bootstrap ../frontend/public/bootstrap.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Build the static site
+        working-directory: frontend
+        env:
+          GITHUB_PAGES: "1"
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_API_URL: ${{ vars.API_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL || 'https://vfbhpbwaoosttmqvdorn.supabase.co' }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_XYM2LNApj7WvaNzm-JASdA_G4cdV5YH' }}
+        run: |
+          npm ci
+          npx next build
+          touch out/.nojekyll
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

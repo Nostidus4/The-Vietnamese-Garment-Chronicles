@@ -6,6 +6,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { API_URL } from "@/lib/api";
+import { asset } from "@/lib/base";
 
 type Cand = { key: string; file: string; duration?: number; rate?: number; cues?: number[]; cues_ok?: boolean; score?: number };
 type Take = {
@@ -69,7 +70,7 @@ export default function VoiceReview() {
   const playScreen = async (sid: string, takes: Take[]) => {
     const el = (player.current ??= new Audio());
     for (const t of takes.filter((x) => x.file)) {
-      el.src = `/opening/voice-${sid}/${t.file}?v=${stamp}`;
+      el.src = asset(`/opening/voice-${sid}/${t.file}?v=${stamp}`);
       await el.play().catch(() => {});
       await new Promise((r) => (el.onended = r));
       await new Promise((r) => setTimeout(r, 450));
@@ -154,7 +155,7 @@ export default function VoiceReview() {
                     {(t.candidates ?? []).map((c) => (
                       <li key={c.key} className="flex flex-wrap items-center gap-2 text-xs">
                         <span className={`w-6 text-center font-mono ${t.picked === c.key ? "rounded bg-[#2F4A6D] text-white" : ""}`}>{c.key}</span>
-                        <audio controls preload="none" src={`/opening/voice-${s.id}/${c.file}?v=${stamp}`} className="h-8 w-72" />
+                        <audio controls preload="none" src={asset(`/opening/voice-${s.id}/${c.file}?v=${stamp}`)} className="h-8 w-72" />
                         <span>{c.duration}s</span>
                         <span className={Math.abs((c.rate ?? 0) - (t.target_rate ?? 0)) > 0.8 ? "text-[#B5452E]" : ""}>
                           {c.rate} ât/s (chuẩn {t.target_rate})

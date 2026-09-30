@@ -18,6 +18,7 @@ import { pageSize, useBookScale, useViewport } from "@/lib/bookScale";
 import { BookSizeControl } from "./BookSizeControl";
 import { useDuKy } from "@/lib/dukyBook";
 import { DuKyCover } from "../duky/DuKyCover";
+import { asset } from "@/lib/base";
 
 type Landing = "flash" | "soft";
 type Phase = "landing" | "closed" | "opening" | "open" | "closing";
@@ -153,7 +154,7 @@ export function DeskScene({
   }
 
   useEffect(() => {
-    if (resume) window.history.replaceState(null, "", "/"); // a reload later starts on the closed book again
+    if (resume) window.history.replaceState(null, "", asset("/")); // a reload later starts on the closed book again
   }, [resume]);
   const autoOpened = useRef(false);
   useEffect(() => {
@@ -180,7 +181,7 @@ export function DeskScene({
     <main className="desk fixed inset-0 overflow-hidden">
       {!size.portrait && <BookSizeControl />}
       <Image
-        src="/page/Desk.png"
+        src={asset("/page/Desk.png")}
         alt=""
         fill
         priority
@@ -440,7 +441,7 @@ function DeskProps() {
     <div className="pointer-events-none absolute inset-0" aria-hidden>
       <div className="desk-photo absolute left-[3%] top-[42%] hidden w-[12vw] min-w-[130px] max-w-[190px] rotate-[-7deg] md:block">
         <Image
-          src="/opening/s06.png"
+          src={asset("/opening/s06.png")}
           alt=""
           width={420}
           height={236}
@@ -457,7 +458,7 @@ function DuKyOnDesk() {
   const { cover, pages } = useDuKy();
   return (
     <a
-      href="/du-ky"
+      href={asset("/du-ky")}
       className="group absolute bottom-[6%] left-[4%] z-10 hidden w-[8vw] min-w-[86px] max-w-[132px] rotate-[8deg] transition-transform hover:-translate-y-1 hover:rotate-[5deg] md:block"
       aria-label="Mở Du Ký của con"
     >

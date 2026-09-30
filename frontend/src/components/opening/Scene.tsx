@@ -7,6 +7,7 @@ import type { Camera, OpeningScreen } from "@/lib/types";
 import { EffectsLayer, type TimedEffect } from "./Effects";
 import { EASE, cameraXform, computeBox, pointOnScreen, type Box } from "./geometry";
 import { BlockView, buildBlocks } from "./Text";
+import { asset } from "@/lib/base";
 
 export const IMAGE_SIZES = "(min-aspect-ratio: 16/9) 100vw, 178vh";
 
@@ -145,7 +146,7 @@ export const Scene = forwardRef<SceneHandle, Props>(function Scene(
           }}
         >
           <Image
-            src={screen.image}
+            src={asset(screen.image)}
             alt={screen.title}
             fill
             priority

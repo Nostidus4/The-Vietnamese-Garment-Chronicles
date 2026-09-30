@@ -6,6 +6,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { asset } from "@/lib/base";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -64,7 +65,7 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
       >
         {/* logo-mark.png: Logo.png with its cream background made transparent, so it sits on the page with no frame */}
         <Image
-          src="/page/logo-mark.png"
+          src={asset("/page/logo-mark.png")}
           alt=""
           width={1118}
           height={802}
@@ -82,8 +83,8 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
               background: "linear-gradient(105deg, transparent 35%, rgba(255,220,140,0.85) 50%, transparent 65%)",
               backgroundSize: "300% 100%",
               // the light only touches the drawing itself, never the empty page around it
-              maskImage: "url(/page/logo-mark.png)",
-              WebkitMaskImage: "url(/page/logo-mark.png)",
+              maskImage: `url(${asset("/page/logo-mark.png")})`,
+              WebkitMaskImage: `url(${asset("/page/logo-mark.png")})`,
               maskSize: "100% 100%",
               WebkitMaskSize: "100% 100%",
             }}

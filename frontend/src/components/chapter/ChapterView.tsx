@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { runCompass } from "@/lib/api";
+import { HAS_API, runCompass } from "@/lib/api";
 import { track } from "@/lib/track";
 import type { CompassResult, Selection } from "@/lib/types";
 import { useBootstrap } from "@/lib/useBootstrap";
@@ -29,7 +29,9 @@ export function ChapterView({
 
   const region = data?.regions.find((r) => r.id === regionId);
   const garments = data?.garments.filter((g) => g.region === regionId) ?? [];
-  const first = garments.find((g) => g.id === garmentId) ?? garments[0]; // "Mặc thử" in the diary picks the garment
+  // ?garment= is read in the browser: the page itself is prebuilt, one per region
+  const wanted = garmentId ?? (typeof window !== "undefined" ? (new URLSearchParams(window.location.search).get("garment") ?? undefined) : undefined);
+  const first = garments.find((g) => g.id === wanted) ?? garments[0]; // "Mặc thử" in the diary picks the garment
   // Default selection until the user picks something
   const current: Selection | null =
     sel ??
@@ -107,6 +109,13 @@ export function ChapterView({
 
   return (
     <main className="mx-auto grid max-w-6xl gap-6 p-6 lg:grid-cols-2">
+      {!HAS_API && (
+        // the static site (GitHub Pages) has no server: reading works, Compass / try-on / Hỏi Tèo do not
+        <p className="m-0 rounded-md border border-dashed border-[#8a4b2a]/60 bg-[#f7e4c8]/70 px-4 py-2 text-sm text-[#6b3c12] lg:col-span-2">
+          Bản web này chưa nối máy chủ: con đọc được câu chuyện và cách mặc, còn <b>Compass chấm look, thử đồ AI, Hỏi Tèo, thời tiết và
+          cửa hàng</b> sẽ chạy khi nhóm bật máy chủ.
+        </p>
+      )}
       <div className="space-y-4">
         <Link href="/" className="text-sm underline">
           ← Về bản đồ

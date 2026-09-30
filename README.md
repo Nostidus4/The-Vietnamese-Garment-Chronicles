@@ -217,6 +217,22 @@ Ghi chú của Tèo và thuật ngữ chỉ hiện trên trang thật khi `verif
 
 Điều khiển bằng click, `Space`, phím mũi tên hoặc cuộn; nhấn `Esc` để bỏ qua.
 
+## Web tĩnh trên GitHub Pages
+
+- Địa chỉ: **https://nostidus4.github.io/The-Vietnamese-Garment-Chronicles/**
+- Workflow `.github/workflows/pages.yml` tự build và deploy mỗi lần push vào `main`. Muốn deploy một nhánh khác để xem trước: tab **Actions → Deploy to GitHub Pages → Run workflow**, chọn nhánh.
+- Nội dung sổ được xuất từ `backend/content` lúc build (`python -m scripts.export_bootstrap`), nên **đọc sổ, trò chơi, tem, bưu thiếp, Du Ký chạy được mà không cần máy chủ**.
+- Compass, thử đồ AI, Hỏi Tèo, thời tiết, cửa hàng, link chia sẻ cần backend. Khi có backend trên Render:
+  1. **Settings → Secrets and variables → Actions → Variables**: thêm `API_URL` = URL Render (không có `/` ở cuối).
+  2. Trên Render, thêm `https://nostidus4.github.io` vào `CORS_ORIGINS`.
+  3. Chạy lại workflow (các biến `NEXT_PUBLIC_*` được nhúng lúc build).
+- Build thử trên máy giống hệt Pages:
+  ```bash
+  cd backend && python -m scripts.export_bootstrap ../frontend/public/bootstrap.json
+  cd ../frontend && GITHUB_PAGES=1 NEXT_PUBLIC_BASE_PATH=/The-Vietnamese-Garment-Chronicles NEXT_PUBLIC_API_URL= npx next build   # ra thư mục out/
+  ```
+- Viết code: ảnh, audio và link `<a>` trỏ vào file trong `public/` phải đi qua `asset()` (`src/lib/base.ts`) để có tiền tố `/The-Vietnamese-Garment-Chronicles` trên Pages. `<Link>` và `router.push` thì Next tự thêm.
+
 ## Triển khai
 
 - **Frontend trên Vercel** (miễn phí, repo vẫn private):

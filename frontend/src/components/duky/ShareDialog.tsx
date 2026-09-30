@@ -7,9 +7,10 @@
 import { useState } from "react";
 import { createShare, deleteShare, type ShareMeta } from "@/lib/api";
 import { getPhoto, shrinkPhoto, updatePage, usePhotoUrl, type DuKyPage, type PhotoRef } from "@/lib/dukyBook";
+import { asset } from "@/lib/base";
 
 const LABELS = ["Authentic", "Adapted", "Inspired"];
-export const shareUrl = (id: string) => `${window.location.origin}/du-ky/p/${id}`;
+export const shareUrl = (id: string) => `${window.location.origin}${asset("/du-ky/p/")}?id=${encodeURIComponent(id)}`;
 
 function Thumb({ photo, on, toggle }: { photo: PhotoRef; on: boolean; toggle: () => void }) {
   const url = usePhotoUrl(photo.id);

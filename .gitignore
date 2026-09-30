@@ -21,3 +21,6 @@ frontend/public/opening/voice-design/
 
 # background music licensed for video only (Artlist): kept on this machine, never committed or deployed
 frontend/public/audio/ambient.mp3
+
+# content bundled at build time for the static site (scripts/export_bootstrap.py)
+frontend/public/bootstrap.json

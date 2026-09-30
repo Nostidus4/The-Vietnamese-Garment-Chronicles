@@ -8,6 +8,7 @@ import type { Session } from "@supabase/supabase-js";
 import { useEffect, useMemo, useState } from "react";
 import { getPhoto, loadBook, putPhoto, saveBook, type DuKyBook } from "@/lib/dukyBook";
 import { createClient } from "@/utils/supabase/client";
+import { asset } from "@/lib/base";
 
 const BUCKET = "duky-photos";
 const configured = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
@@ -42,7 +43,7 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
 
   const signIn = () =>
     run(async () => {
-      const { error } = await sb.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: `${window.location.origin}/du-ky` } });
+      const { error } = await sb.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: `${window.location.origin}${asset("/du-ky")}` } });
       if (error) throw error;
       return "Đã gửi link đăng nhập, con mở email để bấm vào nhé.";
     });

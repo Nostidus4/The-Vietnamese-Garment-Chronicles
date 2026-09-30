@@ -2,13 +2,17 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { serverReady } from "@/lib/api";
+import { HAS_API, serverReady } from "@/lib/api";
 
 /**
  * The backend runs on a free server that sleeps when nobody uses it. Ping it as soon as the app opens;
  * if it has not answered after 3 s, say so instead of letting the first request time out.
  */
 export function ServerWake() {
+  return HAS_API ? <Wake /> : null; // a static build has no server to wake
+}
+
+function Wake() {
   const [state, setState] = useState<"checking" | "waking" | "ready" | "down">("checking");
   const [attempt, setAttempt] = useState(0);
 

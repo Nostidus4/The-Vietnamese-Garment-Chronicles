@@ -9,6 +9,7 @@ import { useStamps } from "@/lib/stamps";
 import { useState } from "react";
 import type { Bootstrap, Region } from "@/lib/types";
 import { FINAL_LETTER, PostcardViewer } from "./PostcardViewer";
+import { asset } from "@/lib/base";
 
 type Look = "on" | "soft" | "off";
 
@@ -60,7 +61,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
             );
           return (
             <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-1">
-              <a href={`/?region=${r.id}&page=own`} className="font-display w-[5.5rem] shrink-0 text-[0.8rem] leading-tight text-[#27354f] hover:underline">
+              <a href={asset(`/?region=${r.id}&page=own`)} className="font-display w-[5.5rem] shrink-0 text-[0.8rem] leading-tight text-[#27354f] hover:underline">
                 {place}
                 {stopsTotal(r) > 0 && (
                   <span className="block font-sans text-[0.58rem] text-stone-500">

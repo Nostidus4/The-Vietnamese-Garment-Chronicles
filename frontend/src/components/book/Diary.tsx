@@ -25,6 +25,7 @@ import { WeatherNote } from "../chapter/WeatherNote";
 import { RichText } from "./Glossary";
 import { TeoPin } from "./TeoPin";
 import { FOCUS } from "./vietnam-geo";
+import { asset } from "@/lib/base";
 
 export const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
 export const OLD = "#8a4b2a"; // old Bà: sepia, written years later
@@ -206,7 +207,7 @@ export function Polaroid({ frame, i, className = "w-[31%]" }: { frame: Frame; i:
         {frame.image && !broken ? (
           // eslint-disable-next-line @next/next/no-img-element -- content images may not exist yet; plain img lets us fall back
           <img
-            src={frame.image}
+            src={asset(frame.image)}
             alt={frame.alt}
             className="h-full w-full object-cover sepia-[.2]"
             onError={() => setBroken(true)}
@@ -881,10 +882,10 @@ export function OwnDiary({
             )}
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-            <a href={`/du-ky?new=worn&region=${region.id}`} className="text-[0.78rem] text-stone-700 underline">
+            <a href={asset(`/du-ky?new=worn&region=${region.id}`)} className="text-[0.78rem] text-stone-700 underline">
               + Trang đã mặc
             </a>
-            <a href={`/du-ky?region=${region.id}`} className="font-hand text-[1.05rem] text-[#8a4b2a] underline">
+            <a href={asset(`/du-ky?region=${region.id}`)} className="font-hand text-[1.05rem] text-[#8a4b2a] underline">
               Mở Du Ký của con →
             </a>
           </div>
