@@ -1,0 +1,173 @@
+{
+  "screen": "s07",
+  "takes": [
+    {
+      "id": "t01",
+      "voice": "narrator",
+      "voice_name": "voice_feeo2dn7kgs0",
+      "beats": [
+        0
+      ],
+      "text": "Chiều hôm đó, Tí và Tèo quay lại căn nhà cũ của bà.",
+      "style": "Scene: Afternoon, the present: Tí and Tèo return to Bà's old house. Dust in the sunlight, everything left in its place; hushed, a little mysterious. Speaker: the storyteller of this film, a warm Vietnamese man around forty; calm, unhurried, intimate, never theatrical. Delivery: Calm storytelling, a new chapter beginning, gentle. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 3.2,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t01-narrator-a.mp3",
+          "duration": 4.37,
+          "rate": 4.4,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.375
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t01-narrator-b.mp3",
+          "duration": 3.92,
+          "rate": 4.18,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.306
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t01-narrator-c.mp3",
+          "duration": 4.04,
+          "rate": 4.48,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.4
+        }
+      ],
+      "file": "t01-narrator.mp3",
+      "picked": "b",
+      "duration": 3.92,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    },
+    {
+      "id": "t02",
+      "voice": "narrator",
+      "voice_name": "voice_feeo2dn7kgs0",
+      "beats": [
+        1
+      ],
+      "text": "Mọi thứ dường như vẫn còn ở nguyên vị trí.",
+      "style": "Scene: Afternoon, the present: Tí and Tèo return to Bà's old house. Dust in the sunlight, everything left in its place; hushed, a little mysterious. Speaker: the storyteller of this film, a warm Vietnamese man around forty; calm, unhurried, intimate, never theatrical. Delivery: Hushed, looking around an old quiet house. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 3.2,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t02-narrator-a.mp3",
+          "duration": 3.32,
+          "rate": 3.74,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.169
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t02-narrator-b.mp3",
+          "duration": 3.76,
+          "rate": 3.48,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.087
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t02-narrator-c.mp3",
+          "duration": 4.32,
+          "rate": 2.8,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.125
+        }
+      ],
+      "file": "t02-narrator.mp3",
+      "picked": "b",
+      "duration": 3.76,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    },
+    {
+      "id": "t03",
+      "voice": "narrator",
+      "voice_name": "voice_feeo2dn7kgs0",
+      "beats": [
+        2
+      ],
+      "text": "Và dưới chiếc áo màu xanh…",
+      "style": "Scene: Afternoon, the present: Tí and Tèo return to Bà's old house. Dust in the sunlight, everything left in its place; hushed, a little mysterious. Speaker: the storyteller of this film, a warm Vietnamese man around forty; calm, unhurried, intimate, never theatrical. Delivery: Building suspense, slow, trailing off at the ellipsis. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 3.2,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t03-narrator-a.mp3",
+          "duration": 2.33,
+          "rate": 3.74,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.169
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t03-narrator-b.mp3",
+          "duration": 2.58,
+          "rate": 2.82,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.119
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t03-narrator-c.mp3",
+          "duration": 2.64,
+          "rate": 3.08,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.038
+        }
+      ],
+      "file": "t03-narrator.mp3",
+      "picked": "c",
+      "duration": 2.64,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    }
+  ]
+}

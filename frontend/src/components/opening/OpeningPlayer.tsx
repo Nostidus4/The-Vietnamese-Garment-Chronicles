@@ -81,6 +81,8 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
 
   const speak = useCallback(
     (screenId: string, n: number) => {
+      // opened with ?sound=1 (no click on the question): make the player on the first voiced line
+      if (sound && !audio.current) audio.current = new Audio();
       const el = audio.current;
       const hit = takeOf(manifests[screenId], n);
       if (!el || !sound || !hit) return hit ? undefined : hush(); // an unvoiced line never cuts the take on air

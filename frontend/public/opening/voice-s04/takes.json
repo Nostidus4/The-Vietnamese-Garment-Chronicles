@@ -1,0 +1,71 @@
+{
+  "screen": "s04",
+  "takes": [
+    {
+      "id": "t01",
+      "voice": "narrator",
+      "voice_name": "voice_feeo2dn7kgs0",
+      "beats": [
+        0,
+        1,
+        2
+      ],
+      "text": "Rồi Tí bất chợt im lặng. Một chiếc áo dài màu xanh thiên thanh xuất hiện trên màn hình. Cậu nhớ đến bà.",
+      "style": "Scene: Late at night, alone at his desk under a lamp. The mood turns still and tender as Tí sees a sky-blue áo dài and thinks of his grandmother. Speaker: the storyteller of this film, a warm Vietnamese man around forty; calm, unhurried, intimate, never theatrical. Delivery: Quieter, slower, the mood suddenly turns still. Then: Soft and tender, almost a whisper of memory. Then: Very soft and slow, full of feeling, a gentle pause before \"bà\". Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 3.2,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t01-narrator-a.mp3",
+          "duration": 10.29,
+          "rate": 3.62,
+          "cues": [
+            0.0,
+            3.78,
+            8.31
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.131
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t01-narrator-b.mp3",
+          "duration": 10.51,
+          "rate": 3.76,
+          "cues": [
+            0.0,
+            3.91,
+            9.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.175
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t01-narrator-c.mp3",
+          "duration": 8.73,
+          "rate": 3.85,
+          "cues": [
+            0.0,
+            2.97,
+            7.13
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.203
+        }
+      ],
+      "file": "t01-narrator.mp3",
+      "picked": "a",
+      "duration": 10.29,
+      "cues": [
+        0.0,
+        3.78,
+        8.31
+      ],
+      "cues_ok": true
+    }
+  ]
+}

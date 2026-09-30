@@ -4,7 +4,7 @@
     {
       "id": "narrator",
       "name": "Người dẫn truyện",
-      "voice_id": "voice_6f0qs6qx9q28",
+      "voice_id": "voice_feeo2dn7kgs0",
       "fallback": "Charon",
       "gender": "male",
       "rate": 3.2,
@@ -60,7 +60,7 @@
     {
       "id": "ti",
       "name": "Tí",
-      "voice_id": "voice_a97hvysqxmh9",
+      "voice_id": "voice_w63a0tyyo0ik",
       "fallback": "Puck",
       "gender": "male",
       "rate": 4.1,
@@ -83,7 +83,7 @@
     {
       "id": "teo",
       "name": "Tèo",
-      "voice_id": "voice_1upa9xssoy34",
+      "voice_id": "voice_854h7h8iklwd",
       "fallback": "Iapetus",
       "gender": "male",
       "rate": 3.4,
@@ -123,7 +123,7 @@
     {
       "id": "ba",
       "name": "Bà",
-      "voice_id": "voice_o4x49m3k9ibb",
+      "voice_id": "voice_7ugngowg6z47",
       "fallback": "Sulafat",
       "gender": "female",
       "rate": 2.7,

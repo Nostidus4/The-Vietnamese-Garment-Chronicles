@@ -12,7 +12,7 @@ export function LetterPage() {
   return (
     <div className="flex h-full flex-col">
       <p className="m-0 text-[0.6rem] tracking-[0.3em] text-stone-500">GỬI CON</p>
-      <div className="font-hand mt-1 space-y-1.5 text-[0.98rem] leading-[1.38]" style={{ color: YOUNG }}>
+      <div className="font-hand mt-2 space-y-2 text-[1.12rem] leading-[1.42]" style={{ color: YOUNG }}>
         <p className="m-0">Con của Bà,</p>
         <p className="m-0">
           Hồi hai mươi tuổi, Bà xếp vào túi hai bộ áo rồi theo một người con trai đi xa. Từ ấy, đi đến đâu Bà cũng ghi lại:

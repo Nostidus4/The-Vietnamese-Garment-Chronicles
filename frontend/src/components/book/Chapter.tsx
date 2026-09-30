@@ -175,11 +175,47 @@ export function ChapterTitle({
         </p>
       )}
       <RouteSketch stops={j.stops} reached={reached} onStop={onStop} />
+      <ChapterContents region={region} />
       {j.wear[0] && (
         <div className="mt-auto text-[0.85rem] [&_p]:text-[0.9rem] [&_span]:text-[0.8rem]">
           <WeatherNote regionId={region.id} garmentId={j.wear[0].garment} place={ch.province} />
         </div>
       )}
+    </div>
+  );
+}
+
+/** What the chapter holds and the stamps still to collect: a small checklist for the trip. */
+function ChapterContents({ region }: { region: Region }) {
+  const j = region.journey!;
+  const { stop: got, game: won, postcard } = useStamps();
+  const stamps = j.stops.filter((s) => s.stamp);
+  const games = j.stops.filter((s) => s.game);
+  const have = stamps.filter((s) => got.includes(`${region.id}:${s.id}`)).length;
+  const played = games.filter((s) => won.includes(`${region.id}:${s.id}`)).length;
+  return (
+    <div className="mt-1 rounded-md bg-white/35 px-3 py-2">
+      <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">TRONG CHƯƠNG NÀY</p>
+      <ul className="m-0 mt-1 grid list-none grid-cols-2 gap-x-3 gap-y-0.5 p-0 text-[0.76rem] text-stone-700">
+        <li>🗺 {j.stops.length} điểm dừng</li>
+        <li>🎲 {played}/{games.length} trò chơi</li>
+        <li>📮 tem {have}/{stamps.length}</li>
+        <li>✉ {postcard.includes(region.id) ? "đã có bưu thiếp" : "1 bưu thiếp cuối chương"}</li>
+      </ul>
+      <div className="mt-1.5 flex flex-wrap gap-1" aria-label="Tem các điểm dừng">
+        {stamps.map((s) => {
+          const on = got.includes(`${region.id}:${s.id}`);
+          return (
+            <span
+              key={s.id}
+              className={`flex h-8 w-8 items-center justify-center rounded-full border-2 text-center text-[0.38rem] leading-[1.05] ${on ? "rotate-[-8deg] border-[#B5452E] text-[#B5452E]" : "border-dashed border-stone-400/60 text-stone-400"}`}
+              title={s.stamp ?? ""}
+            >
+              {s.stamp}
+            </span>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -271,14 +307,17 @@ export function StopDiary({ stop, index, data, chapterPlace, regionId }: { stop:
           {stop.hat ? (
             <HatReveal hat={stop.hat} />
           ) : stop.frame ? (
-            <Polaroid frame={stop.frame} i={index % 3} className="float-right mb-1 ml-3 mt-1 w-[44%]" />
+            // a scrapbook page: the picture glued across the top, Bà's words under it
+            <div className="mb-1 mt-2 flex justify-center">
+              <Polaroid frame={stop.frame} i={index % 3} className={stop.entry.length > 380 ? "w-[62%]" : "w-[74%]"} />
+            </div>
           ) : stop.keepsake ? (
             <KeepsakeArt kind={stop.keepsake} label={chapterPlace} />
           ) : null}
           <DateLine>
             <RichText text={stop.date} />
           </DateLine>
-          <Entry text={stop.entry} />
+          <Entry text={stop.entry} size={stop.entry.length < 330 ? "1.06rem" : "0.98rem"} />
         </div>
         {stop.ti && <Pencil text={stop.ti} />}
         <div className="mt-auto">
@@ -480,7 +519,11 @@ export function StopGame({ stop, regionId, data }: { stop: Stop; regionId: strin
         {isWon ? (
           <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="flex h-full flex-col">
             <p className="font-hand m-0 text-[1.05rem] leading-snug text-[#5E7F4A]">✓ {game.done}</p>
-            {game.teo && <TeoNotes notes={[game.teo]} data={data} />}
+            {game.teo && (
+              <div className="mt-2">
+                <TeoNotes notes={[game.teo]} data={data} corner={false} />
+              </div>
+            )}
             <div className="mt-auto flex flex-wrap items-center gap-3 pt-2">
               {stop.today && (
                 <button type="button" onClick={() => setView("today")} className="rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">

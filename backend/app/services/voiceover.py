@@ -74,7 +74,7 @@ class Take:
 
 
 def _sentence(t: str) -> str:
-    t = t.strip()
+    t = " ".join(t.split())  # line breaks are for the page layout, not for the voice
     return t if re.search(r"[.!?…]$", t) else t + "."
 
 

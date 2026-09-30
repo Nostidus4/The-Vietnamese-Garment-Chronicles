@@ -7,7 +7,6 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
-import { createPortal } from "react-dom";
 import { ensureMigrated, pagesOf, useDuKy } from "@/lib/dukyBook";
 import { markStamp } from "@/lib/stamps";
 import { track } from "@/lib/track";
@@ -23,7 +22,8 @@ import type {
   TeoNote,
 } from "@/lib/types";
 import { WeatherNote } from "../chapter/WeatherNote";
-import { RichText, useAnchored } from "./Glossary";
+import { RichText } from "./Glossary";
+import { TeoPin } from "./TeoPin";
 import { FOCUS } from "./vietnam-geo";
 
 export const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
@@ -81,68 +81,12 @@ export const Pencil = ({ text }: { text: string }) => (
 );
 
 /**
- * Tèo's notes: the only place facts and sources live. On the page they take one small yellow tab
- * ("Tèo tra lại · 2"); a click opens them as sticky notes over the page, so Bà's words keep the room.
+ * Tèo's notes: the only place facts and sources live. On the page they are just a red pin in the corner;
+ * a click opens them in the middle of the screen, like one of Bà's letters (see TeoPin).
  */
-export function TeoNotes({ notes, data }: { notes: TeoNote[]; data: Bootstrap }) {
+export function TeoNotes({ notes, data, corner = true }: { notes: TeoNote[]; data: Bootstrap; corner?: boolean }) {
   const shown = notes.filter((n) => n.verified || DRAFT);
-  const { ref, at, show, hide, style } = useAnchored<HTMLButtonElement>(270);
-  if (!shown.length) return null;
-  const unesco = shown.find((n) => n.unesco)?.unesco;
-  return (
-    <div className="mt-2">
-      <button
-        ref={ref}
-        type="button"
-        onMouseDown={(e) => e.stopPropagation()}
-        onClick={(e) => {
-          e.stopPropagation();
-          if (at) hide();
-          else show();
-        }}
-        aria-expanded={!!at}
-        className="teo-tab inline-flex items-center gap-1.5 bg-[#fbe99a] px-2 py-0.5 text-[0.68rem] text-[#1f3a78] shadow-[1px_2px_4px_rgba(60,40,0,0.22)]"
-      >
-        <span aria-hidden>📌</span>
-        Tèo tra lại · {shown.length}
-        {unesco && <b className="rounded-sm bg-[#1f3a78] px-1 text-[0.55rem] text-[#fbe99a]">UNESCO</b>}
-      </button>
-      {at &&
-        createPortal(
-          <div data-anchored role="dialog" aria-label="Ghi chú của Tèo" className="fixed z-[70] flex flex-col gap-2" style={style}>
-            {shown.map((n, i) => {
-              const src = n.sources.map((id) => data.sources[id]).find(Boolean);
-              return (
-                <div
-                  key={n.text}
-                  className="relative bg-[#fbe99a] px-3 pb-2 pt-3 text-[0.78rem] leading-snug text-[#1f3a78] shadow-[2px_6px_14px_rgba(60,40,0,0.3)]"
-                  style={{ rotate: `${[-1.2, 1, -0.5][i % 3]}deg` }}
-                >
-                  <span className="absolute left-1/2 top-[-5px] h-2.5 w-9 -translate-x-1/2 bg-white/55" aria-hidden />
-                  {n.unesco && (
-                    <b className="mr-1 rounded-sm bg-[#1f3a78] px-1 text-[0.6rem] text-[#fbe99a]">UNESCO {n.unesco}</b>
-                  )}
-                  {n.text}
-                  <span className="mt-1 block truncate text-[0.62rem] opacity-80">
-                    {src?.url ? (
-                      <a href={src.url} target="_blank" rel="noreferrer" className="underline">
-                        nguồn: {src.title}
-                      </a>
-                    ) : src ? (
-                      `nguồn: ${src.title}`
-                    ) : (
-                      "chưa có nguồn"
-                    )}
-                  </span>
-                  <span className="block text-right text-[0.62rem] italic opacity-80">– Tèo{n.verified ? "" : ", đang kiểm tra"}</span>
-                </div>
-              );
-            })}
-          </div>,
-          document.body,
-        )}
-    </div>
-  );
+  return <TeoPin notes={shown} data={data} corner={corner} />;
 }
 
 /* ---------- keepsakes glued on the page ---------- */
@@ -625,32 +569,8 @@ export function WearDiary({
     .filter((c) => c !== "trang") // a white swatch would vanish on the paper
     .map((c) => data.colors[c]?.hex)
     .find(Boolean);
-  // Tèo's first note on every Mặc page: what must stay, what needs care, what is free (from the garment data)
-  const zones: TeoNote | null = g
-    ? {
-        text: (["keep", "caution", "free"] as const)
-          .map((lv) => {
-            const parts = g.zones
-              .filter((z) => z.level === lv)
-              .map((z) => z.part);
-            return parts.length ? `${LEVEL[lv]}: ${parts.join(", ")}` : null;
-          })
-          .filter(Boolean)
-          .join(" · "),
-        unesco: null,
-        sources: g.sources.slice(0, 1),
-        verified: g.verified,
-      }
-    : null;
   return (
-    <Sheet
-      page={{
-        ...page,
-        teo: [...(zones ? [zones] : []), ...page.teo].slice(0, 3),
-      }}
-      data={data}
-      keepsake={<KeepsakeArt kind="fabric" color={color} />}
-    >
+    <Sheet page={page} data={data} keepsake={<KeepsakeArt kind="fabric" color={color} />}>
       <div className="mt-3 flex items-center gap-3">
         <p className="font-display m-0 text-[1.15rem] leading-tight text-stone-800">
           {g?.name_vi ?? page.garment}
@@ -670,6 +590,54 @@ export function WearDiary({
           </span>
         )}
       </div>
+      {g && (
+        <p className="m-0 mt-1 text-[0.8rem] leading-snug text-stone-600">
+          {g.summary}
+        </p>
+      )}
+      {g && (
+        <div className="mt-3 rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
+          <p className="font-hand m-0 text-[1rem]" style={{ color: OLD }}>
+            Khi mặc, con nhớ:
+          </p>
+          <ul className="m-0 mt-1 list-none space-y-1 p-0 text-[0.78rem] leading-snug text-stone-700">
+            {(["keep", "caution", "free"] as const).map((lv) => {
+              const parts = g.zones.filter((z) => z.level === lv);
+              if (!parts.length) return null;
+              return (
+                <li key={lv} className="flex gap-2">
+                  <span
+                    className={`mt-0.5 shrink-0 rounded-sm px-1.5 text-[0.62rem] font-semibold ${lv === "keep" ? "bg-[#27354f] text-amber-50" : lv === "caution" ? "bg-[#D9A43B] text-[#3b2a10]" : "bg-[#5E7F4A] text-white"}`}
+                  >
+                    {LEVEL[lv]}
+                  </span>
+                  <span>
+                    {parts.map((z, i) => (
+                      <span key={z.part}>
+                        {i > 0 && " · "}
+                        {z.part}
+                        {z.note && <span className="text-stone-500"> ({z.note})</span>}
+                      </span>
+                    ))}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+      {g && g.wearing_steps.length > 0 && (
+        <ol className="m-0 mt-2 list-none space-y-0.5 p-0 text-[0.76rem] leading-snug text-stone-700">
+          {g.wearing_steps.map((st, k) => (
+            <li key={st.title} className="flex gap-2">
+              <span className="font-display shrink-0 text-[#8a4b2a]">{k + 1}.</span>
+              <span>
+                <b className="font-semibold">{st.title}:</b> {st.detail}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
     </Sheet>
   );
 }
