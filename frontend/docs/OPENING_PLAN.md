@@ -21,13 +21,13 @@ Tên file ảnh đang lệch số với kịch bản (không có Screen-6, có S
 | S02 "Tại sao?" | Screen-2.png | Cùng lớp học, 3 bong bóng ý nghĩ (áo dài, nón lá, dải lụa), cut-in Tí | Khung cảnh trùng S01 → dùng được cú "match cut" |
 | S03 Một Việt Nam mình chưa biết | Screen-3.png | Laptop, 6 card trang phục, 3 cut-in Tí | Card nào là trang phục nào cần B xác nhận để làm spotlight đúng tên |
 | S04 Chiếc áo màu xanh | Screen-4.png | Đêm, đèn bàn, laptop áo dài xanh, cut-in mắt Tí | – |
-| S05 Tiếng máy may | Screen-5.png | Bà may áo, Tí nhỏ, 2 cut-in | ✅ Đã tạo lại (29/09): bỏ khuy tết trên mọi áo; áo đỏ theo cấu trúc áo ngũ thân, Bà mặc áo cánh, Tí mặc sơ mi cổ bẻ. Chờ người phụ trách nội dung đối chiếu Research 6.2 |
+| S05 Tiếng máy may | Screen-5.png | Bà may áo, Tí nhỏ, 2 cut-in | ✅ Đã tạo lại (29/09): bỏ khuy tết trên mọi áo; áo đỏ theo cấu trúc áo ngũ thân, Bà mặc áo cánh, Tí mặc sơ mi cổ bẻ. Soát lại 30/09: vạt áo đỏ ở cut-in giữ nguyên (nhìn nghiêng ba phần tư, đoạn khuy thẳng là đường sườn) |
 | S06 "Chúng còn để nhớ" | Screen-7.png | Bà trẻ áo dài xanh, bà già cất áo vào hộp, Tí nhỏ; nửa phải là khoảng trống | Khoảng trống bên phải rất hợp để đặt 4 câu thoại |
 | S07 Căn nhà cũ | Screen-8.png | Ba nhịp ngang: cổng → phòng may → hộp gỗ | Bố cục ngang → dùng camera pan thay cho parallax 3 lớp |
-| S08 Việt Phục Du Ký | Screen-9.png | Tí cầm cuốn sổ, ô nhãn trống, cut-in chỉ thêu | ✅ Đã tạo lại (29/09): bìa khớp title-page, bỏ chùa mái cong; áo trên ma-nơ-canh và trong khung ảnh là áo dài, không khuy tết. Chờ người phụ trách nội dung xác nhận |
+| S08 Việt Phục Du Ký | Screen-9.png | Tí cầm cuốn sổ, ô nhãn trống, cut-in chỉ thêu | ✅ Đã tạo lại (29/09): bìa khớp title-page, bỏ chùa mái cong; áo trên ma-nơ-canh và trong khung ảnh là áo dài, không khuy tết. 30/09: bỏ dải sóng kiểu seigaiha trong ô nhãn |
 | S09 Những trang chưa viết xong | Screen-10.png | Sách mở: 4 phác thảo vùng + trang trống bên phải, sợi chỉ vàng | – |
 | S10 Hành trình bắt đầu | Screen-11.png | Vòng xoáy giấy/vải, Tí cầm bookmark, làng hội Kinh Bắc | – |
-| Bìa sách chính | page/title-page.png | Bìa vải chàm tách nền, ô nhãn trống | ✅ Đã gắn vào web |
+| Bìa sách chính | page/title-page.png | Bìa vải chàm tách nền, ô nhãn trống | ✅ Đã gắn vào web. 30/09: bỏ dải sóng kiểu seigaiha trong ô nhãn |
 
 **Phong cách:** các screen vẽ nhân vật hơi chibi, trong khi khối STYLE ở tab Art Bible ghi "not chibi". Cần sửa khối STYLE theo đúng các screen này để những ảnh tạo sau (bàn may, stamp, avatar Compass) cùng một giọng vẽ.
 
