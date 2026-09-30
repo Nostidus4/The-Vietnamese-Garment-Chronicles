@@ -430,6 +430,15 @@ body {
     to { opacity: 1; filter: blur(0); transform: none; }
   }
   @media (prefers-reduced-motion: reduce) { .ink-in { animation: none; opacity: 1; } }
+  /* a game nobody has touched yet: the first things to press glow gently */
+  .game-fresh [data-hint] { animation: hint-glow 1.6s ease-in-out infinite; }
+  @keyframes hint-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(217, 164, 59, 0); }
+    50% { box-shadow: 0 0 0 4px rgba(217, 164, 59, 0.55); }
+  }
+  .game-fresh g[data-hint] circle { animation: hint-svg 1.6s ease-in-out infinite; }
+  @keyframes hint-svg { 50% { stroke: #D9A43B; stroke-width: 1.4; } }
+  @media (prefers-reduced-motion: reduce) { .game-fresh [data-hint], .game-fresh g[data-hint] circle { animation: none; outline: 2px solid #D9A43B; } }
   .book-size {
     color: #f3ead7;
     background: rgba(20, 12, 7, 0.5);

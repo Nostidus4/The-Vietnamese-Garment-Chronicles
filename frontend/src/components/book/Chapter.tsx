@@ -12,7 +12,8 @@ import type { Bootstrap, Festival, Photo, Region, Stop, TimeOfDay } from "@/lib/
 import { WeatherNote } from "../chapter/WeatherNote";
 import { PostcardViewer } from "../duky/PostcardViewer";
 import { DateLine, DRAFT, Entry, KeepsakeArt, Margin, OLD, Pencil, place, Polaroid, TeoNotes, YOUNG } from "./Diary";
-import { GameBody } from "./Games";
+import { GameBody, HOW_TO } from "./Games";
+import { TeoPin } from "./TeoPin";
 import { RichText } from "./Glossary";
 
 /** Where someone who wants to write a province's chapter starts (README, "Viết một chương cho tỉnh của bạn"). */
@@ -509,11 +510,20 @@ export function StopGame({ stop, regionId, data }: { stop: Stop; regionId: strin
   return (
     <div className="flex h-full flex-col">
       <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">TRÒ CHƠI · {stop.place.toUpperCase()}</p>
-      <p className="font-display m-0 text-[1.15rem] leading-tight" style={{ color: YOUNG }}>
-        {game.title}
-      </p>
+      <div className="flex items-start gap-2">
+        <p className="font-display m-0 flex-1 text-[1.15rem] leading-tight" style={{ color: YOUNG }}>
+          {game.title}
+        </p>
+        <TeoPin
+          corner={false}
+          label="Cách chơi: Tèo hướng dẫn"
+          badge="Cách chơi"
+          data={data}
+          notes={[{ title: "Cách chơi", text: "", steps: HOW_TO[game.kind], sources: [], verified: true }]}
+        />
+      </div>
       <p className="m-0 mt-0.5 text-[0.72rem] leading-snug text-stone-600">
-        <RichText text={game.intro} />
+        <RichText text={game.intro} /> <span className="whitespace-nowrap text-[#8a4b2a]">📌 Bấm ghim để xem cách chơi.</span>
       </p>
       <div className="mt-2 min-h-0 flex-1">
         {isWon ? (

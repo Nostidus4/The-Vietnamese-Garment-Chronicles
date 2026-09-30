@@ -167,6 +167,7 @@ function DongHo({ game, onWin }: Props) {
             type="button"
             disabled={on(i) || smudged || done}
             onClick={() => press(i)}
+            data-hint
             className="flex items-center gap-2 rounded border border-stone-300 bg-white/60 px-2 py-1 text-left text-[0.74rem] text-stone-700 hover:bg-amber-50 disabled:opacity-45"
           >
             <span className="h-4 w-4 shrink-0 rounded-sm border border-black/20" style={{ background: color(i) }} />
@@ -224,6 +225,7 @@ function QuanHo({ game, onWin }: Props) {
               <button
                 key={i}
                 type="button"
+                data-hint
                 disabled={right}
                 onClick={() => setPicked(i)}
                 className={`rounded border px-2 py-1 text-left text-[0.76rem] ${picked === i ? (i === r.answer ? "border-[#5E7F4A] bg-[#5E7F4A]/10" : "border-[#B5452E] bg-[#B5452E]/10") : "border-stone-300 hover:bg-amber-50"}`}
@@ -306,6 +308,7 @@ function NguThan({ game, onWin }: Props) {
             <button
               key={i}
               type="button"
+              data-hint
               onClick={() => setSel(i)}
               className={`rounded border px-2 py-0.5 text-[0.72rem] ${sel === i ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
             >
@@ -377,6 +380,7 @@ function CayBeo({ game, onWin }: Props) {
             <button
               key={s}
               type="button"
+              data-hint
               onClick={() => setSel(s)}
               className={`rounded border px-2 py-0.5 text-[0.72rem] ${sel === s ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
             >
@@ -412,6 +416,7 @@ function XepDo({ game, onWin }: Props) {
           <button
             key={i}
             type="button"
+            data-hint
             onClick={() => toggle(i)}
             className={`rounded border px-2 py-1 text-left text-[0.74rem] ${bag.includes(i) ? "border-[#27354f] bg-[#27354f]/10" : "border-stone-300 bg-white/60 hover:bg-amber-50"}`}
             aria-pressed={bag.includes(i)}
@@ -463,7 +468,7 @@ function KhuyBac({ game, onWin }: Props) {
           const y = 18 + i * (62 / Math.max(1, n - 1));
           const fastened = i < done;
           return (
-            <g key={i} onClick={() => click(i)} className="cursor-pointer" role="button" aria-label={game.rounds[i].label ?? `Khuy ${i + 1}`}>
+            <g key={i} onClick={() => click(i)} data-hint={i === 0 ? true : undefined} className="cursor-pointer" role="button" aria-label={game.rounds[i].label ?? `Khuy ${i + 1}`}>
               <rect x="40" y={y - 4} width="20" height="8" fill="transparent" />
               <circle cx="45" cy={y} r="2.6" fill={fastened ? "#e8ecf2" : "none"} stroke={fastened ? "#fff" : "#9aa2b5"} strokeDasharray={fastened ? undefined : "1 1"} />
               <circle cx="55" cy={y} r="2.6" fill={fastened ? "#e8ecf2" : "none"} stroke={fastened ? "#fff" : "#9aa2b5"} strokeDasharray={fastened ? undefined : "1 1"} />
@@ -551,7 +556,7 @@ function Xoe({ game, onWin }: Props) {
           );
         })}
       </motion.svg>
-      <button type="button" onClick={tap} className="mt-2 rounded-full bg-[#27354f] px-5 py-2 text-sm text-amber-50 active:scale-95">
+      <button type="button" data-hint onClick={tap} className="mt-2 rounded-full bg-[#27354f] px-5 py-2 text-sm text-amber-50 active:scale-95">
         {running ? "Bước!" : "Bắt đầu nghe trống"}
       </button>
       <p className="m-0 mt-1 text-[0.7rem] text-stone-500">
@@ -638,7 +643,7 @@ function CongChieng({ game, onWin }: Props) {
         ))}
       </div>
       {state === "idle" && (
-        <button type="button" onClick={start} className="mt-3 rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
+        <button type="button" data-hint onClick={start} className="mt-3 rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
           Nghe nghệ nhân đánh
         </button>
       )}
@@ -705,7 +710,7 @@ function Det({ game, onWin }: Props) {
       )}
       <div className="mt-1 flex gap-1.5">
         {palette.map((c) => (
-          <button key={c} type="button" onClick={() => pick(c)} className="h-7 w-7 rounded-full border-2 border-white shadow" style={{ background: c }} aria-label={`Sợi màu ${c}`} />
+          <button key={c} type="button" data-hint onClick={() => pick(c)} className="h-7 w-7 rounded-full border-2 border-white shadow" style={{ background: c }} aria-label={`Sợi màu ${c}`} />
         ))}
       </div>
       {msg && <Hint tone="bad">{msg}</Hint>}
@@ -725,7 +730,62 @@ const KINDS: Record<Game["kind"], (p: Props) => React.ReactElement> = {
   det: Det,
 };
 
+/** How to play each game, shown when the reader presses Tèo's "Cách chơi" pin. */
+export const HOW_TO: Record<Game["kind"], string[]> = {
+  "dong-ho": [
+    "Bấm một ô màu ở dưới tờ giấy để ấn bản khắc màu đó xuống.",
+    "In lần lượt các màu đỏ, vàng, xanh (thứ tự nào cũng được).",
+    "Bản đen (than lá tre) phải in sau cùng. In đen sớm là tranh lem, bấm “Lấy tờ giấy mới” để in lại.",
+  ],
+  "quan-ho": [
+    "Đọc câu trong khung xanh: đó là lời người đối diện.",
+    "Bấm vào một trong ba cách đáp bên dưới.",
+    "Đúng thì bấm “Lượt tiếp →”; sai thì đọc lời nhắc rồi chọn lại.",
+  ],
+  "ngu-than": [
+    "Bấm một mảnh thân áo ở hàng nút phía dưới (nút đổi màu xanh là đang chọn).",
+    "Bấm vào đúng chỗ của mảnh ấy trên chiếc áo (chỗ viền nét đứt).",
+    "Ghép đủ năm thân thì hàng khuy bên phải hiện ra.",
+  ],
+  "cay-beo": [
+    "Nhìn đồ treo trên đầu mỗi cây sào của từng chiếc ghe.",
+    "Bấm một tấm biển ở dưới (ví dụ “Ghe bán khóm”).",
+    "Bấm vào chiếc ghe khớp với tấm biển. Coi chừng: có ghe treo mà không bán!",
+  ],
+  "xep-do": [
+    "Bấm vào món đồ để cho vào túi (có 🎒 là đã chọn), bấm lần nữa để bỏ ra.",
+    "Chọn đủ những món hợp với một ngày trên ghe.",
+    "Bấm “Xong, lên ghe!” để kiểm tra.",
+  ],
+  "khuy-bac": [
+    "Bấm vào đôi khuy trên cùng, sát cổ áo.",
+    "Cài lần lượt từ trên xuống, không bỏ sót đôi nào.",
+    "Cài đủ thì hàng khuy bạc sáng lên.",
+  ],
+  xoe: [
+    "Bấm “Bắt đầu nghe trống”.",
+    "Mỗi khi trống vang (vòng tròn giữa sáng lên), bấm “Bước!” hoặc gõ phím cách.",
+    "Đủ số bước đúng nhịp là con đã vào vòng xòe.",
+  ],
+  "cong-chieng": [
+    "Bấm “Nghe nghệ nhân đánh” và lắng nghe từng tiếng chiêng.",
+    "Khi thấy chữ “Đến lượt con”, bấm lại các chiếc chiêng đúng thứ tự vừa nghe.",
+    "Mỗi lượt dài thêm một tiếng. Lệch thì nghệ nhân đánh lại cho con nghe.",
+  ],
+  det: [
+    "Đọc tên hàng đang dệt (khung vàng nét đứt trên tấm vải).",
+    "Bấm vào cuộn sợi có màu đúng ý nghĩa của hàng ấy.",
+    "Dệt đủ các hàng là tấm vải hiện ra.",
+  ],
+};
+
 export function GameBody(p: Props) {
   const C = KINDS[p.game.kind];
-  return <C {...p} />;
+  const [fresh, setFresh] = useState(true);
+  // until the first touch, the first thing to press glows (elements marked data-hint)
+  return (
+    <div className={fresh ? "game-fresh" : undefined} onPointerDownCapture={() => setFresh(false)} onKeyDownCapture={() => setFresh(false)}>
+      <C {...p} />
+    </div>
+  );
 }

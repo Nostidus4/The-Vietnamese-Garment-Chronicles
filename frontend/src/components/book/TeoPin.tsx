@@ -8,10 +8,29 @@ import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import type { Bootstrap } from "@/lib/types";
 
-export type TeoNoteView = { title?: string; text: string; unesco?: number | null; sources: string[]; verified: boolean };
+export type TeoNoteView = {
+  title?: string;
+  text: string;
+  unesco?: number | null;
+  sources: string[];
+  verified: boolean;
+  steps?: string[]; // a how-to (game rules): numbered steps, no source line
+};
 
 /** The red pushpin; `corner` puts it in the page padding (bottom right) so it never covers text. */
-export function TeoPin({ notes, data, corner = true, label }: { notes: TeoNoteView[]; data: Pick<Bootstrap, "sources">; corner?: boolean; label?: string }) {
+export function TeoPin({
+  notes,
+  data,
+  corner = true,
+  label,
+  badge,
+}: {
+  notes: TeoNoteView[];
+  data: Pick<Bootstrap, "sources">;
+  corner?: boolean;
+  label?: string;
+  badge?: string; // text on the pin instead of the number of notes, e.g. "Cách chơi"
+}) {
   const [open, setOpen] = useState(false);
   if (!notes.length) return null;
   const unesco = notes.some((n) => n.unesco);
@@ -31,11 +50,11 @@ export function TeoPin({ notes, data, corner = true, label }: { notes: TeoNoteVi
       >
         <PinSvg />
         <span className="rounded-full bg-[#fbe99a] px-1.5 text-[0.62rem] font-semibold leading-4 text-[#1f3a78] shadow-[1px_1px_3px_rgba(60,40,0,0.3)] transition-transform group-hover:scale-110">
-          {notes.length}
-          {unesco ? " · UNESCO" : ""}
+          {badge ?? notes.length}
+          {!badge && unesco ? " · UNESCO" : ""}
         </span>
       </button>
-      <TeoModal open={open} onClose={() => setOpen(false)} notes={notes} data={data} />
+      <TeoModal open={open} onClose={() => setOpen(false)} notes={notes} data={data} heading={badge ? "Tèo chỉ con" : undefined} />
     </>
   );
 }
@@ -118,6 +137,17 @@ function StickyNote({ note, i, data, heading }: { note: TeoNoteView; i: number; 
       {note.title && <b className="font-display block text-[1.05rem]">{note.title}</b>}
       {note.unesco && <b className="mr-1.5 rounded-sm bg-[#1f3a78] px-1.5 py-0.5 text-[0.7rem] text-[#fbe99a]">UNESCO {note.unesco}</b>}
       {note.text}
+      {note.steps && (
+        <ol className="m-0 mt-2 list-none space-y-1.5 p-0">
+          {note.steps.map((s, k) => (
+            <li key={k} className="flex gap-2">
+              <span className="font-display flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1f3a78] text-[0.7rem] text-[#fbe99a]">{k + 1}</span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ol>
+      )}
+      {!note.steps && (
       <span className="mt-2 block text-[0.72rem] opacity-80">
         {src?.url ? (
           <a href={src.url} target="_blank" rel="noreferrer" className="underline">
@@ -129,6 +159,7 @@ function StickyNote({ note, i, data, heading }: { note: TeoNoteView; i: number; 
           "chưa có nguồn"
         )}
       </span>
+      )}
       <span className="font-hand block text-right text-[0.95rem] opacity-90">– Tèo{note.verified ? "" : ", đang kiểm tra"}</span>
     </motion.div>
   );

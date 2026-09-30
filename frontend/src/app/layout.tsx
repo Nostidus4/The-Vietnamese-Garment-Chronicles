@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro, Patrick_Hand, Playfair_Display } from "next/font/google";
 import Link from "next/link";
+import { AmbientSound } from "@/components/AmbientSound";
 import { ServerWake } from "@/components/ServerWake";
 import "./globals.css";
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {/* full reload on purpose so the opening restarts from the first screen */}
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a href="/?opening=1">Xem lại mở đầu</a>
+          <AmbientSound />
         </nav>
         <div className="h-10" />
         {children}

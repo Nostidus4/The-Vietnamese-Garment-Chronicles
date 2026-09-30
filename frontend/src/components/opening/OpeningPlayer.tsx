@@ -122,6 +122,11 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     [manifests],
   );
   useEffect(() => () => audio.current?.pause(), []);
+  // tell the background music to step back while a voice speaks (components/AmbientSound)
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("vpdk-voice", { detail: speaking }));
+  }, [speaking]);
+  useEffect(() => () => void window.dispatchEvent(new CustomEvent("vpdk-voice", { detail: false })), []);
 
   const scenes = useRef<Record<string, SceneHandle | null>>({});
   const ov = useRef<Partial<Overlays>>({});
