@@ -24,6 +24,7 @@ function initialState() {
     debug: q.get("debug") === "1",
     noClick: q.get("noclick") === "1", // testing only: keyboard-driven, clicks ignored
     start: q.get("start"), // e.g. ?opening=1&start=s05 – open straight on a screen while tuning
+    sound: q.get("sound") === "1" ? true : q.get("sound") === "0" ? false : null, // skip the voice-over question
   };
 }
 
@@ -55,7 +56,7 @@ export default function Home() {
     <>
       {!data && logo === "off" && <div className="fixed inset-0 z-40 bg-[#140c07]" />}
       {logo !== "off" && <LogoIntro ready={!!data} onLeave={() => setLogo("leaving")} onDone={() => setLogo("off")} />}
-      {mode === "opening" && data && data.opening.length > 0 && <OpeningPlayer screens={data.opening} flashEl={flashEl} onFinish={finishOpening} pace={opts.pace} debug={opts.debug} noClick={opts.noClick} startId={opts.start} hold={logo === "on"} />}
+      {mode === "opening" && data && data.opening.length > 0 && <OpeningPlayer screens={data.opening} flashEl={flashEl} onFinish={finishOpening} pace={opts.pace} debug={opts.debug} noClick={opts.noClick} startId={opts.start} hold={logo === "on"} sound={opts.sound} />}
       {(mode === "desk" || data?.opening.length === 0) && data && <DeskScene data={data} landing={landing} />}
       <div ref={setFlashEl} className="flash-layer pointer-events-none fixed inset-0 z-50 opacity-0" aria-hidden />
     </>

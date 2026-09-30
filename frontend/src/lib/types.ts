@@ -231,6 +231,9 @@ export interface Beat {
   type_ms: number;
   camera: Camera | null;
   effects: Effect[];
+  voice?: "narrator" | "co-giao" | "ti" | "teo" | "ti-nho" | "ba" | null; // who reads it (Gemini TTS)
+  delivery?: string | null;
+  say?: string | null;
 }
 
 export interface Transition {

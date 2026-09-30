@@ -25,6 +25,7 @@ from .schemas import (
     Rule,
     Shop,
     Source,
+    Voice,
 )
 
 CONTENT_DIR = Path(__file__).resolve().parents[2] / "content"
@@ -54,6 +55,7 @@ class Content:
     shops: dict[str, Shop]
     opening: list[OpeningScreen]
     glossary: dict[str, GlossaryTerm] = field(default_factory=dict)
+    voices: dict[str, Voice] = field(default_factory=dict)
 
     def media_exists(self, rel: str | None) -> bool:
         return bool(rel) and (self.root / "media" / rel).is_file()
@@ -130,6 +132,7 @@ def load(root: Path = CONTENT_DIR) -> tuple[Content, Report]:
         shops=_index(lst("shops.json", "shops", Shop), "shops.json", r),
         opening=lst("opening.json", "screens", OpeningScreen),
         glossary=_index(lst("glossary.json", "terms", GlossaryTerm), "glossary.json", r) if (root / "glossary.json").is_file() else {},
+        voices=_index(lst("voices.json", "voices", Voice), "voices.json", r),
     )
     for jf in sorted((root / "regions").glob("*.json")) if (root / "regions").is_dir() else []:
         raw = _read(jf, r)
@@ -338,7 +341,17 @@ def _check_refs(c: Content, r: Report) -> None:
     ids = [s.id for s in c.opening]
     if len(ids) != len(set(ids)):
         r.errors.append("opening.json: duplicate screen id")
+    for v in c.voices.values():
+        if not v.voice_id:
+            r.warnings.append(f"voices.json [{v.id}]: no designed voice_id yet (falls back to {v.fallback})")
     for s in c.opening:
+        voiced = [b for b in s.beats if b.voice]
+        for n, b in enumerate(s.beats):
+            if b.voice and b.voice not in c.voices:
+                r.errors.append(f"opening.json [{s.id}] beat {n}: unknown voice '{b.voice}'")
+        manifest = frontend_public / "opening" / f"voice-{s.id}" / "takes.json"
+        if voiced and frontend_public.exists() and not manifest.is_file():
+            r.warnings.append(f"opening.json [{s.id}]: no voice-over yet (python -m scripts.generate_voices takes --screen {s.id})")
         if frontend_public.exists() and not (frontend_public / s.image.lstrip("/")).is_file():
             r.warnings.append(f"opening.json [{s.id}]: image not found at frontend/public{s.image}")
 

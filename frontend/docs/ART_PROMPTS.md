@@ -51,7 +51,7 @@ Tỉ lệ 16:9 · file: characters/ti-sheet.png
 {STYLE}
 {AVOID}
 
-Character turnaround sheet of TÍ, a 17-year-old Vietnamese high-school boy, on a plain cream background.
+Character turnaround sheet of TÍ, a 13-year-old Vietnamese lower-secondary-school boy wearing a red Young Pioneer scarf, on a plain cream background.
 Show: front view, three-quarter view, side view (full body), plus 4 head close-ups with expressions: excited grin, confused, surprised, proud.
 Look: slim, medium height, warm tan skin, short messy black hair with a cowlick, bright curious eyes, quick expressive eyebrows.
 Outfit: Vietnamese school uniform — white short-sleeved shirt, navy trousers, white sneakers, a faded red backpack with a small keychain.
@@ -67,7 +67,7 @@ Tỉ lệ 16:9 · file: characters/teo-sheet.png
 {STYLE}
 {AVOID}
 
-Character turnaround sheet of TÈO, a 17-year-old Vietnamese high-school boy, best friend of Tí, on a plain cream background.
+Character turnaround sheet of TÈO, a 13-year-old Vietnamese lower-secondary-school boy wearing a red Young Pioneer scarf, best friend of Tí, on a plain cream background.
 Show: front, three-quarter and side view (full body), plus 4 head close-ups: thoughtful, gently skeptical (one eyebrow up), explaining with a finger raised, warm smile.
 Look: a bit taller than Tí, neat short black hair parted to the side, round thin-framed glasses, calm eyes, light-medium skin.
 Outfit: same Vietnamese school uniform (white short-sleeved shirt, navy trousers), a small cloth notebook always in hand, a pen clipped to the shirt pocket.
@@ -75,7 +75,7 @@ Personality in pose: calm, upright, observant.
 Keep proportions and outfit identical across all views.
 ```
 
-*Tuỳ chọn:* nếu đội muốn một cặp nam–nữ (hợp với các trang phục nữ như áo tứ thân), đổi Tèo thành "a 17-year-old Vietnamese high-school girl, neat shoulder-length black hair, round glasses, school uniform white áo dài on Mondays" và giữ các phần còn lại. Chốt một lần rồi dùng xuyên suốt.
+*Đã chốt (28/09/2026):* Tí và Tèo là hai bạn nam khoảng 13 tuổi, học cấp 2, đeo khăn quàng đỏ, đúng như 10 screen opening; giọng đọc cũng theo tuổi này (xem `VOICE_PROMPTS.md`).
 
 ### 2.3 Bà (hai độ tuổi)
 
