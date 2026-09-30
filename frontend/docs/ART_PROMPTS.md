@@ -588,3 +588,178 @@ No text anywhere.
 - **Dải sóng trong ô nhãn** (`title-page.png` và `s08.png`) giống sóng seigaiha của Nhật nên đã bỏ. Không tạo lại bằng AI vì bản AI làm lệch khung nhãn và mất nền trong suốt của bìa. Thay vào đó, dải sóng được phủ bằng giấy kem lấy từ phía trên ô nhãn trong chính ảnh gốc, nên phần còn lại giữ nguyên từng pixel và vị trí ô nhãn trong `BookCover.tsx` không đổi. AVOID đã thêm seigaiha.
 - **Vạt áo đỏ ở cut-in S05:** giữ nguyên. Ma-nơ-canh quay nghiêng ba phần tư và tay Tí che sườn phải, nên đoạn khuy chạy thẳng xuống là đường sườn nhìn nghiêng, không phải đường cài giữa ngực. Đã thử sửa bằng Nano Banana (6 bản), không bản nào rõ hơn ảnh gốc. Nếu cần vẽ lại, cho ma-nơ-canh quay thẳng mặt để thấy vạt đi tới nách phải.
 
+## 13. Chương Huế – "Mùa mưa năm hai mươi tuổi" (30/09)
+
+Tranh cho các trang nhật ký của Bà trong chương Huế (cốt truyện: `docs/HUE_CHAPTER.md`). Đây là **ký ức của Bà**: Huế những năm 1970, nên không có xe máy đời mới, biển hiệu, điện thoại hay khách du lịch hiện đại. Ảnh **"Hôm nay" của Tí là ảnh thật** (Wikimedia Commons, có ghi tác giả và giấy phép), không tạo bằng AI.
+
+**Chung cho cả mục:**
+- Gửi kèm ảnh tham chiếu `characters/ba-sheet.png` (Bà trẻ, bên trái) và `characters/ong-sheet.png` (mục 13.0).
+- Thêm khối **MEMORY** ngay sau `{STYLE}` để cả chương có chung một ánh màu ký ức:
+
+```
+MEMORY: this is a remembered scene from the 1970s. Slightly faded warm palette, soft edges, gentle film-like grain, a thin cream vignette at the borders. Period details only: bicycles, cyclos, wooden sampans, tiled roofs, conical hats; no modern cars, scooters, phones, plastic signs or tourists.
+```
+
+- Tỉ lệ **4:3** cho tranh dán trong trang nhật ký (trừ khi ghi khác). Lưu ở `backend/content/media/hue/`.
+- Không vẽ chữ, không vẽ bản đồ (bản đồ lộ trình Huế là SVG do web vẽ).
+
+### 13.0 Ông thời trẻ và mẹ Ông (character sheet)
+
+Tỉ lệ 16:9 · file: characters/ong-sheet.png
+
+```
+{STYLE}
+{AVOID}
+
+Character sheet on a plain cream background, two people side by side.
+LEFT — ÔNG, Tí's grandfather as a young man of about 24 in 1970s Huế: slim, a little too thin, short neat black hair, kind shy smile, thoughtful eyes. Wearing a plain white short-sleeved shirt tucked into dark trousers, leather sandals; in a second pose, a black áo ngũ thân (five-panel robe with a standing collar and buttons down the right side) with a black khăn đóng turban. Front and three-quarter views, plus a close-up laughing.
+RIGHT — his MOTHER, about 50: small, upright, hair in a low bun, calm reserved face that looks strict but has warm eyes. Wearing a dark purple (tím Huế) áo dài with a standing collar, simple jade bangle. Front and three-quarter views, plus a close-up with a faint, rare smile.
+Keep faces, proportions and clothing identical across views.
+```
+
+### 13.1 Ga Huế, một chiều mưa
+
+file: hue/h01-ga-hue.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Evening drizzle at an old colonial-era railway station in Huế: a long low building with pale yellow walls and a tiled roof, lamps just lit, wet platform reflecting warm light. Young Bà (attached sheet, left) in her sky-blue áo dài under a dark wool jacket, holding a small cloth bag, looking up at the rain with nervous hope. Young Ông (attached sheet) beside her, taking her bag, holding a black umbrella over both of them. Soft blue dusk, fine slanting rain lines, puddles. Quiet, tender, a little anxious.
+```
+
+### 13.2 Sáng sớm trên sông Hương
+
+file: hue/h02-song-huong-som.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Dawn on the Perfume River in Huế: silver-grey mist over still water, a small wooden sampan with a curved rattan canopy, an old woman rowing standing at the stern. Young Bà sits in the boat in her sky-blue áo dài, a plain conical hat on her lap; young Ông sits opposite, pointing toward a long steel bridge with six repeated arched spans faintly visible through the mist. Water so calm it mirrors the boat. Pale gold light just touching the mist. Hushed, dreamy.
+```
+
+### 13.3 Nón bài thơ soi nắng (2 ảnh cho hiệu ứng "soi lên nắng")
+
+Ảnh A · tỉ lệ 1:1 · file: hue/h03a-non-la.png
+
+```
+{STYLE}
+{AVOID}
+
+A single Vietnamese conical hat (nón lá) seen from below against a bright sky, filling most of the square frame, centered. Fine palm-leaf ribs radiating from the tip, delicate thread rings, warm translucent cream-green leaf color glowing with sunlight behind it. Plain soft sky background. Nothing else in the image.
+```
+
+Ảnh B · tỉ lệ 1:1 · nền trắng (web tự tách nền) · file: hue/h03b-non-an.png
+
+```
+{STYLE}
+{AVOID}
+
+Delicate silhouette paper-cut in dark indigo on a plain white background, designed to be layered inside a conical hat seen from below: a small steel bridge with six arched spans over a river, two swallows flying above, and a sprig of bamboo on the left, all arranged in a ring around the center like a hidden picture between the hat's leaves. Thin, elegant shapes, lots of empty space, no text.
+```
+
+*Web xếp ảnh B chồng dưới ảnh A. Khi người đọc rê chuột hoặc chạm để "soi lên nắng", ảnh A sáng dần lên và hình cây cầu hiện ra. Câu thơ viết tay do web hiển thị, không để AI viết chữ.*
+
+### 13.4 Trưa nắng trong Đại Nội
+
+file: hue/h04-ngo-mon.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Harsh midday sun inside the Imperial City of Huế: the Noon Gate (Ngọ Môn) behind — a massive stone base with three arched gateways and a two-tiered wooden pavilion on top with Vietnamese-style gently curved yellow-tiled roofs. In the foreground young Bà in a slightly too-large borrowed white áo dài, holding up one flap so it doesn't drag, squinting in the sun; young Ông beside her, completely absorbed, listening to music from a side hall, a closed black umbrella forgotten in his hand. Short strong shadows, heat shimmer, a few frangipani trees.
+```
+
+### 13.5 Bữa cơm ra mắt mẹ
+
+file: hue/h05-mam-com.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Interior of an old Huế garden house (nhà rường) with dark wooden columns, a low table with a family meal: many tiny dishes neatly arranged like a still life. Young Bà sits stiffly at the table, a small rice bowl just fallen and rolling on the floor, her face frozen in embarrassment. Ông's mother (attached sheet, purple áo dài) is rising calmly from her seat, holding out a new bowl, her face gentle. Other family members pause with chopsticks in the air. Soft rainy daylight from an open door, a garden with areca palms outside. The moment just before kindness.
+```
+
+### 13.6 Chiều ở chùa Thiên Mụ
+
+tỉ lệ 3:4 · file: hue/h06-thien-mu.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Late afternoon on the hill of Thiên Mụ pagoda above the Perfume River: the tall seven-tiered octagonal brick tower (Phước Duyên) in warm light, pine trees, stone steps. Young Ông and young Bà stand at the edge of the hill looking at the river, not at each other, a small distance between them. Orange and lavender sky, the river bending away into soft hills, a sampan far below. Faint circular ripples in the air suggest the sound of a bronze bell. Still, full of a question not yet answered.
+```
+
+### 13.7 Đêm thả hoa đăng
+
+file: hue/h07-hoa-dang.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Night on the Perfume River during a lantern-floating festival: hundreds of small paper lotus lanterns with candles drifting on dark water, their reflections trembling. On the stone steps of the river bank, Ông's mother gently hands young Bà a lantern; Bà kneels to set it on the water next to the mother's own lantern. Young Ông stands behind them, smiling. Warm candle glow on faces, deep indigo night, distant boats with lights. Quiet and sacred, not a crowded party.
+```
+
+### 13.8 Chiếc rương và áo ngũ thân
+
+tỉ lệ 3:4 · file: hue/h08-ruong-ao.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Close, intimate scene: an old dark-wood chest with brass corners opened on a woven mat. Ông's mother's hands (older, with a jade bangle) lift out a folded áo ngũ thân in faded deep blue silk — five-panel robe with a standing collar and small cloth buttons running down the right side — and offer it to young Bà's open hands. Only hands, the robe and the chest are in focus; faces out of frame. Soft window light, dust in the air, a sprig of dried flowers in the chest. Tender, like a blessing.
+```
+
+### 13.9 Bưu thiếp Huế (cuối chương)
+
+tỉ lệ 3:2 · file: hue/h09-buu-thiep.png
+
+```
+{STYLE}
+{AVOID}
+
+The picture side of an old illustrated postcard of Huế, as if painted by hand in the 1970s: the Perfume River at sunset with a six-span steel bridge, a sampan, the tower of Thiên Mụ pagoda small on a far hill, a girl in a purple áo dài with a conical hat walking along the bank. Slightly worn postcard edges, a tiny stamp-sized blank square at top right. No text anywhere.
+```
+
+### 13.10 Trang mở miền: Miền Trung
+
+tỉ lệ 21:9 · file: hue/h10-mien-trung.png
+
+```
+{STYLE}
+{AVOID}
+
+Wide panoramic vignette of central Vietnam's narrow land: on the left green mountains of the Trường Sơn range, on the right the blue sea with small fishing boats, and a thin ribbon of rice fields, villages and a winding road between them. Dunes, casuarina trees, a lighthouse far away. Painted like the header of a hand-made atlas page, soft edges fading into cream paper at the top and bottom. No map outlines, no text.
+```
+
+### 13.11 Bảng file chương Huế
+
+| Ảnh | Tỉ lệ | File (trong `backend/content/media/`) | Dùng ở |
+| --- | --- | --- | --- |
+| Ông và mẹ Ông | 16:9 | characters/ong-sheet.png | tham chiếu (không hiển thị) |
+| Ga Huế chiều mưa | 4:3 | hue/h01-ga-hue.png | Điểm 1 |
+| Sông Hương buổi sớm | 4:3 | hue/h02-song-huong-som.png | Điểm 2 |
+| Nón lá + hình ẩn | 1:1 ×2 | hue/h03a-non-la.png, hue/h03b-non-an.png | Điểm 2 (tương tác) |
+| Ngọ Môn trưa nắng | 4:3 | hue/h04-ngo-mon.png | Điểm 3 |
+| Mâm cơm ra mắt | 4:3 | hue/h05-mam-com.png | Điểm 4 |
+| Chùa Thiên Mụ | 3:4 | hue/h06-thien-mu.png | Điểm 5 |
+| Đêm hoa đăng | 4:3 | hue/h07-hoa-dang.png | Điểm 6 |
+| Rương và áo ngũ thân | 3:4 | hue/h08-ruong-ao.png | Điểm 7 |
+| Bưu thiếp Huế | 3:2 | hue/h09-buu-thiep.png | Phong thư cuối chương |
+| Miền Trung | 21:9 | hue/h10-mien-trung.png | Trang mở miền |
+
+Tạo xong chạy `python -m scripts.check_content`. Nhớ chép prompt và bản được chọn vào tab Tổng hợp Prompt (Form 7).
+
