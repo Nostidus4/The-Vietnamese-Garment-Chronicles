@@ -180,3 +180,12 @@ Hai vùng này đang khóa có chủ ý (`lock_note`): trang phục các dân t�
 1. **Hộp thư của Bà + hiệu ứng đọc lại thư** (làm ngay, dùng được với bưu thiếp Huế).
 2. **Bắc Ninh** và **Cần Thơ**: nội dung đã có nguồn một phần, trò chơi không cần âm thanh. Làm 2 chương này trước.
 3. **Sơn La** và **Đắk Lắk**: làm khung trò chơi và bản nháp `community_review`, rồi song song tìm người duyệt. Chưa duyệt thì chưa bật trên web thật.
+
+
+## Cập nhật 01/10: mở Sơn La và Đắk Lắk
+
+- Hai chương đã **mở cho mọi người đọc**, đầu chương có dòng "đang chờ người ở đó đọc lại và góp ý". Thử đồ AI cho hai bộ trang phục vẫn **khóa** (vùng giữ `status: locked`).
+- Nội dung đã rà theo nguồn (thêm vào `sources.json`): UNESCO (Xòe Thái 2021, Cồng chiêng 2005/2008), Heritage – Vietnam Airlines (áo cóm, cúc bạc số lẻ, cổ áo Thái Đen/Thái Trắng, váy xỉn, tằng cẩu), Báo Lào Cai (khăn piêu), Báo Văn Hóa (Xên lẩu nó, Tết Xíp xí, thổ cẩm Ê Đê), Nhân Dân (thổ cẩm, kpin, kteh), Tuổi Trẻ (cầu thang nhà dài, bài của TS. Hồ Tường), VnBusiness (lễ cúng bến nước), LSVN (Lễ hội Cà phê Buôn Ma Thuột 2025).
+- **Sửa theo nguồn:** chi tiết "cầu thang có hình bầu ngực và trăng" chỉ đúng với cầu thang tấm ván của nhà khá giả; cầu thang chính là một thân cây có số nấc lẻ. Bỏ câu "Lễ hội cà phê hai năm một lần" (chưa xác nhận được). Bỏ mô tả "áo nữ màu trắng" (của người Mạ, không phải Ê Đê).
+- **Thêm:** trang phục `ao-com`, `tho-cam-e-de`; trang Mặc; "Bà hỏi con" (4 câu mỗi chương, đều có nguồn); điểm dừng Lễ hội (Xên lẩu nó, Tết Xíp xí; lễ cúng bến nước, Lễ hội Cà phê); 8 thuật ngữ cho Tèo; trò cài cúc bạc giờ có 7 cúc (số lẻ) và trò dệt dùng đúng ý nghĩa màu.
+- **Vẫn cần người trong cộng đồng đọc:** tên gọi, lời kể của chị Mai và anh Y Blăk (nhân vật hư cấu), ý nghĩa từng dải hoa văn.

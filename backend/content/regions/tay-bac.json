@@ -15,7 +15,10 @@
       "ti": "Bà tên Vân à? Giờ mình mới biết!",
       "teo": [],
       "keepsake": "leaf",
-      "point": null,
+      "point": {
+        "lat": 21.56,
+        "lon": 103.52
+      },
       "frame": {
         "image": "/regions/tay-bac/t01-deo-suong.png",
         "caption": "Đường về bản",
@@ -55,14 +58,27 @@
       "ti": null,
       "teo": [
         {
-          "text": "Nội dung về trang phục người Thái trong chương này đang chờ cộng đồng góp ý; Tèo chưa ghi dữ kiện nào.",
+          "text": "Phía trước áo cóm có một hàng cúc bạc hình bướm; người Thái quan niệm số cúc phải là số lẻ, tượng trưng cho sự sống và sinh sôi.",
           "unesco": null,
-          "sources": [],
-          "verified": false
+          "sources": [
+            "heritage-thai"
+          ],
+          "verified": true
+        },
+        {
+          "text": "Áo cóm của phụ nữ Thái Đen có cổ tròn đứng, của phụ nữ Thái Trắng có cổ chữ V.",
+          "unesco": null,
+          "sources": [
+            "heritage-thai"
+          ],
+          "verified": true
         }
       ],
       "keepsake": "fabric",
-      "point": null,
+      "point": {
+        "lat": 21.33,
+        "lon": 103.91
+      },
       "frame": {
         "image": "/regions/tay-bac/t02-nha-san.png",
         "caption": "Nhà sàn bên suối",
@@ -85,10 +101,10 @@
       "game": {
         "kind": "khuy-bac",
         "title": "Cài hàng khuy bạc",
-        "intro": "Con gái chị Mai đưa Tí chiếc áo, bảo cài giúp. Con cài từng đôi khuy từ trên cổ xuống, không được bỏ sót đôi nào.",
+        "intro": "Con gái chị Mai đưa Tí chiếc áo cóm, bảo cài giúp. Con cài từng chiếc cúc bạc từ trên cổ xuống, không được bỏ sót chiếc nào. Đếm thử xem có mấy chiếc nhé.",
         "rounds": [
           {
-            "label": "Đôi khuy thứ nhất",
+            "label": "Cúc bạc thứ 1",
             "item": null,
             "prompt": null,
             "choices": [],
@@ -96,7 +112,7 @@
             "explain": null
           },
           {
-            "label": "Đôi khuy thứ hai",
+            "label": "Cúc bạc thứ 2",
             "item": null,
             "prompt": null,
             "choices": [],
@@ -104,7 +120,7 @@
             "explain": null
           },
           {
-            "label": "Đôi khuy thứ ba",
+            "label": "Cúc bạc thứ 3",
             "item": null,
             "prompt": null,
             "choices": [],
@@ -112,7 +128,7 @@
             "explain": null
           },
           {
-            "label": "Đôi khuy thứ tư",
+            "label": "Cúc bạc thứ 4",
             "item": null,
             "prompt": null,
             "choices": [],
@@ -120,7 +136,7 @@
             "explain": null
           },
           {
-            "label": "Đôi khuy thứ năm",
+            "label": "Cúc bạc thứ 5",
             "item": null,
             "prompt": null,
             "choices": [],
@@ -128,7 +144,15 @@
             "explain": null
           },
           {
-            "label": "Đôi khuy thứ sáu",
+            "label": "Cúc bạc thứ 6",
+            "item": null,
+            "prompt": null,
+            "choices": [],
+            "answer": null,
+            "explain": null
+          },
+          {
+            "label": "Cúc bạc thứ 7",
             "item": null,
             "prompt": null,
             "choices": [],
@@ -136,8 +160,15 @@
             "explain": null
           }
         ],
-        "done": "Áo khép lại, hàng khuy bạc sáng lên dưới nắng. Tên và ý nghĩa từng hình khuy sẽ do chính người Thái kể, khi trang này được duyệt.",
-        "teo": null,
+        "done": "Bảy chiếc cúc bạc, số lẻ. Chị bảo người Thái quan niệm số cúc lẻ tượng trưng cho sự sống, sinh sôi.",
+        "teo": {
+          "text": "Phía trước áo cóm có một hàng cúc bạc hình bướm; số cúc là số lẻ.",
+          "unesco": null,
+          "sources": [
+            "heritage-thai"
+          ],
+          "verified": true
+        },
         "community_review": true
       },
       "stamp": "Nhà sàn",
@@ -146,23 +177,26 @@
       "place": "Nhà sàn bên suối",
       "time": "morning",
       "date": "Lời chị Mai kể, chép lại",
-      "entry": "Chị Mai kể: con gái Thái mặc áo cóm ngắn, ôm gọn, hàng khuy bạc chạy dọc phía trước. Chị bảo khuy nào cũng có tên, có ý, mà chị chưa kịp kể hết cho tôi. Tôi chép lại lời chị, để trống một chỗ, chờ khi nào gặp chị thì hỏi tiếp."
+      "entry": "Chị Mai kể: con gái Thái mặc [[áo cóm|ao-com]] ngắn, may ôm người, gấu áo vừa chạm cạp váy. Phía trước là một hàng cúc bạc hình con bướm, chị bảo số cúc bao giờ cũng lẻ. Váy ống dài nhuộm chàm, thắt lưng xanh, đầu đội [[khăn piêu|khan-pieu]]. Chị còn kể các chị có chồng thì búi tóc lên đỉnh đầu, gọi là [[tằng cẩu|tang-cau]]."
     },
     {
       "margin": null,
       "ti": "Nắm tay người lạ mà nhảy, chắc ngại lắm… mà chắc vui lắm.",
       "teo": [
         {
-          "text": "Nghệ thuật Xòe Thái được UNESCO ghi danh.",
+          "text": "Nghệ thuật Xòe Thái được UNESCO ghi danh; xòe vòng, mọi người nắm tay thành vòng tròn, là kiểu phổ biến nhất.",
           "unesco": 2021,
           "sources": [
-            "unesco-ich-vn"
+            "unesco-xoe"
           ],
           "verified": true
         }
       ],
       "keepsake": null,
-      "point": null,
+      "point": {
+        "lat": 21.33,
+        "lon": 103.91
+      },
       "frame": {
         "image": "/regions/tay-bac/t03-dem-xoe.png",
         "caption": "Vòng xòe quanh lửa",
@@ -196,7 +230,14 @@
           }
         ],
         "done": "Con đã vào vòng rồi! Không ai đếm con bước sai mấy lần, chỉ cần nắm tay nhau là đủ.",
-        "teo": null,
+        "teo": {
+          "text": "Xòe được múa trong nghi lễ, đám cưới, hội bản; xòe vòng là kiểu phổ biến nhất.",
+          "unesco": null,
+          "sources": [
+            "unesco-xoe"
+          ],
+          "verified": true
+        },
         "community_review": true
       },
       "stamp": "Xòe",
@@ -205,14 +246,89 @@
       "place": "Đêm xòe",
       "time": "night",
       "date": "Lời chị Mai kể về những đêm xòe",
-      "entry": "Chị Mai hay kể về những đêm xòe ở bản: lửa đốt giữa sân, mọi người nắm tay nhau thành vòng, cứ thế bước theo tiếng trống, tiếng chiêng. Ai đến cũng được kéo vào vòng, không phân biệt người bản hay người lạ. Chị bảo: “Vào vòng xòe rồi là người một nhà.”"
+      "entry": "Chị Mai hay kể về những đêm [[xòe|xoe]] ở bản: lửa đốt giữa sân, mọi người nắm tay nhau thành vòng, bước theo tiếng trống, tiếng chiêng. Ai đến cũng được kéo vào vòng, không phân biệt người bản hay người lạ. Chị bảo: “Vào vòng xòe rồi là người một nhà.”"
+    },
+    {
+      "id": "le-hoi",
+      "place": "Lễ hội",
+      "time": "afternoon",
+      "stamp": "Hội bản",
+      "community_review": true,
+      "point": {
+        "lat": 21.05,
+        "lon": 104.2
+      },
+      "date": "Lời chị Mai kể về những ngày hội",
+      "entry": "Chị Mai bảo mỗi mường một hội. Mùa xuân ở Yên Châu có hội Xên lẩu nó, người ta múa quanh cây xăng bók cầu mưa thuận gió hòa. Ở Phù Yên, Quỳnh Nhai, người Thái Trắng ăn Tết Xíp xí vào tháng Bảy. Hội nào cũng có xòe, có áo cóm mới, có khăn piêu thêu từ mùa trước.",
+      "margin": "Bà chép lại tên các hội, con đi đúng mùa thì hỏi người ở đó kể thêm nhé.",
+      "ti": null,
+      "keepsake": "ticket",
+      "teo": [
+        {
+          "text": "Tết Xíp xí của người Thái Trắng ở Quỳnh Nhai, Phù Yên được công nhận là di sản văn hóa phi vật thể quốc gia.",
+          "unesco": null,
+          "sources": [
+            "bvh-xip-xi"
+          ],
+          "verified": true
+        }
+      ],
+      "frame": {
+        "image": "/regions/tay-bac/t05-le-hoi.png",
+        "caption": "Ngày hội ở bản",
+        "alt": "Cây nêu hội dựng giữa sân bản, cờ vải bay trong gió",
+        "no_people": true,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (t05-le-hoi.png)"
+      },
+      "today": null,
+      "items": [],
+      "hat": null,
+      "game": null,
+      "festivals": [
+        {
+          "id": "xen-lau-no",
+          "name": "Xên lẩu nó",
+          "time": "Mùa xuân, theo lịch âm",
+          "month": 3,
+          "place": "Yên Châu, Sơn La",
+          "text": "Lễ tạ ơn tổ tiên, thần sông, thần núi của người Thái Đen; mọi người múa quanh cây xăng bók cầu mưa thuận gió hòa, mùa màng bội thu.",
+          "review": null,
+          "photo": null,
+          "community_review": true
+        },
+        {
+          "id": "xip-xi",
+          "name": "Tết Xíp xí",
+          "time": "14 tháng Bảy âm lịch",
+          "month": 8,
+          "place": "Quỳnh Nhai, Phù Yên, Sơn La",
+          "text": "Tết của người Thái Trắng: cả nhà quây quần bên mâm cúng, con cháu chúc thọ ông bà, người lớn chúc con trẻ khỏe mạnh.",
+          "review": null,
+          "photo": null,
+          "community_review": true
+        },
+        {
+          "id": "dem-xoe-hoi",
+          "name": "Đêm xòe",
+          "time": "Trong mọi dịp vui của bản",
+          "month": null,
+          "place": "Các bản Thái ở Sơn La",
+          "text": "Lửa giữa sân, vòng người nắm tay nhau, ai đến cũng được mời vào vòng.",
+          "review": null,
+          "photo": null,
+          "community_review": true
+        }
+      ]
     },
     {
       "margin": "Tí mang lá thư này lên rồi. Bà cảm ơn con.",
       "ti": "Con gái chị Mai đọc to lá thư bên bếp lửa. Mẹ chị ngồi nghe, rồi khóc.",
       "teo": [],
       "keepsake": "stamp",
-      "point": null,
+      "point": {
+        "lat": 21.33,
+        "lon": 103.91
+      },
       "frame": {
         "image": "/regions/tay-bac/t04-trao-thu.png",
         "caption": "Lá thư bên bếp lửa",
@@ -238,13 +354,108 @@
     "text": "Cháu chào bà. Mẹ cháu vẫn giữ tấm ảnh hai người ở xưởng may. Lá thư bà gửi, cháu đọc cho mẹ nghe bên bếp lửa. Khi nào bà lên, bản cháu vẫn đợi.",
     "image": "/regions/tay-bac/t09-buu-thiep.png"
   },
-  "wear": [],
+  "wear": [
+    {
+      "garment": "ao-com",
+      "date": "Lời chị Mai kể, chép lại",
+      "keepsake": "fabric",
+      "entry": "Chị Mai may cho mình chiếc [[áo cóm|ao-com]] đầu tiên năm mười lăm tuổi. Chị kể áo phải ôm người, ngắn vừa chạm cạp váy, hàng cúc bạc cài từ cổ xuống. Váy ống nhuộm chàm, thắt lưng xanh buộc ngang. Chiếc [[khăn piêu|khan-pieu]] chị thêu hai đầu, thêu mãi cả mùa đông mới xong, rồi đem tặng người chị thương.",
+      "margin": "Chiếc khăn chị Mai thêu tặng Bà, Bà vẫn gấp trong rương. Con giữ hàng cúc bạc và dáng áo ôm, đừng đổi hoa văn khăn nếu chưa hỏi người Thái nhé.",
+      "ti": "Khăn piêu là lời hẹn ước. Mình mà được tặng một chiếc chắc cũng đỏ mặt.",
+      "teo": [
+        {
+          "text": "Khăn piêu dệt từ sợi bông, thêu hoa văn ở hai đầu khăn; cô gái Thái tự dệt, thêu piêu tặng người yêu như lời ước hẹn.",
+          "unesco": null,
+          "sources": [
+            "baolaocai-pieu"
+          ],
+          "verified": true
+        },
+        {
+          "text": "Đi cùng áo cóm là váy ống (xỉn) bằng vải bông nhuộm chàm và thắt lưng lụa hoặc sợi bông màu xanh.",
+          "unesco": null,
+          "sources": [
+            "heritage-thai"
+          ],
+          "verified": true
+        }
+      ]
+    }
+  ],
   "own": {
     "invite": "Những trang này chờ người ở đây viết."
   },
-  "check": null,
+  "check": {
+    "pre": {
+      "id": "tb-pre",
+      "q": "Con đoán xem: hàng cúc bạc trên áo cóm của phụ nữ Thái có số cúc chẵn hay lẻ?",
+      "choices": [
+        "Số lẻ",
+        "Số chẵn",
+        "Tùy người may"
+      ],
+      "answer": 0,
+      "explain": "Số lẻ. Người Thái quan niệm số cúc lẻ tượng trưng cho sự sống, sinh sôi.",
+      "sources": [
+        "heritage-thai"
+      ],
+      "verified": true
+    },
+    "post": [
+      {
+        "id": "tb-pieu",
+        "q": "Khăn piêu được thêu hoa văn ở đâu?",
+        "choices": [
+          "Ở hai đầu khăn",
+          "Ở giữa khăn",
+          "Không thêu gì"
+        ],
+        "answer": 0,
+        "explain": "Hoa văn thêu ở hai đầu khăn; khăn piêu còn là lời ước hẹn của cô gái Thái.",
+        "sources": [
+          "baolaocai-pieu"
+        ],
+        "verified": true
+      },
+      {
+        "id": "tb-xoe",
+        "q": "Nghệ thuật Xòe Thái được UNESCO ghi danh năm nào?",
+        "choices": [
+          "2021",
+          "2009",
+          "2003"
+        ],
+        "answer": 0,
+        "explain": "Năm 2021, vào danh sách di sản văn hóa phi vật thể đại diện của nhân loại.",
+        "sources": [
+          "unesco-xoe"
+        ],
+        "verified": true
+      },
+      {
+        "id": "tb-xip-xi",
+        "q": "Tết Xíp xí của người Thái Trắng ở Sơn La diễn ra vào ngày nào?",
+        "choices": [
+          "14 tháng Bảy âm lịch",
+          "Mồng Một Tết",
+          "Rằm tháng Giêng"
+        ],
+        "answer": 0,
+        "explain": "Ngày 14 tháng Bảy âm lịch hằng năm.",
+        "sources": [
+          "bvh-xip-xi"
+        ],
+        "verified": true
+      }
+    ]
+  },
   "sources": [
-    "ref-77"
+    "baolaocai-pieu",
+    "bvh-xen-lau-no",
+    "bvh-xip-xi",
+    "heritage-thai",
+    "ref-77",
+    "unesco-xoe"
   ],
   "community_review": true
 }

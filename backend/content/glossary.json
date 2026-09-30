@@ -106,6 +106,78 @@
       "text": "Bài bản quen thuộc nhất của đờn ca tài tử và cải lương Nam Bộ, có những câu ngân rất dài.",
       "sources": [],
       "verified": false
+    },
+    {
+      "id": "ao-com",
+      "term": "Áo cóm",
+      "text": "Áo ngắn, ôm người của phụ nữ Thái, gấu áo vừa chạm cạp váy, phía trước có hàng cúc bạc hình bướm.",
+      "sources": [
+        "heritage-thai"
+      ],
+      "verified": true
+    },
+    {
+      "id": "khan-pieu",
+      "term": "Khăn piêu",
+      "text": "Khăn đội đầu của phụ nữ Thái, dệt từ sợi bông, thêu hoa văn ở hai đầu; cô gái tự thêu tặng người yêu như lời ước hẹn.",
+      "sources": [
+        "baolaocai-pieu"
+      ],
+      "verified": true
+    },
+    {
+      "id": "tang-cau",
+      "term": "Tằng cẩu",
+      "text": "Kiểu búi tóc lên đỉnh đầu của phụ nữ Thái Đen đã có chồng.",
+      "sources": [
+        "heritage-thai"
+      ],
+      "verified": true
+    },
+    {
+      "id": "xoe",
+      "term": "Xòe",
+      "text": "Điệu múa của người Thái ở Tây Bắc, múa trong nghi lễ, đám cưới, hội bản; xòe vòng là kiểu phổ biến nhất. UNESCO ghi danh năm 2021.",
+      "sources": [
+        "unesco-xoe"
+      ],
+      "verified": true
+    },
+    {
+      "id": "nha-dai",
+      "term": "Nhà dài",
+      "text": "Nhà sàn dài của người Ê Đê, cả đại gia đình theo dòng mẹ cùng ở; cầu thang đẽo từ thân cây có số nấc lẻ.",
+      "sources": [
+        "tuoitre-cau-thang"
+      ],
+      "verified": true
+    },
+    {
+      "id": "tho-cam",
+      "term": "Thổ cẩm",
+      "text": "Vải dệt tay nhiều màu trên khung dệt buộc lưng; người Ê Đê dùng làm áo, váy, khố.",
+      "sources": [
+        "nhandan-tho-cam-ede"
+      ],
+      "verified": true
+    },
+    {
+      "id": "kpin",
+      "term": "Kpin",
+      "text": "Khố của đàn ông Ê Đê, dệt từ thổ cẩm.",
+      "sources": [
+        "nhandan-tho-cam-ede"
+      ],
+      "verified": true
+    },
+    {
+      "id": "cong-chieng",
+      "term": "Cồng chiêng",
+      "text": "Nhạc cụ đồng của các dân tộc Tây Nguyên; mỗi dàn từ ba đến mười hai chiếc, mỗi người đánh một chiếc. UNESCO công nhận năm 2005.",
+      "sources": [
+        "unesco-gong"
+      ],
+      "verified": true
     }
   ]
 }

@@ -101,7 +101,7 @@ def test_weather_locked_region_has_no_point(client):
 
 def test_content_report(client):
     rep = client.get("/admin/content-report").json()
-    assert rep["ok"] is True and rep["counts"]["garments"] == 4
+    assert rep["ok"] is True and rep["counts"]["garments"] == 6
 
 
 def test_reload_disabled_without_token(client):

@@ -224,8 +224,9 @@
       "map_note": {
         "title": "Tây Bắc",
         "lines": [
-          "Nhiều cộng đồng với trang phục riêng.",
-          "Chương này đang được xây dựng cùng cộng đồng trước khi mở."
+          "Núi cao, thung lũng lúa bậc thang.",
+          "Chương Sơn La: áo cóm, khăn piêu và đêm xòe.",
+          "Đang chờ người Thái đọc lại."
         ]
       },
       "intro": {
@@ -255,6 +256,9 @@
           "province": "Phú Thọ",
           "status": "waiting"
         }
+      ],
+      "garments": [
+        "ao-com"
       ]
     },
     {
@@ -265,8 +269,9 @@
       "map_note": {
         "title": "Tây Nguyên",
         "lines": [
-          "Cao nguyên đất đỏ, nhà rông và cồng chiêng.",
-          "Chương này đang được xây dựng cùng cộng đồng trước khi mở."
+          "Cao nguyên đất đỏ, rẫy cà phê.",
+          "Chương Đắk Lắk: nhà dài, thổ cẩm, cồng chiêng.",
+          "Đang chờ người Ê Đê đọc lại."
         ]
       },
       "intro": {
@@ -292,6 +297,9 @@
           "province": "Quảng Ngãi",
           "status": "waiting"
         }
+      ],
+      "garments": [
+        "tho-cam-e-de"
       ]
     }
   ]

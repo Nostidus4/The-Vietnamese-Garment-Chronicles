@@ -1,13 +1,55 @@
 {
   "colors": [
-    {"id": "nau-non", "name": "Nâu non", "hex": "#8B5A2B"},
-    {"id": "den", "name": "Đen", "hex": "#1F1F1F"},
-    {"id": "hong-dao", "name": "Hồng đào", "hex": "#F4A6A0"},
-    {"id": "xanh-mint", "name": "Xanh mint", "hex": "#98D8C8"},
-    {"id": "vang-nghe", "name": "Vàng nghệ", "hex": "#E3A21A"},
-    {"id": "tim-hue", "name": "Tím Huế", "hex": "#6B3F7A"},
-    {"id": "xanh-thien-thanh", "name": "Xanh thiên thanh", "hex": "#7EC8E3"},
-    {"id": "do-son", "name": "Đỏ son", "hex": "#C0392B"},
-    {"id": "trang", "name": "Trắng", "hex": "#FAFAFA"}
+    {
+      "id": "nau-non",
+      "name": "Nâu non",
+      "hex": "#8B5A2B"
+    },
+    {
+      "id": "den",
+      "name": "Đen",
+      "hex": "#1F1F1F"
+    },
+    {
+      "id": "hong-dao",
+      "name": "Hồng đào",
+      "hex": "#F4A6A0"
+    },
+    {
+      "id": "xanh-mint",
+      "name": "Xanh mint",
+      "hex": "#98D8C8"
+    },
+    {
+      "id": "vang-nghe",
+      "name": "Vàng nghệ",
+      "hex": "#E3A21A"
+    },
+    {
+      "id": "tim-hue",
+      "name": "Tím Huế",
+      "hex": "#6B3F7A"
+    },
+    {
+      "id": "xanh-thien-thanh",
+      "name": "Xanh thiên thanh",
+      "hex": "#7EC8E3"
+    },
+    {
+      "id": "do-son",
+      "name": "Đỏ son",
+      "hex": "#C0392B"
+    },
+    {
+      "id": "trang",
+      "name": "Trắng",
+      "hex": "#FAFAFA"
+    },
+    {
+      "id": "cham",
+      "name": "Chàm",
+      "hex": "#27324A",
+      "restricted": false
+    }
   ]
 }

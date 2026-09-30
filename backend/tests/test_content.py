@@ -60,14 +60,21 @@ def test_every_region_has_a_diary(content):
 
 def test_locked_region_cannot_have_life_or_people(tmp_path):
     root = _copy(tmp_path)
+    # a locked region whose chapter is not published: only a passing entry and landscapes are allowed
+    regions = root / "regions.json"
+    rdata = json.loads(regions.read_text())
+    for c in next(r for r in rdata["regions"] if r["id"] == "tay-bac")["chapters"]:
+        c["status"] = "waiting"
+    regions.write_text(json.dumps(rdata, ensure_ascii=False))
     p = root / "regions" / "tay-bac.json"
     data = json.loads(p.read_text())
     data["life"] = {"date": "x", "entry": "x", "items": []}
-    data["community_review"] = False  # no longer a community draft: its stops and people are not allowed
+    data["community_review"] = False
     p.write_text(json.dumps(data, ensure_ascii=False))
     _, rep = store.load(root)
-    assert any("must not have 'life'" in e for e in rep.errors)
+    assert any("must not have 'life', 'festivals' or 'wear'" in e for e in rep.errors)
     assert any("must be a community_review draft" in e for e in rep.errors)
+    assert any("must not have 'check'" in e for e in rep.errors)
     assert any("no_people: true" in e for e in rep.errors) or all(st["frame"]["no_people"] for st in data["stops"] if st["frame"])
 
 

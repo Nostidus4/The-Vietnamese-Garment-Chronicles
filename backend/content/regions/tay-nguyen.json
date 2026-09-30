@@ -15,7 +15,10 @@
       "ti": null,
       "teo": [],
       "keepsake": "leaf",
-      "point": null,
+      "point": {
+        "lat": 12.68,
+        "lon": 108.05
+      },
       "frame": {
         "image": "/regions/tay-nguyen/d01-doi-ca-phe.png",
         "caption": "Đồi cà phê mùa khô",
@@ -49,14 +52,19 @@
       "ti": "Nhà dài mấy chục bước! Nhà mình đi mười bước là hết.",
       "teo": [
         {
-          "text": "Nội dung về nhà dài và đời sống người Ê Đê trong chương này đang chờ cộng đồng góp ý; Tèo chưa ghi dữ kiện nào.",
+          "text": "Cầu thang lên nhà dài Ê Đê làm từ một thân cây có số nấc lẻ; nhà khá giả có thêm cầu thang tấm ván, đầu cong hình mũi thuyền, chạm cặp nhũ hoa và vầng trăng khuyết, biểu tượng sự sung túc.",
           "unesco": null,
-          "sources": [],
-          "verified": false
+          "sources": [
+            "tuoitre-cau-thang"
+          ],
+          "verified": true
         }
       ],
       "keepsake": null,
-      "point": null,
+      "point": {
+        "lat": 12.7,
+        "lon": 108.05
+      },
       "frame": {
         "image": "/regions/tay-nguyen/d02-nha-dai.png",
         "caption": "Nhà dài",
@@ -89,14 +97,34 @@
       "place": "Nhà dài",
       "time": "morning",
       "date": "Ông kể về nhà dài",
-      "entry": "Ông kể nhà dài của gia đình anh Y Blăk dài lắm, đi từ đầu này sang đầu kia phải mấy chục bước. Cả đại gia đình cùng ở, mỗi gia đình nhỏ một bếp lửa. Ông ngủ ở gian khách, sáng nào cũng nghe tiếng giã gạo."
+      "entry": "Ông kể [[nhà dài|nha-dai]] của gia đình anh Y Blăk dài lắm, đi từ đầu này sang đầu kia phải mấy chục bước. Cả đại gia đình cùng ở, nhà là của người mẹ, con gái lấy chồng thì chồng về ở nhà vợ. Cầu thang lên nhà đẽo từ một thân cây, số bậc lẻ. Ông ngủ ở gian khách, sáng nào cũng nghe tiếng giã gạo."
     },
     {
       "margin": "Con hỏi giúp Bà xem, hoa văn giữa tấm vải là gì nhé.",
       "ti": null,
-      "teo": [],
+      "teo": [
+        {
+          "text": "Màu nền đen tượng trưng cho đất; đỏ là lòng dũng cảm, sức mạnh; xanh là trời, sông núi; vàng là sự hài hòa, ước mơ.",
+          "unesco": null,
+          "sources": [
+            "bvh-tho-cam-ede"
+          ],
+          "verified": true
+        },
+        {
+          "text": "Một tấm thổ cẩm mất 3–4 tháng mới xong; hoa văn là hoa lá, cây cối, muông thú như chuồn chuồn, rùa, thằn lằn.",
+          "unesco": null,
+          "sources": [
+            "nhandan-tho-cam-ede"
+          ],
+          "verified": true
+        }
+      ],
       "keepsake": "fabric",
-      "point": null,
+      "point": {
+        "lat": 12.7,
+        "lon": 108.05
+      },
       "frame": {
         "image": "/regions/tay-nguyen/d03-khung-det.png",
         "caption": "Khung dệt dưới hiên",
@@ -111,51 +139,58 @@
       "game": {
         "kind": "det",
         "title": "Dệt thử một dải vải",
-        "intro": "Chọn màu sợi cho từng hàng theo lời người dệt kể. Đủ các hàng thì tấm vải hiện ra. Tên và ý nghĩa hoa văn sẽ do chính người Ê Đê kể, khi trang này được duyệt.",
+        "intro": "Chọn màu sợi cho từng hàng theo lời chị kể về ý nghĩa của màu. Đủ các hàng thì tấm vải hiện ra.",
         "rounds": [
           {
-            "label": "Hàng nền",
+            "label": "Hàng nền: màu của đất",
             "item": "#1f1d24",
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Nền sẫm."
+            "explain": "Nền đen là màu của đất."
           },
           {
-            "label": "Hàng viền",
+            "label": "Sọc viền: lòng dũng cảm",
             "item": "#b5452e",
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Sọc đỏ."
+            "explain": "Đỏ là lòng dũng cảm, sức mạnh."
           },
           {
-            "label": "Hàng giữa",
-            "item": "#e8dcc0",
+            "label": "Dải giữa: trời và sông núi",
+            "item": "#3f7a6b",
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Hoa văn sáng."
+            "explain": "Xanh là trời, sông núi."
           },
           {
-            "label": "Hàng viền",
-            "item": "#b5452e",
+            "label": "Sọc viền: sự hài hòa",
+            "item": "#d9a43b",
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Sọc đỏ."
+            "explain": "Vàng là sự hài hòa, ước mơ."
           },
           {
-            "label": "Hàng nền",
+            "label": "Hàng nền: màu của đất",
             "item": "#1f1d24",
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Nền sẫm."
+            "explain": "Nền đen là màu của đất."
           }
         ],
-        "done": "Tấm vải của con đã xong. Tên từng dải hoa văn sẽ do người Ê Đê kể, khi trang này được duyệt.",
-        "teo": null,
+        "done": "Tấm vải của con có đủ đất, lòng dũng cảm, trời sông núi và sự hài hòa. Còn tên từng dải hoa văn thì phải hỏi chính người dệt.",
+        "teo": {
+          "text": "Người Ê Đê chọn màu nền đen tượng trưng cho đất; đỏ là dũng cảm; xanh là trời, sông núi; vàng là hài hòa.",
+          "unesco": null,
+          "sources": [
+            "bvh-tho-cam-ede"
+          ],
+          "verified": true
+        },
         "community_review": true
       },
       "stamp": "Thổ cẩm",
@@ -164,23 +199,26 @@
       "place": "Khung dệt",
       "time": "afternoon",
       "date": "Ông kể về tấm thổ cẩm",
-      "entry": "Chị vợ anh Y Blăk ngồi dệt dưới hiên nhà cả buổi chiều. Ông ngồi xem, thấy mỗi dải hoa văn chị dệt đều có tên, nhưng chị chỉ cười, không giải thích. Trước khi Ông về, chị tặng Ông một tấm thổ cẩm. Tấm vải ấy Bà vẫn giữ, mà đến giờ Bà chưa biết hoa văn trên đó nghĩa là gì."
+      "entry": "Chị vợ anh Y Blăk ngồi dệt [[thổ cẩm|tho-cam]] dưới hiên nhà cả buổi chiều, chân duỗi thẳng, lưng buộc vào khung dệt. Ông ngồi xem, thấy nền vải đen, rồi từng dải đỏ, xanh, vàng hiện dần. Chị bảo một tấm phải dệt mấy tháng. Trước khi Ông về, chị tặng Ông một tấm thổ cẩm. Tấm vải ấy Bà vẫn giữ."
     },
     {
       "margin": "Ông bảo: nghe cồng chiêng xong mới hiểu thế nào là cùng nhau.",
       "ti": null,
       "teo": [
         {
-          "text": "Không gian văn hóa Cồng chiêng Tây Nguyên được UNESCO công nhận.",
+          "text": "Không gian văn hóa Cồng chiêng Tây Nguyên được UNESCO công nhận; mỗi dàn có từ ba đến mười hai chiếc, mỗi người chơi một chiếc chiêng riêng.",
           "unesco": 2005,
           "sources": [
-            "unesco-ich-vn"
+            "unesco-gong"
           ],
           "verified": true
         }
       ],
       "keepsake": null,
-      "point": null,
+      "point": {
+        "lat": 12.7,
+        "lon": 108.05
+      },
       "frame": {
         "image": "/regions/tay-nguyen/d04-cong-chieng.png",
         "caption": "Đêm cồng chiêng",
@@ -220,7 +258,14 @@
           }
         ],
         "done": "Tiếng chiêng của con hòa vào tiếng chiêng của mọi người. Không chiếc nào tự làm nên bài.",
-        "teo": null,
+        "teo": {
+          "text": "Mỗi dàn cồng chiêng có từ ba đến mười hai chiếc, mỗi người đánh một chiếc.",
+          "unesco": null,
+          "sources": [
+            "unesco-gong"
+          ],
+          "verified": true
+        },
         "community_review": true
       },
       "stamp": "Cồng chiêng",
@@ -229,20 +274,189 @@
       "place": "Đêm cồng chiêng",
       "time": "night",
       "date": "Ông kể về đêm cồng chiêng",
-      "entry": "Đêm cuối cùng, cả buôn quây quanh bếp lửa. Mấy người đàn ông mỗi người đeo một chiếc chiêng, chiếc to chiếc nhỏ, đi thành vòng. Ông kể không ai đánh một mình: chiếc chiêng nào cũng chỉ có một tiếng, phải đánh cùng nhau mới thành bài. Ông ngồi nghe đến khi lửa tàn."
+      "entry": "Đêm cuối cùng, cả buôn quây quanh bếp lửa. Mấy người mỗi người cầm một chiếc [[chiêng|cong-chieng]], chiếc to chiếc nhỏ, đi thành vòng. Ông kể không ai đánh một mình: mỗi chiếc chiêng chỉ một tiếng, phải đánh cùng nhau mới thành bài. Ông ngồi nghe đến khi lửa tàn."
+    },
+    {
+      "id": "le-hoi",
+      "place": "Lễ hội",
+      "time": "morning",
+      "stamp": "Bến nước",
+      "community_review": true,
+      "point": {
+        "lat": 12.67,
+        "lon": 108.04
+      },
+      "date": "Ông kể về lễ cúng bến nước",
+      "entry": "Ông kể cuối tháng Chạp, sau mùa thu hoạch, cả buôn làm lễ cúng bến nước. Người Ê Đê tin bến nước có thần linh, nên cúng để tạ ơn mưa thuận gió hòa. Ngày thứ hai buôn đóng cổng, không ai ra vào; ngày thứ ba mới mở. Ông được mời uống rượu cần, ngồi cạnh bếp lửa nghe già làng kể chuyện.",
+      "margin": "Bây giờ Buôn Ma Thuột còn có lễ hội cà phê vào tháng Ba. Con đi dịp ấy thì nhớ ghé buôn nghe chiêng nhé.",
+      "ti": null,
+      "keepsake": "ticket",
+      "teo": [
+        {
+          "text": "Lễ cúng bến nước của người Ê Đê diễn ra vào cuối tháng Chạp, kéo dài ba ngày, để tạ ơn thần linh cho mưa thuận gió hòa; thầy cúng, già làng và chủ bến nước chủ trì.",
+          "unesco": null,
+          "sources": [
+            "vnbusiness-ben-nuoc"
+          ],
+          "verified": true
+        }
+      ],
+      "frame": {
+        "image": "/regions/tay-nguyen/d05-ben-nuoc.png",
+        "caption": "Bến nước của buôn",
+        "alt": "Bến nước trong rừng, ống tre dẫn nước chảy vào máng gỗ",
+        "no_people": true,
+        "prompt": "docs/ART_PROMPTS.md mục 14 (d05-ben-nuoc.png)"
+      },
+      "today": null,
+      "items": [],
+      "hat": null,
+      "game": null,
+      "festivals": [
+        {
+          "id": "cung-ben-nuoc",
+          "name": "Lễ cúng bến nước",
+          "time": "Cuối tháng Chạp, ba ngày",
+          "month": 1,
+          "place": "Các buôn Ê Đê ở Đắk Lắk",
+          "text": "Tạ ơn thần linh ở bến nước cho mưa thuận gió hòa; ngày thứ hai buôn đóng cổng, ngày thứ ba mở cổng.",
+          "review": null,
+          "photo": null,
+          "community_review": true
+        },
+        {
+          "id": "le-hoi-ca-phe",
+          "name": "Lễ hội Cà phê Buôn Ma Thuột",
+          "time": "Tháng Ba (lần thứ 9 khai mạc ngày 10/3/2025)",
+          "month": 3,
+          "place": "Buôn Ma Thuột, Đắk Lắk",
+          "text": "Lễ hội của thủ phủ cà phê, có chương trình nghệ thuật và không gian văn hóa của các dân tộc Tây Nguyên.",
+          "review": null,
+          "photo": null,
+          "community_review": false
+        },
+        {
+          "id": "dem-chieng",
+          "name": "Đêm cồng chiêng",
+          "time": "Trong các lễ của buôn",
+          "month": null,
+          "place": "Các buôn Ê Đê",
+          "text": "Cả buôn quây quanh bếp lửa, mỗi người một chiếc chiêng, đánh cùng nhau thành bài.",
+          "review": null,
+          "photo": null,
+          "community_review": true
+        }
+      ]
     }
   ],
   "letter": {
     "text": "Chiêng nhà mình vẫn đánh mỗi mùa lúa mới. Tấm vải ấy, con cháu hỏi thì nhà mình kể cho nghe. Bao giờ lên, cứ vào nhà dài mà ở. (lời anh Y Blăk gửi Ông, chờ cộng đồng góp ý)",
     "image": "/regions/tay-nguyen/d09-buu-thiep.png"
   },
-  "wear": [],
+  "wear": [
+    {
+      "garment": "tho-cam-e-de",
+      "date": "Ông kể, Bà chép lại",
+      "keepsake": "fabric",
+      "entry": "Ông kể ngày lễ, cả nhà anh Y Blăk mặc đồ [[thổ cẩm|tho-cam]]. Các chị mặc áo và váy dài, nền đen, những dải hoa văn đỏ, vàng, xanh chạy ngang. Anh Y Blăk đóng [[khố|kpin]], mặc áo cùng màu vải. Tấm nào có đính hạt cườm là của lễ lớn. Ông bảo đứng giữa buôn hôm ấy, thấy màu vải như màu của đất và rừng.",
+      "margin": "Tấm thổ cẩm Ông mang về, Bà treo ở đầu giường. Con mặc thổ cẩm thì giữ nền đen và các dải hoa văn; tên hoa văn thì hỏi người Ê Đê con nhé.",
+      "ti": "Đen là đất, đỏ là dũng cảm… Mặc một bộ mà kể được cả một câu chuyện.",
+      "teo": [
+        {
+          "text": "Người Ê Đê làm áo nữ, váy nữ, khố nam (kpin) và áo nam từ thổ cẩm, dệt tay trên khung dệt buộc lưng.",
+          "unesco": null,
+          "sources": [
+            "nhandan-tho-cam-ede",
+            "bvh-tho-cam-ede"
+          ],
+          "verified": true
+        },
+        {
+          "text": "Kỹ thuật kteh kết hợp chỉ màu với hạt cườm, chỉ thấy trên lễ phục hoặc trang phục của nhà khá giả.",
+          "unesco": null,
+          "sources": [
+            "nhandan-tho-cam-ede"
+          ],
+          "verified": true
+        }
+      ]
+    }
+  ],
   "own": {
     "invite": "Những trang này chờ người ở đây viết."
   },
-  "check": null,
+  "check": {
+    "pre": {
+      "id": "tn-pre",
+      "q": "Con đoán xem: màu nền đen trên thổ cẩm Ê Đê tượng trưng cho gì?",
+      "choices": [
+        "Đất",
+        "Đêm tối",
+        "Nỗi buồn"
+      ],
+      "answer": 0,
+      "explain": "Nền đen là màu của đất; đỏ là dũng cảm, xanh là trời và sông núi, vàng là hài hòa.",
+      "sources": [
+        "bvh-tho-cam-ede"
+      ],
+      "verified": true
+    },
+    "post": [
+      {
+        "id": "tn-kpin",
+        "q": "Khố của đàn ông Ê Đê gọi là gì?",
+        "choices": [
+          "Kpin",
+          "Yếm",
+          "Piêu"
+        ],
+        "answer": 0,
+        "explain": "Khố nam gọi là kpin, dệt từ thổ cẩm.",
+        "sources": [
+          "nhandan-tho-cam-ede"
+        ],
+        "verified": true
+      },
+      {
+        "id": "tn-chieng",
+        "q": "Trong một dàn cồng chiêng Tây Nguyên, mỗi người chơi…",
+        "choices": [
+          "Một chiếc chiêng riêng, cả dàn hòa thành bài",
+          "Cả dàn chiêng một mình",
+          "Chỉ gõ một chiếc chiêng to"
+        ],
+        "answer": 0,
+        "explain": "Mỗi người một chiếc, từ ba đến mười hai chiếc hòa thành bài.",
+        "sources": [
+          "unesco-gong"
+        ],
+        "verified": true
+      },
+      {
+        "id": "tn-ben-nuoc",
+        "q": "Lễ cúng bến nước của người Ê Đê thường làm khi nào?",
+        "choices": [
+          "Cuối tháng Chạp, sau mùa thu hoạch",
+          "Giữa mùa mưa",
+          "Ngày Tết Dương lịch"
+        ],
+        "answer": 0,
+        "explain": "Cuối tháng Chạp, kéo dài ba ngày, để tạ ơn mưa thuận gió hòa.",
+        "sources": [
+          "vnbusiness-ben-nuoc"
+        ],
+        "verified": true
+      }
+    ]
+  },
   "sources": [
-    "unesco-ich-vn"
+    "bvh-tho-cam-ede",
+    "lsvn-ca-phe-bmt",
+    "nhandan-tho-cam-ede",
+    "tuoitre-cau-thang",
+    "unesco-gong",
+    "unesco-ich-vn",
+    "vnbusiness-ben-nuoc"
   ],
   "community_review": true
 }

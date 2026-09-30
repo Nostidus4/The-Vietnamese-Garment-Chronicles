@@ -36,7 +36,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
   const kept = withLetter.filter((r) => postcard.includes(r.id)).length;
   const stopsTotal = (r: Region) => r.journey?.stops.filter((st) => st.stamp).length ?? 0;
   const stopsGot = (r: Region) => r.journey?.stops.filter((st) => st.stamp && stop.includes(`${r.id}:${st.id}`)).length ?? 0;
-  const total = data.regions.filter((r) => r.status === "open").length;
+  const total = data.regions.filter((r) => r.status === "open" || r.chapters.some((c) => c.status === "open")).length;
   const worn = new Set(book.pages.filter((p) => p.photos.some((ph) => ph.kind === "real")).map((p) => p.region_id));
   const tried = new Set(book.pages.filter((p) => p.photos.length > 0).map((p) => p.region_id));
   return (
@@ -51,29 +51,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
       <ul className="m-0 mt-2 flex min-h-0 flex-1 list-none flex-col justify-around gap-1 p-0">
         {data.regions.map((r) => {
           const place = r.name.split("/")[0].trim();
-          if (r.status === "locked" && stopsTotal(r) > 0)
-            return (
-              <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-1">
-                <a href={`/?region=${r.id}&page=own`} className="font-display w-[5.5rem] shrink-0 text-[0.8rem] leading-tight text-[#27354f] hover:underline">
-                  {place}
-                  <span className="block font-sans text-[0.58rem] text-stone-500">
-                    tem điểm {stopsGot(r)}/{stopsTotal(r)}
-                  </span>
-                </a>
-                <span className="font-hand text-[0.85rem] text-stone-500">chưa thử đồ: đang chờ cộng đồng góp ý</span>
-                {postcard.includes(r.id) && (
-                  <button
-                    type="button"
-                    onClick={() => setReading(r)}
-                    className="font-hand ml-auto rotate-[-4deg] rounded bg-[#f7e4c8] px-1.5 text-[0.85rem] text-[#8a4b2a] shadow-[1px_2px_4px_rgba(60,35,10,0.25)] hover:rotate-0"
-                    title="Đọc lại thư"
-                  >
-                    ✉ đọc thư
-                  </button>
-                )}
-              </li>
-            );
-          if (r.status === "locked")
+          if (r.status === "locked" && !r.chapters.some((c) => c.status === "open"))
             return (
               <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-1 text-stone-400">
                 <span className="font-display w-[5.5rem] shrink-0 text-[0.8rem] leading-tight">{place}</span>

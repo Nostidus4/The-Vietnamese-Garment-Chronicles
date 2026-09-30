@@ -217,7 +217,8 @@ def _check_refs(c: Content, r: Report) -> None:
         srcs(j.sources, wj)
         pages = [p for p in (j.arrive, j.look, j.life, j.festivals, *j.stops, *j.wear) if p]
         frames = [*(j.look.frames if j.look else []), *(st.frame for st in j.stops if st.frame)]
-        if reg.status == "locked":
+        published = any(ch.status == "open" for ch in reg.chapters)
+        if reg.status == "locked" and not published:
             # locked regions are written with their communities: a passing entry and landscapes, nothing else yet
             if j.life or j.festivals or j.wear:
                 r.errors.append(f"{wj}: locked region must not have 'life', 'festivals' or 'wear'")
@@ -228,6 +229,7 @@ def _check_refs(c: Content, r: Report) -> None:
                     if not f.no_people:
                         r.errors.append(f"{wj}: locked region frames must be landscapes (no_people: true)")
         else:
+            # an open region, or a locked one whose chapter is published (try-on stays closed while locked)
             if not j.wear:
                 r.errors.append(f"{wj}: open region needs at least one 'wear' page")
             for wp in j.wear:
@@ -235,7 +237,7 @@ def _check_refs(c: Content, r: Report) -> None:
                 if wp.garment not in reg.garments:
                     r.errors.append(f"{wj}: wear page garment '{wp.garment}' is not listed for this region")
         if j.check:
-            if reg.status == "locked":
+            if reg.status == "locked" and not published:
                 r.errors.append(f"{wj}: locked region must not have 'check'")
             for q in [j.check.pre, *j.check.post]:
                 if q.answer >= len(q.choices):

@@ -20,7 +20,8 @@ export function NewPageDialog({
   onClose: () => void;
   onCreated: (p: DuKyPage) => void;
 }) {
-  const regions = data.regions.filter((r) => r.status === "open");
+  // regions with garments the reader can wear to an event (their chapter is readable)
+  const regions = data.regions.filter((r) => r.garments.length && (r.status === "open" || r.chapters.some((c) => c.status === "open")));
   const [status, setStatus] = useState(preset.status);
   const [region, setRegion] = useState(regions.find((r) => r.id === preset.region)?.id ?? regions[0]?.id ?? "");
   const garments = (regions.find((r) => r.id === region)?.garments ?? []).map((id) => data.garments.find((g) => g.id === id)!).filter(Boolean);

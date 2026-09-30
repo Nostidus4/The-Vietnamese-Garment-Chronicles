@@ -1,0 +1,84 @@
+{
+  "id": "tho-cam-e-de",
+  "region": "tay-nguyen",
+  "name_vi": "Trang phục thổ cẩm Ê Đê",
+  "name_en": "Ê Đê brocade clothing",
+  "group": "dan-toc",
+  "period": "Trang phục truyền thống của người Ê Đê ở Đắk Lắk",
+  "summary": "Áo, váy của nữ và khố (kpin) của nam dệt từ thổ cẩm nền đen, điểm các dải hoa văn đỏ, xanh, vàng.",
+  "facts": [
+    {
+      "text": "Người Ê Đê làm áo nữ, váy nữ, khố nam (kpin) và áo nam từ thổ cẩm, dệt tay trên khung dệt buộc lưng.",
+      "sources": [
+        "nhandan-tho-cam-ede",
+        "bvh-tho-cam-ede"
+      ]
+    },
+    {
+      "text": "Màu nền đen tượng trưng cho đất; đỏ là lòng dũng cảm, sức mạnh; xanh là trời, sông núi; vàng là sự hài hòa, ước mơ.",
+      "sources": [
+        "bvh-tho-cam-ede"
+      ]
+    },
+    {
+      "text": "Hoa văn là hoa lá, cây cối, muông thú như chuồn chuồn, rùa, thằn lằn: gần gũi với nương rẫy, núi rừng.",
+      "sources": [
+        "nhandan-tho-cam-ede"
+      ]
+    },
+    {
+      "text": "Một tấm thổ cẩm mất 3–4 tháng mới xong; kỹ thuật kteh kết hợp chỉ màu với hạt cườm, chỉ thấy trên lễ phục hoặc trang phục của nhà khá giả.",
+      "sources": [
+        "nhandan-tho-cam-ede"
+      ]
+    }
+  ],
+  "occasions": [
+    "le-hoi",
+    "dam-cuoi",
+    "tet-chua"
+  ],
+  "zones": [
+    {
+      "part": "nền vải đen",
+      "level": "keep",
+      "note": "Màu của đất"
+    },
+    {
+      "part": "các dải hoa văn",
+      "level": "caution",
+      "note": "Mỗi dải có tên và ý nghĩa: hỏi người Ê Đê trước khi đổi"
+    },
+    {
+      "part": "thổ cẩm dệt tay",
+      "level": "keep",
+      "note": null
+    }
+  ],
+  "colors": [
+    "den",
+    "do-son",
+    "vang-nghe",
+    "xanh-mint"
+  ],
+  "default_colors": [
+    "den",
+    "do-son"
+  ],
+  "accessories": [],
+  "must_keep": [
+    "black handwoven brocade base",
+    "horizontal bands of red, yellow and green patterns"
+  ],
+  "must_avoid": [
+    "mixing with other Central Highlands groups' patterns"
+  ],
+  "reference_image": null,
+  "hot_weather_tip": null,
+  "wearing_steps": [],
+  "sources": [
+    "nhandan-tho-cam-ede",
+    "bvh-tho-cam-ede"
+  ],
+  "verified": true
+}

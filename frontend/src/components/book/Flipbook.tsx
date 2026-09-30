@@ -80,7 +80,7 @@ function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) =
   }
   if (j.wear.length) tabs.push({ label: "Mặc", page: at() });
   j.wear.forEach((_, i) => pages.push({ node: <WearDiary region={region} index={i} data={data} onTry={h.tryOn} /> }));
-  if (j.check && region.status === "open") {
+  if (j.check && (region.status === "open" || hasChapter(region))) {
     tabs.push({ label: "Bà hỏi", page: at() });
     pages.push({ node: <AskDiary key={`ask-${region.id}`} region={region} />, still: true });
   }

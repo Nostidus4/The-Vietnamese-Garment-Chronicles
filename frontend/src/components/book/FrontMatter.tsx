@@ -65,7 +65,7 @@ export function TocPage({ data, onRegion }: { data: Bootstrap; onRegion: (id: st
   const stampsOf = (id: string) =>
     [arrived.includes(id), understood.includes(id), pagesOf(book, id).some((p) => p.photos.some((ph) => ph.kind === "real"))].filter(Boolean)
       .length;
-  const total = data.regions.filter((r) => r.status === "open").length * 3;
+  const total = data.regions.filter((r) => r.status === "open" || r.chapters.some((c) => c.status === "open")).length * 3;
   const got = data.regions.reduce((n, r) => n + stampsOf(r.id), 0);
   return (
     <div className="flex h-full flex-col">
@@ -94,7 +94,7 @@ export function TocPage({ data, onRegion }: { data: Bootstrap; onRegion: (id: st
                 </span>
                 <span className="shrink-0 text-right text-[0.62rem] leading-tight text-stone-500">
                   {open.length}/{r.chapters.length} chương
-                  {r.status === "open" && (
+                  {readable && (
                     <span className="mt-0.5 flex justify-end gap-0.5" aria-label={`${n}/3 tem`}>
                       {[0, 1, 2].map((k) => (
                         <span key={k} className={`h-2 w-2 rounded-full border ${k < n ? "border-[#B5452E] bg-[#B5452E]" : "border-stone-400"}`} />

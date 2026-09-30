@@ -655,13 +655,20 @@ export function WearDiary({
         <p className="font-display m-0 text-[1.15rem] leading-tight text-stone-800">
           {g?.name_vi ?? page.garment}
         </p>
-        <button
-          type="button"
-          onClick={() => onTry(page.garment)}
-          className="ml-auto shrink-0 rounded-full bg-[#27354f] px-4 py-1.5 text-[0.8rem] text-amber-50 hover:bg-[#1c2740]"
-        >
-          Mặc thử →
-        </button>
+        {region.status === "open" ? (
+          <button
+            type="button"
+            onClick={() => onTry(page.garment)}
+            className="ml-auto shrink-0 rounded-full bg-[#27354f] px-4 py-1.5 text-[0.8rem] text-amber-50 hover:bg-[#1c2740]"
+          >
+            Mặc thử →
+          </button>
+        ) : (
+          // try-on stays closed until the community has reviewed this garment
+          <span className="ml-auto max-w-[45%] text-right text-[0.66rem] leading-snug text-stone-500">
+            Thử đồ AI mở khi người ở đây đã đọc lại
+          </span>
+        )}
       </div>
     </Sheet>
   );
@@ -838,7 +845,8 @@ export function OwnDiary({
   onTry?: (garment: string) => void;
 }) {
   const j = region.journey!;
-  const open = region.status === "open";
+  const open = region.status === "open" || hasChapter(region);
+  const canTry = region.status === "open";
   const book = useDuKy();
   useEffect(() => {
     ensureMigrated(data.garments);
@@ -887,16 +895,20 @@ export function OwnDiary({
             ) : (
               <div className="flex w-[62%] flex-col items-center gap-2 border-2 border-dashed border-stone-300 p-4 text-center">
                 <p className="m-0 text-[0.72rem] text-stone-500">Chỗ dán ảnh</p>
-                {garments.map((g) => (
-                  <button
-                    key={g.id}
-                    type="button"
-                    onClick={() => onTry?.(g.id)}
-                    className="w-full rounded-full bg-[#27354f] px-3 py-1.5 text-[0.75rem] text-amber-50"
-                  >
-                    Mặc thử {g.name_vi}
-                  </button>
-                ))}
+                {canTry
+                  ? garments.map((g) => (
+                      <button
+                        key={g.id}
+                        type="button"
+                        onClick={() => onTry?.(g.id)}
+                        className="w-full rounded-full bg-[#27354f] px-3 py-1.5 text-[0.75rem] text-amber-50"
+                      >
+                        Mặc thử {g.name_vi}
+                      </button>
+                    ))
+                  : (
+                    <p className="m-0 text-[0.7rem] text-stone-500">Con mặc {garments[0]?.name_vi} đi hội rồi thì dán ảnh vào Du Ký nhé.</p>
+                  )}
               </div>
             )}
           </div>

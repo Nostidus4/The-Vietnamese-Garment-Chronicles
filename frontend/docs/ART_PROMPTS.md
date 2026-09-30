@@ -802,6 +802,7 @@ Cốt truyện ở `docs/CHAPTERS_4.md`, nội dung chạy ở `backend/content/
 | tay-bac/t02-nha-san.png | A wooden stilt house beside a clear stream in a Tây Bắc valley, a loom visible under the raised floor, bamboo and banana trees. No people, no costume detail. |
 | tay-bac/t03-dem-xoe.png | Night in a village yard: a bonfire, a ring of people seen as warm silhouettes holding hands around it, stars above the mountains. Silhouettes only, no faces or costume detail. |
 | tay-bac/t04-trao-thu.png | Close-up of two hands passing an old folded letter beside a kitchen fire in a stilt house, a teapot, smoke curling up. Hands only. |
+| tay-bac/t05-le-hoi.png | A village festival yard in a Tây Bắc valley: a tall decorated festival pole with cloth streamers and bamboo ornaments, stilt houses and mountains behind, soft afternoon light. No people. |
 | tay-bac/t09-buu-thiep.png | Picture side of an old hand-painted postcard: terraced rice fields and a stilt house by a stream in the mountains. Landscape only, no people, blank stamp square, no text. (3:2) |
 
 ### 14.4 Đắk Lắk: "Đêm cồng chiêng" (chờ cộng đồng duyệt, không vẽ người cận cảnh)
@@ -812,6 +813,7 @@ Cốt truyện ở `docs/CHAPTERS_4.md`, nội dung chạy ở `backend/content/
 | tay-nguyen/d02-nha-dai.png | A very long wooden house on stilts in a Central Highlands village, a notched log staircase leading up to the veranda, morning light. No people. |
 | tay-nguyen/d03-khung-det.png | Close-up of hands at a backstrap loom under the eaves of a long house, the woven band shown only as soft blurred colours (dark, red, light), no readable pattern. Hands only. |
 | tay-nguyen/d04-cong-chieng.png | Night, a ring of people as warm silhouettes around a fire, bronze gongs glinting in the firelight. Silhouettes only, no faces or costume detail. |
+| tay-nguyen/d05-ben-nuoc.png | A village water source in the Central Highlands forest: bamboo pipes carrying clear water into a wooden trough by a stream, ferns, morning mist. No people. |
 | tay-nguyen/d09-buu-thiep.png | Picture side of an old hand-painted postcard: coffee hills in bloom and a long house under a big sky. Landscape only, blank stamp square, no text. (3:2) |
 
 Tạo xong chạy `python -m scripts.check_content`, rồi chép prompt và bản được chọn vào tab Tổng hợp Prompt (Form 7).
