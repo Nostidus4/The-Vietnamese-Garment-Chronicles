@@ -195,6 +195,16 @@ Các bước:
 
 Ghi chú của Tèo và thuật ngữ chỉ hiện trên trang thật khi `verified: true` và có nguồn trong `sources.json`.
 
+## Nhạc nền
+
+- Đặt file ở `frontend/public/audio/ambient.mp3`. Có file thì nút **🔊 Nhạc** hiện trên thanh menu; không có thì nút ẩn.
+- Nhạc phát sau cú bấm đầu tiên, lặp lại, tự nhỏ lại khi giọng đọc của phần mở đầu đang nói.
+- Chuẩn bị file (âm lượng nền, làm mờ đầu cuối để lặp êm, bỏ ảnh bìa):
+  ```bash
+  ffmpeg -i "ban-goc.mp3" -map 0:a -af "loudnorm=I=-20:TP=-2:LRA=11,afade=t=in:st=0:d=2.5,afade=t=out:st=<dài-4.5>:d=4.5" -b:a 112k -map_metadata -1 frontend/public/audio/ambient.mp3
+  ```
+- **Bản quyền:** chỉ commit nhạc có giấy phép cho phép dùng trên website và phát tán file (ví dụ CC0, Pixabay Music), và ghi nguồn. Nhạc Artlist ("Licensed for video") chỉ dùng trong video demo, nên `ambient.mp3` hiện đang được `.gitignore` để không bị commit hay deploy.
+
 ## Mở và kiểm tra đoạn opening
 
 | URL | Tác dụng |
