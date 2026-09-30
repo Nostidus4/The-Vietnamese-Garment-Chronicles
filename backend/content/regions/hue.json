@@ -34,10 +34,13 @@
           "verified": true
         },
         {
-          "text": "Cầu Trường Tiền có sáu vài, mười hai nhịp, bắc qua sông Hương.",
+          "text": "Cầu Trường Tiền có sáu nhịp dầm thép, dài chừng 400 m, xây xong năm 1899 thời vua Thành Thái. “Sáu vài mười hai nhịp” là câu hát quen của người Huế.",
           "unesco": null,
-          "sources": [],
-          "verified": false
+          "sources": [
+            "vietnamnews-truong-tien",
+            "wiki-truong-tien"
+          ],
+          "verified": true
         }
       ],
       "frame": {
@@ -139,6 +142,14 @@
             "unesco-ich-vn"
           ],
           "verified": true
+        },
+        {
+          "text": "Ngọ Môn là cổng lớn nhất của Hoàng thành Huế, quay về hướng nam; phía trên là lầu Ngũ Phụng. Cửa giữa chỉ mở khi vua ra vào hay đón sứ thần.",
+          "unesco": null,
+          "sources": [
+            "vov-hue-gates"
+          ],
+          "verified": true
         }
       ],
       "frame": {
@@ -213,11 +224,10 @@
         ],
         "done": "Đủ năm thân rồi! Cổ đứng, khuy cài bên phải. Chiếc áo này về sau mẹ Ông trao cho Bà, con lật tới trang Mặc sẽ thấy.",
         "teo": {
-          "text": "Năm 1744, chúa Nguyễn Phúc Khoát định chế y phục ở Đàng Trong; áo ngũ thân cài khuy thành thường phục chung.",
+          "text": "Áo ngũ thân có bốn thân lớn tượng trưng cho tứ thân phụ mẫu và một thân con nằm trong, là người mặc; năm cúc áo là Nhân, Lễ, Nghĩa, Trí, Tín.",
           "unesco": null,
           "sources": [
-            "ref-03",
-            "ref-12"
+            "baophapluat-ngu-than"
           ],
           "verified": true
         },
@@ -239,10 +249,12 @@
       "keepsake": "leaf",
       "teo": [
         {
-          "text": "Chùa Thiên Mụ được dựng năm 1601, thời chúa Nguyễn Hoàng; tháp Phước Duyên trước chùa có bảy tầng.",
+          "text": "Chùa Thiên Mụ được chúa Nguyễn Hoàng cho dựng năm 1601; tháp Phước Duyên trước chùa cao 21 m, bảy tầng, xây năm 1844.",
           "unesco": null,
-          "sources": [],
-          "verified": false
+          "sources": [
+            "tapchicongthuong-thien-mu"
+          ],
+          "verified": true
         }
       ],
       "frame": {
@@ -399,6 +411,22 @@
             "unesco-ich-vn"
           ],
           "verified": true
+        },
+        {
+          "text": "Lễ hội điện Huệ Nam (điện Hòn Chén) diễn ra vào tháng Ba và tháng Bảy âm lịch, là di sản văn hóa phi vật thể quốc gia từ năm 2024.",
+          "unesco": null,
+          "sources": [
+            "bvh-hue-nam"
+          ],
+          "verified": true
+        },
+        {
+          "text": "Mùa Phật đản ở Huế, trên sông Hương thắp sáng bảy bông sen khổng lồ, tượng trưng bảy bước chân của Đức Phật.",
+          "unesco": null,
+          "sources": [
+            "sggp-phat-dan-hue"
+          ],
+          "verified": true
         }
       ],
       "frame": {
@@ -411,8 +439,8 @@
       "festivals": [
         {
           "id": "hoa-dang",
-          "name": "Thả hoa đăng trên sông Hương",
-          "time": "Mùa Phật đản, rằm tháng Tư âm lịch",
+          "name": "Mùa Phật đản trên sông Hương",
+          "time": "Mùa Phật đản (rằm tháng Tư âm lịch)",
           "month": 5,
           "place": "Sông Hương",
           "text": "Cả nhà ra sông, mỗi người một chiếc đèn, thả cho trôi cùng nhau.",
@@ -423,7 +451,7 @@
         {
           "id": "festival-hue",
           "name": "Festival Huế",
-          "time": "Nhiều mùa trong năm",
+          "time": "Bốn mùa trong năm (từ năm 2022)",
           "month": 6,
           "place": "Đại Nội và khắp thành phố",
           "text": "Những đêm cả thành phố cùng về một thời, áo dài và áo tấc đầy phố.",
@@ -439,7 +467,7 @@
         },
         {
           "id": "dien-hon-chen",
-          "name": "Lễ hội điện Hòn Chén",
+          "name": "Lễ hội điện Huệ Nam (điện Hòn Chén)",
           "time": "Tháng Ba và tháng Bảy âm lịch",
           "month": 4,
           "place": "Điện Hòn Chén, bên sông Hương",
@@ -531,30 +559,35 @@
   "check": {
     "pre": {
       "id": "hue-pre",
-      "q": "Con đoán xem: vì sao ở Huế, nón lá gần như luôn đi cùng áo dài?",
+      "q": "Con đoán xem: nón bài thơ của Huế có gì đặc biệt?",
       "choices": [
-        "Vì Huế nắng gắt và mưa dầm",
-        "Vì luật bắt buộc phải đội",
-        "Vì nón lá dùng để đựng đồ"
+        "Kẹp hình, câu thơ giữa hai lớp lá, soi nắng mới thấy",
+        "Thơ được viết bằng mực lên mặt nón",
+        "Nón có in chữ vàng quanh vành"
       ],
       "answer": 0,
-      "explain": "Huế nắng gắt mà mưa cũng dầm, chiếc nón lá che được cả hai.",
-      "sources": [],
-      "verified": false
+      "explain": "Giữa hai lớp lá có kẹp hình hoặc câu thơ, phải soi lên nắng mới thấy.",
+      "sources": [
+        "ref-72"
+      ],
+      "verified": true
     },
     "post": [
       {
         "id": "hue-ngu-than",
         "q": "Áo ngũ thân có mấy thân áo?",
         "choices": [
-          "Năm",
-          "Bốn",
-          "Hai"
+          "Năm: bốn thân lớn và một thân con nằm trong",
+          "Bốn thân",
+          "Hai thân"
         ],
         "answer": 0,
-        "explain": "Năm thân, đúng như cái tên. Đó là phần nên giữ khi phối.",
-        "sources": [],
-        "verified": false
+        "explain": "Bốn thân lớn là tứ thân phụ mẫu, thân con nằm trong là người mặc.",
+        "sources": [
+          "baophapluat-ngu-than",
+          "ref-03"
+        ],
+        "verified": true
       },
       {
         "id": "hue-bai-choi",
@@ -565,22 +598,26 @@
           "Một kiểu áo dài"
         ],
         "answer": 0,
-        "explain": "Người chơi ngồi trong chòi tre, chờ anh hiệu hô trúng con bài của mình. Vừa là trò chơi vừa là buổi diễn.",
-        "sources": [],
-        "verified": false
+        "explain": "Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh năm 2017.",
+        "sources": [
+          "unesco-ich-vn"
+        ],
+        "verified": true
       },
       {
-        "id": "hue-nong",
-        "q": "Trời nóng mà vẫn muốn mặc áo ngũ thân, con nên làm gì?",
+        "id": "hue-nut",
+        "q": "Năm cúc trên áo ngũ thân tượng trưng cho gì?",
         "choices": [
-          "Chọn vải mỏng, thoáng và giữ đủ năm thân",
-          "Cắt ngắn áo cho mát",
-          "Bỏ phần cổ áo"
+          "Nhân, Lễ, Nghĩa, Trí, Tín",
+          "Năm người con trong nhà",
+          "Năm mùa trong năm"
         ],
         "answer": 0,
-        "explain": "Đổi chất vải là cách tân có chủ đích; còn năm thân và cổ áo thì giữ lại.",
-        "sources": [],
-        "verified": false
+        "explain": "Năm cúc là đạo lý làm người: Nhân, Lễ, Nghĩa, Trí, Tín.",
+        "sources": [
+          "baophapluat-ngu-than"
+        ],
+        "verified": true
       }
     ]
   },

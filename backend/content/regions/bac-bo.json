@@ -66,7 +66,16 @@
     {
       "margin": "Tờ tranh ấy Bà dán ở trang sau đấy, màu đã phai mà con chuột vẫn cười.",
       "ti": null,
-      "teo": [],
+      "teo": [
+        {
+          "text": "Nghề làm tranh dân gian Đông Hồ được UNESCO ghi danh vào Danh sách di sản văn hóa phi vật thể cần bảo vệ khẩn cấp ngày 9/12/2025.",
+          "unesco": 2025,
+          "sources": [
+            "baolaocai-dong-ho-unesco"
+          ],
+          "verified": true
+        }
+      ],
       "keepsake": null,
       "point": {
         "lat": 21.06,
@@ -108,7 +117,7 @@
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Son lấy từ sỏi đỏ, nghiền thật mịn."
+            "explain": "Màu đỏ lấy từ đất, đá tự nhiên như sỏi son."
           },
           {
             "label": "Vàng hoa hòe",
@@ -116,7 +125,7 @@
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Nụ hoa hòe phơi khô, nấu ra nước vàng."
+            "explain": "Màu vàng lấy từ hoa, như hoa hòe (có nơi dùng hoa dành dành)."
           },
           {
             "label": "Xanh lá chàm",
@@ -124,7 +133,7 @@
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Màu xanh ngâm từ lá chàm."
+            "explain": "Màu xanh lấy từ lá chàm."
           },
           {
             "label": "Đen than lá tre",
@@ -132,15 +141,18 @@
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Lá tre đốt thành than. In sau cùng để nét đen sắc, không bị màu khác đè lem."
+            "explain": "Màu đen từ than lá tre. Bản nét đen in sau cùng để nét sắc, không bị màu khác đè lem."
           }
         ],
         "done": "Tranh khô rồi! Con chuột rước dâu cười toe. Bà dán tờ tranh này vào sổ cho con.",
         "teo": {
-          "text": "Tranh Đông Hồ in trên giấy dó quét hồ điệp, màu lấy từ tự nhiên như sỏi son, hoa hòe, lá chàm, than lá tre; in từng màu một, nét đen in sau cùng.",
+          "text": "Tranh Đông Hồ in trên giấy điệp (bột vỏ điệp trộn hồ, quét bằng chổi lá thông); in hết các bản màu rồi mới in bản nét đen sau cùng. Tranh Hàng Trống thì ngược lại: in nét trước rồi tô màu.",
           "unesco": null,
-          "sources": [],
-          "verified": false
+          "sources": [
+            "tuoitre-in-dong-ho",
+            "tapchicongthuong-dong-ho"
+          ],
+          "verified": true
         },
         "community_review": false
       },
@@ -239,10 +251,12 @@
         ],
         "done": "Liền anh cười, nón quai thao của Bà gật gật. Năm nay Bà đáp được rồi!",
         "teo": {
-          "text": "Quan họ là lối hát đối đáp giữa bên nam (liền anh) và bên nữ (liền chị); khách đến chơi được mời trầu, mời nước.",
+          "text": "Quan họ hát đối đáp: hai liền chị một làng hát, hai liền anh làng kết nghĩa đáp lại cùng giai điệu nhưng lời khác, không có nhạc đệm; khách hát cho chủ nhà rồi hát giã bạn.",
           "unesco": null,
-          "sources": [],
-          "verified": false
+          "sources": [
+            "unesco-quan-ho"
+          ],
+          "verified": true
         },
         "community_review": false
       },
@@ -459,56 +473,64 @@
   "check": {
     "pre": {
       "id": "bb-pre",
-      "q": "Con đoán xem: vì sao áo tứ thân ngày xưa thường được mặc nhiều lớp?",
+      "q": "Con đoán xem: “áo mớ ba” của liền chị quan họ nghĩa là gì?",
       "choices": [
-        "Vì mùa đông miền Bắc lạnh theo gió bấc",
-        "Vì luật triều đình bắt buộc",
-        "Vì vải ngày xưa rất đắt"
+        "Mặc ba lớp áo chồng lên nhau",
+        "Ba chiếc áo giống hệt nhau",
+        "Áo có ba cúc"
       ],
       "answer": 0,
-      "explain": "Mùa đông ở quê Bà lạnh lắm con ạ, nên người ta mặc nhiều lớp áo. Ngày hội còn mặc áo mớ ba mớ bảy.",
-      "sources": [],
-      "verified": false
+      "explain": "Liền chị mặc ba lớp áo dài xanh, hồng, đen chồng lên nhau, gọi là áo mớ ba.",
+      "sources": [
+        "bvh-trang-phuc-quan-ho"
+      ],
+      "verified": true
     },
     "post": [
       {
         "id": "bb-khan",
-        "q": "Khăn mỏ quạ của người Kinh Bắc giúp gì trong mùa đông?",
+        "q": "Khăn mỏ quạ của liền chị được vấn thế nào?",
         "choices": [
-          "Giữ ấm đầu",
-          "Che nắng gắt",
-          "Đựng trầu cau"
+          "Mũi khăn chụm về phía trước như nụ sen",
+          "Buông dài sau lưng",
+          "Quấn kín cả mặt"
         ],
         "answer": 0,
-        "explain": "Đúng rồi, khăn mỏ quạ vấn gọn để giữ ấm đầu khi gió bấc về.",
-        "sources": [],
-        "verified": false
+        "explain": "Khăn vấn sao cho đường giữa thẳng, mũi khăn nhọn chụm về phía trước như nụ sen.",
+        "sources": [
+          "heritage-quan-ho"
+        ],
+        "verified": true
       },
       {
         "id": "bb-hoi-lim",
         "q": "Ở hội Lim, các liền anh liền chị làm gì?",
         "choices": [
-          "Hát quan họ đối đáp",
+          "Hát quan họ đối đáp, không có nhạc đệm",
           "Đua thuyền rồng",
           "Múa lân"
         ],
         "answer": 0,
-        "explain": "Họ hát quan họ đối đáp với nhau, trên thuyền, dưới đồi và trong những gian nhà.",
-        "sources": [],
-        "verified": false
+        "explain": "Hai bên hát qua hát lại, cùng giai điệu mà lời khác nhau.",
+        "sources": [
+          "unesco-quan-ho"
+        ],
+        "verified": true
       },
       {
         "id": "bb-giu",
         "q": "Khi phối áo tứ thân theo cách của con, phần nào nên giữ nguyên?",
         "choices": [
-          "Số thân áo (bốn thân)",
+          "Bốn thân áo và chiếc yếm bên trong",
           "Màu vải",
           "Chất liệu"
         ],
         "answer": 0,
-        "explain": "Màu và chất liệu con cứ đổi. Bốn thân áo thì giữ lại, vì đó là tên và là hồn của chiếc áo.",
-        "sources": [],
-        "verified": false
+        "explain": "Bốn thân và yếm là dấu hiệu nhận ra áo tứ thân; màu và chất liệu được đổi.",
+        "sources": [
+          "ref-80"
+        ],
+        "verified": true
       }
     ]
   },

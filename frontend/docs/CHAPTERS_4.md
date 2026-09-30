@@ -87,7 +87,7 @@ Hai vùng này đang khóa có chủ ý (`lock_note`): trang phục các dân t�
 
 **Trò chính: Đoán cây bẹo** (điểm 2)
 - Mặt sông có 6 chiếc ghe. Mỗi ghe treo một món lên cây sào ("cây bẹo"): trái khóm, bí đao, khoai lang, chùm chôm chôm… Người đọc kéo biển "ghe này bán gì?" vào đúng ghe.
-- Có một **ghe treo cái áo** ⚑ (ghe bán luôn cả ghe). Đây là câu đố vui cuối, Tèo giải thích.
+- Có một **ghe phơi quần áo**: *treo mà không bán*, vì đó là nhà của gia đình sống trên ghe (đã sửa theo nguồn).
 - Đúng hết thì ghe bà cụ ghé lại, mở ra điểm 3.
 
 **Trò phụ:**
@@ -189,3 +189,22 @@ Hai vùng này đang khóa có chủ ý (`lock_note`): trang phục các dân t�
 - **Sửa theo nguồn:** chi tiết "cầu thang có hình bầu ngực và trăng" chỉ đúng với cầu thang tấm ván của nhà khá giả; cầu thang chính là một thân cây có số nấc lẻ. Bỏ câu "Lễ hội cà phê hai năm một lần" (chưa xác nhận được). Bỏ mô tả "áo nữ màu trắng" (của người Mạ, không phải Ê Đê).
 - **Thêm:** trang phục `ao-com`, `tho-cam-e-de`; trang Mặc; "Bà hỏi con" (4 câu mỗi chương, đều có nguồn); điểm dừng Lễ hội (Xên lẩu nó, Tết Xíp xí; lễ cúng bến nước, Lễ hội Cà phê); 8 thuật ngữ cho Tèo; trò cài cúc bạc giờ có 7 cúc (số lẻ) và trò dệt dùng đúng ý nghĩa màu.
 - **Vẫn cần người trong cộng đồng đọc:** tên gọi, lời kể của chị Mai và anh Y Blăk (nhân vật hư cấu), ý nghĩa từng dải hoa văn.
+
+
+## Cập nhật 01/10: rà nguồn Huế, Bắc Ninh, Cần Thơ
+
+- **Sửa theo nguồn:**
+  - **Cây bẹo:** "ghe treo áo là bán ghe" là **sai**. Quần áo phơi trên sào là của nhà sống trên ghe, *treo mà không bán*. Trò chơi đổi vòng cuối thành "Nhà ở trên ghe, không bán".
+  - **Cầu Trường Tiền:** cầu có 6 nhịp dầm thép, dài chừng 400 m, xây xong năm 1899. "Sáu vài mười hai nhịp" là câu hát quen, không phải số đo.
+  - **Khăn mỏ quạ:** chưa có nguồn nào nói khăn dùng để "giữ ấm", nên đổi câu hỏi sang cách vấn khăn (mũi khăn chụm về trước như nụ sen).
+- **Đã có nguồn, đã đánh `verified`:**
+  - Chùa Thiên Mụ (1601; tháp Phước Duyên 21 m, 7 tầng, 1844).
+  - Ngọ Môn và lầu Ngũ Phụng.
+  - Nhà rường, khăn đóng.
+  - Áo ngũ thân: tứ thân phụ mẫu, năm cúc Nhân, Lễ, Nghĩa, Trí, Tín.
+  - Lễ hội điện Huệ Nam (di sản quốc gia 2024), Festival Huế bốn mùa (từ 2022), bảy hoa sen trên sông Hương mùa Phật đản.
+  - Tranh Đông Hồ: giấy điệp; in bản màu trước, bản nét đen sau cùng; UNESCO ghi danh cần bảo vệ khẩn cấp ngày 9/12/2025.
+  - Quan họ: lối hát đối đáp theo mô tả của UNESCO; áo mớ ba, nón quai thao.
+  - Vọng cổ; Nghinh Ông Cần Giờ (14–16 tháng Tám âm lịch, di sản quốc gia 2013).
+  - Toàn bộ 12 câu "Bà hỏi con" của ba chương.
+- **Còn chưa có nguồn** (tự ẩn trên web thật): thuật ngữ "rứa", "hoa đăng", "giấy dó".

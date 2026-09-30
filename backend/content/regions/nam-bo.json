@@ -99,7 +99,7 @@
       "game": {
         "kind": "cay-beo",
         "title": "Ghe nào bán gì?",
-        "intro": "Ở chợ nổi, ghe treo gì lên cây bẹo thì bán thứ ấy. Con chọn một tấm biển rồi bấm vào đúng chiếc ghe.",
+        "intro": "Ở chợ nổi, ghe treo gì lên cây bẹo thì bán thứ ấy. Nhưng coi chừng: có ghe treo mà không bán! Con chọn một tấm biển rồi bấm vào đúng chiếc ghe.",
         "rounds": [
           {
             "label": "Ghe bán khóm",
@@ -134,16 +134,24 @@
             "explain": null
           },
           {
-            "label": "Ghe bán luôn cả ghe",
-            "item": "👕 cái áo cũ",
+            "label": "Nhà ở trên ghe, không bán",
+            "item": "👕 quần áo phơi",
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Người ta kể: ghe nào treo tấm áo hay nhánh lá mà không treo nông sản là ghe đang rao bán chính chiếc ghe."
+            "explain": "Ghe ở chợ nổi còn là nhà: quần áo phơi trên sào là của gia đình sống trên ghe, không phải hàng bán."
           }
         ],
         "done": "Đúng hết rồi! Ghe bà cụ bán khóm ghé lại, mời con lên ghe.",
-        "teo": null,
+        "teo": {
+          "text": "Cây bẹo là cây sào dựng trên ghe ở chợ nổi, treo gì bán nấy để khách ở xa biết ghe bán gì.",
+          "unesco": null,
+          "sources": [
+            "ref-73",
+            "bvh-cho-noi"
+          ],
+          "verified": true
+        },
         "community_review": false
       },
       "stamp": "Chợ nổi",
@@ -402,6 +410,14 @@
           ],
           "verified": true,
           "unesco": 2024
+        },
+        {
+          "text": "Lễ hội Nghinh Ông Cần Giờ diễn ra ngày 14–16 tháng Tám âm lịch, là di sản văn hóa phi vật thể quốc gia từ năm 2013.",
+          "unesco": null,
+          "sources": [
+            "bvh-nghinh-ong"
+          ],
+          "verified": true
         }
       ],
       "keepsake": "ticket",
@@ -503,48 +519,56 @@
       ],
       "answer": 0,
       "explain": "Người miền Tây ngồi xuồng, lội ruộng cả ngày, áo ngắn thì không vướng víu.",
-      "sources": [],
-      "verified": false
+      "sources": [
+        "ref-79"
+      ],
+      "verified": true
     },
     "post": [
       {
         "id": "nb-khan-ran",
         "q": "Khăn rằn của người Nam Bộ dùng để làm gì?",
         "choices": [
-          "Che nắng, lau mồ hôi, việc gì cũng dùng được",
+          "Che nắng, che mưa, lau mồ hôi",
           "Chỉ để trang trí",
           "Để đựng tiền"
         ],
         "answer": 0,
-        "explain": "Đúng vậy, chiếc khăn rằn là người bạn đi đồng của người miền Tây.",
-        "sources": [],
-        "verified": false
+        "explain": "Khăn rằn là người bạn đi đồng: che nắng, che mưa, lau mồ hôi.",
+        "sources": [
+          "ref-79"
+        ],
+        "verified": true
       },
       {
         "id": "nb-don-ca",
-        "q": "Đờn ca tài tử thường diễn ra ở đâu?",
+        "q": "Đờn ca tài tử Nam Bộ được UNESCO ghi danh năm nào?",
         "choices": [
-          "Dưới hiên nhà, sau giờ làm đồng",
-          "Chỉ trong nhà hát lớn",
-          "Chỉ trong chùa"
+          "2013",
+          "2003",
+          "2021"
         ],
         "answer": 0,
-        "explain": "Một cây đàn kìm, một cây đàn tranh, vài người bạn dưới hiên nhà là đủ.",
-        "sources": [],
-        "verified": false
+        "explain": "Năm 2013, vào danh sách di sản văn hóa phi vật thể đại diện của nhân loại.",
+        "sources": [
+          "unesco-ich-vn"
+        ],
+        "verified": true
       },
       {
         "id": "nb-giu",
         "q": "Khi phối áo bà ba theo cách của con, phần nào nên giữ?",
         "choices": [
-          "Dáng áo ngắn, xẻ hông",
-          "Màu vải",
-          "Chất liệu"
+          "Dáng áo ngắn ngang hông, xẻ hai bên",
+          "Màu đen",
+          "Chất vải lãnh"
         ],
         "answer": 0,
-        "explain": "Màu và chất liệu con cứ đổi, còn dáng áo ngắn xẻ hông thì giữ lại.",
-        "sources": [],
-        "verified": false
+        "explain": "Dáng ngắn, xẻ hông là dấu hiệu của áo bà ba; màu và chất liệu thì được đổi.",
+        "sources": [
+          "ref-79"
+        ],
+        "verified": true
       }
     ]
   },

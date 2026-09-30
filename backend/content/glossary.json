@@ -3,9 +3,11 @@
     {
       "id": "ngo-mon",
       "term": "Ngọ Môn",
-      "text": "Cổng chính phía nam của Hoàng thành Huế, có lầu Ngũ Phụng ở trên. “Ngọ” là hướng nam.",
-      "sources": [],
-      "verified": false
+      "text": "Cổng lớn nhất của Hoàng thành Huế, quay về hướng nam; phía trên là lầu Ngũ Phụng. Cửa giữa chỉ mở khi vua ra vào hay đón sứ thần.",
+      "sources": [
+        "vov-hue-gates"
+      ],
+      "verified": true
     },
     {
       "id": "nha-nhac",
@@ -19,9 +21,11 @@
     {
       "id": "nha-ruong",
       "term": "Nhà rường",
-      "text": "Kiểu nhà gỗ truyền thống của Huế, khung cột kèo ghép mộng, thường có vườn bao quanh.",
-      "sources": [],
-      "verified": false
+      "text": "Ngôi nhà gỗ chạm trổ công phu, là nhà chính trong nhà vườn Huế, thường dùng thờ tự gia tiên; quanh nhà là vườn cây, bể cạn, hòn non bộ.",
+      "sources": [
+        "vnexpress-nha-vuon"
+      ],
+      "verified": true
     },
     {
       "id": "rua",
@@ -59,37 +63,48 @@
     {
       "id": "khan-dong",
       "term": "Khăn đóng",
-      "text": "Khăn vấn sẵn thành vòng, đội đầu khi mặc áo ngũ thân hay áo dài trong lễ, tết.",
-      "sources": [],
-      "verified": false
+      "text": "Khăn đội đầu đi cùng áo dài nam trong các dịp quan trọng, lễ nghi; áo dài nam phải kèm khăn đóng mới đủ lệ bộ.",
+      "sources": [
+        "baophapluat-ngu-than"
+      ],
+      "verified": true
     },
     {
       "id": "khan-mo-qua",
       "term": "Khăn mỏ quạ",
-      "text": "Khăn vấn đầu của phụ nữ Bắc Bộ xưa, hai đầu khăn chụm lại nhọn như mỏ con quạ.",
-      "sources": [],
-      "verified": false
+      "text": "Khăn vấn đầu của liền chị quan họ: vấn sao cho đường giữa thẳng, mũi khăn nhọn chụm về phía trước như nụ sen.",
+      "sources": [
+        "heritage-quan-ho",
+        "bvh-trang-phuc-quan-ho"
+      ],
+      "verified": true
     },
     {
       "id": "giay-do",
       "term": "Giấy dó",
-      "text": "Giấy làm từ vỏ cây dó, dai và bền, dùng để in tranh dân gian.",
-      "sources": [],
+      "text": "Giấy làm từ vỏ cây dó, dai và bền; làng Đông Hồ phủ thêm bột vỏ điệp lên để in tranh.",
+      "sources": [
+        "tuoitre-in-dong-ho"
+      ],
       "verified": false
     },
     {
       "id": "giay-diep",
       "term": "Điệp",
-      "text": "Bột vỏ con điệp (một loài sò) trộn hồ, quét lên giấy dó cho có ánh lấp lánh.",
-      "sources": [],
-      "verified": false
+      "text": "Giấy quét lớp bột vỏ điệp trộn hồ gạo bằng chổi lá thông, có ánh lấp lánh; nền của tranh Đông Hồ.",
+      "sources": [
+        "tapchicongthuong-dong-ho"
+      ],
+      "verified": true
     },
     {
       "id": "non-quai-thao",
       "term": "Nón quai thao",
-      "text": "Nón to, vành rộng, mặt phẳng, có dải quai bằng sợi tơ buông dài; liền chị quan họ đội khi đi hội.",
-      "sources": [],
-      "verified": false
+      "text": "Nón ba lớp lá, vành rộng của liền chị quan họ: vừa che nắng, vừa giúp giọng hát vang xa khi hát ngoài trời.",
+      "sources": [
+        "heritage-quan-ho"
+      ],
+      "verified": true
     },
     {
       "id": "khan-ran",
@@ -103,9 +118,11 @@
     {
       "id": "vong-co",
       "term": "Vọng cổ",
-      "text": "Bài bản quen thuộc nhất của đờn ca tài tử và cải lương Nam Bộ, có những câu ngân rất dài.",
-      "sources": [],
-      "verified": false
+      "text": "Điệu hát nổi tiếng nhất của đờn ca tài tử và cải lương, bắt nguồn từ bài Dạ cổ hoài lang của nhạc sĩ Cao Văn Lầu (khoảng năm 1918).",
+      "sources": [
+        "wiki-cao-van-lau"
+      ],
+      "verified": true
     },
     {
       "id": "ao-com",
