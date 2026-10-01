@@ -16,7 +16,7 @@ TRYON_TEMPLATE = """Edit the person in IMAGE 1 so they wear the garment shown in
 Garment: {name_en} ({name_vi}), Vietnamese, {period}.
 MUST KEEP: {must_keep}.
 Colors: main {color_main}, accent {color_accent}.
-Accessories: {accessories}.
+Accessories: {accessories}.{changes}
 Styling vibe: {vibe}. Background: {background}.
 MUST AVOID: {must_avoid}; Chinese hanfu collar, Korean jeogori ribbon, Japanese obi, any non-Vietnamese traditional element; any visible text, letters or Chinese characters (signs, banners, couplets, lanterns).
 Keep the person's face, body shape and skin tone unchanged. Full body, natural light, photorealistic."""
@@ -40,6 +40,8 @@ def build_prompt(sel: Selection, with_reference: bool) -> str:
     g = c.garments[sel.garment_id]
     colors = [c.colors[x].name for x in sel.colors] or [c.colors[x].name for x in g.default_colors]
     accessories = [c.accessories[a].name_vi for a in sel.accessories] or ["none"]
+    # the viewer's picks from the zone options, on their own line so MUST KEEP / MUST AVOID still bind them
+    picked = [o.prompt for _, o in compass.changes(sel, g)]
     tpl = TRYON_TEMPLATE if with_reference else TRYON_TEMPLATE_NO_REF
     return tpl.format(
         name_en=g.name_en,
@@ -49,6 +51,7 @@ def build_prompt(sel: Selection, with_reference: bool) -> str:
         color_main=colors[0],
         color_accent=colors[1] if len(colors) > 1 else colors[0],
         accessories=", ".join(accessories),
+        changes=f"\nChanges asked by the wearer (only these; everything under MUST KEEP stays): {'; '.join(picked)}." if picked else "",
         vibe=sel.vibe,
         background=c.occasions[sel.occasion_id].background,
         must_avoid="; ".join(g.must_avoid) or "none",

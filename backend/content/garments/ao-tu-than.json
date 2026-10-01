@@ -13,9 +13,17 @@
   "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong"],
   "zones": [
     {"part": "số thân áo", "level": "keep", "note": "Bốn thân là dấu hiệu nhận diện"},
-    {"part": "yếm bên trong", "level": "caution"},
-    {"part": "màu vải", "level": "free"},
-    {"part": "chất liệu", "level": "free"}
+    {"part": "yếm bên trong", "level": "caution", "options": [
+        {"id": "giu-nguyen", "label": "Giữ nguyên"},
+        {"id": "yem-dao", "label": "Yếm đào", "prompt": "the yem (bodice) showing at the open front is peach-pink silk (yem dao)", "sources": ["ref-68", "ref-80"]},
+        {"id": "yem-trang", "label": "Yếm trắng", "prompt": "the yem (bodice) showing at the open front is plain white or ivory silk", "sources": ["ref-80"]}
+    ]},
+    {"part": "màu vải", "level": "free", "control": "colors"},
+    {"part": "chất liệu", "level": "free", "options": [
+        {"id": "giu-nguyen", "label": "Giữ nguyên"},
+        {"id": "vai-nai-soi", "label": "Vải nái, sồi", "prompt": "the outer dress is plain, matte homespun fabric (vai nai, soi), everyday working wear", "sources": ["ref-04"]},
+        {"id": "the-lua", "label": "The, lụa tơ tằm", "prompt": "the outer dress is thin, slightly sheer silk gauze (the) over silk, festival wear", "sources": ["ref-68", "ref-04"]}
+    ]}
   ],
   "colors": ["nau-non", "den", "hong-dao", "xanh-mint", "vang-nghe"],
   "default_colors": ["nau-non", "den"],

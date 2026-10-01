@@ -36,6 +36,23 @@ export interface Fact {
   sources: string[];
 }
 
+export type ZoneLevel = "keep" | "caution" | "free";
+
+export interface ZoneOption {
+  id: string; // "giu-nguyen" first: the garment as it is
+  label: string;
+  prompt: string | null;
+  sources: string[];
+}
+
+export interface Zone {
+  part: string;
+  level: ZoneLevel;
+  note: string | null; // for keep zones: why it is locked
+  control: "colors" | null; // changed with another control, so no options
+  options: ZoneOption[]; // caution/free only
+}
+
 export interface Garment {
   id: string;
   region: string;
@@ -46,7 +63,7 @@ export interface Garment {
   summary: string;
   facts: Fact[];
   occasions: string[];
-  zones: { part: string; level: "keep" | "caution" | "free"; note: string | null }[];
+  zones: Zone[];
   colors: string[];
   default_colors: string[];
   accessories: string[];

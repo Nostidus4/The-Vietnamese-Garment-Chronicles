@@ -8,6 +8,7 @@ import type { Bootstrap, CompassState, Selection, TryOnResult } from "@/lib/type
 import { asset } from "@/lib/base";
 import { swaps } from "@/lib/lookSwaps";
 import { retryLabel, secondsLeft, untilAborted, waitLabel, type WaitStage } from "@/lib/tryonWait";
+import { zoneChanges } from "@/lib/zones";
 import { MAIN_BUTTON, SIDE_BUTTON } from "./CompassStep";
 
 // same labels as backend/app/models.py LABELS (⛔ has none: the original look is never saved)
@@ -226,13 +227,14 @@ export function TryOnPanel({
   );
 }
 
-/** The look being tried, in one line: garment · occasion · colours · accessories. */
+/** The look being tried, in one line: garment · occasion · colours · accessories · changed zones. */
 function Outfit({ data, selection: s }: { data: Bootstrap; selection: Selection }) {
   const parts = [
     data.garments.find((g) => g.id === s.garment_id)?.name_vi ?? s.garment_id,
     data.occasions.find((o) => o.id === s.occasion_id)?.name ?? s.occasion_id,
     s.colors.map((c) => data.colors[c]?.name ?? c).join(" + ") || "màu mặc định",
     s.accessories.map((a) => data.accessories[a]?.name_vi ?? a).join(", ") || "không phụ kiện",
+    ...zoneChanges(data.garments.find((g) => g.id === s.garment_id) ?? { zones: [] }, s),
   ];
   return <p className="m-0 text-sm text-stone-700">Bộ sẽ dựng: {parts.join(" · ")}</p>;
 }

@@ -6,7 +6,7 @@ when the team adds data.
 """
 
 from ..content import store
-from ..content.schemas import Garment, Message
+from ..content.schemas import KEEP_OPTION, Garment, Message, ZoneOption
 from ..models import LABELS, SEVERITY, CompassResult, Selection, Trigger
 from .harmony import harmony_notes
 
@@ -28,11 +28,19 @@ def _validate(sel: Selection) -> Garment:
     for acc in sel.accessories:
         if acc not in g.accessories:
             raise SelectionError(f"Phụ kiện '{acc}' không có trong lựa chọn của {g.name_vi}")
-    zones = {z.part for z in g.zones}
+    zones = {z.part: z for z in g.zones}
     for m in sel.modifications:
         if m.zone not in zones:
             raise SelectionError(f"'{m.zone}' không phải một phần của {g.name_vi}")
+        if m.change not in {o.id for o in zones[m.zone].options}:
+            raise SelectionError(f"'{m.change}' không phải lựa chọn của phần '{m.zone}' ({g.name_vi})")
     return g
+
+
+def changes(sel: Selection, g: Garment) -> list[tuple[str, ZoneOption]]:
+    """The zone options picked in a valid selection, leaving out the ones that keep the garment as it is."""
+    options = {(z.part, o.id): o for z in g.zones for o in z.options}
+    return [(m.zone, options[m.zone, m.change]) for m in sel.modifications if m.change != KEEP_OPTION]
 
 
 def _trigger(rule_type: str, target: str, target_name: str, override: Message | None = None) -> Trigger:
@@ -71,9 +79,9 @@ def _collect(sel: Selection, g: Garment) -> list[Trigger]:
         out.append(_trigger("flexible", changed[0], c.colors[changed[0]].name))
 
     levels = {z.part: z.level for z in g.zones}
-    for m in sel.modifications:
-        rule_type = {"keep": "core", "caution": "caution", "free": "flexible"}[levels[m.zone]]
-        out.append(_trigger(rule_type, m.zone, m.zone))
+    for zone, option in changes(sel, g):
+        rule_type = {"keep": "core", "caution": "caution", "free": "flexible"}[levels[zone]]
+        out.append(_trigger(rule_type, zone, f"{zone}: {option.label}"))
 
     if sel.occasion_id not in g.occasions:
         out.append(_trigger("occasion", g.id, g.name_vi))

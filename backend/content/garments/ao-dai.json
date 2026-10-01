@@ -13,11 +13,18 @@
   ],
   "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong", "dam-cuoi"],
   "zones": [
-    {"part": "hai tà dài", "level": "keep"},
-    {"part": "xẻ tà hai bên", "level": "keep"},
-    {"part": "cổ áo", "level": "caution"},
-    {"part": "màu vải, họa tiết", "level": "free"},
-    {"part": "chất liệu", "level": "free"}
+    {"part": "hai tà dài", "level": "keep", "note": "Hai tà trước sau là dáng nhận diện của áo dài"},
+    {"part": "xẻ tà hai bên", "level": "keep", "note": "Xẻ tà từ eo là nét riêng của áo dài"},
+    {"part": "cổ áo", "level": "caution", "options": [
+        {"id": "giu-nguyen", "label": "Giữ nguyên"},
+        {"id": "co-thuyen", "label": "Cổ thuyền", "prompt": "boat neck: a wide, shallow neckline with no standing collar", "sources": ["ref-03", "ref-04", "ref-66"]}
+    ]},
+    {"part": "màu vải, họa tiết", "level": "free", "control": "colors"},
+    {"part": "chất liệu", "level": "free", "options": [
+        {"id": "giu-nguyen", "label": "Giữ nguyên"},
+        {"id": "lua-to-tam", "label": "Lụa tơ tằm", "prompt": "the ao dai is smooth silk with a soft sheen", "sources": ["ref-04"]},
+        {"id": "voan", "label": "Voan", "prompt": "the ao dai is light, slightly sheer chiffon", "sources": ["ref-04"]}
+    ]}
   ],
   "colors": ["trang", "xanh-thien-thanh", "tim-hue", "do-son", "xanh-mint"],
   "default_colors": ["trang", "xanh-thien-thanh"],
