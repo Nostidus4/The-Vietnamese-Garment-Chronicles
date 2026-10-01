@@ -1,0 +1,229 @@
+{
+  "screen": "s02",
+  "takes": [
+    {
+      "id": "t01",
+      "voice": "teo",
+      "voice_name": "voice_854h7h8iklwd",
+      "beats": [
+        0
+      ],
+      "text": "Tại sao lại là áo dài?",
+      "style": "Scene: Same classroom, right after the announcement. Tèo, sitting beside Tí, quietly questions his choice; Tí is caught off guard and grows unsure. Speaker: Tèo, Tí's thoughtful 13-year-old best friend with glasses; calm, curious, speaks a little slower, gently amused. Delivery: Calm and curious, a genuine question, slightly amused. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 3.4,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t01-teo-a.mp3",
+          "duration": 4.86,
+          "rate": 2.7,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 1,
+          "score": 0.706
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t01-teo-b.mp3",
+          "duration": 2.03,
+          "rate": 3.79,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.115
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t01-teo-c.mp3",
+          "duration": 2.14,
+          "rate": 3.55,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.044
+        }
+      ],
+      "file": "t01-teo.mp3",
+      "picked": "c",
+      "duration": 2.14,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    },
+    {
+      "id": "t02",
+      "voice": "ti",
+      "voice_name": "voice_w63a0tyyo0ik",
+      "beats": [
+        1
+      ],
+      "text": "Vì… đẹp?",
+      "style": "Scene: Same classroom, right after the announcement. Tèo, sitting beside Tí, quietly questions his choice; Tí is caught off guard and grows unsure. Speaker: Tí, a lively 13-year-old Vietnamese boy; quick and playful, a little cocky; when unsure he slows down and hesitates but stays clearly audible. Delivery: Caught off guard: hesitate at the ellipsis, then say \"đẹp\" as an unsure guess. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 4.1,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t02-ti-a.mp3",
+          "duration": 2.43,
+          "rate": 1.6,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.61
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t02-ti-b.mp3",
+          "duration": 2.55,
+          "rate": 1.65,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.598
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t02-ti-c.mp3",
+          "duration": 3.08,
+          "rate": 1.24,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.698
+        }
+      ],
+      "file": "t02-ti.mp3",
+      "picked": "b",
+      "duration": 2.55,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    },
+    {
+      "id": "t03",
+      "voice": "teo",
+      "voice_name": "voice_854h7h8iklwd",
+      "beats": [
+        2
+      ],
+      "text": "Còn gì nữa?",
+      "style": "Scene: Same classroom, right after the announcement. Tèo, sitting beside Tí, quietly questions his choice; Tí is caught off guard and grows unsure. Speaker: Tèo, Tí's thoughtful 13-year-old best friend with glasses; calm, curious, speaks a little slower, gently amused. Delivery: Gently pushing further, patient, curious. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 3.4,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t03-teo-a.mp3",
+          "duration": 1.21,
+          "rate": 3.92,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 1.153
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t03-teo-b.mp3",
+          "duration": 1.56,
+          "rate": 2.71,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.203
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t03-teo-c.mp3",
+          "duration": 1.27,
+          "rate": 3.66,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.076
+        }
+      ],
+      "file": "t03-teo.mp3",
+      "picked": "c",
+      "duration": 1.27,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    },
+    {
+      "id": "t04",
+      "voice": "ti",
+      "voice_name": "voice_w63a0tyyo0ik",
+      "beats": [
+        3
+      ],
+      "text": "…rất Việt Nam?",
+      "style": "Scene: Same classroom, right after the announcement. Tèo, sitting beside Tí, quietly questions his choice; Tí is caught off guard and grows unsure. Speaker: Tí, a lively 13-year-old Vietnamese boy; quick and playful, a little cocky; when unsure he slows down and hesitates but stays clearly audible. Delivery: Unsure and trailing, almost to himself, questioning intonation. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 4.1,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t04-ti-a.mp3",
+          "duration": 1.48,
+          "rate": 2.92,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.288
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t04-ti-b.mp3",
+          "duration": 1.33,
+          "rate": 4.26,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.039
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t04-ti-c.mp3",
+          "duration": 3.59,
+          "rate": 1.65,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.598
+        }
+      ],
+      "file": "t04-ti.mp3",
+      "picked": "b",
+      "duration": 1.33,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    }
+  ]
+}

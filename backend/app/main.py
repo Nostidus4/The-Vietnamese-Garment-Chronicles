@@ -1,4 +1,5 @@
 import logging
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -37,6 +38,11 @@ app.mount("/media", StaticFiles(directory=store.CONTENT_DIR / "media"), name="me
 
 for r in (content.router, styling.router, extras.router, admin.router, events.router, share.router):
     app.include_router(r)
+
+if os.getenv("DEV_TOOLS") == "1":  # /voice-review tools; never enabled on the demo server
+    from .routers import dev
+
+    app.include_router(dev.router)
 
 
 @app.get("/health", tags=["health"])

@@ -25,6 +25,7 @@ import { ExportCard } from "./ExportCard";
 import { NewPageDialog, type NewPreset } from "./NewPageDialog";
 import { ShareDialog } from "./ShareDialog";
 import { StampCabinet } from "./StampCabinet";
+import { asset } from "@/lib/base";
 
 // where the reader is, kept across a rebuild of the book (new size or a page added)
 const memo = { page: 0 };
@@ -62,7 +63,7 @@ export default function DuKyNotebook() {
         const last = [...loadBook().pages].filter((p) => p.region_id === region).sort(byDate).pop();
         if (last) setFocusId(last.id);
       }
-      if (q.toString()) window.history.replaceState(null, "", "/du-ky");
+      if (q.toString()) window.history.replaceState(null, "", asset("/du-ky"));
     });
   }, [data]);
 
@@ -252,7 +253,7 @@ function DeskBook({
   return (
     <main className="desk fixed inset-0 overflow-hidden">
       <BookSizeControl />
-      <Image src="/page/Desk.png" alt="" fill priority quality={88} sizes="100vw" className="desk-bg object-cover" />
+      <Image src={asset("/page/Desk.png")} alt="" fill priority quality={88} sizes="100vw" className="desk-bg object-cover" />
       <div className="desk-light pointer-events-none absolute inset-0" aria-hidden />
 
       {/* Bà's notebook, closed in the corner: back to her book */}

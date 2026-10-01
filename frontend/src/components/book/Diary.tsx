@@ -22,23 +22,30 @@ import type {
   TeoNote,
 } from "@/lib/types";
 import { WeatherNote } from "../chapter/WeatherNote";
+import { RichText } from "./Glossary";
+import { TeoPin } from "./TeoPin";
 import { FOCUS } from "./vietnam-geo";
+import { asset } from "@/lib/base";
 
-const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
-const OLD = "#8a4b2a"; // old Bà: sepia, written years later
-const PENCIL = "#7b7b7b"; // Tí
+export const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
+export const OLD = "#8a4b2a"; // old Bà: sepia, written years later
+export const PENCIL = "#7b7b7b"; // Tí
 
 /** Unverified facts show while the team works (dev server or ?draft=1) and stay hidden on the real site. */
-const DRAFT =
+export const DRAFT =
   process.env.NODE_ENV === "development" ||
   (typeof window !== "undefined" &&
     new URLSearchParams(window.location.search).get("draft") === "1");
 
-const place = (r: Region) => r.name.split("/")[0].trim();
+/** The place a region's stamps are named after: its open chapter (e.g. Huế), else the region. */
+/** A region with a chapter anyone can read (it may still be waiting for its community's review). */
+export const hasChapter = (r: Region) => r.chapters?.some((c) => c.status === "open") ?? false;
+
+export const place = (r: Region) => r.chapters?.find((c) => c.status === "open")?.province ?? r.name.split("/")[0].trim();
 
 /* ---------- the voices ---------- */
 
-const DateLine = ({ children }: { children: ReactNode }) => (
+export const DateLine = ({ children }: { children: ReactNode }) => (
   <p
     className="font-hand m-0 border-b border-dashed pb-0.5 text-[0.95rem]"
     style={{ color: YOUNG, borderColor: "rgba(39,53,79,0.25)" }}
@@ -47,25 +54,25 @@ const DateLine = ({ children }: { children: ReactNode }) => (
   </p>
 );
 
-const Entry = ({ text, size = "0.98rem" }: { text: string; size?: string }) => (
+export const Entry = ({ text, size = "0.98rem" }: { text: string; size?: string }) => (
   <p
     className="font-hand m-0 mt-2 leading-[1.38]"
     style={{ color: YOUNG, fontSize: size }}
   >
-    {text}
+    <RichText text={text} />
   </p>
 );
 
-const Margin = ({ text }: { text: string }) => (
+export const Margin = ({ text }: { text: string }) => (
   <p
     className="font-hand m-0 mt-2 -rotate-[1.5deg] border-l-2 pl-2 text-[0.92rem] leading-snug"
     style={{ color: OLD, borderColor: "rgba(138,75,42,0.35)" }}
   >
-    {text} <span className="whitespace-nowrap">— Bà</span>
+    <RichText text={text} /> <span className="whitespace-nowrap">— Bà</span>
   </p>
 );
 
-const Pencil = ({ text }: { text: string }) => (
+export const Pencil = ({ text }: { text: string }) => (
   <p
     className="font-hand m-0 mt-1.5 rotate-[0.8deg] text-[0.85rem]"
     style={{ color: PENCIL }}
@@ -74,56 +81,18 @@ const Pencil = ({ text }: { text: string }) => (
   </p>
 );
 
-/** Tèo's sticky notes: the only place facts and sources live. */
-function TeoNotes({ notes, data }: { notes: TeoNote[]; data: Bootstrap }) {
+/**
+ * Tèo's notes: the only place facts and sources live. On the page they are just a red pin in the corner;
+ * a click opens them in the middle of the screen, like one of Bà's letters (see TeoPin).
+ */
+export function TeoNotes({ notes, data, corner = true }: { notes: TeoNote[]; data: Bootstrap; corner?: boolean }) {
   const shown = notes.filter((n) => n.verified || DRAFT);
-  if (!shown.length) return null;
-  return (
-    <div className="mt-2 flex flex-wrap items-start gap-2">
-      {shown.map((n, i) => {
-        const src = n.sources.map((id) => data.sources[id]).find(Boolean);
-        return (
-          <div
-            key={n.text}
-            className="relative min-w-[7.5rem] flex-1 basis-0 bg-[#fbe99a] px-2 pb-1.5 pt-2 text-[0.66rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.22)]"
-            style={{
-              rotate: `${[-1.6, 1.2, -0.6][i % 3]}deg`,
-              maxWidth: shown.length === 1 ? "70%" : undefined,
-            }}
-          >
-            <span
-              className="absolute left-1/2 top-[-5px] h-2.5 w-8 -translate-x-1/2 bg-white/50"
-              aria-hidden
-            />
-            {n.unesco && (
-              <b className="mr-1 rounded-sm bg-[#1f3a78] px-1 text-[0.55rem] text-[#fbe99a]">
-                UNESCO {n.unesco}
-              </b>
-            )}
-            {n.text}
-            {/* source on its own line, Tèo's signature under it: nothing gets squeezed on a narrow note */}
-            <span className="mt-1 block truncate text-[0.55rem] opacity-80">
-              {src?.url ? (
-                <a href={src.url} target="_blank" rel="noreferrer" className="underline">
-                  nguồn: {src.title}
-                </a>
-              ) : src ? (
-                `nguồn: ${src.title}`
-              ) : (
-                "chưa có nguồn"
-              )}
-            </span>
-            <span className="block text-right text-[0.55rem] italic opacity-80">– Tèo{n.verified ? "" : ", đang kiểm tra"}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
+  return <TeoPin notes={shown} data={data} corner={corner} />;
 }
 
 /* ---------- keepsakes glued on the page ---------- */
 
-function KeepsakeArt({
+export function KeepsakeArt({
   kind,
   label,
   color,
@@ -212,13 +181,13 @@ function KeepsakeArt({
 }
 
 /** A keepsake picture: the real image if the team has made it, otherwise a pencil placeholder. */
-function Polaroid({ frame, i }: { frame: Frame; i: number }) {
+export function Polaroid({ frame, i, className = "w-[31%]" }: { frame: Frame; i: number; className?: string }) {
   const reduced = !!useReducedMotion();
   const [broken, setBroken] = useState(false);
   const tilt = [-4, 2.5, -1.2][i] ?? 0;
   return (
     <motion.figure
-      className="relative m-0 w-[31%] bg-[#fbf6ea] p-[3%] pb-[2%] shadow-[0_5px_12px_rgba(60,35,10,0.28)]"
+      className={`relative m-0 ${className} bg-[#fbf6ea] p-[3%] pb-[2%] shadow-[0_5px_12px_rgba(60,35,10,0.28)]`}
       initial={
         reduced ? { opacity: 0 } : { opacity: 0, y: 26, rotate: tilt - 8 }
       }
@@ -238,7 +207,7 @@ function Polaroid({ frame, i }: { frame: Frame; i: number }) {
         {frame.image && !broken ? (
           // eslint-disable-next-line @next/next/no-img-element -- content images may not exist yet; plain img lets us fall back
           <img
-            src={frame.image}
+            src={asset(frame.image)}
             alt={frame.alt}
             className="h-full w-full object-cover sepia-[.2]"
             onError={() => setBroken(true)}
@@ -339,7 +308,7 @@ export function HoverPage({
           {j.hover_line}
         </p>
       )}
-      {region.status === "locked" && (
+      {region.status === "locked" && !hasChapter(region) && (
         <p className="font-hand m-0 mt-3 text-[1rem]" style={{ color: OLD }}>
           Những trang này chờ người ở đây cùng viết.
         </p>
@@ -377,6 +346,7 @@ export function ArriveDiary({
   const reduced = !!useReducedMotion();
   const j = region.journey!;
   const sheet = FOCUS[region.id];
+  const arrive = j.arrive!;
   const pre = j.check?.pre;
   const [asking, setAsking] = useState(() => !!pre && (pre.verified || DRAFT) && !preAsked(region.id));
   useEffect(() => {
@@ -385,7 +355,7 @@ export function ArriveDiary({
   if (asking) return <PreQuestion region={region} onDone={() => setAsking(false)} />;
   return (
     <Sheet
-      page={j.arrive}
+      page={arrive}
       data={data}
       keepsake={
         <motion.div
@@ -451,9 +421,9 @@ export function LookDiary({
 }) {
   const j = region.journey!;
   return (
-    <Sheet page={j.look} data={data}>
+    <Sheet page={j.look!} data={data}>
       <div className="mt-4 flex justify-between">
-        {j.look.frames.map((f, i) => (
+        {j.look!.frames.map((f, i) => (
           <Polaroid key={`${region.id}-${i}`} frame={f} i={i} />
         ))}
       </div>
@@ -600,44 +570,75 @@ export function WearDiary({
     .filter((c) => c !== "trang") // a white swatch would vanish on the paper
     .map((c) => data.colors[c]?.hex)
     .find(Boolean);
-  // Tèo's first note on every Mặc page: what must stay, what needs care, what is free (from the garment data)
-  const zones: TeoNote | null = g
-    ? {
-        text: (["keep", "caution", "free"] as const)
-          .map((lv) => {
-            const parts = g.zones
-              .filter((z) => z.level === lv)
-              .map((z) => z.part);
-            return parts.length ? `${LEVEL[lv]}: ${parts.join(", ")}` : null;
-          })
-          .filter(Boolean)
-          .join(" · "),
-        unesco: null,
-        sources: g.sources.slice(0, 1),
-        verified: g.verified,
-      }
-    : null;
   return (
-    <Sheet
-      page={{
-        ...page,
-        teo: [...(zones ? [zones] : []), ...page.teo].slice(0, 3),
-      }}
-      data={data}
-      keepsake={<KeepsakeArt kind="fabric" color={color} />}
-    >
+    <Sheet page={page} data={data} keepsake={<KeepsakeArt kind="fabric" color={color} />}>
       <div className="mt-3 flex items-center gap-3">
         <p className="font-display m-0 text-[1.15rem] leading-tight text-stone-800">
           {g?.name_vi ?? page.garment}
         </p>
-        <button
-          type="button"
-          onClick={() => onTry(page.garment)}
-          className="ml-auto shrink-0 rounded-full bg-[#27354f] px-4 py-1.5 text-[0.8rem] text-amber-50 hover:bg-[#1c2740]"
-        >
-          Mặc thử →
-        </button>
+        {region.status === "open" ? (
+          <button
+            type="button"
+            onClick={() => onTry(page.garment)}
+            className="ml-auto shrink-0 rounded-full bg-[#27354f] px-4 py-1.5 text-[0.8rem] text-amber-50 hover:bg-[#1c2740]"
+          >
+            Mặc thử →
+          </button>
+        ) : (
+          // try-on stays closed until the community has reviewed this garment
+          <span className="ml-auto max-w-[45%] text-right text-[0.66rem] leading-snug text-stone-500">
+            Thử đồ AI mở khi người ở đây đã đọc lại
+          </span>
+        )}
       </div>
+      {g && (
+        <p className="m-0 mt-1 text-[0.8rem] leading-snug text-stone-600">
+          {g.summary}
+        </p>
+      )}
+      {g && (
+        <div className="mt-3 rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
+          <p className="font-hand m-0 text-[1rem]" style={{ color: OLD }}>
+            Khi mặc, con nhớ:
+          </p>
+          <ul className="m-0 mt-1 list-none space-y-1 p-0 text-[0.78rem] leading-snug text-stone-700">
+            {(["keep", "caution", "free"] as const).map((lv) => {
+              const parts = g.zones.filter((z) => z.level === lv);
+              if (!parts.length) return null;
+              return (
+                <li key={lv} className="flex gap-2">
+                  <span
+                    className={`mt-0.5 shrink-0 rounded-sm px-1.5 text-[0.62rem] font-semibold ${lv === "keep" ? "bg-[#27354f] text-amber-50" : lv === "caution" ? "bg-[#D9A43B] text-[#3b2a10]" : "bg-[#5E7F4A] text-white"}`}
+                  >
+                    {LEVEL[lv]}
+                  </span>
+                  <span>
+                    {parts.map((z, i) => (
+                      <span key={z.part}>
+                        {i > 0 && " · "}
+                        {z.part}
+                        {z.note && <span className="text-stone-500"> ({z.note})</span>}
+                      </span>
+                    ))}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+      {g && g.wearing_steps.length > 0 && (
+        <ol className="m-0 mt-2 list-none space-y-0.5 p-0 text-[0.76rem] leading-snug text-stone-700">
+          {g.wearing_steps.map((st, k) => (
+            <li key={st.title} className="flex gap-2">
+              <span className="font-display shrink-0 text-[#8a4b2a]">{k + 1}.</span>
+              <span>
+                <b className="font-semibold">{st.title}:</b> {st.detail}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
     </Sheet>
   );
 }
@@ -656,7 +657,7 @@ function shuffled(q: CheckQuestion) {
 }
 
 /** One question of Bà: pick, see right or wrong and why. Unverified questions show only while drafting. */
-function Question({
+export function Question({
   q,
   regionId,
   phase,
@@ -713,7 +714,7 @@ function Question({
 }
 
 const PRE_KEY = "vpdk-pre-asked";
-function preAsked(regionId: string) {
+export function preAsked(regionId: string) {
   try {
     return (JSON.parse(localStorage.getItem(PRE_KEY) ?? "[]") as string[]).includes(regionId);
   } catch {
@@ -730,7 +731,7 @@ function setPreAsked(regionId: string) {
 }
 
 /** Before the "Đến" entry, once per region: Bà asks what the reader already guesses. */
-function PreQuestion({ region, onDone }: { region: Region; onDone: () => void }) {
+export function PreQuestion({ region, onDone }: { region: Region; onDone: () => void }) {
   const q = region.journey!.check!.pre;
   const [answered, setAnswered] = useState(false);
   const done = () => {
@@ -776,12 +777,11 @@ export function AskDiary({ region }: { region: Region }) {
             q={q}
             regionId={region.id}
             phase="post"
-            onAnswer={() =>
-              setCount((c) => {
-                if (c + 1 >= qs.length) markStamp("understood", region.id);
-                return c + 1;
-              })
-            }
+            onAnswer={() => {
+              // count first, stamp outside React's update: the stamp wakes up other components (the contents page)
+              if (count + 1 >= qs.length) markStamp("understood", region.id);
+              setCount((c) => c + 1);
+            }}
           />
         ))}
         {qs.length === 0 && <p className="text-sm text-stone-500">Câu hỏi đang được kiểm tra lại.</p>}
@@ -814,7 +814,8 @@ export function OwnDiary({
   onTry?: (garment: string) => void;
 }) {
   const j = region.journey!;
-  const open = region.status === "open";
+  const open = region.status === "open" || hasChapter(region);
+  const canTry = region.status === "open";
   const book = useDuKy();
   useEffect(() => {
     ensureMigrated(data.garments);
@@ -863,24 +864,28 @@ export function OwnDiary({
             ) : (
               <div className="flex w-[62%] flex-col items-center gap-2 border-2 border-dashed border-stone-300 p-4 text-center">
                 <p className="m-0 text-[0.72rem] text-stone-500">Chỗ dán ảnh</p>
-                {garments.map((g) => (
-                  <button
-                    key={g.id}
-                    type="button"
-                    onClick={() => onTry?.(g.id)}
-                    className="w-full rounded-full bg-[#27354f] px-3 py-1.5 text-[0.75rem] text-amber-50"
-                  >
-                    Mặc thử {g.name_vi}
-                  </button>
-                ))}
+                {canTry
+                  ? garments.map((g) => (
+                      <button
+                        key={g.id}
+                        type="button"
+                        onClick={() => onTry?.(g.id)}
+                        className="w-full rounded-full bg-[#27354f] px-3 py-1.5 text-[0.75rem] text-amber-50"
+                      >
+                        Mặc thử {g.name_vi}
+                      </button>
+                    ))
+                  : (
+                    <p className="m-0 text-[0.7rem] text-stone-500">Con mặc {garments[0]?.name_vi} đi hội rồi thì dán ảnh vào Du Ký nhé.</p>
+                  )}
               </div>
             )}
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-            <a href={`/du-ky?new=worn&region=${region.id}`} className="text-[0.78rem] text-stone-700 underline">
+            <a href={asset(`/du-ky?new=worn&region=${region.id}`)} className="text-[0.78rem] text-stone-700 underline">
               + Trang đã mặc
             </a>
-            <a href={`/du-ky?region=${region.id}`} className="font-hand text-[1.05rem] text-[#8a4b2a] underline">
+            <a href={asset(`/du-ky?region=${region.id}`)} className="font-hand text-[1.05rem] text-[#8a4b2a] underline">
               Mở Du Ký của con →
             </a>
           </div>

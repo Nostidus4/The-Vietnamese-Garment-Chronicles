@@ -1,0 +1,200 @@
+{
+  "terms": [
+    {
+      "id": "ngo-mon",
+      "term": "Ngọ Môn",
+      "text": "Cổng lớn nhất của Hoàng thành Huế, quay về hướng nam; phía trên là lầu Ngũ Phụng. Cửa giữa chỉ mở khi vua ra vào hay đón sứ thần.",
+      "sources": [
+        "vov-hue-gates"
+      ],
+      "verified": true
+    },
+    {
+      "id": "nha-nhac",
+      "term": "Nhã nhạc",
+      "text": "Âm nhạc cung đình, dùng trong các lễ lớn của triều Nguyễn. Nhã nhạc cung đình Huế được UNESCO công nhận là di sản phi vật thể.",
+      "sources": [
+        "unesco-ich-vn"
+      ],
+      "verified": true
+    },
+    {
+      "id": "nha-ruong",
+      "term": "Nhà rường",
+      "text": "Ngôi nhà gỗ chạm trổ công phu, là nhà chính trong nhà vườn Huế, thường dùng thờ tự gia tiên; quanh nhà là vườn cây, bể cạn, hòn non bộ.",
+      "sources": [
+        "vnexpress-nha-vuon"
+      ],
+      "verified": true
+    },
+    {
+      "id": "rua",
+      "term": "rứa",
+      "text": "Tiếng Huế, nghĩa là “thế”, “vậy”. “Rứa thôi” là “thế thôi”.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "hoa-dang",
+      "term": "Hoa đăng",
+      "text": "Đèn hình hoa sen, thắp nến rồi thả trôi trên sông, gửi theo một lời cầu an.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "bai-choi",
+      "term": "Bài chòi",
+      "text": "Trò chơi dân gian ngày Tết ở Trung Bộ: người chơi ngồi trong chòi tre, anh hiệu hát câu thai để xướng tên con bài. Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh.",
+      "sources": [
+        "unesco-ich-vn"
+      ],
+      "verified": true
+    },
+    {
+      "id": "ao-ngu-than",
+      "term": "Áo ngũ thân",
+      "text": "Áo năm thân, cổ đứng, cài khuy bên phải. Năm 1744, chúa Nguyễn Phúc Khoát định chế y phục ở Đàng Trong và áo ngũ thân thành thường phục chung.",
+      "sources": [
+        "ref-03",
+        "ref-12"
+      ],
+      "verified": true
+    },
+    {
+      "id": "khan-dong",
+      "term": "Khăn đóng",
+      "text": "Khăn đội đầu đi cùng áo dài nam trong các dịp quan trọng, lễ nghi; áo dài nam phải kèm khăn đóng mới đủ lệ bộ.",
+      "sources": [
+        "baophapluat-ngu-than"
+      ],
+      "verified": true
+    },
+    {
+      "id": "khan-mo-qua",
+      "term": "Khăn mỏ quạ",
+      "text": "Khăn vấn đầu của liền chị quan họ: vấn sao cho đường giữa thẳng, mũi khăn nhọn chụm về phía trước như nụ sen.",
+      "sources": [
+        "heritage-quan-ho",
+        "bvh-trang-phuc-quan-ho"
+      ],
+      "verified": true
+    },
+    {
+      "id": "giay-do",
+      "term": "Giấy dó",
+      "text": "Giấy làm từ vỏ cây dó, dai và bền; làng Đông Hồ phủ thêm bột vỏ điệp lên để in tranh.",
+      "sources": [
+        "tuoitre-in-dong-ho"
+      ],
+      "verified": false
+    },
+    {
+      "id": "giay-diep",
+      "term": "Điệp",
+      "text": "Giấy quét lớp bột vỏ điệp trộn hồ gạo bằng chổi lá thông, có ánh lấp lánh; nền của tranh Đông Hồ.",
+      "sources": [
+        "tapchicongthuong-dong-ho"
+      ],
+      "verified": true
+    },
+    {
+      "id": "non-quai-thao",
+      "term": "Nón quai thao",
+      "text": "Nón ba lớp lá, vành rộng của liền chị quan họ: vừa che nắng, vừa giúp giọng hát vang xa khi hát ngoài trời.",
+      "sources": [
+        "heritage-quan-ho"
+      ],
+      "verified": true
+    },
+    {
+      "id": "khan-ran",
+      "term": "Khăn rằn",
+      "text": "Khăn kẻ ô vuông của người Nam Bộ, dùng che nắng, lau mồ hôi, chít đầu.",
+      "sources": [
+        "ref-79"
+      ],
+      "verified": true
+    },
+    {
+      "id": "vong-co",
+      "term": "Vọng cổ",
+      "text": "Điệu hát nổi tiếng nhất của đờn ca tài tử và cải lương, bắt nguồn từ bài Dạ cổ hoài lang của nhạc sĩ Cao Văn Lầu (khoảng năm 1918).",
+      "sources": [
+        "wiki-cao-van-lau"
+      ],
+      "verified": true
+    },
+    {
+      "id": "ao-com",
+      "term": "Áo cóm",
+      "text": "Áo ngắn, ôm người của phụ nữ Thái, gấu áo vừa chạm cạp váy, phía trước có hàng cúc bạc hình bướm.",
+      "sources": [
+        "heritage-thai"
+      ],
+      "verified": true
+    },
+    {
+      "id": "khan-pieu",
+      "term": "Khăn piêu",
+      "text": "Khăn đội đầu của phụ nữ Thái, dệt từ sợi bông, thêu hoa văn ở hai đầu; cô gái tự thêu tặng người yêu như lời ước hẹn.",
+      "sources": [
+        "baolaocai-pieu"
+      ],
+      "verified": true
+    },
+    {
+      "id": "tang-cau",
+      "term": "Tằng cẩu",
+      "text": "Kiểu búi tóc lên đỉnh đầu của phụ nữ Thái Đen đã có chồng.",
+      "sources": [
+        "heritage-thai"
+      ],
+      "verified": true
+    },
+    {
+      "id": "xoe",
+      "term": "Xòe",
+      "text": "Điệu múa của người Thái ở Tây Bắc, múa trong nghi lễ, đám cưới, hội bản; xòe vòng là kiểu phổ biến nhất. UNESCO ghi danh năm 2021.",
+      "sources": [
+        "unesco-xoe"
+      ],
+      "verified": true
+    },
+    {
+      "id": "nha-dai",
+      "term": "Nhà dài",
+      "text": "Nhà sàn dài của người Ê Đê, cả đại gia đình theo dòng mẹ cùng ở; cầu thang đẽo từ thân cây có số nấc lẻ.",
+      "sources": [
+        "tuoitre-cau-thang"
+      ],
+      "verified": true
+    },
+    {
+      "id": "tho-cam",
+      "term": "Thổ cẩm",
+      "text": "Vải dệt tay nhiều màu trên khung dệt buộc lưng; người Ê Đê dùng làm áo, váy, khố.",
+      "sources": [
+        "nhandan-tho-cam-ede"
+      ],
+      "verified": true
+    },
+    {
+      "id": "kpin",
+      "term": "Kpin",
+      "text": "Khố của đàn ông Ê Đê, dệt từ thổ cẩm.",
+      "sources": [
+        "nhandan-tho-cam-ede"
+      ],
+      "verified": true
+    },
+    {
+      "id": "cong-chieng",
+      "term": "Cồng chiêng",
+      "text": "Nhạc cụ đồng của các dân tộc Tây Nguyên; mỗi dàn từ ba đến mười hai chiếc, mỗi người đánh một chiếc. UNESCO công nhận năm 2005.",
+      "sources": [
+        "unesco-gong"
+      ],
+      "verified": true
+    }
+  ]
+}

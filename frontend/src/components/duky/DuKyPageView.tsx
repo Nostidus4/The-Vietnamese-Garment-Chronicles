@@ -9,6 +9,7 @@ import { addPhoto, removePage, updatePage, usePhotoUrl, type DuKyPage, type Phot
 import { sourceOf } from "@/lib/sources";
 import { track } from "@/lib/track";
 import type { Bootstrap, Shop } from "@/lib/types";
+import { asset } from "@/lib/base";
 
 const INK = "#27354f";
 const VERDICT: Record<string, string> = { Authentic: "✅", Adapted: "✨", Inspired: "⚠️" };
@@ -224,7 +225,7 @@ export function DuKyPageView({
             {page.share ? "Link chia sẻ" : "Tạo link chia sẻ"}
           </button>
         )}
-        <a href={`/chapter/${page.region_id}?garment=${page.garment_id}`} className="underline">
+        <a href={asset(`/chapter/${page.region_id}/?garment=${page.garment_id}`)} className="underline">
           Mặc lại look
         </a>
         <button

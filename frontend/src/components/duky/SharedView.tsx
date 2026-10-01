@@ -70,3 +70,9 @@ export function SharedView({ id }: { id: string }) {
     </main>
   );
 }
+
+/** /du-ky/p/?id=… */
+export function SharedFromQuery() {
+  const id = new URLSearchParams(window.location.search).get("id") ?? "";
+  return <SharedView id={id} />;
+}

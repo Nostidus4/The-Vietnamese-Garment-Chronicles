@@ -7,7 +7,7 @@ Field descriptions double as the data-entry guide (see backend/docs/BACKEND.md).
 from datetime import date
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 Id = str  # kebab-case, e.g. "ao-ngu-than"
 ID_PATTERN = r"^[a-z0-9]+(-[a-z0-9]+)*$"
@@ -171,6 +171,16 @@ class LifeItem(Strict):
     community_review: bool = Field(False, description="About a community that must review it first; hidden until then")
 
 
+class Photo(Strict):
+    """A real photo for Tí's "Hôm nay" page. Never AI-made, always credited (e.g. Wikimedia Commons, CC licence)."""
+
+    image: str = Field(description="Path under frontend/public, e.g. /regions/hue/photos/ga-hue.jpg")
+    alt: str
+    credit: str = Field(description="Author as the licence asks to name them")
+    license: str = Field(description="e.g. CC BY 4.0, CC BY-SA 2.0, Public domain")
+    source_url: str
+
+
 class Festival(Strict):
     id: Id = Field(pattern=ID_PATTERN)
     name: str
@@ -178,6 +188,8 @@ class Festival(Strict):
     month: int | None = Field(None, ge=1, le=12, description="For the calendar strip")
     place: str
     text: str = Field(max_length=350, description="In young Bà's voice")
+    review: str | None = Field(None, max_length=300, description="Tí today: what it feels like to be there")
+    photo: Photo | None = None
     community_review: bool = False
 
 
@@ -200,6 +212,96 @@ class FestivalPage(DiaryPage):
 
 class WearPage(DiaryPage):
     garment: Id
+
+
+class GlossaryTerm(Strict):
+    """Tèo's pop-up note for a hard word. Texts mark a word with [[shown words|term-id]]."""
+
+    id: Id = Field(pattern=ID_PATTERN)
+    term: str
+    text: str = Field(max_length=240, description="One or two sentences, Tèo's voice")
+    sources: list[Id] = []
+    verified: bool = False
+
+
+class Today(Strict):
+    """Tí walks to the same place today with Bà's notebook: a short review, tips and a real photo."""
+
+    title: str = Field(max_length=80)
+    text: str = Field(max_length=420, description="Tí's voice ('mình'), how it feels to be there")
+    tips: list[str] = Field(default_factory=list, max_length=3)
+    photo: Photo | None = None
+
+
+class HatReveal(Strict):
+    """Nón bài thơ: hold the hat up to the sun and the hidden picture and line appear."""
+
+    line: str = Field(max_length=120, description="The handwritten line hidden in the hat (shown by the web, not drawn)")
+    hat: str | None = Field(None, description="Hat seen against the light, under frontend/public")
+    hidden: str | None = Field(None, description="The hidden silhouette layer, under frontend/public")
+
+
+GameKind = Literal["dong-ho", "quan-ho", "ngu-than", "cay-beo", "xep-do", "khuy-bac", "xoe", "cong-chieng", "det"]
+
+
+class GameRound(Strict):
+    """One step of a mini-game. Each kind reads the fields it needs (see frontend/src/components/book/games)."""
+
+    label: str | None = Field(None, max_length=80, description="What the player sees: a colour, a boat, an item, a button")
+    item: str | None = Field(None, max_length=80, description="Colour hex, the object hung on a boat, etc.")
+    prompt: str | None = Field(None, max_length=200, description="A line sung, a question")
+    choices: list[str] = Field(default_factory=list, max_length=4)
+    answer: int | None = Field(None, ge=0, description="Index of the right choice, or 1/0 for keep/leave")
+    explain: str | None = Field(None, max_length=240)
+
+
+class Game(Strict):
+    """A small game glued on a stop's right page. Winning it reveals Tí's "Hôm nay" page."""
+
+    kind: GameKind
+    title: str = Field(max_length=60)
+    intro: str = Field(max_length=220)
+    rounds: list[GameRound] = Field(default_factory=list, max_length=10)
+    done: str = Field(max_length=220, description="Said when the player wins")
+    teo: TeoNote | None = None
+    community_review: bool = Field(False, description="Hidden (only in drafts) until the community has reviewed it")
+
+
+TimeOfDay = Literal["dawn", "morning", "noon", "afternoon", "evening", "night"]
+
+
+class Stop(DiaryPage):
+    """One stop of a chapter walked like a trip: Bà's page (left) and Tí's "Hôm nay" (right)."""
+
+    id: Id = Field(pattern=ID_PATTERN)
+    place: str = Field(max_length=40, description="Short name on the route, e.g. Ga Huế")
+    time: TimeOfDay = Field(description="Tints the page like the light of that hour")
+    point: GeoPoint | None = Field(None, description="Where it is, for the dotted route on the map")
+    frame: Frame | None = Field(None, description="Bà's memory, illustrated")
+    today: Today | None = None
+    items: list[LifeItem] = []
+    festivals: list[Festival] = []
+    hat: HatReveal | None = None
+    game: Game | None = None
+    stamp: str | None = Field(None, max_length=24, description="Name on this stop's own stamp, e.g. Ga Huế")
+    community_review: bool = False
+
+
+class ChapterIntro(Strict):
+    """The title page of a province chapter."""
+
+    province: str = Field(description="As on the map, e.g. Huế")
+    title: str = Field(max_length=60)
+    verse: list[str] = Field(min_length=1, max_length=4, description="Ca dao or a poem about the place, one line each")
+    verse_by: str = Field(description="e.g. ca dao Huế")
+    line: str = Field(max_length=200, description="Old Bà, to the reader")
+
+
+class Letter(Strict):
+    """The envelope glued at the end of a chapter: a postcard from Bà, which the reader can keep in their Du Ký."""
+
+    text: str = Field(max_length=400)
+    image: str | None = Field(None, description="Postcard picture under frontend/public")
 
 
 class OwnPage(Strict):
@@ -226,15 +328,45 @@ class RegionCheck(Strict):
 
 
 class Journey(Strict):
+    """A chapter of Bà's diary. Old layout: arrive, look, life, festivals. Trip layout: chapter + stops + letter."""
+
     hover_line: str = Field(max_length=140, description="One line from the diary, shown when the region is hovered")
-    arrive: ArrivePage
-    look: LookPage
+    chapter: ChapterIntro | None = None
+    arrive: ArrivePage | None = None
+    look: LookPage | None = None
+    stops: list[Stop] = Field(default_factory=list, max_length=8)
+    letter: Letter | None = None
+    community_review: bool = Field(False, description="A draft written with a community: shown only in drafts until reviewed")
     life: LifePage | None = None
     festivals: FestivalPage | None = None
     wear: list[WearPage] = Field(default_factory=list, max_length=2)
     own: OwnPage
     check: RegionCheck | None = None
     sources: list[Id] = []
+
+    @model_validator(mode="after")
+    def one_layout(self) -> "Journey":
+        if self.stops and not self.chapter:
+            raise ValueError("a chapter with stops needs 'chapter' (its title page)")
+        if not self.stops and not (self.arrive and self.look):
+            raise ValueError("needs either 'stops' (trip layout) or both 'arrive' and 'look'")
+        return self
+
+
+class RegionIntro(Strict):
+    """The page that opens a region: a verse everyone there knows, and Bà's line."""
+
+    verse: list[str] = Field(default_factory=list, max_length=4)
+    verse_by: str | None = None
+    line: str = Field(max_length=200)
+
+
+class ChapterRef(Strict):
+    """One province in the region's table of contents; 'open' = its chapter is the region's journey."""
+
+    province: str = Field(description="Exactly as on the map (vietnam-geo FOCUS), e.g. Huế")
+    status: Literal["open", "draft", "waiting"] = Field("waiting", description="draft = being written with the community, shown only in drafts")
+    title: str | None = None
 
 
 class Region(Strict):
@@ -246,6 +378,8 @@ class Region(Strict):
     map_note: MapNote
     weather_point: GeoPoint | None = None
     stamp_image: str | None = None
+    intro: RegionIntro | None = None
+    chapters: list[ChapterRef] = []
     journey: Journey | None = Field(None, description="Filled from content/regions/<id>.json")
 
 
@@ -324,6 +458,31 @@ BeatKind = Literal["narration", "speech", "title", "question", "finale"]
 BeatStyle = Literal["box", "memory", "hand", "hand-large", "hand-light-large", "title", "finale", "finale-large", "caption"]
 
 
+VoiceId = Literal["narrator", "co-giao", "ti", "teo", "ti-nho", "ba"]
+
+
+class VoiceCandidate(Strict):
+    key: str
+    voice_id: str
+    sample: str | None = None
+
+
+class Voice(Strict):
+    """One character voice, designed from a description in Google AI Studio (Generate speech → voice design)."""
+
+    id: VoiceId
+    name: str
+    voice_id: str | None = Field(None, description="The persistent voice_… ID from AI Studio; null until designed")
+    fallback: str = Field(description="Prebuilt Gemini voice used when voice_id is empty, e.g. Charon")
+    gender: Literal["male", "female"]
+    rate: float = Field(gt=1, lt=7, description="Target speaking rate in syllables per second (the character's own pace)")
+    base_style: str = Field(description="Who is speaking; sent with every line so the persona never drifts")
+    design_prompt: str = Field(description="The description used for voice design")
+    test_line: str = Field(description="A line to audition the voice with")
+    candidates: list[VoiceCandidate] = Field(default_factory=list, description="Designed options; voice_id is the chosen one")
+    same_as: VoiceId | None = Field(None, description="Speak with another character's chosen voice (Tí lúc bé uses Tí's)")
+
+
 class Beat(Strict):
     kind: BeatKind = "narration"
     style: BeatStyle = "box"
@@ -343,6 +502,10 @@ class Beat(Strict):
     type_ms: int = Field(0, ge=0, description="Per-character reveal; 0 = fade the whole line")
     camera: Camera | None = None
     effects: list[Effect] = []
+    # voice-over (Gemini TTS, pre-generated into frontend/public/opening/voice/<screen>-<nn>.mp3)
+    voice: VoiceId | None = Field(None, description="Who reads this line; null = silent")
+    delivery: str | None = Field(None, max_length=240, description="How to read it, sent to TTS as the style")
+    say: str | None = Field(None, description="What is spoken when it differs from the text on screen")
 
 
 TransitionType = Literal[
@@ -365,6 +528,7 @@ class Transition(Strict):
 class OpeningScreen(Strict):
     id: Id = Field(pattern=ID_PATTERN)
     title: str
+    scene: str | None = Field(None, description="Where, who, mood: sent with every voice-over line of this screen")
     image: str = Field(description="Path under frontend/public, e.g. /opening/s01.png")
     mood: Literal["present", "memory"] = "present"
     focal: dict[str, float] = Field(default_factory=lambda: {"x": 50, "y": 50})

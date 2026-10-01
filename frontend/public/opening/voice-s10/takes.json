@@ -1,0 +1,66 @@
+{
+  "screen": "s10",
+  "takes": [
+    {
+      "id": "t01",
+      "voice": "ba",
+      "voice_name": "voice_7ugngowg6z47",
+      "beats": [
+        0,
+        1
+      ],
+      "text": "Hành trình của bà đã kết thúc. Hành trình của con bắt đầu từ đây.",
+      "style": "Scene: The finale: a swirl of paper and fabric carries Tí into the story. Bà blesses the listener softly: her journey ends, theirs begins. Speaker: Bà, Tí's 75-year-old grandmother from Kinh Bắc, a retired seamstress; warm, slow, tender, wise, a quiet smile in her voice. Delivery: Serene and gentle, saying goodbye with a smile. Then: Warm, clear and encouraging, a blessing to the listener; slightly stronger. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 2.7,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t01-ba-a.mp3",
+          "duration": 5.43,
+          "rate": 3.62,
+          "cues": [
+            0.0,
+            2.87
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.341
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t01-ba-b.mp3",
+          "duration": 6.63,
+          "rate": 3.24,
+          "cues": [
+            0.0,
+            2.93
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.2
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t01-ba-c.mp3",
+          "duration": 6.87,
+          "rate": 2.96,
+          "cues": [
+            0.0,
+            3.49
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.096
+        }
+      ],
+      "file": "t01-ba.mp3",
+      "picked": "c",
+      "duration": 6.87,
+      "cues": [
+        0.0,
+        3.49
+      ],
+      "cues_ok": true
+    }
+  ]
+}

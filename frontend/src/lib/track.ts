@@ -1,4 +1,4 @@
-import { API_URL } from "./api";
+import { API_URL, HAS_API } from "./api";
 import type { CompassState } from "./types";
 
 // Anonymous usage events (backend/app/services/events.py). Only ids, states and booleans: never a name, a photo or text.
@@ -30,6 +30,7 @@ function sessionId(): string {
 
 /** Fire and forget: a network error never reaches the UI. */
 export function track<T extends keyof Payloads>(type: T, payload: Payloads[T]) {
+  if (!HAS_API) return;
   try {
     fetch(`${API_URL}/events`, {
       method: "POST",

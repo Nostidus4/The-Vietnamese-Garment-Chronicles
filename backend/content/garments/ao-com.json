@@ -1,0 +1,104 @@
+{
+  "id": "ao-com",
+  "region": "tay-bac",
+  "name_vi": "Áo cóm và khăn piêu",
+  "name_en": "Tai women's áo cóm and piêu scarf",
+  "group": "dan-toc",
+  "period": "Trang phục truyền thống của phụ nữ Thái ở Tây Bắc, còn mặc hằng ngày và trong lễ hội",
+  "summary": "Áo ngắn ôm người với hàng cúc bạc hình bướm, váy ống nhuộm chàm, thắt lưng xanh và khăn piêu thêu hai đầu.",
+  "facts": [
+    {
+      "text": "Áo cóm là áo ngắn, may ôm người, gấu áo vừa chạm cạp váy.",
+      "sources": [
+        "heritage-thai"
+      ]
+    },
+    {
+      "text": "Phía trước áo có một hàng cúc bạc hình bướm; người Thái quan niệm số cúc phải là số lẻ, tượng trưng cho sự sống và sinh sôi.",
+      "sources": [
+        "heritage-thai"
+      ]
+    },
+    {
+      "text": "Áo cóm của phụ nữ Thái Đen có cổ tròn đứng, của phụ nữ Thái Trắng có cổ chữ V.",
+      "sources": [
+        "heritage-thai"
+      ]
+    },
+    {
+      "text": "Đi cùng áo là váy ống (xỉn) bằng vải bông nhuộm chàm và thắt lưng bằng lụa hoặc sợi bông màu xanh.",
+      "sources": [
+        "heritage-thai"
+      ]
+    },
+    {
+      "text": "Khăn piêu dệt từ sợi bông, thêu hoa văn ở hai đầu khăn; cô gái Thái tự dệt, thêu piêu tặng người yêu như lời ước hẹn.",
+      "sources": [
+        "baolaocai-pieu"
+      ]
+    },
+    {
+      "text": "Phụ nữ Thái Đen đã có chồng búi tóc lên đỉnh đầu, gọi là tằng cẩu.",
+      "sources": [
+        "heritage-thai"
+      ]
+    }
+  ],
+  "occasions": [
+    "le-hoi",
+    "dam-cuoi",
+    "tet-chua"
+  ],
+  "zones": [
+    {
+      "part": "dáng áo ngắn, ôm người",
+      "level": "keep",
+      "note": "Gấu áo vừa chạm cạp váy"
+    },
+    {
+      "part": "hàng cúc bạc",
+      "level": "keep",
+      "note": "Số cúc là số lẻ"
+    },
+    {
+      "part": "váy ống màu chàm",
+      "level": "keep",
+      "note": null
+    },
+    {
+      "part": "hoa văn khăn piêu",
+      "level": "caution",
+      "note": "Hoa văn mang ý nghĩa riêng: hỏi người Thái trước khi đổi"
+    }
+  ],
+  "colors": [
+    "cham",
+    "den",
+    "trang",
+    "xanh-mint"
+  ],
+  "default_colors": [
+    "cham",
+    "den"
+  ],
+  "accessories": [
+    "khan-pieu"
+  ],
+  "must_keep": [
+    "short fitted blouse ending at the skirt waistband",
+    "a single row of silver butterfly-shaped buttons down the front",
+    "long tube skirt of indigo-dyed cotton"
+  ],
+  "must_avoid": [
+    "Chinese mandarin collar or frog buttons",
+    "Thai (Thailand) court dress"
+  ],
+  "reference_image": null,
+  "hot_weather_tip": null,
+  "wearing_steps": [],
+  "sources": [
+    "heritage-thai",
+    "baolaocai-pieu"
+  ],
+  "verified": true
+}

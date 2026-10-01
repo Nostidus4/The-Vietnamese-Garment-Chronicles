@@ -1,9 +1,14 @@
+import { asset } from "./base";
 import type { Bootstrap, CompassResult, Selection, Shop, TryOnResult } from "./types";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+/** Built without a backend (GitHub Pages with no NEXT_PUBLIC_API_URL): the book reads content bundled at build time. */
+export const HAS_API = API_URL !== "";
 
 /** Absolute URL for a file under backend/content/media, e.g. media("comic/page-1.png") */
 export const media = (path: string) => `${API_URL}/media/${path}`;
+// every server call goes through here: with no backend it fails at once instead of hitting the Pages host
+const call: typeof fetch = (input, init) => (HAS_API ? fetch(input, init) : Promise.reject(new Error("Bản web này chưa nối máy chủ")));
 
 async function json<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -17,8 +22,7 @@ async function json<T>(res: Response): Promise<T> {
 let bootstrapPromise: Promise<Bootstrap> | null = null;
 export function getBootstrap(): Promise<Bootstrap> {
   // wait for a sleeping server to wake instead of failing the first load
-  bootstrapPromise ??= serverReady()
-    .then(() => fetch(`${API_URL}/content/bootstrap`))
+  bootstrapPromise ??= (HAS_API ? serverReady().then(() => fetch(`${API_URL}/content/bootstrap`)) : fetch(asset("/bootstrap.json")))
     .then((r) => json<Bootstrap>(r))
     .catch((e) => {
       bootstrapPromise = null;
@@ -28,7 +32,7 @@ export function getBootstrap(): Promise<Bootstrap> {
 }
 
 const post = <T>(path: string, body: unknown) =>
-  fetch(`${API_URL}${path}`, {
+  call(`${API_URL}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -47,7 +51,7 @@ export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string })
   if (opts.photo) form.append("photo", opts.photo);
   if (opts.avatarId) form.append("avatar_id", opts.avatarId);
   // Backend gives up on Gemini after 60 s and returns the fallback; this only catches a hung connection
-  return fetch(`${API_URL}/tryon`, { method: "POST", body: form, signal: AbortSignal.timeout(75_000) })
+  return call(`${API_URL}/tryon`, { method: "POST", body: form, signal: AbortSignal.timeout(75_000) })
     .then((r) => json<TryOnResult>(r))
     .catch((e) => {
       if (e instanceof DOMException && e.name === "TimeoutError") throw new Error("Máy chủ phản hồi quá lâu, bạn thử lại nhé.");
@@ -56,7 +60,7 @@ export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string })
 }
 
 export const getQuiz = (count = 5) =>
-  fetch(`${API_URL}/quiz?count=${count}`).then((r) =>
+  call(`${API_URL}/quiz?count=${count}`).then((r) =>
     json<{ choices: Record<string, string>; items: { id: string; image: string }[] }>(r),
   );
 
@@ -64,10 +68,10 @@ export const answerQuiz = (id: string, answer: string) =>
   post<{ correct: boolean; answer_name: string; explanation: string; sources: string[] }>("/quiz/answer", { id, answer });
 
 export const getShops = (params: { city?: string; garment_id?: string; service?: string }) =>
-  fetch(`${API_URL}/shops?${new URLSearchParams(params as Record<string, string>)}`).then((r) => json<Shop[]>(r));
+  call(`${API_URL}/shops?${new URLSearchParams(params as Record<string, string>)}`).then((r) => json<Shop[]>(r));
 
 export const getWeather = (regionId: string) =>
-  fetch(`${API_URL}/weather/${regionId}`).then((r) =>
+  call(`${API_URL}/weather/${regionId}`).then((r) =>
     json<{ available: boolean; temperature_c?: number; is_hot?: boolean; tips?: { garment_id: string; tip: string }[] }>(r),
   );
 
@@ -83,7 +87,7 @@ export type DayWeather = {
   days_until_forecast?: number;
 };
 export const getWeatherOn = (regionId: string, date: string) =>
-  fetch(`${API_URL}/weather/${regionId}?date=${encodeURIComponent(date)}`).then((r) => json<DayWeather>(r));
+  call(`${API_URL}/weather/${regionId}?date=${encodeURIComponent(date)}`).then((r) => json<DayWeather>(r));
 
 // ---- public links for one Du Ký page (#27): only month, garment, occasion, note and chosen photos ----
 export type ShareMeta = {
@@ -103,11 +107,11 @@ export function createShare(meta: ShareMeta, photos: Blob[]) {
   const form = new FormData();
   form.append("meta", JSON.stringify(meta));
   photos.forEach((b, i) => form.append("photos", b, `${i}.${b.type === "image/png" ? "png" : "jpg"}`));
-  return fetch(`${API_URL}/share`, { method: "POST", body: form }).then((r) => json<{ id: string; delete_key: string }>(r));
+  return call(`${API_URL}/share`, { method: "POST", body: form }).then((r) => json<{ id: string; delete_key: string }>(r));
 }
-export const getShare = (id: string) => fetch(`${API_URL}/share/${encodeURIComponent(id)}`).then((r) => json<SharedPage>(r));
+export const getShare = (id: string) => call(`${API_URL}/share/${encodeURIComponent(id)}`).then((r) => json<SharedPage>(r));
 export const deleteShare = (id: string, key: string) =>
-  fetch(`${API_URL}/share/${encodeURIComponent(id)}`, { method: "DELETE", headers: { "X-Delete-Key": key } }).then((r) => {
+  call(`${API_URL}/share/${encodeURIComponent(id)}`, { method: "DELETE", headers: { "X-Delete-Key": key } }).then((r) => {
     if (!r.ok && r.status !== 404) throw new Error(`Lỗi ${r.status}`);
   });
 
@@ -115,6 +119,7 @@ export const deleteShare = (id: string, key: string) =>
 let readyPromise: Promise<boolean> | null = null;
 /** Resolves true once GET /health answers (polling up to ~2 minutes), false if it never does. */
 export function serverReady(): Promise<boolean> {
+  if (!HAS_API) return Promise.resolve(false);
   readyPromise ??= (async () => {
     const until = Date.now() + 120_000;
     while (Date.now() < until) {

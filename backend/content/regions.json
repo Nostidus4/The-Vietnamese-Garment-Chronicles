@@ -2,13 +2,13 @@
   "regions": [
     {
       "id": "bac-bo",
-      "name": "Bắc Bộ / Kinh Bắc",
+      "name": "Bắc Bộ",
       "status": "open",
       "garments": [
         "ao-tu-than"
       ],
       "map_note": {
-        "title": "Bắc Bộ / Kinh Bắc",
+        "title": "Bắc Bộ",
         "lines": [
           "Đất hội xuân và quan họ.",
           "Áo tứ thân, yếm, nón quai thao, khăn mỏ quạ.",
@@ -19,29 +19,139 @@
         "lat": 21.18,
         "lon": 106.07
       },
-      "stamp_image": "stamps/bac-bo.png"
+      "stamp_image": "stamps/bac-bo.png",
+      "intro": {
+        "verse": [
+          "Gió đưa cành trúc la đà,",
+          "Tiếng chuông Trấn Vũ, canh gà Thọ Xương."
+        ],
+        "verse_by": "ca dao Hà Nội",
+        "line": "Bắc Bộ bốn mùa rõ lắm. Bà đến vào mùa xuân, mùa của hội, và mới kịp ghé Kinh Bắc."
+      },
+      "chapters": [
+        {
+          "province": "Bắc Ninh",
+          "status": "open",
+          "title": "Hội xuân bên sông Cầu"
+        },
+        {
+          "province": "Hà Nội",
+          "status": "waiting"
+        },
+        {
+          "province": "Hải Phòng",
+          "status": "waiting"
+        },
+        {
+          "province": "Quảng Ninh",
+          "status": "waiting"
+        },
+        {
+          "province": "Ninh Bình",
+          "status": "waiting"
+        },
+        {
+          "province": "Hưng Yên",
+          "status": "waiting"
+        },
+        {
+          "province": "Thái Nguyên",
+          "status": "waiting"
+        },
+        {
+          "province": "Tuyên Quang",
+          "status": "waiting"
+        },
+        {
+          "province": "Cao Bằng",
+          "status": "waiting"
+        },
+        {
+          "province": "Lạng Sơn",
+          "status": "waiting"
+        },
+        {
+          "province": "Phú Thọ",
+          "status": "waiting"
+        }
+      ]
     },
     {
       "id": "hue",
-      "name": "Huế / Miền Trung",
+      "name": "Miền Trung",
       "status": "open",
       "garments": [
         "ao-ngu-than",
         "ao-dai"
       ],
       "map_note": {
-        "title": "Huế / Miền Trung",
+        "title": "Miền Trung",
         "lines": [
-          "Cố đô bên sông Hương.",
-          "Áo ngũ thân từ năm 1744, rồi áo dài của thế kỷ XX.",
-          "Tri thức may và mặc áo dài Huế là di sản quốc gia."
+          "Dải đất hẹp giữa núi và biển.",
+          "Chương đầu tiên: Huế, mùa mưa năm Bà hai mươi tuổi.",
+          "Áo ngũ thân và áo dài Huế."
         ]
       },
       "weather_point": {
         "lat": 16.46,
         "lon": 107.59
       },
-      "stamp_image": "stamps/hue.png"
+      "stamp_image": "stamps/hue.png",
+      "intro": {
+        "verse": [
+          "Đường vô xứ Nghệ quanh quanh,",
+          "Non xanh nước biếc như tranh họa đồ."
+        ],
+        "verse_by": "ca dao",
+        "line": "Miền Trung hẹp như cái đòn gánh, một đầu là núi, một đầu là biển. Bà mới đi hết một chỗ thôi, là Huế."
+      },
+      "chapters": [
+        {
+          "province": "Huế",
+          "status": "open",
+          "title": "Mùa mưa năm hai mươi tuổi"
+        },
+        {
+          "province": "Thanh Hóa",
+          "status": "waiting"
+        },
+        {
+          "province": "Nghệ An",
+          "status": "waiting"
+        },
+        {
+          "province": "Hà Tĩnh",
+          "status": "waiting"
+        },
+        {
+          "province": "Quảng Trị",
+          "status": "waiting"
+        },
+        {
+          "province": "Đà Nẵng",
+          "status": "waiting"
+        },
+        {
+          "province": "Quảng Ngãi",
+          "status": "waiting"
+        },
+        {
+          "province": "Khánh Hòa",
+          "status": "waiting"
+        },
+        {
+          "province": "Gia Lai",
+          "status": "waiting"
+        },
+        {
+          "province": "Đắk Lắk",
+          "status": "waiting"
+        },
+        {
+          "province": "Lâm Đồng",
+          "status": "waiting"
+        }
+      ]
     },
     {
       "id": "nam-bo",
@@ -61,7 +171,50 @@
         "lat": 10.03,
         "lon": 105.78
       },
-      "stamp_image": "stamps/nam-bo.png"
+      "stamp_image": "stamps/nam-bo.png",
+      "intro": {
+        "verse": [
+          "Nhà Bè nước chảy chia hai,",
+          "Ai về Gia Định, Đồng Nai thì về."
+        ],
+        "verse_by": "ca dao Nam Bộ",
+        "line": "Xuống miền Tây, người ta mời cơm từ nhà này sang nhà khác. Bà mới ghé Cần Thơ, mùa nước nổi."
+      },
+      "chapters": [
+        {
+          "province": "Cần Thơ",
+          "status": "open",
+          "title": "Mùa nước nổi"
+        },
+        {
+          "province": "TP. Hồ Chí Minh",
+          "status": "waiting"
+        },
+        {
+          "province": "Đồng Nai",
+          "status": "waiting"
+        },
+        {
+          "province": "Tây Ninh",
+          "status": "waiting"
+        },
+        {
+          "province": "Đồng Tháp",
+          "status": "waiting"
+        },
+        {
+          "province": "An Giang",
+          "status": "waiting"
+        },
+        {
+          "province": "Vĩnh Long",
+          "status": "waiting"
+        },
+        {
+          "province": "Cà Mau",
+          "status": "waiting"
+        }
+      ]
     },
     {
       "id": "tay-bac",
@@ -71,10 +224,42 @@
       "map_note": {
         "title": "Tây Bắc",
         "lines": [
-          "Nhiều cộng đồng với trang phục riêng.",
-          "Chương này đang được xây dựng cùng cộng đồng trước khi mở."
+          "Núi cao, thung lũng lúa bậc thang.",
+          "Chương Sơn La: áo cóm, khăn piêu và đêm xòe.",
+          "Đang chờ người Thái đọc lại."
         ]
-      }
+      },
+      "intro": {
+        "verse": [],
+        "verse_by": null,
+        "line": "Bà chưa từng đến Tây Bắc. Chương Sơn La là lời chị Mai kể, Bà chép lại; người Thái đọc thấy chỗ nào chưa đúng thì góp ý cho Bà. Những trang khác chờ người ở đó cùng viết."
+      },
+      "chapters": [
+        {
+          "province": "Điện Biên",
+          "status": "waiting"
+        },
+        {
+          "province": "Lai Châu",
+          "status": "waiting"
+        },
+        {
+          "province": "Lào Cai",
+          "status": "waiting"
+        },
+        {
+          "province": "Sơn La",
+          "status": "open",
+          "title": "Tiếng khèn bên suối"
+        },
+        {
+          "province": "Phú Thọ",
+          "status": "waiting"
+        }
+      ],
+      "garments": [
+        "ao-com"
+      ]
     },
     {
       "id": "tay-nguyen",
@@ -84,10 +269,38 @@
       "map_note": {
         "title": "Tây Nguyên",
         "lines": [
-          "Cao nguyên đất đỏ, nhà rông và cồng chiêng.",
-          "Chương này đang được xây dựng cùng cộng đồng trước khi mở."
+          "Cao nguyên đất đỏ, rẫy cà phê.",
+          "Chương Đắk Lắk: nhà dài, thổ cẩm, cồng chiêng.",
+          "Đang chờ người Ê Đê đọc lại."
         ]
-      }
+      },
+      "intro": {
+        "verse": [],
+        "verse_by": null,
+        "line": "Bà chưa từng đến Tây Nguyên. Chương Đắk Lắk là lời Ông kể, Bà chép lại; người Ê Đê đọc thấy chỗ nào chưa đúng thì góp ý cho Bà. Những trang khác chờ người ở đó cùng viết."
+      },
+      "chapters": [
+        {
+          "province": "Gia Lai",
+          "status": "waiting"
+        },
+        {
+          "province": "Đắk Lắk",
+          "status": "open",
+          "title": "Đêm cồng chiêng"
+        },
+        {
+          "province": "Lâm Đồng",
+          "status": "waiting"
+        },
+        {
+          "province": "Quảng Ngãi",
+          "status": "waiting"
+        }
+      ],
+      "garments": [
+        "tho-cam-e-de"
+      ]
     }
   ]
 }

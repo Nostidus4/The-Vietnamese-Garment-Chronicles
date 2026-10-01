@@ -1,36 +1,113 @@
 {
   "accessories": [
-    {"id": "non-quai-thao", "name_vi": "Nón quai thao", "kind": "traditional-vn", "occasions": ["le-hoi", "tet-chua", "di-tich"], "sources": ["research-5-3"]},
-    {"id": "khan-mo-qua", "name_vi": "Khăn mỏ quạ", "kind": "traditional-vn", "sources": ["research-5-3"]},
-    {"id": "khan-van", "name_vi": "Khăn vấn", "kind": "traditional-vn", "sources": []},
-    {"id": "quat-giay", "name_vi": "Quạt giấy", "kind": "traditional-vn", "sources": []},
-    {"id": "non-la", "name_vi": "Nón lá", "kind": "traditional-vn", "sources": []},
-    {"id": "khan-ran", "name_vi": "Khăn rằn", "kind": "traditional-vn", "sources": []},
-    {"id": "sneakers-trang", "name_vi": "Sneakers trắng", "kind": "modern"},
-    {"id": "tui-tote", "name_vi": "Túi tote", "kind": "modern"},
-    {"id": "kinh-mat", "name_vi": "Kính mát", "kind": "modern"},
     {
-      "id": "obi", "name_vi": "Obi (Nhật Bản)", "kind": "traditional-foreign",
+      "id": "non-quai-thao",
+      "name_vi": "Nón quai thao",
+      "kind": "traditional-vn",
+      "occasions": [
+        "le-hoi",
+        "tet-chua",
+        "di-tich"
+      ],
+      "sources": [
+        "research-5-3"
+      ]
+    },
+    {
+      "id": "khan-mo-qua",
+      "name_vi": "Khăn mỏ quạ",
+      "kind": "traditional-vn",
+      "sources": [
+        "research-5-3"
+      ]
+    },
+    {
+      "id": "khan-van",
+      "name_vi": "Khăn vấn",
+      "kind": "traditional-vn",
+      "sources": []
+    },
+    {
+      "id": "quat-giay",
+      "name_vi": "Quạt giấy",
+      "kind": "traditional-vn",
+      "sources": []
+    },
+    {
+      "id": "non-la",
+      "name_vi": "Nón lá",
+      "kind": "traditional-vn",
+      "sources": []
+    },
+    {
+      "id": "khan-ran",
+      "name_vi": "Khăn rằn",
+      "kind": "traditional-vn",
+      "sources": []
+    },
+    {
+      "id": "sneakers-trang",
+      "name_vi": "Sneakers trắng",
+      "kind": "modern"
+    },
+    {
+      "id": "tui-tote",
+      "name_vi": "Túi tote",
+      "kind": "modern"
+    },
+    {
+      "id": "kinh-mat",
+      "name_vi": "Kính mát",
+      "kind": "modern"
+    },
+    {
+      "id": "obi",
+      "name_vi": "Obi (Nhật Bản)",
+      "kind": "traditional-foreign",
       "message": {
         "ti": "Obi đẹp thật, nhưng để dành cho một bộ kimono nhé!",
         "teo": "Obi là đai lưng truyền thống của Nhật Bản. Đặt lên Việt phục dễ khiến người xem nhầm bản sắc của cả hai.",
         "why": "Research Mục 19.2, tiêu chí 3: không pha trộn quốc gia trên cùng một tổng thể."
       },
-      "sources": ["research-19-2"]
+      "sources": [
+        "research-19-2"
+      ]
     },
     {
-      "id": "no-jeogori", "name_vi": "Nơ áo jeogori (Hàn Quốc)", "kind": "traditional-foreign",
+      "id": "no-jeogori",
+      "name_vi": "Nơ áo jeogori (Hàn Quốc)",
+      "kind": "traditional-foreign",
       "message": {
         "ti": "Chiếc nơ này rất xinh, nhưng nó thuộc về hanbok rồi.",
         "teo": "Nơ buộc là chi tiết của áo jeogori trong hanbok Hàn Quốc, không thuộc Việt phục.",
         "why": "Research Mục 19.2, tiêu chí 3: không pha trộn quốc gia trên cùng một tổng thể."
       },
-      "sources": ["research-19-2"]
+      "sources": [
+        "research-19-2"
+      ]
     },
     {
-      "id": "mu-canh-chuon", "name_vi": "Mũ cánh chuồn", "kind": "restricted",
+      "id": "mu-canh-chuon",
+      "name_vi": "Mũ cánh chuồn",
+      "kind": "restricted",
       "description": "Mũ gắn với quan phục, phẩm hàm triều đình.",
-      "sources": ["research-19-1"]
+      "sources": [
+        "research-19-1"
+      ]
+    },
+    {
+      "id": "khan-pieu",
+      "name_vi": "Khăn piêu",
+      "kind": "traditional-vn",
+      "description": "Khăn đội đầu của phụ nữ Thái, thêu hoa văn ở hai đầu khăn.",
+      "occasions": [
+        "le-hoi",
+        "dam-cuoi",
+        "tet-chua"
+      ],
+      "sources": [
+        "baolaocai-pieu"
+      ]
     }
   ]
 }

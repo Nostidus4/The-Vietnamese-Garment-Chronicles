@@ -5,8 +5,14 @@
 
 import { useEffect, useState } from "react";
 
-type Kind = "arrived" | "understood";
-const KEYS: Record<Kind, string> = { arrived: "vpdk-stamps", understood: "vpdk-understood" };
+type Kind = "arrived" | "understood" | "postcard" | "stop" | "game";
+const KEYS: Record<Kind, string> = {
+  arrived: "vpdk-stamps",
+  understood: "vpdk-understood",
+  postcard: "vpdk-postcards",
+  stop: "vpdk-stop-stamps", // "<region>:<stop>": the reader has turned to that stop
+  game: "vpdk-games", // "<region>:<stop>": the stop's game is won
+};
 const EVENT = "vpdk-stamps";
 
 function read(kind: Kind): string[] {
@@ -18,6 +24,7 @@ function read(kind: Kind): string[] {
 }
 
 export function markStamp(kind: Kind, regionId: string) {
+  if (typeof window === "undefined") return;
   const s = read(kind);
   if (s.includes(regionId)) return;
   try {
@@ -28,10 +35,20 @@ export function markStamp(kind: Kind, regionId: string) {
   window.dispatchEvent(new Event(EVENT));
 }
 
+export function unmarkStamp(kind: Kind, regionId: string) {
+  try {
+    localStorage.setItem(KEYS[kind], JSON.stringify(read(kind).filter((x) => x !== regionId)));
+  } catch {
+    // private mode
+  }
+  window.dispatchEvent(new Event(EVENT));
+}
+
 export function useStamps() {
-  const [state, setState] = useState(() => ({ arrived: read("arrived"), understood: read("understood") }));
+  const all = () => ({ arrived: read("arrived"), understood: read("understood"), postcard: read("postcard"), stop: read("stop"), game: read("game") });
+  const [state, setState] = useState(all);
   useEffect(() => {
-    const on = () => setState({ arrived: read("arrived"), understood: read("understood") });
+    const on = () => setState(all());
     window.addEventListener(EVENT, on);
     window.addEventListener("storage", on);
     return () => {

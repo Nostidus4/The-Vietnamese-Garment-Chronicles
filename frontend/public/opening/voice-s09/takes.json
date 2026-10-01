@@ -1,0 +1,183 @@
+{
+  "screen": "s09",
+  "takes": [
+    {
+      "id": "t01",
+      "voice": "ba",
+      "voice_name": "voice_7ugngowg6z47",
+      "beats": [
+        0
+      ],
+      "text": "Bà bắt đầu học may vì muốn làm ra những bộ quần áo đẹp.",
+      "style": "Scene: Bà's voice reads from her own diary, as if she were beside Tí. Nostalgic, gentle, wise; the last question is spoken directly to the listener. Speaker: Bà, Tí's 75-year-old grandmother from Kinh Bắc, a retired seamstress; warm, slow, tender, wise, a quiet smile in her voice. Delivery: Reading her own old diary aloud, warm and nostalgic. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 2.7,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t01-ba-a.mp3",
+          "duration": 5.04,
+          "rate": 3.51,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.3
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t01-ba-b.mp3",
+          "duration": 6.18,
+          "rate": 2.88,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.067
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t01-ba-c.mp3",
+          "duration": 5.03,
+          "rate": 3.21,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.189
+        }
+      ],
+      "file": "t01-ba.mp3",
+      "picked": "b",
+      "duration": 6.18,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    },
+    {
+      "id": "t02",
+      "voice": "ba",
+      "voice_name": "voice_7ugngowg6z47",
+      "beats": [
+        1
+      ],
+      "text": "Sau này bà mới hiểu… đẹp chỉ là một phần rất nhỏ.",
+      "style": "Scene: Bà's voice reads from her own diary, as if she were beside Tí. Nostalgic, gentle, wise; the last question is spoken directly to the listener. Speaker: Bà, Tí's 75-year-old grandmother from Kinh Bắc, a retired seamstress; warm, slow, tender, wise, a quiet smile in her voice. Delivery: Thoughtful, a real pause at the ellipsis, wise and gentle. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 2.7,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t02-ba-a.mp3",
+          "duration": 5.4,
+          "rate": 3.36,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.244
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t02-ba-b.mp3",
+          "duration": 5.32,
+          "rate": 3.08,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.141
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t02-ba-c.mp3",
+          "duration": 5.0,
+          "rate": 3.42,
+          "cues": [
+            0.0
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.267
+        }
+      ],
+      "file": "t02-ba.mp3",
+      "picked": "b",
+      "duration": 5.32,
+      "cues": [
+        0.0
+      ],
+      "cues_ok": true
+    },
+    {
+      "id": "t03",
+      "voice": "ba",
+      "voice_name": "voice_7ugngowg6z47",
+      "beats": [
+        2,
+        3,
+        4
+      ],
+      "text": "Bà đã đi qua một phần của hành trình này. Phần còn lại… có lẽ sẽ dành cho người khác. Nếu là con, con sẽ mặc câu chuyện này như thế nào?",
+      "style": "Scene: Bà's voice reads from her own diary, as if she were beside Tí. Nostalgic, gentle, wise; the last question is spoken directly to the listener. Speaker: Bà, Tí's 75-year-old grandmother from Kinh Bắc, a retired seamstress; warm, slow, tender, wise, a quiet smile in her voice. Delivery: Peaceful, accepting, slow. Then: Hopeful and tender, a pause at the ellipsis, as if looking at the listener. Then: Speaking directly to the listener as her grandchild, a warm, open question. Speak Vietnamese with a natural Northern accent. Leave a short natural pause between sentences.",
+      "target_rate": 2.7,
+      "candidates": [
+        {
+          "key": "a",
+          "file": "_candidates/t03-ba-a.mp3",
+          "duration": 13.63,
+          "rate": 3.45,
+          "cues": [
+            0.0,
+            3.52,
+            8.8
+          ],
+          "cues_ok": true,
+          "long_pauses": 0,
+          "score": 0.278
+        },
+        {
+          "key": "b",
+          "file": "_candidates/t03-ba-b.mp3",
+          "duration": 13.43,
+          "rate": 3.72,
+          "cues": [
+            0.0,
+            3.78,
+            9.49
+          ],
+          "cues_ok": true,
+          "long_pauses": 1,
+          "score": 0.878
+        },
+        {
+          "key": "c",
+          "file": "_candidates/t03-ba-c.mp3",
+          "duration": 14.3,
+          "rate": 3.58,
+          "cues": [
+            0.0,
+            4.18,
+            9.55
+          ],
+          "cues_ok": true,
+          "long_pauses": 1,
+          "score": 0.826
+        }
+      ],
+      "file": "t03-ba.mp3",
+      "picked": "a",
+      "duration": 13.63,
+      "cues": [
+        0.0,
+        3.52,
+        8.8
+      ],
+      "cues_ok": true
+    }
+  ]
+}

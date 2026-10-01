@@ -6,6 +6,7 @@ import { addPage, addPhoto, dataUrlToBlob, ensureMigrated, newPage } from "@/lib
 import { track } from "@/lib/track";
 import { sourceOf } from "@/lib/sources";
 import type { Bootstrap, CompassState, Selection, TryOnResult } from "@/lib/types";
+import { asset } from "@/lib/base";
 
 // same labels as backend/app/models.py LABELS (⛔ has none: the original look is never saved)
 const LABEL_OF: Record<CompassState, string | null> = { fit: "Authentic", adapted: "Adapted", review: "Inspired", distorted: null };
@@ -156,10 +157,10 @@ export function TryOnPanel({
       {saved && (
          
         <span className="flex flex-wrap gap-x-5">
-          <a href="/du-ky" className="font-hand text-lg text-[#8a4b2a] underline">
+          <a href={asset("/du-ky")} className="font-hand text-lg text-[#8a4b2a] underline">
             Mở Du Ký của tôi →
           </a>
-          <a href={`/?region=${regionId}&page=own`} className="font-hand text-lg text-[#8a4b2a] underline">
+          <a href={asset(`/?region=${regionId}&page=own`)} className="font-hand text-lg text-[#8a4b2a] underline">
             Về sổ của Bà
           </a>
         </span>

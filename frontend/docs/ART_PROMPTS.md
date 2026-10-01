@@ -51,7 +51,7 @@ Tỉ lệ 16:9 · file: characters/ti-sheet.png
 {STYLE}
 {AVOID}
 
-Character turnaround sheet of TÍ, a 17-year-old Vietnamese high-school boy, on a plain cream background.
+Character turnaround sheet of TÍ, a 13-year-old Vietnamese lower-secondary-school boy wearing a red Young Pioneer scarf, on a plain cream background.
 Show: front view, three-quarter view, side view (full body), plus 4 head close-ups with expressions: excited grin, confused, surprised, proud.
 Look: slim, medium height, warm tan skin, short messy black hair with a cowlick, bright curious eyes, quick expressive eyebrows.
 Outfit: Vietnamese school uniform — white short-sleeved shirt, navy trousers, white sneakers, a faded red backpack with a small keychain.
@@ -67,7 +67,7 @@ Tỉ lệ 16:9 · file: characters/teo-sheet.png
 {STYLE}
 {AVOID}
 
-Character turnaround sheet of TÈO, a 17-year-old Vietnamese high-school boy, best friend of Tí, on a plain cream background.
+Character turnaround sheet of TÈO, a 13-year-old Vietnamese lower-secondary-school boy wearing a red Young Pioneer scarf, best friend of Tí, on a plain cream background.
 Show: front, three-quarter and side view (full body), plus 4 head close-ups: thoughtful, gently skeptical (one eyebrow up), explaining with a finger raised, warm smile.
 Look: a bit taller than Tí, neat short black hair parted to the side, round thin-framed glasses, calm eyes, light-medium skin.
 Outfit: same Vietnamese school uniform (white short-sleeved shirt, navy trousers), a small cloth notebook always in hand, a pen clipped to the shirt pocket.
@@ -75,7 +75,7 @@ Personality in pose: calm, upright, observant.
 Keep proportions and outfit identical across all views.
 ```
 
-*Tuỳ chọn:* nếu đội muốn một cặp nam–nữ (hợp với các trang phục nữ như áo tứ thân), đổi Tèo thành "a 17-year-old Vietnamese high-school girl, neat shoulder-length black hair, round glasses, school uniform white áo dài on Mondays" và giữ các phần còn lại. Chốt một lần rồi dùng xuyên suốt.
+*Đã chốt (28/09/2026):* Tí và Tèo là hai bạn nam khoảng 13 tuổi, học cấp 2, đeo khăn quàng đỏ, đúng như 10 screen opening; giọng đọc cũng theo tuổi này (xem `VOICE_PROMPTS.md`).
 
 ### 2.3 Bà (hai độ tuổi)
 
@@ -588,3 +588,232 @@ No text anywhere.
 - **Dải sóng trong ô nhãn** (`title-page.png` và `s08.png`) giống sóng seigaiha của Nhật nên đã bỏ. Không tạo lại bằng AI vì bản AI làm lệch khung nhãn và mất nền trong suốt của bìa. Thay vào đó, dải sóng được phủ bằng giấy kem lấy từ phía trên ô nhãn trong chính ảnh gốc, nên phần còn lại giữ nguyên từng pixel và vị trí ô nhãn trong `BookCover.tsx` không đổi. AVOID đã thêm seigaiha.
 - **Vạt áo đỏ ở cut-in S05:** giữ nguyên. Ma-nơ-canh quay nghiêng ba phần tư và tay Tí che sườn phải, nên đoạn khuy chạy thẳng xuống là đường sườn nhìn nghiêng, không phải đường cài giữa ngực. Đã thử sửa bằng Nano Banana (6 bản), không bản nào rõ hơn ảnh gốc. Nếu cần vẽ lại, cho ma-nơ-canh quay thẳng mặt để thấy vạt đi tới nách phải.
 
+## 13. Chương Huế – "Mùa mưa năm hai mươi tuổi" (30/09)
+
+Tranh cho các trang nhật ký của Bà trong chương Huế (cốt truyện: `docs/HUE_CHAPTER.md`). Đây là **ký ức của Bà**: Huế những năm 1970, nên không có xe máy đời mới, biển hiệu, điện thoại hay khách du lịch hiện đại. Ảnh **"Hôm nay" của Tí là ảnh thật** (Wikimedia Commons, có ghi tác giả và giấy phép), không tạo bằng AI.
+
+**Chung cho cả mục:**
+- Gửi kèm ảnh tham chiếu `characters/ba-sheet.png` (Bà trẻ, bên trái) và `characters/ong-sheet.png` (mục 13.0).
+- Thêm khối **MEMORY** ngay sau `{STYLE}` để cả chương có chung một ánh màu ký ức:
+
+```
+MEMORY: this is a remembered scene from the 1970s. Slightly faded warm palette, soft edges, gentle film-like grain, a thin cream vignette at the borders. Period details only: bicycles, cyclos, wooden sampans, tiled roofs, conical hats; no modern cars, scooters, phones, plastic signs or tourists.
+```
+
+- Tỉ lệ **4:3** cho tranh dán trong trang nhật ký (trừ khi ghi khác). Lưu ở `frontend/public/regions/hue/` (đúng tên file trong bảng 13.11, web tự hiện khi có file).
+- Không vẽ chữ, không vẽ bản đồ (bản đồ lộ trình Huế là SVG do web vẽ).
+
+### 13.0 Ông thời trẻ và mẹ Ông (character sheet)
+
+Tỉ lệ 16:9 · file: characters/ong-sheet.png
+
+```
+{STYLE}
+{AVOID}
+
+Character sheet on a plain cream background, two people side by side.
+LEFT — ÔNG, Tí's grandfather as a young man of about 24 in 1970s Huế: slim, a little too thin, short neat black hair, kind shy smile, thoughtful eyes. Wearing a plain white short-sleeved shirt tucked into dark trousers, leather sandals; in a second pose, a black áo ngũ thân (five-panel robe with a standing collar and buttons down the right side) with a black khăn đóng turban. Front and three-quarter views, plus a close-up laughing.
+RIGHT — his MOTHER, about 50: small, upright, hair in a low bun, calm reserved face that looks strict but has warm eyes. Wearing a dark purple (tím Huế) áo dài with a standing collar, simple jade bangle. Front and three-quarter views, plus a close-up with a faint, rare smile.
+Keep faces, proportions and clothing identical across views.
+```
+
+### 13.1 Ga Huế, một chiều mưa
+
+file: hue/h01-ga-hue.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Evening drizzle at an old colonial-era railway station in Huế: a long low building with pale yellow walls and a tiled roof, lamps just lit, wet platform reflecting warm light. Young Bà (attached sheet, left) in her sky-blue áo dài under a dark wool jacket, holding a small cloth bag, looking up at the rain with nervous hope. Young Ông (attached sheet) beside her, taking her bag, holding a black umbrella over both of them. Soft blue dusk, fine slanting rain lines, puddles. Quiet, tender, a little anxious.
+```
+
+### 13.2 Sáng sớm trên sông Hương
+
+file: hue/h02-song-huong-som.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Dawn on the Perfume River in Huế: silver-grey mist over still water, a small wooden sampan with a curved rattan canopy, an old woman rowing standing at the stern. Young Bà sits in the boat in her sky-blue áo dài, a plain conical hat on her lap; young Ông sits opposite, pointing toward a long steel bridge with six repeated arched spans faintly visible through the mist. Water so calm it mirrors the boat. Pale gold light just touching the mist. Hushed, dreamy.
+```
+
+### 13.3 Nón bài thơ soi nắng (2 ảnh cho hiệu ứng "soi lên nắng")
+
+Ảnh A · tỉ lệ 1:1 · file: hue/h03a-non-la.png
+
+```
+{STYLE}
+{AVOID}
+
+A single Vietnamese conical hat (nón lá) seen from below against a bright sky, filling most of the square frame, centered. Fine palm-leaf ribs radiating from the tip, delicate thread rings, warm translucent cream-green leaf color glowing with sunlight behind it. Plain soft sky background. Nothing else in the image.
+```
+
+Ảnh B · tỉ lệ 1:1 · nền trắng (web tự tách nền) · file: hue/h03b-non-an.png
+
+```
+{STYLE}
+{AVOID}
+
+Delicate silhouette paper-cut in dark indigo on a plain white background, designed to be layered inside a conical hat seen from below: a small steel bridge with six arched spans over a river, two swallows flying above, and a sprig of bamboo on the left, all arranged in a ring around the center like a hidden picture between the hat's leaves. Thin, elegant shapes, lots of empty space, no text.
+```
+
+*Ảnh A được cắt thành hình tròn, nên giữ chóp nón ở chính giữa và không đặt gì quan trọng ở bốn góc. Web xếp ảnh B chồng dưới ảnh A. Khi người đọc rê chuột hoặc chạm để "soi lên nắng", ảnh A sáng dần lên và hình cây cầu hiện ra. Câu thơ viết tay do web hiển thị, không để AI viết chữ.*
+
+### 13.4 Trưa nắng trong Đại Nội
+
+file: hue/h04-ngo-mon.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Harsh midday sun inside the Imperial City of Huế: the Noon Gate (Ngọ Môn) behind — a massive stone base with three arched gateways and a two-tiered wooden pavilion on top with Vietnamese-style gently curved yellow-tiled roofs. In the foreground young Bà in a slightly too-large borrowed white áo dài, holding up one flap so it doesn't drag, squinting in the sun; young Ông beside her, completely absorbed, listening to music from a side hall, a closed black umbrella forgotten in his hand. Short strong shadows, heat shimmer, a few frangipani trees.
+```
+
+### 13.5 Bữa cơm ra mắt mẹ
+
+file: hue/h05-mam-com.png (đổi 01/10: chỉ vẽ mâm cơm, không người, không chén rơi)
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Interior of an old Huế garden house (nhà rường) with dark carved wooden columns, seen in soft rainy daylight from an open door with areca palms in the garden outside. On a dark wooden table, a welcoming family meal laid out like a still life: a clay pot of rice, many small blue-and-white bowls and dishes of Huế food, chopsticks resting neatly. No people, no fallen or broken bowl: only the table, waiting, warm and a little formal.
+```
+
+### 13.6 Chiều ở chùa Thiên Mụ
+
+tỉ lệ 4:3 (khung nhật ký luôn là 4:3, ảnh dọc sẽ bị cắt mất ngọn tháp; đặt tháp lệch một bên, chừa trời phía trên) · file: hue/h06-thien-mu.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Wide landscape composition: the whole tower stands on the left third with open sky above it, the hill edge and river on the right. Late afternoon on the hill of Thiên Mụ pagoda above the Perfume River: the tall seven-tiered octagonal brick tower (Phước Duyên) in warm light, pine trees, stone steps. Young Ông and young Bà stand at the edge of the hill looking at the river, not at each other, a small distance between them. Orange and lavender sky, the river bending away into soft hills, a sampan far below. Faint circular ripples in the air suggest the sound of a bronze bell. Still, full of a question not yet answered.
+```
+
+### 13.7 Đêm thả hoa đăng
+
+file: hue/h07-hoa-dang.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Night on the Perfume River during a lantern-floating festival: hundreds of small paper lotus lanterns with candles drifting on dark water, their reflections trembling. On the stone steps of the river bank, Ông's mother gently hands young Bà a lantern; Bà kneels to set it on the water next to the mother's own lantern. Young Ông stands behind them, smiling. Warm candle glow on faces, deep indigo night, distant boats with lights. Quiet and sacred, not a crowded party.
+```
+
+### 13.8 Chiếc rương và áo ngũ thân
+
+tỉ lệ 3:4 · file: hue/h08-ruong-ao.png
+
+```
+{STYLE}
+MEMORY
+{AVOID}
+
+Close, intimate scene: an old dark-wood chest with brass corners opened on a woven mat. Ông's mother's hands (older, with a jade bangle) lift out a folded áo ngũ thân in faded deep blue silk — five-panel robe with a standing collar and small cloth buttons running down the right side — and offer it to young Bà's open hands. Only hands, the robe and the chest are in focus; faces out of frame. Soft window light, dust in the air, a sprig of dried flowers in the chest. Tender, like a blessing.
+```
+
+### 13.9 Bưu thiếp Huế (cuối chương)
+
+tỉ lệ 3:2 · file: hue/h09-buu-thiep.png
+
+```
+{STYLE}
+{AVOID}
+
+The picture side of an old illustrated postcard of Huế, as if painted by hand in the 1970s: the Perfume River at sunset with a six-span steel bridge, a sampan, the tower of Thiên Mụ pagoda small on a far hill, a girl in a purple áo dài with a conical hat walking along the bank. Slightly worn postcard edges, a tiny stamp-sized blank square at top right. No text anywhere.
+```
+
+### 13.10 Trang mở miền: Miền Trung
+
+tỉ lệ 21:9 · file: hue/h10-mien-trung.png
+
+```
+{STYLE}
+{AVOID}
+
+Wide panoramic vignette of central Vietnam's narrow land: on the left green mountains of the Trường Sơn range, on the right the blue sea with small fishing boats, and a thin ribbon of rice fields, villages and a winding road between them. Dunes, casuarina trees, a lighthouse far away. Painted like the header of a hand-made atlas page, soft edges fading into cream paper at the top and bottom. No map outlines, no text.
+```
+
+### 13.11 Bảng file chương Huế
+
+| Ảnh | Tỉ lệ | File (trong `frontend/public/regions/`) | Dùng ở |
+| --- | --- | --- | --- |
+| Ông và mẹ Ông | 16:9 | `backend/content/media/characters/ong-sheet.png` | tham chiếu (không hiển thị) |
+| Ga Huế chiều mưa | 4:3 | hue/h01-ga-hue.png | Điểm 1 |
+| Sông Hương buổi sớm | 4:3 | hue/h02-song-huong-som.png | chưa dùng: Điểm 2 hiện chiếc nón (13.3) thay cho ảnh |
+| Nón lá + hình ẩn | 1:1 ×2 | hue/h03a-non-la.png, hue/h03b-non-an.png | Điểm 2 (tương tác) |
+| Ngọ Môn trưa nắng | 4:3 | hue/h04-ngo-mon.png | Điểm 3 |
+| Mâm cơm ra mắt | 4:3 | hue/h05-mam-com.png | Điểm 5 |
+| Chùa Thiên Mụ | 4:3 | hue/h06-thien-mu.png | Điểm 4 |
+| Đêm hoa đăng | 4:3 | hue/h07-hoa-dang.png | Điểm 6 |
+| Rương và áo ngũ thân | 3:4 | hue/h08-ruong-ao.png | Trang Mặc (dự phòng, chưa gắn) |
+| Bưu thiếp Huế | 3:2 | hue/h09-buu-thiep.png | Phong thư cuối chương |
+| Miền Trung | 21:9 | hue/h10-mien-trung.png | Trang mở miền (dự phòng, chưa gắn) |
+
+Tạo xong chạy `python -m scripts.check_content`. Nhớ chép prompt và bản được chọn vào tab Tổng hợp Prompt (Form 7).
+
+## 14. Bốn chương mới: Bắc Ninh, Cần Thơ, Sơn La, Đắk Lắk (01/10)
+
+Cốt truyện ở `docs/CHAPTERS_4.md`, nội dung chạy ở `backend/content/regions/*.json`. Dùng chung khối `{STYLE}`, `MEMORY` (mục 13) và `{AVOID}`. Tỉ lệ **4:3** cho tranh trong trang nhật ký, **3:2** cho bưu thiếp. Lưu ở `frontend/public/regions/<miền>/` đúng tên file; web tự hiện khi có file.
+
+**Bắc Ninh** là quê Bà, năm Bà 18 tuổi (tham chiếu `ba-sheet.png`, bên trái, nhưng trẻ hơn một chút, mặc áo tứ thân). **Cần Thơ** là Bà và Ông đã có gia đình, khoảng 30 tuổi.
+
+> **Sơn La và Đắk Lắk đang chờ cộng đồng duyệt.** Chỉ vẽ **phong cảnh, nhà cửa, đồ vật, đôi tay**; **không vẽ cận trang phục, hoa văn hay khuôn mặt người Thái, người Ê Đê** cho tới khi có người trong cộng đồng xem và góp ý. Các ô này để `no_people: true`.
+
+### 14.1 Bắc Ninh: "Hội xuân bên sông Cầu"
+
+| File | Prompt (phần riêng, sau STYLE + MEMORY + AVOID) |
+| --- | --- |
+| bac-bo/b01-ben-song.png | Early spring dawn, fine drizzle over the Cầu river in the Red River Delta, a wooden ferry boat full of villagers in brown and indigo clothes heading to a festival. On the bank an older cousin ties a black khăn mỏ quạ headscarf (two pointed ends like a crow's beak) on young Bà's head; Bà, 18, in a brown áo tứ thân with a green sash. Misty bamboo, soft grey-green light. |
+| bac-bo/b02-dong-ho.png | A courtyard in Đông Hồ painting village: sheets of shimmering điệp paper drying on bamboo racks, an old craftsman in a brown shirt guiding young Bà as she presses a carved wooden block onto paper; small bowls of natural red, yellow, green and black pigment on a low table. Warm morning light, red pigment on Bà's fingertips. |
+| bac-bo/b03-doi-lim.png | Lim hill at the spring festival, midday: a young liền anh in a black áo the, khăn xếp turban and a black umbrella offers a betel quid with both hands; young Bà in áo tứ thân, red yếm, green sash and a wide flat nón quai thao with long silk fringes stands frozen and shy, eyes down. A crowd watches, a communal house (đình) roof behind with low heavy Vietnamese-style curved tiles. |
+| bac-bo/b04-nha-chua.png | Inside a wooden house where quan họ singers gather: a woven mat, a tray of betel and cups of tea, an older liền chị in áo mớ ba mớ bảy and khăn mỏ quạ teaching young Bà a song, hands gently keeping time; Bà concentrating, lips parted. Soft afternoon light through wooden doors. |
+| bac-bo/b05-cong-lang.png | Evening at a village gate with paper lanterns, liền anh and liền chị groups facing each other singing farewell, young Bà singing bravely for the first time, her cousin smiling beside her. Warm lantern glow, blue dusk. |
+| bac-bo/b09-buu-thiep.png | Picture side of an old hand-painted postcard: Lim hill in spring with a boat on the river, a girl in a nón quai thao and áo tứ thân, blossoms. Worn edges, small blank square at top right, no text. (3:2) |
+
+### 14.2 Cần Thơ: "Mùa nước nổi"
+
+| File | Prompt |
+| --- | --- |
+| nam-bo/n01-ninh-kieu.png | Evening at a Mekong riverside wharf in the 1980s: small boats with oil lamps, a busy waterfront, Bà (about 30, simple blouse) and Ông stepping off after a long bus-and-ferry journey, a local woman waving them to come eat. Warm lamps on dark brown water. |
+| nam-bo/n02-cho-noi.png | Dawn at a floating market on a wide brown Mekong river: dozens of wooden boats, each with a tall pole (cây bẹo) hung with what it sells — a pineapple, a winter melon, sweet potatoes, coconuts; Ông in a small canoe pointing up at the poles, Bà looking amazed. Pink-gold sunrise, mist. |
+| nam-bo/n03-ghe-ba-cu.png | On a wooden boat loaded with pineapples, an old Mekong woman in a dark áo bà ba (short, side slits, no standing collar) wraps a black-and-white checked khăn rằn scarf around young Bà's head against the sun; a teapot and small cups on the deck. Bright morning, river glitter. |
+| nam-bo/n04-nuoc-noi.png | Flood season in the Mekong delta: fields turned into a silver lake, water up to the tree trunks, a canoe gliding past yellow điên điển flowers, a stilt house in the distance. Noon light, calm. |
+| nam-bo/n05-don-ca.png | Night under the eaves of a Mekong house: a man playing a moon-shaped đàn kìm, a woman singing, a zither (đàn tranh) on a mat, a teapot, a single lamp; Bà listening with tears in her eyes. Intimate, warm, no stage. |
+| nam-bo/n06-le-hoi.png | A procession of people with incense climbing a small mountain (núi Sam) at dawn, festival flags, soft haze; seen from behind, faces not in focus. |
+| nam-bo/n09-buu-thiep.png | Picture side of an old hand-painted postcard: a floating market at sunrise, a boat with a pole hung with a pineapple, a woman in áo bà ba and khăn rằn rowing. Worn edges, blank stamp square, no text. (3:2) |
+
+### 14.3 Sơn La: "Tiếng khèn bên suối" (chờ cộng đồng duyệt, không vẽ người cận cảnh)
+
+| File | Prompt |
+| --- | --- |
+| tay-bac/t01-deo-suong.png | A mountain pass in northwest Vietnam at dawn, thick fog opening onto a valley of golden terraced rice fields, a winding road. No people. |
+| tay-bac/t02-nha-san.png | A wooden stilt house beside a clear stream in a Tây Bắc valley, a loom visible under the raised floor, bamboo and banana trees. No people, no costume detail. |
+| tay-bac/t03-dem-xoe.png | Night in a village yard: a bonfire, a ring of people seen as warm silhouettes holding hands around it, stars above the mountains. Silhouettes only, no faces or costume detail. |
+| tay-bac/t04-trao-thu.png | Close-up of two hands passing an old folded letter beside a kitchen fire in a stilt house, a teapot, smoke curling up. Hands only. |
+| tay-bac/t05-le-hoi.png | A village festival yard in a Tây Bắc valley: a tall decorated festival pole with cloth streamers and bamboo ornaments, stilt houses and mountains behind, soft afternoon light. No people. |
+| tay-bac/t09-buu-thiep.png | Picture side of an old hand-painted postcard: terraced rice fields and a stilt house by a stream in the mountains. Landscape only, no people, blank stamp square, no text. (3:2) |
+
+### 14.4 Đắk Lắk: "Đêm cồng chiêng" (chờ cộng đồng duyệt, không vẽ người cận cảnh)
+
+| File | Prompt |
+| --- | --- |
+| tay-nguyen/d01-doi-ca-phe.png | Central Highlands in the dry season: rolling hills of coffee bushes in white bloom, red earth road, big blue sky. No people. |
+| tay-nguyen/d02-nha-dai.png | A very long wooden house on stilts in a Central Highlands village, a notched log staircase leading up to the veranda, morning light. No people. |
+| tay-nguyen/d03-khung-det.png | Close-up of hands at a backstrap loom under the eaves of a long house, the woven band shown only as soft blurred colours (dark, red, light), no readable pattern. Hands only. |
+| tay-nguyen/d04-cong-chieng.png | Night, a ring of people as warm silhouettes around a fire, bronze gongs glinting in the firelight. Silhouettes only, no faces or costume detail. |
+| tay-nguyen/d05-ben-nuoc.png | A village water source in the Central Highlands forest: bamboo pipes carrying clear water into a wooden trough by a stream, ferns, morning mist. No people. |
+| tay-nguyen/d09-buu-thiep.png | Picture side of an old hand-painted postcard: coffee hills in bloom and a long house under a big sky. Landscape only, blank stamp square, no text. (3:2) |
+
+Tạo xong chạy `python -m scripts.check_content`, rồi chép prompt và bản được chọn vào tab Tổng hợp Prompt (Form 7).

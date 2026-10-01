@@ -174,6 +174,39 @@ Dữ liệu chính nằm trong `backend/content/`.
 - Bản đồ phải thể hiện Hoàng Sa và Trường Sa.
 - Ảnh người dùng chỉ được xử lý trong bộ nhớ, không lưu trên server.
 
+## Viết một chương cho tỉnh của bạn
+
+Sổ của Bà chia theo **miền**, mỗi miền có **một chương cho mỗi tỉnh**. Tỉnh chưa có chương vẫn hiện trong mục lục của miền, ghi "đang chờ người viết" và dẫn tới mục này. Hiện mỗi miền mở được một chương; chương mẫu là **Huế** (`backend/content/regions/hue.json`, cốt truyện ở `frontend/docs/HUE_CHAPTER.md`).
+
+Một chương được viết như **một chuyến đi cùng Bà**. Mỗi điểm dừng (`stops`) là một trang đôi:
+
+| Trang trái: Bà (ký ức) | Trang phải: "Hôm nay" (Tí đi lại) |
+|---|---|
+| `date`, `entry` (Bà năm hai mươi tuổi, xưng "tôi", không ghi năm) | `today.title`, `today.text` (Tí xưng "mình", kể cảm giác khi đến) |
+| `margin` (Bà bây giờ, viết cho "con"), `ti` (bút chì của Tí) | `today.tips` (tối đa 3 mẹo đi) |
+| `frame`: tranh minh họa ký ức (prompt ghi trong `frontend/docs/ART_PROMPTS.md`) | `today.photo`: **ảnh thật**, ghi `credit`, `license`, `source_url` |
+| `teo`: dữ kiện có nguồn (chỉ hiện khi `verified: true`) | điểm dừng có `festivals` thì trang phải là bảng lễ hội |
+
+Các bước:
+
+1. Trong `backend/content/regions.json`, đổi tỉnh đó trong `chapters` của miền thành `"status": "open"` và thêm `title`. Mỗi miền hiện chỉ mở được một chương.
+2. Tạo `backend/content/regions/<id-miền>.json` theo mẫu `hue.json`: `chapter` (câu ca dao hoặc thơ, dòng của Bà), 4–7 `stops`, `wear` (trang phục), `check` (Bà hỏi con), `own`, `letter` (bưu thiếp cuối chương).
+3. **Ảnh thật** chỉ lấy ảnh có giấy phép cho phép dùng lại (Wikimedia Commons: CC BY, CC BY-SA, Public domain), lưu ở `frontend/public/regions/<miền>/photos/`, ghi đủ tác giả và giấy phép. **Tranh ký ức** tạo bằng AI theo `ART_PROMPTS.md`, lưu ở `frontend/public/regions/<miền>/`.
+4. **Từ khó** trong lời Bà thì đánh dấu `[[chữ hiển thị|id-thuật-ngữ]]` và thêm vào `backend/content/glossary.json`. Người đọc bấm vào sẽ hiện ghi chú của Tèo. Mỗi trang tối đa 2–3 từ.
+5. Chạy `python -m scripts.check_content` (không được có lỗi), rồi mở `/?draft=1` để xem cả những ghi chú chưa kiểm chứng.
+
+Ghi chú của Tèo và thuật ngữ chỉ hiện trên trang thật khi `verified: true` và có nguồn trong `sources.json`.
+
+## Nhạc nền
+
+- Đặt file ở `frontend/public/audio/ambient.mp3`. Có file thì nút **🔊 Nhạc** hiện trên thanh menu; không có thì nút ẩn.
+- Nhạc phát sau cú bấm đầu tiên, lặp lại, tự nhỏ lại khi giọng đọc của phần mở đầu đang nói.
+- Chuẩn bị file (âm lượng nền, làm mờ đầu cuối để lặp êm, bỏ ảnh bìa):
+  ```bash
+  ffmpeg -i "ban-goc.mp3" -map 0:a -af "loudnorm=I=-20:TP=-2:LRA=11,afade=t=in:st=0:d=2.5,afade=t=out:st=<dài-4.5>:d=4.5" -b:a 112k -map_metadata -1 frontend/public/audio/ambient.mp3
+  ```
+- **Bản quyền:** chỉ commit nhạc có giấy phép cho phép dùng trên website và phát tán file (ví dụ CC0, Pixabay Music), và ghi nguồn. Nhạc Artlist ("Licensed for video") chỉ dùng trong video demo, nên `ambient.mp3` hiện đang được `.gitignore` để không bị commit hay deploy.
+
 ## Mở và kiểm tra đoạn opening
 
 | URL | Tác dụng |
@@ -186,9 +219,39 @@ Dữ liệu chính nằm trong `backend/content/`.
 
 Điều khiển bằng click, `Space`, phím mũi tên hoặc cuộn; nhấn `Esc` để bỏ qua.
 
+## Web tĩnh trên GitHub Pages
+
+- Địa chỉ: **https://nostidus4.github.io/The-Vietnamese-Garment-Chronicles/**
+- Workflow `.github/workflows/pages.yml` tự build và deploy mỗi lần push vào `main`. Muốn deploy một nhánh khác để xem trước: tab **Actions → Deploy to GitHub Pages → Run workflow**, chọn nhánh.
+- Nội dung sổ được xuất từ `backend/content` lúc build (`python -m scripts.export_bootstrap`), nên **đọc sổ, trò chơi, tem, bưu thiếp, Du Ký chạy được mà không cần máy chủ**.
+- Compass, thử đồ AI, Hỏi Tèo, thời tiết, cửa hàng, link chia sẻ cần backend. Khi có backend trên Render:
+  1. **Settings → Secrets and variables → Actions → Variables**: thêm `API_URL` = URL Render (không có `/` ở cuối).
+  2. Trên Render, thêm `https://nostidus4.github.io` vào `CORS_ORIGINS`.
+  3. Chạy lại workflow (các biến `NEXT_PUBLIC_*` được nhúng lúc build).
+- Build thử trên máy giống hệt Pages:
+  ```bash
+  cd backend && python -m scripts.export_bootstrap ../frontend/public/bootstrap.json
+  cd ../frontend && GITHUB_PAGES=1 NEXT_PUBLIC_BASE_PATH=/The-Vietnamese-Garment-Chronicles NEXT_PUBLIC_API_URL= npx next build   # ra thư mục out/
+  ```
+- Viết code: ảnh, audio và link `<a>` trỏ vào file trong `public/` phải đi qua `asset()` (`src/lib/base.ts`) để có tiền tố `/The-Vietnamese-Garment-Chronicles` trên Pages. `<Link>` và `router.push` thì Next tự thêm.
+
 ## Triển khai
 
-- Frontend: có thể triển khai trên Vercel với root directory là `frontend` và biến `NEXT_PUBLIC_API_URL` trỏ tới backend public.
+- **Frontend trên Vercel** (miễn phí, repo vẫn private):
+  1. Vào [vercel.com](https://vercel.com) → **Continue with GitHub** → cho phép Vercel đọc repo `The-Vietnamese-Garment-Chronicles` (chỉ chọn repo này).
+  2. **Add New… → Project → Import** repo này.
+  3. **Root Directory:** `frontend`. Framework tự nhận là Next.js; Build Command và Output để mặc định.
+  4. **Environment Variables** (áp cho Production và Preview):
+     | Tên | Giá trị |
+     |---|---|
+     | `NEXT_PUBLIC_API_URL` | URL backend trên Render, ví dụ `https://<ten-service>.onrender.com` (không có `/` ở cuối) |
+     | `NEXT_PUBLIC_SUPABASE_URL` | như trong `frontend/.env.example` |
+     | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | như trong `frontend/.env.example` (key công khai, không phải service key) |
+  5. **Deploy.** Mỗi lần merge vào `main` Vercel tự deploy bản chính; mỗi PR có một link xem thử riêng.
+  6. **Sau khi có địa chỉ Vercel** (ví dụ `https://viet-phuc-du-ky.vercel.app`):
+     - Render → backend → Environment: thêm địa chỉ đó vào `CORS_ORIGINS` (nhiều địa chỉ cách nhau bằng dấu phẩy, không có `/` ở cuối), rồi deploy lại backend.
+     - Supabase → Authentication → URL Configuration: đặt **Site URL** là địa chỉ Vercel và thêm `https://<địa-chỉ-vercel>/du-ky` vào **Redirect URLs** (để link đăng nhập "Lưu sổ lên mây" quay về đúng trang).
+  - Biến `NEXT_PUBLIC_*` được nhúng lúc build: đổi giá trị thì phải **Redeploy** mới có tác dụng.
 - Backend: có thể triển khai trên Render hoặc Railway bằng lệnh `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
 - **Sự kiện ẩn danh cho phần Impact (`POST /events`):**
   1. Supabase → SQL Editor → chạy `backend/supabase/events.sql` (tạo bảng `events`, bật RLS, không có policy nên key công khai không đọc/ghi được).
