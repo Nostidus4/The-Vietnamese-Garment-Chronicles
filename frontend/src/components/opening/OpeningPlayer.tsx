@@ -257,13 +257,16 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     }
     if (speaking) return; // let the take finish; this effect runs again when it does
     const afterVoice = sound && shown > 0 && !!screen.beats[shown - 1]?.voice; // the reading already gave the pause
+    // the story plays by itself: after a voiced line a short breath, after a silent one long enough to read it.
+    // A click, a key or a swipe still moves on at once.
+    const lastText = shown > 0 ? (screen.beats[shown - 1]?.text ?? "") : "";
+    const readMs = Math.min(4000, Math.max(1100, 700 + lastText.length * 42));
     if (!next) {
-      const auto = screen.auto_exit_ms ?? (demo ? (afterVoice ? 700 : 1500) : null);
-      if (auto !== null) timer.current = setTimeout(() => goNext(), auto * (screen.auto_exit_ms ? pace : 1));
+      const auto = screen.auto_exit_ms ?? (demo ? (afterVoice ? 700 : 1500) : afterVoice ? 900 : readMs);
+      timer.current = setTimeout(() => goNext(), auto * (screen.auto_exit_ms ? pace : 1));
       return;
     }
-    if (next.wait_click && shown > 0 && !demo) return;
-    const delay = afterVoice ? 400 : (next.wait_click ? 1400 : next.delay) * pace;
+    const delay = afterVoice ? 300 : next.wait_click && shown > 0 ? readMs : (next.wait_click ? 1400 : next.delay) * pace;
     timer.current = setTimeout(() => showBeat(shown), reduced ? Math.min(delay, 400) : delay);
     return () => {
       if (timer.current) clearTimeout(timer.current);
@@ -344,7 +347,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
   const mounted = [idx, ...(incoming !== null ? [incoming] : [])];
   const preload = [idx + 1, idx + 2].filter((i) => i < screens.length && i !== incoming);
   // ready for the viewer's next input: all lines shown, or the next line waits for a click
-  const waiting = phase === "play" && !speaking && (!nextBeat || (nextBeat.wait_click && shown > 0 && !demo));
+  const waiting = phase === "play" && !speaking && !nextBeat;
   const totalBeats = screens.reduce((n, s) => n + Math.max(1, s.beats.length), 0);
   const doneBeats = screens.slice(0, idx).reduce((n, s) => n + Math.max(1, s.beats.length), 0) + shown;
 
@@ -469,7 +472,8 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
           </motion.div>
         )}
       </AnimatePresence>
-      {screen.skippable && (
+      {/* every screen can be skipped: the story is a welcome, never a gate */}
+      {phase !== "intro" && (
         <button
           onClick={(e) => {
             e.stopPropagation();

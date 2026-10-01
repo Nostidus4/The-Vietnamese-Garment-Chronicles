@@ -25,8 +25,11 @@ body {
     background-size: 6px 6px;
   }
 
+  /* titles: the same face as the text, only heavier (the book keeps to two typefaces) */
   .font-display {
-    font-family: var(--font-display), serif;
+    font-family: var(--font-body), sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
   .font-hand {
@@ -136,7 +139,7 @@ body {
   }
   .finale {
     isolation: isolate;
-    font-family: var(--font-display), serif;
+    font-family: var(--font-body), sans-serif;
     font-size: clamp(20px, 2.2vw, 36px);
     color: #fff8e6;
     text-shadow: 0 2px 18px rgba(80, 40, 0, 0.75), 0 0 2px rgba(60, 30, 0, 0.9);
@@ -163,7 +166,7 @@ body {
   }
   .skip-btn:hover { background: rgba(251, 246, 234, 0.9); color: var(--ink); }
   .next-hint {
-    font-family: var(--font-display), serif;
+    font-family: var(--font-body), sans-serif;
     font-size: 44px;
     line-height: 1;
     color: #fbf3df;
