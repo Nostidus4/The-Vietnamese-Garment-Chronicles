@@ -1,4 +1,5 @@
 import { asset } from "./base";
+import { retryAfterSeconds } from "./tryonWait";
 import type { Bootstrap, CompassResult, Selection, Shop, TryOnResult } from "./types";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -45,14 +46,32 @@ export const compareLooks = (selections: Selection[]) => post<CompassResult[]>("
 export const askTeo = (garment_id: string, question: string) =>
   post<{ answer: string; sources: string[]; grounded: boolean }>("/ask", { garment_id, question });
 
-export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string }) {
+/** The try-on limiter said no; `retryAfterS` comes from its Retry-After header. */
+export class RateLimited extends Error {
+  constructor(
+    message: string,
+    readonly retryAfterS: number,
+  ) {
+    super(message);
+  }
+}
+
+export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string; signal?: AbortSignal }) {
   const form = new FormData();
   form.append("selection", JSON.stringify(sel));
   if (opts.photo) form.append("photo", opts.photo);
   if (opts.avatarId) form.append("avatar_id", opts.avatarId);
-  // Backend gives up on Gemini after 60 s and returns the fallback; this only catches a hung connection
-  return call(`${API_URL}/tryon`, { method: "POST", body: form, signal: AbortSignal.timeout(75_000) })
-    .then((r) => json<TryOnResult>(r))
+  // Backend gives up on Gemini after 60 s and returns the fallback; the timeout only catches a hung connection
+  const timeout = AbortSignal.timeout(75_000);
+  const signal = opts.signal ? AbortSignal.any([opts.signal, timeout]) : timeout;
+  return call(`${API_URL}/tryon`, { method: "POST", body: form, signal })
+    .then(async (r) => {
+      if (r.status === 429) {
+        const body = await r.json().catch(() => ({}));
+        throw new RateLimited(body.detail ?? "Bạn thử đồ nhanh quá, chờ một chút nhé.", retryAfterSeconds(r.headers.get("Retry-After"), Date.now()));
+      }
+      return json<TryOnResult>(r);
+    })
     .catch((e) => {
       if (e instanceof DOMException && e.name === "TimeoutError") throw new Error("Máy chủ phản hồi quá lâu, bạn thử lại nhé.");
       throw e;
@@ -117,15 +136,25 @@ export const deleteShare = (id: string, key: string) =>
 
 // ---- cold start: the free backend sleeps; wake it once and let everyone wait on the same promise ----
 let readyPromise: Promise<boolean> | null = null;
+let readyAt = 0;
+// Render's free plan sleeps after 15 idle minutes; past this, check again instead of trusting the old answer
+const READY_FOR_MS = 5 * 60_000;
 /** Resolves true once GET /health answers (polling up to ~2 minutes), false if it never does. */
 export function serverReady(): Promise<boolean> {
   if (!HAS_API) return Promise.resolve(false);
+  if (readyAt && Date.now() - readyAt > READY_FOR_MS) {
+    readyPromise = null;
+    readyAt = 0;
+  }
   readyPromise ??= (async () => {
     const until = Date.now() + 120_000;
     while (Date.now() < until) {
       try {
         const r = await fetch(`${API_URL}/health`, { signal: AbortSignal.timeout(15_000), cache: "no-store" });
-        if (r.ok) return true;
+        if (r.ok) {
+          readyAt = Date.now();
+          return true;
+        }
       } catch {
         // still waking up
       }

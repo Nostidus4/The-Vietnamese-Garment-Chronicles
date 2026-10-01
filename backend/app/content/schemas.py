@@ -59,10 +59,24 @@ class Accessory(Strict):
 ZoneLevel = Literal["keep", "caution", "free"]
 
 
+KEEP_OPTION = "giu-nguyen"
+
+
+class ZoneOption(Strict):
+    """One change the viewer may pick for a zone. Only variants found in the sources, the careful way."""
+
+    id: Id = Field(pattern=ID_PATTERN, description=f"'{KEEP_OPTION}' for the first one: the garment as it is")
+    label: str = Field(max_length=40, description="Shown on the chip")
+    prompt: str | None = Field(None, description="English, sent to Nano Banana; none for 'giu-nguyen'")
+    sources: list[Id] = []
+
+
 class Zone(Strict):
     part: str
     level: ZoneLevel
-    note: str | None = None
+    note: str | None = Field(None, description="Why it is kept (shown next to 🔒) or what changing it means")
+    control: Literal["colors"] | None = Field(None, description="Changed with another control (the colour picker), so no options")
+    options: list[ZoneOption] = Field(default_factory=list, description="caution/free only: 2–4, the first is 'giu-nguyen'")
 
 
 class Fact(Strict):

@@ -11,9 +11,12 @@
   ],
   "occasions": ["tet-chua", "le-hoi"],
   "zones": [
-    {"part": "phần nhận diện", "level": "keep", "note": "keep = đổi là ⛔"},
-    {"part": "phần linh hoạt có giới hạn", "level": "caution", "note": "caution = đổi là ⚠️"},
-    {"part": "màu vải", "level": "free", "note": "free = đổi là ✨"}
+    {"part": "phần nhận diện", "level": "keep", "note": "keep = khoá 🔒, note là lý do hiện cho người xem"},
+    {"part": "phần linh hoạt có giới hạn", "level": "caution", "note": "caution = chọn option khác giữ nguyên là ⚠️", "options": [
+        {"id": "giu-nguyen", "label": "Giữ nguyên"},
+        {"id": "bien-the-co-nguon", "label": "Tên trên chip", "prompt": "English: what changes, for Nano Banana", "sources": ["ref-16"]}
+    ]},
+    {"part": "màu vải", "level": "free", "control": "colors", "note": "free = ✨; control: chỉnh ở bộ chọn màu nên không có options"}
   ],
   "colors": ["tim-hue", "trang"],
   "default_colors": ["tim-hue"],

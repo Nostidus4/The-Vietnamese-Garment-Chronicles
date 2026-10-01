@@ -1,47 +1,61 @@
 "use client";
 
-import { useState } from "react";
-import { API_URL, serverReady, tryOn } from "@/lib/api";
+import { useEffect, useRef, useState } from "react";
+import { API_URL, RateLimited, serverReady, tryOn } from "@/lib/api";
 import { addPage, addPhoto, dataUrlToBlob, ensureMigrated, newPage } from "@/lib/dukyBook";
 import { track } from "@/lib/track";
-import { sourceOf } from "@/lib/sources";
 import type { Bootstrap, CompassState, Selection, TryOnResult } from "@/lib/types";
 import { asset } from "@/lib/base";
+import { swaps } from "@/lib/lookSwaps";
+import { retryLabel, secondsLeft, untilAborted, waitLabel, type WaitStage } from "@/lib/tryonWait";
+import { zoneChanges } from "@/lib/zones";
+import { MAIN_BUTTON, SIDE_BUTTON } from "./CompassStep";
 
 // same labels as backend/app/models.py LABELS (⛔ has none: the original look is never saved)
 const LABEL_OF: Record<CompassState, string | null> = { fit: "Authentic", adapted: "Adapted", review: "Inspired", distorted: null };
 
-/** What the Compass changed between the viewer's look and the one it rendered: "đổi X → Y" or "bỏ X". */
-function swaps(data: Bootstrap, from: Selection, to: Selection): string[] {
-  const out: string[] = [];
-  const acc = (id: string) => data.accessories[id]?.name_vi ?? id;
-  const col = (id: string) => data.colors[id]?.name ?? id;
-  const diff = (a: string[], b: string[], name: (id: string) => string, what: string) => {
-    const gone = a.filter((x) => !b.includes(x));
-    const added = b.filter((x) => !a.includes(x));
-    gone.forEach((x, i) => out.push(added[i] ? `Đổi ${what}${name(x)} → ${name(added[i])}` : `Bỏ ${what}${name(x)}`));
-  };
-  diff(from.accessories, to.accessories, acc, "");
-  diff(from.colors, to.colors, col, "màu ");
-  const zones = to.modifications.map((m) => m.zone);
-  from.modifications.filter((m) => !zones.includes(m.zone)).forEach((m) => out.push(`Giữ nguyên ${m.zone} như chuẩn (bỏ thay đổi “${m.change}”)`));
-  return out;
-}
-
+/** Step 3 of the try-on: optional photo, render, then save / render again / change the look. */
 export function TryOnPanel({
   selection,
+  alternative,
   regionId,
   data,
+  onRestyle,
 }: {
   selection: Selection;
+  alternative: Selection | null; // ⛔ "Thử phương án thay thế": the server renders this swapped look instead
   regionId: string;
   data: Bootstrap;
+  onRestyle: () => void;
 }) {
   const [photo, setPhoto] = useState<File | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [wait, setWait] = useState<{ stage: WaitStage; since: number } | null>(null);
+  const [retryAt, setRetryAt] = useState(0); // after a 429: when the limiter lets this visitor in again
+  const [now, setNow] = useState(() => Date.now());
   const [result, setResult] = useState<TryOnResult | null>(null);
   const [saved, setSaved] = useState(false);
+  const [toast, setToast] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const abort = useRef<AbortController | null>(null);
+
+  const busy = wait !== null;
+  const countdown = retryLabel(secondsLeft(retryAt, now));
+  const locked = busy || countdown !== null;
+
+  // the clock behind the stage timer and the 429 countdown; idle otherwise
+  useEffect(() => {
+    if (!locked) return;
+    const t = setInterval(() => setNow(Date.now()), 250);
+    return () => clearInterval(t);
+  }, [locked]);
+
+  useEffect(() => () => abort.current?.abort(), []);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(false), 8000);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   const image = result?.image_base64
     ? `data:image/png;base64,${result.image_base64}`
@@ -59,13 +73,18 @@ export function TryOnPanel({
     : null;
 
   async function run() {
-    setBusy(true);
+    const ctl = new AbortController();
+    abort.current = ctl;
+    setNow(Date.now());
+    setWait({ stage: "waking", since: Date.now() });
     setSaved(false);
+    setToast(false);
     setError(null);
     try {
       // a sleeping server must wake before the try-on clock starts, or the first try falls back
-      if (!(await serverReady())) throw new Error("Máy chủ chưa thức dậy. Bạn thử lại sau ít phút nhé.");
-      const r = await tryOn(selection, photo ? { photo } : { avatarId: "default" });
+      if (!(await untilAborted(serverReady(), ctl.signal))) throw new Error("Máy chủ chưa thức dậy. Bạn thử lại sau ít phút nhé.");
+      setWait({ stage: "rendering", since: Date.now() });
+      const r = await tryOn(selection, photo ? { photo, signal: ctl.signal } : { avatarId: "default", signal: ctl.signal });
       setResult(r);
       track("tryon", {
         garment_id: r.rendered_selection.garment_id,
@@ -73,165 +92,149 @@ export function TryOnPanel({
         sample: !r.image_base64 && !!r.fallback_url,
       });
     } catch (e) {
+      if (ctl.signal.aborted) return; // the viewer pressed Huỷ (or left the page)
+      if (e instanceof RateLimited) setRetryAt(Date.now() + e.retryAfterS * 1000);
       setError(e instanceof Error ? e.message : "Không dựng được ảnh");
     } finally {
-      setBusy(false);
+      if (abort.current === ctl) {
+        abort.current = null;
+        setWait(null);
+      }
     }
   }
 
-  return (
-    <section className="paper space-y-3 rounded-lg p-5">
-      <h3 className="font-semibold">Thử lên người</h3>
-      <label className="block text-sm">
-        Ảnh của bạn (không bắt buộc, không lưu trên máy chủ):
-        <input
-          type="file"
-          accept="image/*"
-          className="mt-1 block"
-          onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
-        />
-      </label>
-      <button
-        disabled={busy}
-        onClick={run}
-        className="rounded-full bg-stone-800 px-5 py-2 text-amber-50 disabled:opacity-50"
-      >
-        {busy
-          ? "Đang dựng ảnh…"
-          : photo
-            ? "Thử bằng ảnh của tôi"
-            : "Thử bằng avatar"}
-      </button>
+  async function save() {
+    if (!result || !image) return;
+    // one "lần mặc" in the reader's Du Ký: Sắp đi, with this try-on as its first photo
+    const sel = result.rendered_selection;
+    setSaved(true);
+    await ensureMigrated(data.garments);
+    const page = addPage(
+      newPage({
+        region_id: regionId,
+        garment_id: sel.garment_id,
+        occasion_id: sel.occasion_id,
+        look: sel,
+        compass_label: saveLabel, // the alternative is saved with the verdict of what was actually rendered
+        compass_state: result.rendered_alternative ? result.compass.alternative_state : result.compass.state,
+      }),
+    );
+    await addPhoto(page.id, await dataUrlToBlob(image), "ai", isSample); // shrunk to JPEG inside addPhoto
+    setToast(true);
+    track("duky_save", { kind: "ai", garment_id: sel.garment_id });
+  }
 
-      {error && <p className="text-sm text-red-700">{error}</p>}
-      {result?.rendered_alternative && <AlternativeSteps data={data} result={result} chosen={selection} />}
-      {result && !image && (
-        <p className="text-sm text-stone-500">
-          Chưa có ảnh (thiếu API key và ảnh dự phòng).
-        </p>
+  const changes = alternative ? swaps(data, selection, alternative) : [];
+
+  return (
+    <div className="space-y-3">
+      <Outfit data={data} selection={alternative ?? selection} />
+      {alternative && (
+        <div className="rounded-md border border-red-300 bg-red-50/60 px-3 py-2 text-sm">
+          <p className="m-0 font-semibold">Phương án thay thế (look ⛔ không được dựng):</p>
+          <ul className="m-0 mt-1 list-disc pl-5">
+            {(changes.length ? changes : ["Bỏ chi tiết gây sai lệch"]).map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+        </div>
       )}
-      {image && (
-        <figure>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={image}
-            alt="Kết quả thử đồ"
-            className="max-h-[480px] rounded"
-          />
-          <figcaption className="text-xs text-stone-500">
-            {isSample ? "Ảnh mẫu tạo sẵn (máy chủ AI đang bận)" : result?.label_note}
-          </figcaption>
-          {isSample && (
-            <button onClick={run} disabled={busy} className="mt-1 text-sm underline disabled:opacity-50">
-              Thử dựng lại bằng AI
+
+      {!result && (
+        <>
+          <p className="m-0 text-sm text-stone-600">
+            Ảnh của bạn: không bắt buộc, không có ảnh thì dùng người mẫu · nửa người, đứng thẳng, nền đơn giản. Ảnh không lưu trên máy chủ.
+          </p>
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <label className={`${SIDE_BUTTON} cursor-pointer ${locked ? "pointer-events-none opacity-50" : ""}`}>
+              📷 {photo ? "Đổi ảnh" : "Chọn ảnh của bạn"}
+              <input
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                disabled={locked}
+                onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
+              />
+            </label>
+            {photo && (
+              <>
+                <span className="max-w-[12rem] truncate text-stone-600">{photo.name}</span>
+                <button type="button" disabled={locked} onClick={() => setPhoto(null)} className="underline disabled:opacity-50">
+                  Bỏ ảnh
+                </button>
+              </>
+            )}
+          </div>
+        </>
+      )}
+
+      {(!result || busy) && (
+        <div className="flex flex-wrap items-center gap-2">
+          <button disabled={locked} onClick={run} className={MAIN_BUTTON}>
+            {wait ? waitLabel(wait.stage, now - wait.since) : (countdown ?? (photo ? "Dựng ảnh bằng ảnh của tôi" : "Dựng ảnh với người mẫu"))}
+          </button>
+          {busy && (
+            <button onClick={() => abort.current?.abort()} className="rounded-full border border-stone-800 px-4 py-2 text-sm">
+              Huỷ
             </button>
           )}
+        </div>
+      )}
+
+      {error && <p className="m-0 text-sm text-red-700">{error}</p>}
+      {result && !image && <p className="m-0 text-sm text-stone-500">Chưa có ảnh (thiếu API key và ảnh dự phòng).</p>}
+      {image && (
+        <figure className="m-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={image} alt="Kết quả thử đồ" className={`max-h-[480px] max-w-full rounded ${busy ? "opacity-40" : ""}`} />
+          <figcaption className="text-xs text-stone-500">
+            {isSample ? "Ảnh mẫu tạo sẵn (máy chủ AI đang bận), bấm Dựng lại để thử bằng AI" : result?.label_note}
+          </figcaption>
         </figure>
       )}
-      {image && result && saveLabel && (
-        <button
-          disabled={saved}
-          onClick={async () => {
-            // one "lần mặc" in the reader's Du Ký: Sắp đi, with this try-on as its first photo
-            const sel = result.rendered_selection;
-            setSaved(true);
-            await ensureMigrated(data.garments);
-            const page = addPage(
-              newPage({
-                region_id: regionId,
-                garment_id: sel.garment_id,
-                occasion_id: sel.occasion_id,
-                look: sel,
-                compass_label: saveLabel, // the alternative is saved with the verdict of what was actually rendered
-                compass_state: result.rendered_alternative ? result.compass.alternative_state : result.compass.state,
-              }),
-            );
-            await addPhoto(page.id, await dataUrlToBlob(image), "ai", isSample);
-            track("duky_save", { kind: "ai", garment_id: sel.garment_id });
-          }}
-          className="rounded-full border border-stone-800 px-4 py-2 text-sm"
-        >
-          {saved ? "Đã lưu vào Du Ký ✓" : "Lưu vào Du Ký của tôi"}
-        </button>
-      )}
-      {saved && (
-         
-        <span className="flex flex-wrap gap-x-5">
-          <a href={asset("/du-ky")} className="font-hand text-lg text-[#8a4b2a] underline">
-            Mở Du Ký của tôi →
-          </a>
-          <a href={asset(`/?region=${regionId}&page=own`)} className="font-hand text-lg text-[#8a4b2a] underline">
-            Về sổ của Bà
-          </a>
-        </span>
+      {result && !busy && (
+        <div className="flex flex-wrap items-center gap-2">
+          {image && saveLabel && (
+            <button type="button" disabled={saved} onClick={save} className={MAIN_BUTTON}>
+              {saved ? "Đã lưu vào Du Ký ✓" : "Lưu vào Du Ký"}
+            </button>
+          )}
+          <button type="button" disabled={locked} onClick={run} className={`${SIDE_BUTTON} disabled:opacity-50`}>
+            {countdown ?? "↻ Dựng lại"}
+          </button>
+          <button type="button" onClick={onRestyle} className={SIDE_BUTTON}>
+            ← Đổi đồ
+          </button>
+        </div>
       )}
       {saved && (
         <a href="#shops" className="block text-sm underline">
           Muốn mặc thật? Xem nơi thuê hoặc may ↓
         </a>
       )}
-    </section>
+      {toast && (
+        <div role="status" className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-md items-center gap-3 rounded-lg bg-stone-900 px-4 py-3 text-sm text-amber-50 shadow-lg">
+          <span>Đã lưu vào Du Ký ✓</span>
+          <a href={asset("/du-ky")} className="ml-auto font-semibold text-amber-200 underline">
+            Mở Du Ký
+          </a>
+          <button type="button" aria-label="Đóng" onClick={() => setToast(false)} className="text-amber-50/70">
+            ✕
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 
-/** ⛔ → alternative, told in four steps so nobody thinks the app broke: your look, why not, Tèo's swap, the image. */
-function AlternativeSteps({ data, result, chosen }: { data: Bootstrap; result: TryOnResult; chosen: Selection }) {
-  const bad = result.compass.triggers.filter((t) => t.state === "distorted");
-  const changes = swaps(data, chosen, result.rendered_selection);
-  const after = result.compass.alternative_state;
-  return (
-    <ol className="m-0 list-none space-y-3 rounded-lg border-2 border-red-300 bg-red-50/60 p-4 text-sm">
-      <li>
-        <p className="m-0 text-xs font-semibold uppercase tracking-wider text-stone-500">1 · Lựa chọn của bạn</p>
-        <p className="m-0 mt-1">{bad.map((t) => t.target_name).join(", ") || "Một chi tiết trong look"}</p>
-      </li>
-      <li>
-        <p className="m-0 text-xs font-semibold uppercase tracking-wider text-stone-500">2 · ⛔ Vì sao không dựng look này</p>
-        {bad.map((t) => (
-          <div key={t.target} className="mt-1">
-            <p className="m-0">
-              <b>{t.target_name}:</b> {t.why}
-            </p>
-            {t.sources.length > 0 && (
-              <p className="m-0 mt-0.5 text-xs text-stone-600">
-                Nguồn:{" "}
-                {t.sources.map((id, i) => {
-                  const s = sourceOf(data, id);
-                  return (
-                    <span key={id}>
-                      {i > 0 && " · "}
-                      {s.url ? (
-                        <a href={s.url} target="_blank" rel="noreferrer" className="underline">
-                          {s.title}
-                        </a>
-                      ) : (
-                        s.title
-                      )}
-                    </span>
-                  );
-                })}
-              </p>
-            )}
-          </div>
-        ))}
-      </li>
-      <li>
-        <p className="m-0 text-xs font-semibold uppercase tracking-wider text-stone-500">3 · Đề xuất của Tèo</p>
-        <ul className="m-0 mt-1 list-disc pl-5">
-          {(changes.length ? changes : ["Bỏ chi tiết gây sai lệch"]).map((c) => (
-            <li key={c}>{c}</li>
-          ))}
-        </ul>
-        {bad[0] && <p className="m-0 mt-1 italic text-stone-700">Tèo: “{bad[0].teo}”</p>}
-        {after && (
-          <p className="m-0 mt-1 text-xs text-stone-600">
-            Sau khi đổi, Compass đánh giá: <b>{LABEL_OF[after] ?? after}</b>
-          </p>
-        )}
-      </li>
-      <li>
-        <p className="m-0 text-xs font-semibold uppercase tracking-wider text-stone-500">4 · Ảnh đã dựng theo đề xuất</p>
-      </li>
-    </ol>
-  );
+/** The look being tried, in one line: garment · occasion · colours · accessories · changed zones. */
+function Outfit({ data, selection: s }: { data: Bootstrap; selection: Selection }) {
+  const parts = [
+    data.garments.find((g) => g.id === s.garment_id)?.name_vi ?? s.garment_id,
+    data.occasions.find((o) => o.id === s.occasion_id)?.name ?? s.occasion_id,
+    s.colors.map((c) => data.colors[c]?.name ?? c).join(" + ") || "màu mặc định",
+    s.accessories.map((a) => data.accessories[a]?.name_vi ?? a).join(", ") || "không phụ kiện",
+    ...zoneChanges(data.garments.find((g) => g.id === s.garment_id) ?? { zones: [] }, s),
+  ];
+  return <p className="m-0 text-sm text-stone-700">Bộ sẽ dựng: {parts.join(" · ")}</p>;
 }

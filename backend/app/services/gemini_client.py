@@ -10,7 +10,14 @@ log = logging.getLogger("gemini")
 
 
 class GeminiUnavailable(Exception):
-    pass
+    def __init__(self, message: str, code: str = "unknown"):
+        super().__init__(message)
+        self.code = code
+
+    @property
+    def retryable(self) -> bool:
+        """Quota (429) and server errors (5xx) often pass in a second; safety blocks and a missing key don't."""
+        return self.code == "429" or (len(self.code) == 3 and self.code.startswith("5"))
 
 
 def _error_code(e: Exception) -> str:
@@ -33,15 +40,17 @@ class GeminiClient:
     def available(self) -> bool:
         return self._client is not None
 
-    def generate_image(self, prompt: str, images: list[tuple[bytes, str]], aspect_ratio: str | None = None) -> bytes:
+    def generate_image(
+        self, prompt: str, images: list[tuple[bytes, str]], aspect_ratio: str | None = None, timeout_s: float | None = None
+    ) -> bytes:
         """images: (bytes, mime_type) pairs sent after the prompt. Returns the first image in the reply."""
         if not self._client:
-            raise GeminiUnavailable("GEMINI_API_KEY not set")
+            raise GeminiUnavailable("GEMINI_API_KEY not set", code="no_key")
         from google.genai import types
 
         parts: list = [prompt] + [types.Part.from_bytes(data=b, mime_type=m) for b, m in images]
         config = types.GenerateContentConfig(
-            http_options=types.HttpOptions(timeout=int(settings.image_timeout_s * 1000)),
+            http_options=types.HttpOptions(timeout=int((timeout_s or settings.image_timeout_s) * 1000)),
             image_config=types.ImageConfig(aspect_ratio=aspect_ratio) if aspect_ratio else None,
         )
         start = time.perf_counter()
@@ -52,14 +61,15 @@ class GeminiClient:
                     log.info("image ok %.1fs", time.perf_counter() - start)
                     return part.inline_data.data
         except Exception as e:  # quota, safety block, network, timeout
-            log.warning("image failed %.1fs code=%s: %s", time.perf_counter() - start, _error_code(e), e)
-            raise GeminiUnavailable(str(e)) from e
+            code = _error_code(e)
+            log.warning("image failed %.1fs code=%s: %s", time.perf_counter() - start, code, e)
+            raise GeminiUnavailable(str(e), code=code) from e
         log.warning("image failed %.1fs code=no_image", time.perf_counter() - start)
-        raise GeminiUnavailable("No image in response")
+        raise GeminiUnavailable("No image in response", code="no_image")
 
     def generate_json(self, prompt: str) -> dict:
         if not self._client:
-            raise GeminiUnavailable("GEMINI_API_KEY not set")
+            raise GeminiUnavailable("GEMINI_API_KEY not set", code="no_key")
         from google.genai import types
 
         start = time.perf_counter()
@@ -75,7 +85,7 @@ class GeminiClient:
             out = json.loads(resp.text)
         except Exception as e:
             log.warning("json failed %.1fs code=%s: %s", time.perf_counter() - start, _error_code(e), e)
-            raise GeminiUnavailable(str(e)) from e
+            raise GeminiUnavailable(str(e), code=_error_code(e)) from e
         log.info("json ok %.1fs", time.perf_counter() - start)
         return out
 

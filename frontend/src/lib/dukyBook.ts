@@ -4,7 +4,7 @@
 // Việt phục: "planned" (Sắp đi) until a real photo is added, then "worn" (Đã mặc).
 //
 // Everything stays on this device. Page data lives in localStorage; photos live in IndexedDB, because a single AI
-// try-on image can be 1–2 MB and localStorage holds about 5 MB in total. Real photos are shrunk before saving.
+// try-on image can be 1–2 MB and localStorage holds about 5 MB in total. Every photo, real or AI, is shrunk before saving.
 
 import { useEffect, useState } from "react";
 import type { CompassState, DuKyEntry, Selection } from "./types";
@@ -91,7 +91,7 @@ export async function dataUrlToBlob(src: string): Promise<Blob> {
   return (await fetch(src)).blob();
 }
 
-/** Shrink a real photo to at most 1280 px on its long side, JPEG ~0.85: a few hundred KB instead of several MB. */
+/** Shrink a photo to at most 1280 px on its long side, JPEG ~0.85: a few hundred KB instead of several MB. */
 export async function shrinkPhoto(file: Blob, max = 1280): Promise<Blob> {
   const bmp = await createImageBitmap(file);
   const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
@@ -186,7 +186,7 @@ export function setCover(cover: Partial<DuKyCover>) {
 /** Store a photo and attach it to a page; a real photo turns a planned page into a worn one. */
 export async function addPhoto(pageId: string, blob: Blob, kind: "ai" | "real", sample = false) {
   const id = uid();
-  await putPhoto(id, kind === "real" ? await shrinkPhoto(blob) : blob);
+  await putPhoto(id, await shrinkPhoto(blob)); // an AI render arrives as a ~1–2 MB PNG; as JPEG it is a few hundred KB
   update((b) => ({
     ...b,
     pages: b.pages.map((p) =>

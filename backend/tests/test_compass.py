@@ -35,19 +35,19 @@ def test_restricted_item_is_distorted():
     assert evaluate(sel(accessories=["mu-canh-chuon"])).state == "distorted"
 
 
-def test_core_zone_change_is_distorted_and_dropped_in_alternative():
-    r = evaluate(sel(modifications=[Modification(zone="số thân áo (5 thân)", change="2 thân")]))
-    assert r.state == "distorted"
-    assert r.alternative.modifications == []
+def test_core_zone_cannot_be_changed():
+    # keep zones have no options (#40): the builder shows them locked, the API refuses them
+    with pytest.raises(SelectionError):
+        evaluate(sel(modifications=[Modification(zone="số thân áo (5 thân)", change="2 thân")]))
 
 
 def test_caution_zone_change_is_review():
-    r = evaluate(sel(modifications=[Modification(zone="độ dài tay", change="tay lửng")]))
+    r = evaluate(sel(modifications=[Modification(zone="độ dài tay", change="tay-lung")]))
     assert (r.state, r.label) == ("review", "Inspired")
 
 
 def test_free_zone_change_is_adapted():
-    assert evaluate(sel(modifications=[Modification(zone="chất liệu", change="linen")])).state == "adapted"
+    assert evaluate(sel(modifications=[Modification(zone="chất liệu", change="lua")])).state == "adapted"
 
 
 def test_accessory_occasion_mismatch_is_review():

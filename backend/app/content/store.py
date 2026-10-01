@@ -8,11 +8,13 @@ import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
+from collections.abc import Callable
 from typing import TypeVar
 
 from pydantic import BaseModel, ValidationError
 
 from .schemas import (
+    KEEP_OPTION,
     Accessory,
     Color,
     Garment,
@@ -192,6 +194,7 @@ def _check_refs(c: Content, r: Report) -> None:
                 r.errors.append(f"{w}: default color '{dc}' is not in its colors list")
         for f in g.facts:
             need(f.sources, c.sources, w, "source")
+        _check_zones(g, w, r, lambda ids: need(ids, c.sources, w, "source"))
         srcs(g.sources, w)
         if g.reference_image is None:
             r.warnings.append(f"{w}: no reference_image (try-on accuracy drops without it)")
@@ -361,6 +364,33 @@ def _check_refs(c: Content, r: Report) -> None:
     for g in c.garments.values():
         if not c.media_exists(f"fallback/{g.id}.png"):
             r.warnings.append(f"media: fallback/{g.id}.png missing (shown when Gemini is unavailable)")
+
+
+def _check_zones(g: Garment, w: str, r: Report, known: Callable[[list[str]], None]) -> None:
+    """Zone options (#40): only caution/free zones not set by another control, 2–4 of them, 'giu-nguyen' first."""
+    for z in g.zones:
+        if not z.options:
+            continue
+        if z.level == "keep":
+            r.errors.append(f"{w}: keep zone '{z.part}' must not have options")
+        if z.control:
+            r.errors.append(f"{w}: '{z.part}' is changed with {z.control}, so it must not have options")
+        if not 2 <= len(z.options) <= 4:
+            r.errors.append(f"{w}: zone '{z.part}' needs 2–4 options")
+        if z.options[0].id != KEEP_OPTION:
+            r.errors.append(f"{w}: first option of '{z.part}' must be '{KEEP_OPTION}'")
+        seen: set[str] = set()
+        for o in z.options:
+            if o.id in seen:
+                r.errors.append(f"{w}: zone '{z.part}' has a duplicate option '{o.id}'")
+            seen.add(o.id)
+            known(o.sources)
+            if o.id == KEEP_OPTION:
+                continue
+            if not o.sources:
+                r.errors.append(f"{w}: option '{o.id}' needs a source")
+            if not o.prompt:
+                r.errors.append(f"{w}: option '{o.id}' needs a prompt")
 
 
 _current: tuple[Content, Report] | None = None

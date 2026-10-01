@@ -45,7 +45,8 @@ async def run_tryon(
 
     client_id = request.client.host if request.client else "unknown"
     if not ratelimit.allow(client_id, settings.tryon_per_minute):
-        raise HTTPException(429, "Bạn thử đồ nhanh quá, chờ một chút nhé.")
+        wait = ratelimit.retry_after(client_id)
+        raise HTTPException(429, "Bạn thử đồ nhanh quá, chờ một chút nhé.", headers={"Retry-After": str(wait)})
 
     person = None
     cache_key = None
