@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { HAS_API, runCompass } from "@/lib/api";
+import { HAS_API, runCompass, serverReady } from "@/lib/api";
 import { track } from "@/lib/track";
 import type { CompassResult, Selection } from "@/lib/types";
 import { useBootstrap } from "@/lib/useBootstrap";
@@ -26,6 +26,11 @@ export function ChapterView({
   const { data, error } = useBootstrap();
   const [sel, setSel] = useState<Selection | null>(null);
   const [compass, setCompass] = useState<CompassResult | null>(null);
+
+  // wake a sleeping server while the viewer is still choosing, not after they press "Thử"
+  useEffect(() => {
+    void serverReady();
+  }, []);
 
   const region = data?.regions.find((r) => r.id === regionId);
   const garments = data?.garments.filter((g) => g.region === regionId) ?? [];

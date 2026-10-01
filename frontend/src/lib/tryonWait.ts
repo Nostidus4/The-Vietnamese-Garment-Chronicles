@@ -6,7 +6,7 @@ const USUAL_RENDER_S = 20; // bench median ~12 s (backend/docs/NANO_BANANA_BENCH
 
 /** Button text while waiting; `elapsedMs` counts from the start of the stage. */
 export function waitLabel(stage: WaitStage, elapsedMs: number): string {
-  const s = Math.floor(elapsedMs / 1000);
+  const s = Math.max(0, Math.floor(elapsedMs / 1000));
   if (stage === "waking") {
     // an awake server answers /health well within a second; don't flash the long warning
     return s < 1 ? "Đang kết nối máy chủ…" : `Đang đánh thức máy chủ (có thể ~1 phút)… ${s}s`;

@@ -15,6 +15,10 @@ describe("waitLabel", () => {
     expect(waitLabel("rendering", 20_000)).toBe("Đang dựng ảnh… 20s · thường 12–20s");
   });
 
+  it("shows 0s, not -1s, when the clock last ticked just before the stage began", () => {
+    expect(waitLabel("rendering", -200)).toBe("Đang dựng ảnh… 0s · thường 12–20s");
+  });
+
   it("admits when a render runs long", () => {
     expect(waitLabel("rendering", 21_000)).toBe("Đang dựng ảnh… 21s · lâu hơn thường lệ, chờ thêm chút nhé");
   });

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { API_URL, serverReady, tryOn } from "@/lib/api";
+import { useEffect, useRef, useState } from "react";
+import { API_URL, RateLimited, serverReady, tryOn } from "@/lib/api";
 import { addPage, addPhoto, dataUrlToBlob, ensureMigrated, newPage } from "@/lib/dukyBook";
 import { track } from "@/lib/track";
 import { sourceOf } from "@/lib/sources";
 import type { Bootstrap, CompassState, Selection, TryOnResult } from "@/lib/types";
 import { asset } from "@/lib/base";
+import { retryLabel, secondsLeft, untilAborted, waitLabel, type WaitStage } from "@/lib/tryonWait";
 
 // same labels as backend/app/models.py LABELS (⛔ has none: the original look is never saved)
 const LABEL_OF: Record<CompassState, string | null> = { fit: "Authentic", adapted: "Adapted", review: "Inspired", distorted: null };
@@ -38,10 +39,26 @@ export function TryOnPanel({
   data: Bootstrap;
 }) {
   const [photo, setPhoto] = useState<File | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [wait, setWait] = useState<{ stage: WaitStage; since: number } | null>(null);
+  const [retryAt, setRetryAt] = useState(0); // after a 429: when the limiter lets this visitor in again
+  const [now, setNow] = useState(() => Date.now());
   const [result, setResult] = useState<TryOnResult | null>(null);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const abort = useRef<AbortController | null>(null);
+
+  const busy = wait !== null;
+  const countdown = retryLabel(secondsLeft(retryAt, now));
+  const locked = busy || countdown !== null;
+
+  // the clock behind the stage timer and the 429 countdown; idle otherwise
+  useEffect(() => {
+    if (!locked) return;
+    const t = setInterval(() => setNow(Date.now()), 250);
+    return () => clearInterval(t);
+  }, [locked]);
+
+  useEffect(() => () => abort.current?.abort(), []);
 
   const image = result?.image_base64
     ? `data:image/png;base64,${result.image_base64}`
@@ -59,13 +76,17 @@ export function TryOnPanel({
     : null;
 
   async function run() {
-    setBusy(true);
+    const ctl = new AbortController();
+    abort.current = ctl;
+    setNow(Date.now());
+    setWait({ stage: "waking", since: Date.now() });
     setSaved(false);
     setError(null);
     try {
       // a sleeping server must wake before the try-on clock starts, or the first try falls back
-      if (!(await serverReady())) throw new Error("Máy chủ chưa thức dậy. Bạn thử lại sau ít phút nhé.");
-      const r = await tryOn(selection, photo ? { photo } : { avatarId: "default" });
+      if (!(await untilAborted(serverReady(), ctl.signal))) throw new Error("Máy chủ chưa thức dậy. Bạn thử lại sau ít phút nhé.");
+      setWait({ stage: "rendering", since: Date.now() });
+      const r = await tryOn(selection, photo ? { photo, signal: ctl.signal } : { avatarId: "default", signal: ctl.signal });
       setResult(r);
       track("tryon", {
         garment_id: r.rendered_selection.garment_id,
@@ -73,9 +94,14 @@ export function TryOnPanel({
         sample: !r.image_base64 && !!r.fallback_url,
       });
     } catch (e) {
+      if (ctl.signal.aborted) return; // the viewer pressed Huỷ (or left the page)
+      if (e instanceof RateLimited) setRetryAt(Date.now() + e.retryAfterS * 1000);
       setError(e instanceof Error ? e.message : "Không dựng được ảnh");
     } finally {
-      setBusy(false);
+      if (abort.current === ctl) {
+        abort.current = null;
+        setWait(null);
+      }
     }
   }
 
@@ -91,17 +117,25 @@ export function TryOnPanel({
           onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
         />
       </label>
-      <button
-        disabled={busy}
-        onClick={run}
-        className="rounded-full bg-stone-800 px-5 py-2 text-amber-50 disabled:opacity-50"
-      >
-        {busy
-          ? "Đang dựng ảnh…"
-          : photo
-            ? "Thử bằng ảnh của tôi"
-            : "Thử bằng avatar"}
-      </button>
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          disabled={locked}
+          onClick={run}
+          className="rounded-full bg-stone-800 px-5 py-2 text-amber-50 disabled:opacity-50"
+        >
+          {wait
+            ? waitLabel(wait.stage, now - wait.since)
+            : (countdown ??
+              (photo
+                ? "Thử bằng ảnh của tôi"
+                : "Thử bằng avatar"))}
+        </button>
+        {busy && (
+          <button onClick={() => abort.current?.abort()} className="rounded-full border border-stone-800 px-4 py-2 text-sm">
+            Huỷ
+          </button>
+        )}
+      </div>
 
       {error && <p className="text-sm text-red-700">{error}</p>}
       {result?.rendered_alternative && <AlternativeSteps data={data} result={result} chosen={selection} />}
@@ -122,7 +156,7 @@ export function TryOnPanel({
             {isSample ? "Ảnh mẫu tạo sẵn (máy chủ AI đang bận)" : result?.label_note}
           </figcaption>
           {isSample && (
-            <button onClick={run} disabled={busy} className="mt-1 text-sm underline disabled:opacity-50">
+            <button onClick={run} disabled={locked} className="mt-1 text-sm underline disabled:opacity-50">
               Thử dựng lại bằng AI
             </button>
           )}
