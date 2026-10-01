@@ -1,8 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
+import { Suspense } from "react";
 import { ChapterView } from "@/components/chapter/ChapterView";
 
-// One page per region, built ahead of time (static export for GitHub Pages); ?garment= is read in the browser.
+// One page per region, built ahead of time (static export for GitHub Pages); ?garment= and ?step= are read in the
+// browser (useSearchParams), so the view sits in a Suspense boundary and is rendered on the client.
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -15,5 +17,9 @@ export function generateStaticParams() {
 
 export default async function ChapterPage({ params }: PageProps<"/chapter/[id]">) {
   const { id } = await params;
-  return <ChapterView regionId={id} />;
+  return (
+    <Suspense fallback={<p className="p-8">Đang lật trang…</p>}>
+      <ChapterView regionId={id} />
+    </Suspense>
+  );
 }
