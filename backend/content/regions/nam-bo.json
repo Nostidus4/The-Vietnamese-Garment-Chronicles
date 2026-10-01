@@ -21,7 +21,7 @@
         "lon": 105.79
       },
       "frame": {
-        "image": "/regions/nam-bo/n01-ninh-kieu.png",
+        "image": "/regions/nam-bo/n01-ninh-kieu.jpg",
         "caption": "Bến Ninh Kiều lên đèn",
         "alt": "Bà và Ông đứng ở bến sông, ghe xuồng lên đèn",
         "no_people": false,
@@ -72,7 +72,7 @@
         "lon": 105.75
       },
       "frame": {
-        "image": "/regions/nam-bo/n02-cho-noi.png",
+        "image": "/regions/nam-bo/n02-cho-noi.jpg",
         "caption": "Chợ nổi rạng sáng",
         "alt": "Ghe nối ghe trên sông, cây sào treo trái cây",
         "no_people": false,
@@ -177,7 +177,7 @@
       "keepsake": "fabric",
       "point": null,
       "frame": {
-        "image": "/regions/nam-bo/n03-ghe-ba-cu.png",
+        "image": "/regions/nam-bo/n03-ghe-ba-cu.jpg",
         "caption": "Trên ghe bà cụ",
         "alt": "Bà cụ quấn khăn rằn lên đầu cho Bà trên chiếc ghe chở khóm",
         "no_people": false,
@@ -298,7 +298,7 @@
       "keepsake": "recipe",
       "point": null,
       "frame": {
-        "image": "/regions/nam-bo/n04-nuoc-noi.png",
+        "image": "/regions/nam-bo/n04-nuoc-noi.jpg",
         "caption": "Mùa nước nổi",
         "alt": "Nước lên tận gốc cây, người bơi xuồng hái bông điên điển",
         "no_people": false,
@@ -366,7 +366,7 @@
       "keepsake": null,
       "point": null,
       "frame": {
-        "image": "/regions/nam-bo/n05-don-ca.png",
+        "image": "/regions/nam-bo/n05-don-ca.jpg",
         "caption": "Đờn ca dưới hiên",
         "alt": "Người em họ đờn kìm, cô hàng xóm ca vọng cổ dưới hiên nhà",
         "no_people": false,
@@ -423,7 +423,7 @@
       "keepsake": "ticket",
       "point": null,
       "frame": {
-        "image": "/regions/nam-bo/n06-le-hoi.png",
+        "image": "/regions/nam-bo/n06-le-hoi.jpg",
         "caption": "Lễ hội miền Tây",
         "alt": "Đoàn người lên núi Sam dâng hương",
         "no_people": false,
@@ -477,7 +477,7 @@
   ],
   "letter": {
     "text": "Con à, bà cụ trên ghe bảo: áo đẹp là áo làm được việc. Bà mặc bà ba đi chợ nổi, thấy mình như người ở đó từ lâu. Con cũng vậy, mặc cho hợp nơi mình đến là đẹp rồi.",
-    "image": "/regions/nam-bo/n09-buu-thiep.png"
+    "image": "/regions/nam-bo/n09-buu-thiep.jpg"
   },
   "wear": [
     {

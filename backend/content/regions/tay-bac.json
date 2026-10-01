@@ -20,7 +20,7 @@
         "lon": 103.52
       },
       "frame": {
-        "image": "/regions/tay-bac/t01-deo-suong.png",
+        "image": "/regions/tay-bac/t01-deo-suong.jpg",
         "caption": "Đường về bản",
         "alt": "Con đèo mờ sương mở ra thung lũng ruộng bậc thang",
         "no_people": true,
@@ -80,7 +80,7 @@
         "lon": 103.91
       },
       "frame": {
-        "image": "/regions/tay-bac/t02-nha-san.png",
+        "image": "/regions/tay-bac/t02-nha-san.jpg",
         "caption": "Nhà sàn bên suối",
         "alt": "Nhà sàn bên con suối, khung cửi dưới gầm sàn",
         "no_people": true,
@@ -198,7 +198,7 @@
         "lon": 103.91
       },
       "frame": {
-        "image": "/regions/tay-bac/t03-dem-xoe.png",
+        "image": "/regions/tay-bac/t03-dem-xoe.jpg",
         "caption": "Vòng xòe quanh lửa",
         "alt": "Vòng người nắm tay quanh đống lửa giữa sân bản",
         "no_people": true,
@@ -274,7 +274,7 @@
         }
       ],
       "frame": {
-        "image": "/regions/tay-bac/t05-le-hoi.png",
+        "image": "/regions/tay-bac/t05-le-hoi.jpg",
         "caption": "Ngày hội ở bản",
         "alt": "Cây nêu hội dựng giữa sân bản, cờ vải bay trong gió",
         "no_people": true,
@@ -330,7 +330,7 @@
         "lon": 103.91
       },
       "frame": {
-        "image": "/regions/tay-bac/t04-trao-thu.png",
+        "image": "/regions/tay-bac/t04-trao-thu.jpg",
         "caption": "Lá thư bên bếp lửa",
         "alt": "Bàn tay đưa lá thư cũ bên bếp lửa nhà sàn",
         "no_people": true,
@@ -352,7 +352,7 @@
   ],
   "letter": {
     "text": "Cháu chào bà. Mẹ cháu vẫn giữ tấm ảnh hai người ở xưởng may. Lá thư bà gửi, cháu đọc cho mẹ nghe bên bếp lửa. Khi nào bà lên, bản cháu vẫn đợi.",
-    "image": "/regions/tay-bac/t09-buu-thiep.png"
+    "image": "/regions/tay-bac/t09-buu-thiep.jpg"
   },
   "wear": [
     {

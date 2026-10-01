@@ -20,7 +20,7 @@
         "lon": 108.05
       },
       "frame": {
-        "image": "/regions/tay-nguyen/d01-doi-ca-phe.png",
+        "image": "/regions/tay-nguyen/d01-doi-ca-phe.jpg",
         "caption": "Đồi cà phê mùa khô",
         "alt": "Đồi cà phê nở hoa trắng dưới trời xanh, đường đất đỏ",
         "no_people": true,
@@ -66,7 +66,7 @@
         "lon": 108.05
       },
       "frame": {
-        "image": "/regions/tay-nguyen/d02-nha-dai.png",
+        "image": "/regions/tay-nguyen/d02-nha-dai.jpg",
         "caption": "Nhà dài",
         "alt": "Nhà dài trên cột gỗ, cầu thang dẫn lên sàn",
         "no_people": true,
@@ -126,7 +126,7 @@
         "lon": 108.05
       },
       "frame": {
-        "image": "/regions/tay-nguyen/d03-khung-det.png",
+        "image": "/regions/tay-nguyen/d03-khung-det.jpg",
         "caption": "Khung dệt dưới hiên",
         "alt": "Đôi tay đang dệt thổ cẩm trên khung dệt dưới hiên nhà dài",
         "no_people": true,
@@ -220,7 +220,7 @@
         "lon": 108.05
       },
       "frame": {
-        "image": "/regions/tay-nguyen/d04-cong-chieng.png",
+        "image": "/regions/tay-nguyen/d04-cong-chieng.jpg",
         "caption": "Đêm cồng chiêng",
         "alt": "Vòng người đánh chiêng quanh bếp lửa trong đêm",
         "no_people": true,
@@ -302,7 +302,7 @@
         }
       ],
       "frame": {
-        "image": "/regions/tay-nguyen/d05-ben-nuoc.png",
+        "image": "/regions/tay-nguyen/d05-ben-nuoc.jpg",
         "caption": "Bến nước của buôn",
         "alt": "Bến nước trong rừng, ống tre dẫn nước chảy vào máng gỗ",
         "no_people": true,
@@ -351,7 +351,7 @@
   ],
   "letter": {
     "text": "Chiêng nhà mình vẫn đánh mỗi mùa lúa mới. Tấm vải ấy, con cháu hỏi thì nhà mình kể cho nghe. Bao giờ lên, cứ vào nhà dài mà ở. (lời anh Y Blăk gửi Ông, chờ cộng đồng góp ý)",
-    "image": "/regions/tay-nguyen/d09-buu-thiep.png"
+    "image": "/regions/tay-nguyen/d09-buu-thiep.jpg"
   },
   "wear": [
     {

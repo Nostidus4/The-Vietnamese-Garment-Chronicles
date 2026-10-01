@@ -29,7 +29,7 @@
         "lon": 106.08
       },
       "frame": {
-        "image": "/regions/bac-bo/b01-ben-song.png",
+        "image": "/regions/bac-bo/b01-ben-song.jpg",
         "caption": "Bến sông Cầu mùa xuân",
         "alt": "Chị họ vấn khăn mỏ quạ cho Bà trên bến sông mưa phùn",
         "no_people": false,
@@ -82,7 +82,7 @@
         "lon": 106.08
       },
       "frame": {
-        "image": "/regions/bac-bo/b02-dong-ho.png",
+        "image": "/regions/bac-bo/b02-dong-ho.jpg",
         "caption": "In tranh ở làng Đông Hồ",
         "alt": "Bà ấn bản khắc gỗ lên tờ giấy điệp, ông cụ nghệ nhân đứng cạnh",
         "no_people": false,
@@ -183,7 +183,7 @@
         "lon": 106.02
       },
       "frame": {
-        "image": "/regions/bac-bo/b03-doi-lim.png",
+        "image": "/regions/bac-bo/b03-doi-lim.jpg",
         "caption": "Trên đồi Lim",
         "alt": "Liền anh áo the chìa miếng trầu, Bà mặc áo tứ thân đứng lúng túng",
         "no_people": false,
@@ -290,7 +290,7 @@
       "keepsake": "recipe",
       "point": null,
       "frame": {
-        "image": "/regions/bac-bo/b04-nha-chua.png",
+        "image": "/regions/bac-bo/b04-nha-chua.jpg",
         "caption": "Học hát trong nhà chứa",
         "alt": "Liền chị dạy Bà hát, mâm trầu đặt giữa chiếu",
         "no_people": false,
@@ -380,7 +380,7 @@
       "keepsake": "ticket",
       "point": null,
       "frame": {
-        "image": "/regions/bac-bo/b05-cong-lang.png",
+        "image": "/regions/bac-bo/b05-cong-lang.jpg",
         "caption": "Giã bạn ở cổng làng",
         "alt": "Liền anh liền chị hát giã bạn dưới đèn lồng ở cổng làng",
         "no_people": false,
@@ -439,7 +439,7 @@
   ],
   "letter": {
     "text": "Con à, câu đáp năm ấy Bà hát lạc mất một chữ, mà cả hội vẫn vỗ tay. Người Kinh Bắc thương người biết đáp lời, chứ không cần hát hay. Con gặp ai mời, con cứ đáp, con nhé.",
-    "image": "/regions/bac-bo/b09-buu-thiep.png"
+    "image": "/regions/bac-bo/b09-buu-thiep.jpg"
   },
   "wear": [
     {
