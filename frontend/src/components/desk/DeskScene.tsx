@@ -181,7 +181,7 @@ export function DeskScene({
     <main className="desk fixed inset-0 overflow-hidden">
       {!size.portrait && <BookSizeControl />}
       <Image
-        src={asset("/page/Desk.png")}
+        src={asset("/page/Desk.webp")}
         alt=""
         fill
         priority
@@ -441,7 +441,7 @@ function DeskProps() {
     <div className="pointer-events-none absolute inset-0" aria-hidden>
       <div className="desk-photo absolute left-[3%] top-[42%] hidden w-[12vw] min-w-[130px] max-w-[190px] rotate-[-7deg] md:block">
         <Image
-          src={asset("/opening/s06.png")}
+          src={asset("/opening/s06.webp")}
           alt=""
           width={420}
           height={236}

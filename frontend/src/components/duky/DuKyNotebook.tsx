@@ -253,7 +253,7 @@ function DeskBook({
   return (
     <main className="desk fixed inset-0 overflow-hidden">
       <BookSizeControl />
-      <Image src={asset("/page/Desk.png")} alt="" fill priority quality={88} sizes="100vw" className="desk-bg object-cover" />
+      <Image src={asset("/page/Desk.webp")} alt="" fill priority quality={88} sizes="100vw" className="desk-bg object-cover" />
       <div className="desk-light pointer-events-none absolute inset-0" aria-hidden />
 
       {/* Bà's notebook, closed in the corner: back to her book */}

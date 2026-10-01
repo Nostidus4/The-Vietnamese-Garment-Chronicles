@@ -63,9 +63,9 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
         }
         transition={{ duration: leaving ? 0.9 : 1.2, ease: EASE, delay: leaving ? 0 : 0.25 }}
       >
-        {/* logo-mark.png: Logo.png with its cream background made transparent, so it sits on the page with no frame */}
+        {/* logo-mark.webp: Logo.png with its cream background made transparent, so it sits on the page with no frame */}
         <Image
-          src={asset("/page/logo-mark.png")}
+          src={asset("/page/logo-mark.webp")}
           alt=""
           width={1118}
           height={802}
@@ -83,8 +83,8 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
               background: "linear-gradient(105deg, transparent 35%, rgba(255,220,140,0.85) 50%, transparent 65%)",
               backgroundSize: "300% 100%",
               // the light only touches the drawing itself, never the empty page around it
-              maskImage: `url(${asset("/page/logo-mark.png")})`,
-              WebkitMaskImage: `url(${asset("/page/logo-mark.png")})`,
+              maskImage: `url(${asset("/page/logo-mark.webp")})`,
+              WebkitMaskImage: `url(${asset("/page/logo-mark.webp")})`,
               maskSize: "100% 100%",
               WebkitMaskSize: "100% 100%",
             }}
