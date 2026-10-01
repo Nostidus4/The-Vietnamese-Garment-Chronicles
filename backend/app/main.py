@@ -33,6 +33,7 @@ app.add_middleware(
     allow_origins=list(settings.cors_origins),
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Retry-After"],  # the try-on countdown after a 429
 )
 app.mount("/media", StaticFiles(directory=store.CONTENT_DIR / "media"), name="media")
 

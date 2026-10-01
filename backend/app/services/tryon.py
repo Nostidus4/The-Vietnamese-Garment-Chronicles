@@ -2,8 +2,11 @@
 
 import base64
 import hashlib
+import logging
+import time
 from collections import OrderedDict
 
+from ..config import settings
 from ..content import store
 from ..models import Selection, TryOnResponse
 from . import compass
@@ -23,6 +26,13 @@ TRYON_TEMPLATE_NO_REF = TRYON_TEMPLATE.replace(" in IMAGE 2 (reference photo of 
 # Avatar renders are deterministic enough to cache; user photos are never cached or stored.
 _cache: "OrderedDict[str, str]" = OrderedDict()
 _CACHE_MAX = 64
+
+log = logging.getLogger("tryon")
+
+# All tries together stay within one Gemini timeout, so the frontend's 75 s limit still holds
+BUDGET_S = settings.image_timeout_s
+RETRY_DELAY_S = 2.0
+MIN_RETRY_S = 15.0  # a render takes ~12 s (docs/NANO_BANANA_BENCH.md); with less left a retry would only time out
 
 
 def build_prompt(sel: Selection, with_reference: bool) -> str:
@@ -59,6 +69,21 @@ def avatar(avatar_id: str) -> tuple[bytes, str] | None:
     return ((c.root / "media" / rel).read_bytes(), "image/png") if c.media_exists(rel) else None
 
 
+def _render(prompt: str, images: list[tuple[bytes, str]]) -> bytes:
+    """Gemini, retried once on 429/5xx while enough of the budget is left. Raises GeminiUnavailable."""
+    client = get_client()
+    start = time.monotonic()
+    try:
+        return client.generate_image(prompt, images, timeout_s=BUDGET_S)
+    except GeminiUnavailable as e:
+        left = BUDGET_S - (time.monotonic() - start) - RETRY_DELAY_S
+        if not e.retryable or left < MIN_RETRY_S:
+            raise
+        log.info("retry in %.0fs after code=%s, %.0fs of budget left", RETRY_DELAY_S, e.code, left)
+        time.sleep(RETRY_DELAY_S)
+        return client.generate_image(prompt, images, timeout_s=left)
+
+
 def run(sel: Selection, person: tuple[bytes, str] | None, cache_key: str | None) -> TryOnResponse:
     result = compass.evaluate(sel)
     render_sel = result.alternative if result.state == "distorted" and result.alternative else sel
@@ -75,10 +100,10 @@ def run(sel: Selection, person: tuple[bytes, str] | None, cache_key: str | None)
         ref = _reference(render_sel.garment_id)
         images = [person] + ([ref] if ref else [])
         try:
-            raw = get_client().generate_image(build_prompt(render_sel, with_reference=ref is not None), images)
+            raw = _render(build_prompt(render_sel, with_reference=ref is not None), images)
             image_b64 = base64.b64encode(raw).decode()
         except GeminiUnavailable as e:
-            print(f"[tryon] falling back: {e}")
+            log.warning("falling back after code=%s: %s", e.code, e)
 
     if key and image_b64:
         _cache[key] = image_b64
