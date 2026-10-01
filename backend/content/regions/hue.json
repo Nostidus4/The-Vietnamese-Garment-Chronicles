@@ -44,7 +44,7 @@
         }
       ],
       "frame": {
-        "image": "/regions/hue/h01-ga-hue.png",
+        "image": "/regions/hue/h01-ga-hue.jpg",
         "caption": "Ga Huế, chiều mưa",
         "alt": "Bà hai mươi tuổi đứng dưới ô của Ông trên sân ga ướt mưa",
         "no_people": false,
@@ -92,7 +92,7 @@
         }
       ],
       "frame": {
-        "image": "/regions/hue/h02-song-huong-som.png",
+        "image": "/regions/hue/h02-song-huong-som.jpg",
         "caption": "Sông Hương buổi sớm",
         "alt": "Chiếc đò nhỏ trên sông Hương mờ sương, xa xa là cây cầu nhiều nhịp",
         "no_people": false,
@@ -100,8 +100,8 @@
       },
       "hat": {
         "line": "Nón nghiêng che nắng sông Hương, anh nghiêng che cả con đường em đi.",
-        "hat": "/regions/hue/h03a-non-la.png",
-        "hidden": "/regions/hue/h03b-non-an.png"
+        "hat": "/regions/hue/h03a-non-la.jpg",
+        "hidden": "/regions/hue/h03b-non-an.jpg"
       },
       "today": {
         "title": "Chợ ồn hơn mình tưởng, mà dễ thương",
@@ -153,7 +153,7 @@
         }
       ],
       "frame": {
-        "image": "/regions/hue/h04-ngo-mon.png",
+        "image": "/regions/hue/h04-ngo-mon.jpg",
         "caption": "Ngọ Môn, trưa nắng",
         "alt": "Bà níu vạt áo dài mượn, Ông mải nghe nhạc quên che ô",
         "no_people": false,
@@ -258,7 +258,7 @@
         }
       ],
       "frame": {
-        "image": "/regions/hue/h06-thien-mu.png",
+        "image": "/regions/hue/h06-thien-mu.jpg",
         "caption": "Chùa Thiên Mụ lúc chiều",
         "alt": "Ông và Bà đứng trên đồi nhìn xuống sông Hương, cạnh tháp bảy tầng",
         "no_people": false,
@@ -297,10 +297,10 @@
       "keepsake": "recipe",
       "teo": [],
       "frame": {
-        "image": "/regions/hue/h05-mam-com.png",
+        "image": "/regions/hue/h05-mam-com.jpg",
         "caption": "Bữa cơm ra mắt",
-        "alt": "Mẹ Ông đưa Bà chiếc chén mới, cả nhà đang dừng đũa",
-        "no_people": false,
+        "alt": "Mâm cơm nhà rường: nồi cơm, những chén đĩa nhỏ men lam, ngoài cửa trời mưa",
+        "no_people": true,
         "prompt": "docs/ART_PROMPTS.md mục 13 (h05-mam-com.png)"
       },
       "items": [
@@ -430,7 +430,7 @@
         }
       ],
       "frame": {
-        "image": "/regions/hue/h07-hoa-dang.png",
+        "image": "/regions/hue/h07-hoa-dang.jpg",
         "caption": "Đêm thả hoa đăng",
         "alt": "Mẹ Ông trao cho Bà một chiếc đèn hoa đăng bên bậc đá bờ sông",
         "no_people": false,
@@ -506,7 +506,7 @@
   ],
   "letter": {
     "text": "Con à, Bà đã ở lại. Mưa Huế buồn thật, nhưng có người che ô, có người bảo “rứa thôi”. Đến giờ, mỗi lần mưa, Bà vẫn nghe được tiếng mưa trên mái ngói hôm ấy. Tấm bưu thiếp này, con giữ lấy.",
-    "image": "/regions/hue/h09-buu-thiep.png"
+    "image": "/regions/hue/h09-buu-thiep.jpg"
   },
   "wear": [
     {

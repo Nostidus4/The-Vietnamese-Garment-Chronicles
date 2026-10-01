@@ -515,6 +515,16 @@ export function StopGame({ stop, regionId, data }: { stop: Stop; regionId: strin
         <p className="font-display m-0 flex-1 text-[1.15rem] leading-tight" style={{ color: YOUNG }}>
           {game.title}
         </p>
+        {!isWon && (
+          <button
+            type="button"
+            onClick={() => setRound((r) => r + 1)}
+            className="mt-0.5 shrink-0 rounded-full border border-stone-400/70 px-2 py-0.5 text-[0.68rem] text-stone-600 hover:bg-stone-200/60"
+            title="Bắt đầu lại trò chơi này từ đầu"
+          >
+            ↺ Làm lại
+          </button>
+        )}
         <TeoPin
           corner={false}
           label="Cách chơi: Tèo hướng dẫn"
@@ -547,9 +557,9 @@ export function StopGame({ stop, regionId, data }: { stop: Stop; regionId: strin
                   unmarkStamp("game", key);
                   setRound((r) => r + 1);
                 }}
-                className="text-[0.75rem] text-stone-500 underline"
+                className="rounded-full border border-[#27354f] px-4 py-1.5 text-sm text-[#27354f] hover:bg-[#27354f]/10"
               >
-                Chơi lại
+                ↺ Chơi lại
               </button>
             </div>
           </motion.div>

@@ -661,7 +661,7 @@ A single Vietnamese conical hat (nón lá) seen from below against a bright sky,
 Delicate silhouette paper-cut in dark indigo on a plain white background, designed to be layered inside a conical hat seen from below: a small steel bridge with six arched spans over a river, two swallows flying above, and a sprig of bamboo on the left, all arranged in a ring around the center like a hidden picture between the hat's leaves. Thin, elegant shapes, lots of empty space, no text.
 ```
 
-*Web xếp ảnh B chồng dưới ảnh A. Khi người đọc rê chuột hoặc chạm để "soi lên nắng", ảnh A sáng dần lên và hình cây cầu hiện ra. Câu thơ viết tay do web hiển thị, không để AI viết chữ.*
+*Ảnh A được cắt thành hình tròn, nên giữ chóp nón ở chính giữa và không đặt gì quan trọng ở bốn góc. Web xếp ảnh B chồng dưới ảnh A. Khi người đọc rê chuột hoặc chạm để "soi lên nắng", ảnh A sáng dần lên và hình cây cầu hiện ra. Câu thơ viết tay do web hiển thị, không để AI viết chữ.*
 
 ### 13.4 Trưa nắng trong Đại Nội
 
@@ -677,26 +677,26 @@ Harsh midday sun inside the Imperial City of Huế: the Noon Gate (Ngọ Môn) b
 
 ### 13.5 Bữa cơm ra mắt mẹ
 
-file: hue/h05-mam-com.png
+file: hue/h05-mam-com.png (đổi 01/10: chỉ vẽ mâm cơm, không người, không chén rơi)
 
 ```
 {STYLE}
 MEMORY
 {AVOID}
 
-Interior of an old Huế garden house (nhà rường) with dark wooden columns, a low table with a family meal: many tiny dishes neatly arranged like a still life. Young Bà sits stiffly at the table, a small rice bowl just fallen and rolling on the floor, her face frozen in embarrassment. Ông's mother (attached sheet, purple áo dài) is rising calmly from her seat, holding out a new bowl, her face gentle. Other family members pause with chopsticks in the air. Soft rainy daylight from an open door, a garden with areca palms outside. The moment just before kindness.
+Interior of an old Huế garden house (nhà rường) with dark carved wooden columns, seen in soft rainy daylight from an open door with areca palms in the garden outside. On a dark wooden table, a welcoming family meal laid out like a still life: a clay pot of rice, many small blue-and-white bowls and dishes of Huế food, chopsticks resting neatly. No people, no fallen or broken bowl: only the table, waiting, warm and a little formal.
 ```
 
 ### 13.6 Chiều ở chùa Thiên Mụ
 
-tỉ lệ 3:4 · file: hue/h06-thien-mu.png
+tỉ lệ 4:3 (khung nhật ký luôn là 4:3, ảnh dọc sẽ bị cắt mất ngọn tháp; đặt tháp lệch một bên, chừa trời phía trên) · file: hue/h06-thien-mu.png
 
 ```
 {STYLE}
 MEMORY
 {AVOID}
 
-Late afternoon on the hill of Thiên Mụ pagoda above the Perfume River: the tall seven-tiered octagonal brick tower (Phước Duyên) in warm light, pine trees, stone steps. Young Ông and young Bà stand at the edge of the hill looking at the river, not at each other, a small distance between them. Orange and lavender sky, the river bending away into soft hills, a sampan far below. Faint circular ripples in the air suggest the sound of a bronze bell. Still, full of a question not yet answered.
+Wide landscape composition: the whole tower stands on the left third with open sky above it, the hill edge and river on the right. Late afternoon on the hill of Thiên Mụ pagoda above the Perfume River: the tall seven-tiered octagonal brick tower (Phước Duyên) in warm light, pine trees, stone steps. Young Ông and young Bà stand at the edge of the hill looking at the river, not at each other, a small distance between them. Orange and lavender sky, the river bending away into soft hills, a sampan far below. Faint circular ripples in the air suggest the sound of a bronze bell. Still, full of a question not yet answered.
 ```
 
 ### 13.7 Đêm thả hoa đăng
@@ -751,11 +751,11 @@ Wide panoramic vignette of central Vietnam's narrow land: on the left green moun
 | --- | --- | --- | --- |
 | Ông và mẹ Ông | 16:9 | `backend/content/media/characters/ong-sheet.png` | tham chiếu (không hiển thị) |
 | Ga Huế chiều mưa | 4:3 | hue/h01-ga-hue.png | Điểm 1 |
-| Sông Hương buổi sớm | 4:3 | hue/h02-song-huong-som.png | Điểm 2 |
+| Sông Hương buổi sớm | 4:3 | hue/h02-song-huong-som.png | chưa dùng: Điểm 2 hiện chiếc nón (13.3) thay cho ảnh |
 | Nón lá + hình ẩn | 1:1 ×2 | hue/h03a-non-la.png, hue/h03b-non-an.png | Điểm 2 (tương tác) |
 | Ngọ Môn trưa nắng | 4:3 | hue/h04-ngo-mon.png | Điểm 3 |
 | Mâm cơm ra mắt | 4:3 | hue/h05-mam-com.png | Điểm 5 |
-| Chùa Thiên Mụ | 3:4 | hue/h06-thien-mu.png | Điểm 4 |
+| Chùa Thiên Mụ | 4:3 | hue/h06-thien-mu.png | Điểm 4 |
 | Đêm hoa đăng | 4:3 | hue/h07-hoa-dang.png | Điểm 6 |
 | Rương và áo ngũ thân | 3:4 | hue/h08-ruong-ao.png | Trang Mặc (dự phòng, chưa gắn) |
 | Bưu thiếp Huế | 3:2 | hue/h09-buu-thiep.png | Phong thư cuối chương |
