@@ -1,7 +1,7 @@
 # Build the site as static files and publish it on GitHub Pages:
 #   https://<owner>.github.io/<repo>/
 #
-# Runs on every push to main (and to the preview branch listed below), and by hand (Actions → "Deploy to GitHub Pages" → Run workflow, any branch).
+# Runs on every push to main, and by hand (Actions → "Deploy to GitHub Pages" → Run workflow, any branch).
 # The book's content is exported from backend/content at build time, so reading works without a server.
 # Optional repository variables (Settings → Secrets and variables → Actions → Variables):
 #   API_URL       backend on Render, e.g. https://xxx.onrender.com: turns on Compass, try-on, Hỏi Tèo, weather, shops
@@ -11,8 +11,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    # feat/so-cua-ba-5-chuong: preview the new book before it is merged (remove once merged)
-    branches: [main, feat/so-cua-ba-5-chuong]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
