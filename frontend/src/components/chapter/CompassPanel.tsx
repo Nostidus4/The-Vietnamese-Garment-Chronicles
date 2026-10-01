@@ -1,7 +1,7 @@
 import { sourceOf } from "@/lib/sources";
 import type { Bootstrap, CompassResult, CompassState, Trigger } from "@/lib/types";
 
-const STATE: Record<CompassState, { icon: string; name: string; tone: string }> = {
+export const STATE: Record<CompassState, { icon: string; name: string; tone: string }> = {
   fit: { icon: "✅", name: "Phù hợp", tone: "border-emerald-400 bg-emerald-50" },
   adapted: { icon: "✨", name: "Cách tân có chủ đích", tone: "border-sky-400 bg-sky-50" },
   review: { icon: "⚠️", name: "Cần xem lại bối cảnh", tone: "border-amber-400 bg-amber-50" },
@@ -39,14 +39,6 @@ export function CompassPanel({ result, sources }: { result: CompassResult | null
           )}
         </div>
       )}
-      {result.state === "distorted" && result.alternative && (
-        <p className="mt-3 text-sm">
-          Khi thử lên người, hệ thống sẽ không dựng look này mà dựng phương án thay thế: bỏ hoặc đổi đúng món gây sai lệch ({result.triggers
-            .filter((t) => t.state === "distorted")
-            .map((t) => t.target_name)
-            .join(", ")}).
-        </p>
-      )}
       {result.harmony_notes.map((n) => (
         <p key={n} className="mt-2 text-sm"><b>Tí (màu sắc):</b> {n}</p>
       ))}
@@ -71,26 +63,7 @@ function WhyPanel({ triggers, sources }: { triggers: Trigger[]; sources: Bootstr
                 {STATE[t.state].icon} <b>{RULE[t.type] ?? t.type}</b> · {t.target_name}
               </p>
               <p className="m-0 mt-0.5 text-stone-700">{t.why}</p>
-              {t.sources.length > 0 && (
-                <p className="m-0 mt-0.5 text-xs text-stone-600">
-                  Nguồn:{" "}
-                  {t.sources.map((id, i) => {
-                    const s = sourceOf({ sources }, id);
-                    return (
-                      <span key={id}>
-                        {i > 0 && " · "}
-                        {s.url ? (
-                          <a href={s.url} target="_blank" rel="noreferrer" className="underline">
-                            {s.title}
-                          </a>
-                        ) : (
-                          s.title
-                        )}
-                      </span>
-                    );
-                  })}
-                </p>
-              )}
+              <Sources ids={t.sources} sources={sources} />
             </li>
           ))}
         </ul>
@@ -99,5 +72,30 @@ function WhyPanel({ triggers, sources }: { triggers: Trigger[]; sources: Bootstr
         Kết quả do bộ luật văn hóa quyết định, Gemini không tham gia phán xét. Gemini chỉ dựng ảnh minh họa.
       </p>
     </details>
+  );
+}
+
+/** "Nguồn: A · B", linked where the source has a URL. */
+export function Sources({ ids, sources }: { ids: string[]; sources: Bootstrap["sources"] }) {
+  if (ids.length === 0) return null;
+  return (
+    <p className="m-0 mt-0.5 text-xs text-stone-600">
+      Nguồn:{" "}
+      {ids.map((id, i) => {
+        const s = sourceOf({ sources }, id);
+        return (
+          <span key={id}>
+            {i > 0 && " · "}
+            {s.url ? (
+              <a href={s.url} target="_blank" rel="noreferrer" className="underline">
+                {s.title}
+              </a>
+            ) : (
+              s.title
+            )}
+          </span>
+        );
+      })}
+    </p>
   );
 }

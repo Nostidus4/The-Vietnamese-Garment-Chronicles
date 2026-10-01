@@ -19,17 +19,19 @@ export function Builder({
   data,
   value,
   onChange,
+  highlight = [],
 }: {
   garment: Garment;
   data: Bootstrap;
   value: Selection;
   onChange: (s: Selection) => void;
+  highlight?: string[]; // after ⛔ "Sửa lại": the choices that caused it
 }) {
-  const chip = (on: boolean) =>
-    `rounded-full border px-3 py-1 text-sm transition ${on ? "border-stone-800 bg-stone-800 text-amber-50" : "border-stone-300 hover:border-stone-600"}`;
+  const chip = (on: boolean, bad = false) =>
+    `rounded-full border px-3 py-1 text-sm transition ${on ? "border-stone-800 bg-stone-800 text-amber-50" : "border-stone-300 hover:border-stone-600"} ${bad ? "ring-2 ring-red-500 ring-offset-2" : ""}`;
 
   return (
-    <section className="paper space-y-4 rounded-lg p-5">
+    <div className="space-y-4">
       <div>
         <h3 className="mb-2 font-semibold">Dịp</h3>
         <div className="flex flex-wrap gap-2">
@@ -60,7 +62,7 @@ export function Builder({
               key={c}
               title={data.colors[c]?.name}
               onClick={() => onChange({ ...value, colors: toggle(value.colors, c, 2) })}
-              className={`h-9 w-9 rounded-full border-2 ${value.colors.includes(c) ? "border-stone-900 ring-2 ring-amber-400" : "border-stone-300"}`}
+              className={`h-9 w-9 rounded-full border-2 ${value.colors.includes(c) ? "border-stone-900 ring-2 ring-amber-400" : "border-stone-300"} ${highlight.includes(c) ? "outline-2 outline-offset-4 outline-red-500" : ""}`}
               style={{ background: data.colors[c]?.hex }}
             />
           ))}
@@ -71,12 +73,13 @@ export function Builder({
         <h3 className="mb-2 font-semibold">Phụ kiện</h3>
         <div className="flex flex-wrap gap-2">
           {garment.accessories.map((a) => (
-            <button key={a} className={chip(value.accessories.includes(a))} onClick={() => onChange({ ...value, accessories: toggle(value.accessories, a) })}>
+            <button key={a} className={chip(value.accessories.includes(a), highlight.includes(a))} onClick={() => onChange({ ...value, accessories: toggle(value.accessories, a) })}>
+              {highlight.includes(a) && "⛔ "}
               {data.accessories[a]?.name_vi ?? a}
             </button>
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
