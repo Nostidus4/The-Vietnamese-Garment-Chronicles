@@ -11,9 +11,13 @@
   ],
   "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong"],
   "zones": [
-    {"part": "dáng áo ngắn, xẻ hông", "level": "keep"},
-    {"part": "màu vải", "level": "free"},
-    {"part": "chất liệu", "level": "free"}
+    {"part": "dáng áo ngắn, xẻ hông", "level": "keep", "note": "Áo ngắn, xẻ hông là dáng nhận diện của áo bà ba"},
+    {"part": "màu vải", "level": "free", "control": "colors"},
+    {"part": "chất liệu", "level": "free", "options": [
+        {"id": "giu-nguyen", "label": "Giữ nguyên"},
+        {"id": "vai-tho", "label": "Vải thô", "prompt": "the tunic is plain, matte coarse cotton, the simple everyday kind", "sources": ["ref-79"]},
+        {"id": "lua-leo", "label": "Lụa lèo", "prompt": "the tunic is smooth silk (lua leo) with a soft sheen", "sources": ["ref-79"]}
+    ]}
   ],
   "colors": ["den", "trang", "nau-non", "xanh-mint", "hong-dao"],
   "default_colors": ["den", "trang"],

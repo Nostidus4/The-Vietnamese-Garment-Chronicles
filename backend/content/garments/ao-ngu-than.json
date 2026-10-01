@@ -12,11 +12,19 @@
   ],
   "occasions": ["tet-chua", "le-hoi", "di-tich", "dam-cuoi"],
   "zones": [
-    {"part": "số thân áo (5 thân)", "level": "keep"},
-    {"part": "cổ áo", "level": "keep"},
-    {"part": "độ dài tay", "level": "caution"},
-    {"part": "màu vải", "level": "free"},
-    {"part": "chất liệu", "level": "free"}
+    {"part": "số thân áo (5 thân)", "level": "keep", "note": "Năm thân là dấu hiệu nhận diện của áo ngũ thân"},
+    {"part": "cổ áo", "level": "keep", "note": "Cổ đứng kiểu Việt; đổi cổ dễ thành cổ chéo của Hán phục"},
+    {"part": "độ dài tay", "level": "caution", "options": [
+        {"id": "giu-nguyen", "label": "Giữ nguyên"},
+        {"id": "tay-lung", "label": "Tay lửng", "prompt": "sleeves end between the elbow and the wrist (three-quarter length), still narrow", "sources": ["research-19-1"]}
+    ]},
+    {"part": "màu vải", "level": "free", "control": "colors"},
+    {"part": "chất liệu", "level": "free", "options": [
+        {"id": "giu-nguyen", "label": "Giữ nguyên"},
+        {"id": "gam", "label": "Gấm", "prompt": "the tunic is silk brocade with a subtle woven pattern in the same colour", "sources": ["ref-04", "baophapluat-ngu-than"]},
+        {"id": "the-sa", "label": "The, sa", "prompt": "the tunic is thin, lightly sheer silk gauze (the, sa)", "sources": ["ref-04", "baophapluat-ngu-than"]},
+        {"id": "lua", "label": "Lụa", "prompt": "the tunic is smooth plain silk with a soft sheen", "sources": ["ref-04"]}
+    ]}
   ],
   "colors": ["tim-hue", "xanh-thien-thanh", "do-son", "xanh-mint", "vang-nghe"],
   "default_colors": ["tim-hue", "xanh-thien-thanh"],
