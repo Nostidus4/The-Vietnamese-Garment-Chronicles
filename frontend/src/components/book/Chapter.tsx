@@ -581,28 +581,48 @@ export function FestivalBoard({ stop, chapterPlace }: { stop: Stop; chapterPlace
   const month = new Date().getMonth() + 1;
   const now = fests.find((f) => f.month === month);
   const next = [...fests].filter((f) => f.month).sort((a, b) => ((a.month! - month + 12) % 12) - ((b.month! - month + 12) % 12))[0];
-  const [sel, setSel] = useState<Festival | undefined>(now ?? next ?? fests[0]);
+  // always open on the first festival; the reader taps through the others (the board says how many are left)
+  const [sel, setSel] = useState<Festival | undefined>(fests[0]);
+  const [seen, setSeen] = useState<string[]>(fests[0] ? [fests[0].id] : []);
   if (!sel) return null;
+  const left = fests.length - seen.length;
   return (
     <div className="flex h-full flex-col">
       <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">LỄ HỘI QUANH NĂM Ở {chapterPlace.toUpperCase()}</p>
       <p className="font-hand m-0 mt-0.5 text-[0.92rem]" style={{ color: OLD }}>
         {now ? `Nếu con đến ${chapterPlace} tháng này: ${now.name}!` : `Tháng này chưa có hội lớn. Gần nhất là ${next?.name ?? fests[0].name}.`}
       </p>
-      <div className="mt-2 flex flex-wrap gap-1" role="tablist" aria-label="Các lễ hội">
-        {fests.map((f) => (
-          <button
-            key={f.id}
-            type="button"
-            role="tab"
-            aria-selected={f.id === sel.id}
-            onClick={() => setSel(f)}
-            className={`rounded-full border px-2 py-0.5 text-[0.7rem] ${f.id === sel.id ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 text-stone-700 hover:bg-amber-50"}`}
-          >
-            {f.name}
-          </button>
-        ))}
+      {/* every festival on one row, like tabs; a tick once the reader has looked at it */}
+      <div className="mt-2 grid gap-1" style={{ gridTemplateColumns: `repeat(${fests.length}, minmax(0, 1fr))` }} role="tablist" aria-label="Các lễ hội">
+        {fests.map((f) => {
+          const on = f.id === sel.id;
+          const done = seen.includes(f.id);
+          return (
+            <button
+              key={f.id}
+              type="button"
+              role="tab"
+              aria-selected={on}
+              title={f.name}
+              onClick={() => {
+                setSel(f);
+                setSeen((s) => (s.includes(f.id) ? s : [...s, f.id]));
+              }}
+              className={`relative flex min-h-[2.3rem] items-center justify-center rounded-md border px-1 py-0.5 text-center text-[0.62rem] leading-tight ${on ? "border-[#27354f] bg-[#27354f] text-amber-50" : done ? "border-stone-400 text-stone-600" : "border-[#B5452E] bg-amber-50/70 text-[#7a2e1f] hover:bg-amber-100"}`}
+            >
+              <span className="line-clamp-2">{f.name.replace(/\s*\(.*\)$/, "")}</span>
+              {done && !on && (
+                <span className="absolute -right-1 -top-1 rounded-full bg-[#5E7F4A] px-1 text-[0.5rem] text-white" aria-label="đã xem">
+                  ✓
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
+      <p className="m-0 mt-1 text-[0.66rem] text-[#8a4b2a]" aria-live="polite">
+        {left > 0 ? `👆 Bấm từng ô để xem lễ hội. Còn ${left} lễ hội con chưa xem.` : "✓ Con đã xem hết các lễ hội ở đây."}
+      </p>
       <AnimatePresence mode="wait">
         <motion.div
           key={sel.id}

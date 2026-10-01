@@ -445,7 +445,13 @@
           "place": "Sông Hương",
           "text": "Cả nhà ra sông, mỗi người một chiếc đèn, thả cho trôi cùng nhau.",
           "review": "Cả mặt sông lấm tấm đèn, trôi chầm chậm. Không ai nói to. Mình thả một cái, rồi đứng nhìn tới khi không phân biệt được đèn của mình nữa.",
-          "photo": null,
+          "photo": {
+            "image": "/regions/hue/photos/phat-dan.jpg",
+            "alt": "Những bông sen hồng khổng lồ thắp trên sông Hương mùa Phật đản",
+            "credit": "Tuổi Trẻ Online",
+            "license": "© Tuổi Trẻ",
+            "source_url": "https://tuoitre.vn"
+          },
           "community_review": false
         },
         {

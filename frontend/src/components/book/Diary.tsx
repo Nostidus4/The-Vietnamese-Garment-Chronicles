@@ -572,7 +572,10 @@ export function WearDiary({
     .find(Boolean);
   return (
     <Sheet page={page} data={data} keepsake={<KeepsakeArt kind="fabric" color={color} />}>
-      <div className="mt-3 flex items-center gap-3">
+      {/* the garment first, pinned at the left; its name, Bà's summary and "Khi mặc" run beside it and on below */}
+      <div className="mt-3 flow-root">
+      {g?.reference_image && <GarmentPlate id={g.id} name={g.name_vi} />}
+      <div className="flex items-center gap-3">
         <p className="font-display m-0 text-[1.15rem] leading-tight text-stone-800">
           {g?.name_vi ?? page.garment}
         </p>
@@ -597,8 +600,7 @@ export function WearDiary({
         </p>
       )}
       {g && (
-        <div className="mt-3 flex items-stretch gap-3">
-        <div className="min-w-0 flex-1 rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
+        <div className="mt-2 overflow-hidden rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
           <p className="font-hand m-0 text-[1rem]" style={{ color: OLD }}>
             Khi mặc, con nhớ:
           </p>
@@ -627,11 +629,10 @@ export function WearDiary({
             })}
           </ul>
         </div>
-        {g.reference_image && <GarmentPlate id={g.id} name={g.name_vi} />}
-        </div>
       )}
+      </div>
       {g && g.wearing_steps.length > 0 && (
-        <ol className="m-0 mt-2 list-none space-y-0.5 p-0 text-[0.76rem] leading-snug text-stone-700">
+        <ol className={`m-0 mt-2 list-none space-y-0.5 p-0 leading-snug text-stone-700 ${g.wearing_steps.length > 4 ? "text-[0.7rem]" : "text-[0.76rem]"}`}>
           {g.wearing_steps.map((st, k) => (
             <li key={st.title} className="flex gap-2">
               <span className="font-display shrink-0 text-[#8a4b2a]">{k + 1}.</span>
@@ -651,10 +652,10 @@ function GarmentPlate({ id, name }: { id: string; name: string }) {
   const [ok, setOk] = useState(true);
   if (!ok) return null;
   return (
-    // as tall as Bà's "Khi mặc" box next to it, never taller: the page keeps its room for the steps below
-    <figure className="m-0 flex w-[22%] shrink-0 rotate-[1.5deg] flex-col bg-white p-1 pb-0 shadow-[0_4px_10px_rgba(60,35,10,0.25)]">
+    // floated left of the name, summary and "Khi mặc": it fills the space beside them instead of adding height
+    <figure className="float-left m-0 mb-1 mr-3 w-[30%] -rotate-[1.5deg] bg-white p-1 pb-0 shadow-[0_4px_10px_rgba(60,35,10,0.25)]">
       {/* eslint-disable-next-line @next/next/no-img-element -- static export: plain image, sized by its frame */}
-      <img src={asset(`/garments/${id}.webp`)} alt={`Ảnh mẫu ${name}`} className="block min-h-0 w-full flex-1 basis-0 object-contain" loading="lazy" onError={() => setOk(false)} />
+      <img src={asset(`/garments/${id}.webp`)} alt={`Ảnh mẫu ${name}`} className="block aspect-[3/4] w-full object-contain" loading="lazy" onError={() => setOk(false)} />
       <figcaption className="py-0.5 text-center text-[0.5rem] leading-tight text-stone-500">ảnh mẫu · AI vẽ</figcaption>
     </figure>
   );

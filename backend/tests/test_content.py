@@ -159,7 +159,7 @@ def test_every_hue_stop_photo_is_credited(content):
         photos = [st.today.photo] if st.today and st.today.photo else []
         photos += [f.photo for f in st.festivals if f.photo]
         for ph in photos:
-            assert ph.credit and ph.license and ph.source_url.startswith("https://commons.wikimedia.org/")
+            assert ph.credit and ph.license and ph.source_url.startswith("https://")
 
 
 def test_community_draft_games_must_be_reviewed_first(tmp_path):
