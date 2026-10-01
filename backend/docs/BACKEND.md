@@ -69,7 +69,11 @@ Selection gửi lên Compass/try-on:
 
 Id không có trong lựa chọn của trang phục → HTTP 422 kèm câu báo lỗi tiếng Việt.
 
-**Try-on:** giới hạn `TRYON_PER_MINUTE` lần/phút mỗi máy (429 nếu vượt), ảnh ≤ `MAX_UPLOAD_MB`, chỉ nhận `image/*`. Ảnh người dùng chỉ nằm trong bộ nhớ; ảnh dựng từ avatar được cache để demo nhanh và tiết kiệm quota. Không có API key hoặc Gemini lỗi → trả `fallback_url` (`/media/fallback/<garment_id>.png`).
+**Try-on:** giới hạn `TRYON_PER_MINUTE` lần/phút mỗi IP, ảnh ≤ `MAX_UPLOAD_MB`, chỉ nhận `image/*`. Ảnh người dùng chỉ nằm trong bộ nhớ; ảnh dựng từ avatar được cache để demo nhanh và tiết kiệm quota. Không có API key hoặc Gemini lỗi → trả `fallback_url` (`/media/fallback/<garment_id>.png`).
+
+- **Vượt giới hạn:** 429 kèm header `Retry-After` (số giây tới khi có lượt lại). CORS đã `expose_headers` header này để frontend đếm ngược "Thử lại sau Xs".
+- **IP thật sau proxy:** uvicorn phải chạy với `--proxy-headers --forwarded-allow-ips "*"` (đã có trong `Dockerfile`), để `request.client.host` là IP trong `X-Forwarded-For` thay vì IP proxy của Render. Thiếu cờ này thì mọi người dùng chung một lượt. Vì tin mọi proxy, client có thể tự gửi `X-Forwarded-For` giả để lách giới hạn; chấp nhận được cho demo.
+- **Gemini lỗi tạm thời:** 429 hoặc 5xx được thử lại **một lần** sau 2 s, chỉ khi còn ≥ 15 s trong ngân sách `GEMINI_IMAGE_TIMEOUT_S` (60 s); lần thử lại chỉ được thời gian còn lại, nên tổng vẫn ≤ 60 s (frontend chờ tối đa 75 s). Lỗi khác (bị chặn an toàn, không có ảnh, thiếu key, timeout) không thử lại. Hết lượt → ảnh dự phòng. Log: `[tryon] retry in 2s after code=503, …` và `[tryon] falling back after code=…`.
 
 ## 4. Cách nhập dữ liệu (việc của đội sau này)
 
@@ -126,15 +130,16 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env                       # điền GEMINI_API_KEY
 uvicorn app.main:app --reload --reload-include '*.json' --port 8000
-pytest -q                                  # 38 test
+pytest -q
 ```
 
 `--reload-include '*.json'` giúp server tự nạp lại khi sửa dữ liệu lúc phát triển.
 
-**Render:** root `backend`, build `pip install -r requirements.txt`, start `uvicorn app.main:app --host 0.0.0.0 --port $PORT`, biến môi trường như `.env.example` (`CORS_ORIGINS` = URL Vercel). Dữ liệu nằm trong repo nên mỗi lần deploy là có dữ liệu mới nhất (ổ đĩa của Render free bị xóa khi deploy, vì vậy **không** lưu dữ liệu qua API).
+**Render:** root `backend`, build `pip install -r requirements.txt`, start `uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips "*"` (hoặc deploy bằng `Dockerfile`, đã có sẵn cờ), biến môi trường như `.env.example` (`CORS_ORIGINS` = URL Vercel). Dữ liệu nằm trong repo nên mỗi lần deploy là có dữ liệu mới nhất (ổ đĩa của Render free bị xóa khi deploy, vì vậy **không** lưu dữ liệu qua API).
 
 ## 6. Test bao phủ những gì
 
 - `test_compass.py`: đủ 4 trạng thái, ghi đè lời thoại, thay thế phụ kiện, selection không hợp lệ → lỗi.
 - `test_content.py`: dữ liệu thật không lỗi; gõ sai tên trường, id không tồn tại, tên file ≠ id, JSON hỏng đều bị bắt.
 - `test_api.py`: mọi endpoint; try-on ⛔ dựng phương án thay thế, từ chối file không phải ảnh, giới hạn tốc độ; Hỏi Tèo bỏ nguồn bịa; quiz không lộ đáp án. Gemini được giả lập, test không tốn quota.
+- `test_tryon_reliability.py`: retry Gemini (thành công lần 2, chỉ một lần, hết ngân sách thì thôi, lỗi không phải 429/5xx không retry), 429 có `Retry-After` đọc được qua CORS, giới hạn theo `X-Forwarded-For` với đúng cờ trong `Dockerfile`. Đồng hồ được giả lập nên không phải chờ thật.

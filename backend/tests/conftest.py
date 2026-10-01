@@ -14,7 +14,7 @@ class FakeGemini(gemini_client.GeminiClient):
     def available(self) -> bool:
         return True
 
-    def generate_image(self, prompt, images, aspect_ratio=None):
+    def generate_image(self, prompt, images, aspect_ratio=None, timeout_s=None):
         self.image_calls.append(prompt)
         return b"\x89PNG fake"
 
