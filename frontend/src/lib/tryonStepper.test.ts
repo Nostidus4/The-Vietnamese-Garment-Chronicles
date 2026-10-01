@@ -14,7 +14,7 @@ const trigger = (state: Trigger["state"], target: string): Trigger => ({
 });
 const verdict = (state: CompassResult["state"], triggers: Trigger[] = []) => ({ state, triggers });
 const fit = verdict("fit");
-const obi = verdict("distorted", [trigger("distorted", "obi"), trigger("flexible", "do-son")]);
+const obi = verdict("distorted", [trigger("distorted", "obi"), trigger("adapted", "do-son")]);
 
 const start = initStepper({ offline: false });
 const onStep = (s: StepperState["step"], patch: Partial<StepperState> = {}): StepperState => ({ ...start, step: s, reached: s, ...patch });
