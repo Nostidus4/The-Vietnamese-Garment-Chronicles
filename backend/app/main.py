@@ -1,3 +1,4 @@
+import logging
 import os
 from contextlib import asynccontextmanager
 
@@ -9,6 +10,9 @@ from .config import settings
 from .content import store
 from .routers import admin, content, events, extras, share, styling
 from .services.gemini_client import get_client
+
+# Gemini latency and failures show up as "[gemini] image ok 8.2s" in the server log
+logging.basicConfig(level=logging.INFO, format="[%(name)s] %(message)s")
 
 
 @asynccontextmanager

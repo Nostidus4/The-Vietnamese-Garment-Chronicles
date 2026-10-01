@@ -15,6 +15,8 @@ class Settings:
     admin_token: str | None = os.getenv("ADMIN_TOKEN") or None
     tryon_per_minute: int = int(os.getenv("TRYON_PER_MINUTE", "6"))
     max_upload_mb: int = int(os.getenv("MAX_UPLOAD_MB", "8"))
+    image_timeout_s: float = float(os.getenv("GEMINI_IMAGE_TIMEOUT_S", "60"))
+    text_timeout_s: float = float(os.getenv("GEMINI_TEXT_TIMEOUT_S", "20"))
 
 
 settings = Settings()

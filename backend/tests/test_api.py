@@ -50,6 +50,7 @@ def test_tryon_distorted_look_renders_alternative(client, fake_gemini):
     assert r["image_base64"]
     assert "Japanese obi" in fake_gemini.image_calls[0]  # still listed under MUST AVOID
     assert "Accessories: none" in fake_gemini.image_calls[0]
+    assert "Chinese characters" in fake_gemini.image_calls[0]  # backgrounds like Tết pagodas tend to add couplets
 
 
 def test_tryon_rejects_non_image(client, fake_gemini):

@@ -15,7 +15,7 @@ MUST KEEP: {must_keep}.
 Colors: main {color_main}, accent {color_accent}.
 Accessories: {accessories}.
 Styling vibe: {vibe}. Background: {background}.
-MUST AVOID: {must_avoid}; Chinese hanfu collar, Korean jeogori ribbon, Japanese obi, any non-Vietnamese traditional element.
+MUST AVOID: {must_avoid}; Chinese hanfu collar, Korean jeogori ribbon, Japanese obi, any non-Vietnamese traditional element; any visible text, letters or Chinese characters (signs, banners, couplets, lanterns).
 Keep the person's face, body shape and skin tone unchanged. Full body, natural light, photorealistic."""
 
 TRYON_TEMPLATE_NO_REF = TRYON_TEMPLATE.replace(" in IMAGE 2 (reference photo of the correct garment)", " described below")

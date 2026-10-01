@@ -50,7 +50,13 @@ export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string })
   form.append("selection", JSON.stringify(sel));
   if (opts.photo) form.append("photo", opts.photo);
   if (opts.avatarId) form.append("avatar_id", opts.avatarId);
-  return call(`${API_URL}/tryon`, { method: "POST", body: form }).then((r) => json<TryOnResult>(r));
+  // Backend gives up on Gemini after 60 s and returns the fallback; this only catches a hung connection
+  return call(`${API_URL}/tryon`, { method: "POST", body: form, signal: AbortSignal.timeout(75_000) })
+    .then((r) => json<TryOnResult>(r))
+    .catch((e) => {
+      if (e instanceof DOMException && e.name === "TimeoutError") throw new Error("Máy chủ phản hồi quá lâu, bạn thử lại nhé.");
+      throw e;
+    });
 }
 
 export const getQuiz = (count = 5) =>

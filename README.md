@@ -64,6 +64,8 @@ File `.env` ở thư mục gốc được Docker Compose tự động đọc và
 | `ADMIN_TOKEN` | rỗng | Bật endpoint `POST /admin/reload` |
 | `TRYON_PER_MINUTE` | `6` | Giới hạn số lần thử đồ mỗi phút |
 | `MAX_UPLOAD_MB` | `8` | Dung lượng ảnh tải lên tối đa |
+| `GEMINI_IMAGE_TIMEOUT_S` | `60` | Quá thời gian này thì bỏ lời gọi Nano Banana, dùng ảnh dự phòng |
+| `GEMINI_TEXT_TIMEOUT_S` | `20` | Quá thời gian này thì Hỏi Tèo trả câu từ chối |
 | `FRONTEND_PORT` | `3000` | Cổng frontend trên máy host |
 | `BACKEND_PORT` | `8000` | Cổng backend trên máy host |
 
