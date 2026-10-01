@@ -27,3 +27,4 @@ frontend/public/bootstrap.json
 
 # original AI art (3 MB PNGs, kept locally as proof); the site uses the compressed .jpg next to it
 frontend/public/regions/*/diary/
+frontend/public/regions/*/photos/*.png
