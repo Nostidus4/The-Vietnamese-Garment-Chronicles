@@ -26,15 +26,16 @@ content/  ← ĐỘI CHỈ SỬA Ở ĐÂY
 |---|---|---|---|
 | Phụ kiện `kind: traditional-foreign` | fusion | ⛔ distorted | – |
 | Phụ kiện `kind: restricted` hoặc màu `restricted: true` | restricted | ⛔ distorted | – |
-| Đổi zone `level: keep` | core | ⛔ distorted | – |
-| Đổi zone `level: caution` | caution | ⚠️ review | Inspired |
+| Chọn option ở zone `level: caution` | caution | ⚠️ review | Inspired |
 | Phụ kiện/trang phục không có dịp đang chọn trong `occasions` | occasion | ⚠️ review | Inspired |
-| Phụ kiện `kind: modern`, màu khác màu mặc định, đổi zone `free` | flexible | ✨ adapted | Adapted |
+| Phụ kiện `kind: modern`, màu khác màu mặc định, chọn option ở zone `free` | flexible | ✨ adapted | Adapted |
 | Không có gì ở trên | – | ✅ fit | Authentic |
 
 Nhiều rule cùng kích hoạt → trạng thái nặng nhất thắng, và được xếp đầu `triggers`. Lời thoại lấy từ `rules.json`; phụ kiện có `message` riêng sẽ ghi đè. Phụ kiện bị từ chối có `alternative` thì được thay bằng món đó.
 
 → **Thêm phụ kiện nước ngoài mới chỉ cần đặt `kind: "traditional-foreign"`**, không cần viết rule.
+
+**Zone và option (#40):** zone `keep` không đổi được (frontend hiện 🔒 kèm `note`). Zone `caution`/`free` có 2–4 `options`, option đầu là `giu-nguyen`; mỗi option khác có `label` (chip), `prompt` (tiếng Anh, đưa vào prompt Nano Banana thành dòng riêng) và `sources`, chỉ lấy biến thể có trong nguồn. Zone đã có control khác thì ghi `"control": "colors"` và không có option. `change` trong selection là id option; id lạ, hoặc đổi zone keep/zone có control → 422. Chọn `giu-nguyen` coi như không đổi.
 
 ## 3. API
 
@@ -64,7 +65,7 @@ Selection gửi lên Compass/try-on:
 ```json
 {"garment_id": "ao-ngu-than", "occasion_id": "di-tich", "vibe": "modern",
  "colors": ["tim-hue"], "accessories": ["sneakers-trang"],
- "modifications": [{"zone": "chất liệu", "change": "linen"}]}
+ "modifications": [{"zone": "chất liệu", "change": "lua"}]}
 ```
 
 Id không có trong lựa chọn của trang phục → HTTP 422 kèm câu báo lỗi tiếng Việt.
