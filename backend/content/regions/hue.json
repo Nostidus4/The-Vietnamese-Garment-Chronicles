@@ -56,19 +56,19 @@
     ],
     "frames": [
       {
-        "image": null,
+        "image": "/diary/hue-1.png",
         "caption": "Sông Hương một chiều",
         "alt": "Sông Hương buổi chiều với con đò nhỏ và cây cầu thép nhiều nhịp",
         "prompt": "the Perfume River in Huế at golden hour, a small wooden sampan, a long steel truss bridge with repeated arches in the distance, soft purple-blue water"
       },
       {
-        "image": null,
+        "image": "/diary/hue-2.png",
         "caption": "Hội An lên đèn",
         "alt": "Phố cổ Hội An với tường vàng và đèn lồng",
         "prompt": "an old street in Hội An at dusk, ochre-yellow walls, wooden shutters, round silk lanterns glowing, bougainvillea, quiet river at the end of the street"
       },
       {
-        "image": null,
+        "image": "/diary/hue-3.png",
         "caption": "Tháp gạch đỏ giữa nắng",
         "alt": "Cụm tháp Chăm bằng gạch đỏ giữa rừng cây",
         "no_people": true,

@@ -62,19 +62,19 @@
     ],
     "frames": [
       {
-        "image": null,
+        "image": "/diary/nam-bo-1.png",
         "caption": "Chợ nổi lúc bình minh",
         "alt": "Chợ nổi trên sông với những ghe chở trái cây",
         "prompt": "a floating market on the Mekong at sunrise, wooden boats loaded with fruit, a tall bamboo pole on a boat with fruit hanging from it, calm brown river"
       },
       {
-        "image": null,
+        "image": "/diary/nam-bo-2.png",
         "caption": "Rừng tràm mùa nước nổi",
         "alt": "Chiếc xuồng nhỏ len giữa rừng tràm ngập nước",
         "prompt": "a small wooden canoe gliding through a flooded cajeput forest, green duckweed carpet on the water, sunlight through the trees"
       },
       {
-        "image": null,
+        "image": "/diary/nam-bo-3.png",
         "caption": "Mũi đất cuối trời",
         "alt": "Rừng đước và bãi bồi nơi mũi Cà Mau",
         "no_people": true,

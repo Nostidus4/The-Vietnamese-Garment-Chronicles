@@ -47,21 +47,21 @@
     ],
     "frames": [
       {
-        "image": null,
+        "image": "/diary/tay-bac-1.png",
         "caption": "Mùa lúa trên núi",
         "alt": "Ruộng bậc thang vàng óng trên sườn núi dốc",
         "no_people": true,
         "prompt": "golden terraced rice fields on steep mountains at harvest time, mist in the valley, no people, no figures"
       },
       {
-        "image": null,
+        "image": "/diary/tay-bac-2.png",
         "caption": "Mây trên đỉnh cao",
         "alt": "Biển mây quanh đỉnh núi cao",
         "no_people": true,
         "prompt": "a sea of clouds around the highest mountain peak of northern Vietnam at sunrise, rocky summit, no people, no figures"
       },
       {
-        "image": null,
+        "image": "/diary/tay-bac-3.png",
         "caption": "Đồi chè cao nguyên",
         "alt": "Đồi chè xanh uốn lượn trên cao nguyên",
         "no_people": true,

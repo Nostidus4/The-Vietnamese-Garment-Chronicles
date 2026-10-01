@@ -48,21 +48,21 @@
     ],
     "frames": [
       {
-        "image": null,
+        "image": "/diary/tay-nguyen-1.png",
         "caption": "Thác giữa đại ngàn",
         "alt": "Thác nước lớn đổ xuống giữa rừng xanh",
         "no_people": true,
         "prompt": "a wide waterfall pouring over black basalt rock in a green highland forest, mist and rainbow, no people, no figures"
       },
       {
-        "image": null,
+        "image": "/diary/tay-nguyen-2.png",
         "caption": "Đồi cà phê mùa hoa",
         "alt": "Đồi cà phê nở hoa trắng trên đất đỏ",
         "no_people": true,
         "prompt": "coffee plantations in bloom with white flowers on red basalt soil, rolling hills, blue sky, no people, no figures"
       },
       {
-        "image": null,
+        "image": "/diary/tay-nguyen-3.png",
         "caption": "Rừng thông cao nguyên",
         "alt": "Rừng thông và hồ nước trên cao nguyên sương mù",
         "no_people": true,
