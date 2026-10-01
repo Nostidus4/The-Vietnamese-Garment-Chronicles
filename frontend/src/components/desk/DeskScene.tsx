@@ -175,7 +175,7 @@ export function DeskScene({
 
   // the first spread under the cover is Bà's letter (left, inside the cover) and the contents (right); phones show one
   // page, so the letter sits right under the cover. Same components as the flipbook, so the hand-over is seamless.
-  const underPage = size.portrait ? <LetterPage /> : <TocPage data={data} onRegion={() => {}} />;
+  const underPage = size.portrait ? <LetterPage /> : <TocPage data={data} onRegion={() => {}} onStart={() => {}} suggest="Huế" />;
 
   return (
     <main className="desk fixed inset-0 overflow-hidden">

@@ -51,6 +51,7 @@ export interface Garment {
   default_colors: string[];
   accessories: string[];
   hot_weather_tip: string | null;
+  reference_image: string | null; // under content/media; the site shows its copy at /garments/<id>.webp
   wearing_steps: { title: string; detail: string; image: string | null }[];
   sources: string[];
   verified: boolean;

@@ -29,6 +29,9 @@ import { LetterPage, StartPage, TocPage } from "./FrontMatter";
 import { GlossaryProvider } from "./Glossary";
 import { Page } from "./Page";
 import { CHAPTERS, VietnamMap } from "./VietnamMap";
+import { TeoGuide } from "./TeoGuide";
+import { ThreadNav, type Step } from "./ThreadNav";
+import { useStamps } from "@/lib/stamps";
 
 // Page layout: 0 Bà's letter · 1 table of contents · 2 map · 3 right of the map (welcome / region / chapter title)
 // · 4… the chapter. page-flip keeps the DOM nodes it was given, so the page count is fixed at the longest chapter.
@@ -45,23 +48,27 @@ const reachedOf: Record<string, number> = {};
 
 export type Resume = { region: string; page: "own" | "wear" } | null;
 
-type Built = { tabs: Tab[]; pages: { node: ReactNode; still?: boolean }[] };
+type Built = { tabs: Tab[]; steps: Step[]; pages: { node: ReactNode; still?: boolean }[] };
 
 /** The pages of a region's chapter, from page FIRST on. Trip chapters: each stop is a spread (Bà | Hôm nay). */
 function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) => void }): Built {
   const j = region.journey!;
   const tabs: Tab[] = [];
+  const steps: Step[] = []; // the knots on Bà's thread under the book (trip chapters)
   const pages: Built["pages"] = [];
   const at = () => FIRST + pages.length;
   const chapterPlace = place(region);
   if (j.stops.length) {
     tabs.push({ label: "Lộ trình", page: MAP + 1 });
+    steps.push({ label: "Lộ trình", page: MAP + 1, kind: "title" });
     j.stops.forEach((st, i) => {
       if (i === 0) tabs.push({ label: `Đi ${chapterPlace}`, page: at() });
       if (st.festivals.length) tabs.push({ label: "Lễ hội", page: at() });
+      const game = !!st.game && (hasChapter(region) || !st.game.community_review || DRAFT);
+      steps.push({ label: st.place, page: at(), kind: "stop", game: game ? `${region.id}:${st.id}` : undefined });
       pages.push({ node: <StopDiary stop={st} index={i} data={data} chapterPlace={chapterPlace} regionId={region.id} />, still: !!st.hat });
       pages.push(
-        st.game && (hasChapter(region) || !st.game.community_review || DRAFT)
+        game
           ? { node: <StopGame stop={st} regionId={region.id} data={data} />, still: true }
           : st.today
           ? { node: <StopToday stop={st} /> }
@@ -80,21 +87,27 @@ function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) =
     }
     if (j.festivals) pages.push({ node: <FestivalDiary region={region} data={data} />, still: true });
   }
-  if (j.wear.length) tabs.push({ label: "Mặc", page: at() });
+  if (j.wear.length) {
+    tabs.push({ label: "Mặc", page: at() });
+    steps.push({ label: "Cách mặc", page: at(), kind: "wear" });
+  }
   j.wear.forEach((_, i) => pages.push({ node: <WearDiary region={region} index={i} data={data} onTry={h.tryOn} /> }));
   if (j.check && (region.status === "open" || hasChapter(region))) {
     tabs.push({ label: "Bà hỏi", page: at() });
+    steps.push({ label: "Bà hỏi con", page: at(), kind: "ask" });
     pages.push({ node: <AskDiary key={`ask-${region.id}`} region={region} />, still: true });
   }
   tabs.push({ label: region.status === "open" || hasChapter(region) ? "Trang của con" : "Trang để trống", page: at() });
+  steps.push({ label: "Trang của con", page: at(), kind: "own" });
   pages.push({ node: <OwnDiary key={region.id} region={region} data={data} onTry={h.tryOn} />, still: true });
   if (j.letter) {
     if (at() % 2) pages.push({ node: <BlankPage /> }); // the envelope and "Hết chương" face each other as one spread
     tabs.push({ label: "Phong thư", page: at() });
+    steps.push({ label: "Thư của Bà", page: at(), kind: "letter" });
     pages.push({ node: <EnvelopeLetter region={region} />, still: true });
     pages.push({ node: <ChapterEnd region={region} />, still: true });
   }
-  return { tabs, pages };
+  return { tabs, steps: j.stops.length ? steps : [], pages };
 }
 
 /**
@@ -149,8 +162,9 @@ export default function Flipbook({
 
   const tryOn = (garment: string) => region && router.push(`/chapter/${region.id}?garment=${garment}`);
   const built: Built =
-    region && j && reading ? buildChapter(region, data, { tryOn }) : { tabs: [], pages: [] };
-  const { tabs, pages: content } = built;
+    region && j && reading ? buildChapter(region, data, { tryOn }) : { tabs: [], steps: [], pages: [] };
+  const { tabs, steps, pages: content } = built;
+  const { game: won } = useStamps();
   const used = FIRST + content.length;
 
   // enough pages for the longest chapter (page-flip cannot add pages later)
@@ -363,7 +377,7 @@ export default function Flipbook({
             <LetterPage />
           </Page>
           <Page className="flex flex-col p-[8%]">
-            <TocPage data={data} onRegion={openRegion} />
+            <TocPage data={data} onRegion={openRegion} onStart={() => openRegion(SUGGEST.id)} suggest={SUGGEST.label} />
           </Page>
 
           <Page className="relative p-4">
@@ -433,27 +447,56 @@ export default function Flipbook({
 
         {focus && reading && tabs.length > 0 && <Bookmarks tabs={tabs} current={page} onJump={turnTo} portrait={portrait} />}
 
-        {/* page turning under the book: "‹" steps back out of a chapter, a region, then closes the notebook */}
+        {/* under the book: Bà's thread through a trip chapter; elsewhere "‹" steps back out and one bright button leads on */}
         <div className="absolute left-0 right-0 top-full mt-5 flex items-center justify-center gap-6">
-          <button
-            type="button"
-            className="page-turn"
-            onClick={prev}
-            aria-label={page === 0 ? "Gấp sổ lại" : focus && page === MAP ? (reading ? `Về trang ${region?.name}` : "Về bản đồ Việt Nam") : "Trang trước"}
-          >
-            <span aria-hidden>‹</span>{" "}
-            {page === 0 ? "Gấp sổ" : focus && page === MAP ? (reading ? region?.name : "Bản đồ Việt Nam") : "Trang trước"}
-          </button>
-          {!focus && page >= MAP ? (
-            <button type="button" className="page-turn" onClick={next} aria-label={`Bắt đầu từ ${SUGGEST.label}`}>
-              Bắt đầu từ {SUGGEST.label} <span aria-hidden>›</span>
-            </button>
+          {focus && reading && steps.length > 0 && page >= MAP ? (
+            <ThreadNav
+              steps={steps}
+              page={page}
+              portrait={portrait}
+              won={won}
+              atEnd={atEnd}
+              prevLabel={page === MAP ? region?.name : undefined}
+              onPrev={prev}
+              onNext={next}
+              onJump={turnTo}
+            />
           ) : (
-            <button type="button" className="page-turn" onClick={next} disabled={atEnd} aria-label="Trang sau">
-              Trang sau <span aria-hidden>›</span>
-            </button>
+            <>
+              <button
+                type="button"
+                className="page-turn"
+                onClick={prev}
+                aria-label={page === 0 ? "Gấp sổ lại" : focus && page === MAP ? (reading ? `Về trang ${region?.name}` : "Về bản đồ Việt Nam") : "Trang trước"}
+              >
+                <span aria-hidden>‹</span>{" "}
+                {page === 0 ? "Gấp sổ" : focus && page === MAP ? (reading ? region?.name : "Bản đồ Việt Nam") : "Trang trước"}
+              </button>
+              {!focus && page >= MAP ? (
+                <button type="button" data-guide="next" className="page-turn page-turn-main" onClick={next} aria-label={`Bắt đầu từ ${SUGGEST.label}`}>
+                  Bắt đầu từ {SUGGEST.label} <span aria-hidden>›</span>
+                </button>
+              ) : focus && !reading && region && hasChapter(region) && (page === MAP || (portrait && page === MAP + 1)) ? (
+                <button type="button" data-guide="next" className="page-turn page-turn-main" onClick={() => setReading(true)}>
+                  Đọc chương {place(region)} <span aria-hidden>›</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  // on the contents spread the main button is "Bắt đầu hành trình" on the page itself
+                  data-guide={page < MAP && !(portrait && page === 0) ? undefined : "next"}
+                  className={`page-turn ${portrait && page === 0 ? "page-turn-main" : ""}`}
+                  onClick={next}
+                  disabled={atEnd}
+                  aria-label={page < MAP ? (portrait && page === 0 ? "Mục lục" : "Mở bản đồ") : "Trang sau"}
+                >
+                  {page < MAP ? (portrait && page === 0 ? "Mục lục" : "Mở bản đồ") : "Trang sau"} <span aria-hidden>›</span>
+                </button>
+              )}
+            </>
           )}
         </div>
+        {active && <TeoGuide />}
       </div>
     </GlossaryProvider>
   );

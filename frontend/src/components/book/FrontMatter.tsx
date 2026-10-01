@@ -59,7 +59,7 @@ export function LetterPage() {
 }
 
 /** Regions, their chapters and the stamps the reader has collected. Clicking one opens it on the map. */
-export function TocPage({ data, onRegion }: { data: Bootstrap; onRegion: (id: string) => void }) {
+export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap; onRegion: (id: string) => void; onStart: () => void; suggest: string }) {
   const { arrived, understood } = useStamps();
   const book = useDuKy();
   const stampsOf = (id: string) =>
@@ -110,9 +110,15 @@ export function TocPage({ data, onRegion }: { data: Bootstrap; onRegion: (id: st
           );
         })}
       </ol>
-      <p className="font-hand m-0 mt-auto text-[0.95rem]" style={{ color: OLD }}>
-        Con đã sưu tầm {got}/{total} con tem. Lật trang để mở bản đồ. — Bà
-      </p>
+      {/* the one way in for a first-time reader; the list above is for coming back */}
+      <div className="mt-auto flex flex-col items-start gap-2">
+        <button type="button" data-guide="next" onClick={onStart} className="page-turn page-turn-main font-display !text-[1rem]">
+          Bắt đầu hành trình: {suggest} →
+        </button>
+        <p className="font-hand m-0 text-[0.95rem]" style={{ color: OLD }}>
+          {got ? `Con đã sưu tầm ${got}/${total} con tem.` : "Hoặc bấm một miền ở trên, hay lật trang để mở bản đồ."} — Bà
+        </p>
+      </div>
     </div>
   );
 }

@@ -597,7 +597,8 @@ export function WearDiary({
         </p>
       )}
       {g && (
-        <div className="mt-3 rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
+        <div className="mt-3 flex items-stretch gap-3">
+        <div className="min-w-0 flex-1 rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
           <p className="font-hand m-0 text-[1rem]" style={{ color: OLD }}>
             Khi mặc, con nhớ:
           </p>
@@ -626,6 +627,8 @@ export function WearDiary({
             })}
           </ul>
         </div>
+        {g.reference_image && <GarmentPlate id={g.id} name={g.name_vi} />}
+        </div>
       )}
       {g && g.wearing_steps.length > 0 && (
         <ol className="m-0 mt-2 list-none space-y-0.5 p-0 text-[0.76rem] leading-snug text-stone-700">
@@ -640,6 +643,20 @@ export function WearDiary({
         </ol>
       )}
     </Sheet>
+  );
+}
+
+/** The garment as a pattern plate pinned beside Bà's notes: the same reference picture the try-on draws from. */
+function GarmentPlate({ id, name }: { id: string; name: string }) {
+  const [ok, setOk] = useState(true);
+  if (!ok) return null;
+  return (
+    // as tall as Bà's "Khi mặc" box next to it, never taller: the page keeps its room for the steps below
+    <figure className="m-0 flex w-[22%] shrink-0 rotate-[1.5deg] flex-col bg-white p-1 pb-0 shadow-[0_4px_10px_rgba(60,35,10,0.25)]">
+      {/* eslint-disable-next-line @next/next/no-img-element -- static export: plain image, sized by its frame */}
+      <img src={asset(`/garments/${id}.webp`)} alt={`Ảnh mẫu ${name}`} className="block min-h-0 w-full flex-1 basis-0 object-contain" loading="lazy" onError={() => setOk(false)} />
+      <figcaption className="py-0.5 text-center text-[0.5rem] leading-tight text-stone-500">ảnh mẫu · AI vẽ</figcaption>
+    </figure>
   );
 }
 
@@ -934,6 +951,7 @@ export function Bookmarks({
       }
       role="tablist"
       aria-label="Đánh dấu trang"
+      data-guide="tabs"
     >
       {tabs.map((t, i) => {
         const on = current === t.page || current + 1 === t.page;

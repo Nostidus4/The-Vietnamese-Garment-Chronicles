@@ -465,6 +465,33 @@ body {
   }
   .page-turn:hover:not(:disabled) { background: rgba(20, 12, 7, 0.62); transform: translateY(-1px); }
   .page-turn:disabled { display: none; }
+  /* the one button that leads on: turmeric, so the eye finds it first */
+  .page-turn-main {
+    color: #2b2118;
+    background: #e3b04b;
+    border-color: #f3d58e;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    animation: lead-on 2.4s ease-in-out 1.2s 2;
+  }
+  .page-turn-main:hover:not(:disabled) { background: #edc062; }
+  @keyframes lead-on { 0%, 100% { box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 0 0 rgba(227, 176, 75, 0.55); } 50% { box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 0 9px rgba(227, 176, 75, 0); } }
+  /* Bà's red thread under a trip chapter: one knot per place */
+  .thread { display: flex; flex-direction: column; align-items: center; padding: 0.3rem 0.8rem 0.25rem; border-radius: 999px; background: rgba(20, 12, 7, 0.42); backdrop-filter: blur(3px); }
+  .thread-line { display: block; width: clamp(0.6rem, 2.2vw, 1.9rem); height: 2px; background: repeating-linear-gradient(90deg, rgba(243, 234, 215, 0.45) 0 4px, transparent 4px 7px); }
+  .thread-line-done { background: #c0392b; }
+  .thread-knot { display: grid; place-items: center; width: 1.45rem; height: 1.45rem; border-radius: 999px; font-size: 0.7rem; line-height: 1; color: #f3ead7; border: 1.5px solid rgba(243, 234, 215, 0.6); background: transparent; transition: transform 160ms ease, background 160ms ease; }
+  .thread-knot:hover { transform: scale(1.15); }
+  .thread-knot:focus-visible { outline: 2px solid #e3b04b; outline-offset: 2px; }
+  .thread-knot-small { width: 1.15rem; height: 1.15rem; font-size: 0.62rem; }
+  .thread-knot-done { background: #c0392b; border-color: #c0392b; }
+  .thread-knot-here { background: #e3b04b; border-color: #f3d58e; color: #2b2118; transform: scale(1.18); box-shadow: 0 0 0 3px rgba(227, 176, 75, 0.3); }
+  /* phones: the knots shrink to beads, only the one being read keeps its number */
+  .thread-compact { padding-inline: 0.55rem; }
+  .thread-compact .thread-line { width: 0.4rem; }
+  .thread-compact .thread-knot { width: 0.78rem; height: 0.78rem; font-size: 0; border-width: 1.5px; }
+  .thread-compact .thread-knot-here { width: 1.2rem; height: 1.2rem; font-size: 0.6rem; transform: none; }
+  .thread-caption { margin: 0.15rem 0 0; font-family: var(--font-hand), cursive; font-size: 0.85rem; color: #f3ead7; white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) { .page-turn-main { animation: none; } }
   .cover-sheen {
     position: absolute;
     inset: 0;

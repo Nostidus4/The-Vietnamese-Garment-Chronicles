@@ -102,7 +102,10 @@ export function RegionIntro({
           <span className="text-sm transition-transform group-hover:translate-x-1">Đọc →</span>
         </button>
       ))}
-      <ul className="m-0 mt-2 grid list-none grid-cols-2 gap-x-3 gap-y-0.5 p-0">
+      {waiting.length > 0 && (
+        <p className="m-0 mt-3 text-[0.55rem] tracking-[0.22em] text-stone-400">CHƯA CÓ CHƯƠNG · CHỜ NGƯỜI Ở ĐÓ VIẾT</p>
+      )}
+      <ul className="m-0 mt-1 grid list-none grid-cols-2 gap-x-3 gap-y-0.5 p-0 opacity-70">
         {waiting.map((c) => (
           <li key={c.province}>
             <a
@@ -111,7 +114,7 @@ export function RegionIntro({
               rel="noreferrer"
               onMouseEnter={() => onProvinceHover(c.province)}
               onMouseLeave={() => onProvinceHover(null)}
-              className="flex items-baseline gap-1.5 text-[0.78rem] text-stone-500 hover:text-[#8a4b2a]"
+              className="flex items-baseline gap-1.5 text-[0.74rem] text-stone-400 hover:text-[#8a4b2a]"
               title="Chương này đang chờ người viết: bấm để xem cách cùng viết"
             >
               <span className="text-[0.6rem]" aria-hidden>
