@@ -5,6 +5,7 @@
 import { useEffect, useState } from "react";
 import { compareLooks } from "@/lib/api";
 import type { Bootstrap, CompassResult, CompassState, Selection } from "@/lib/types";
+import { zoneChanges } from "@/lib/zones";
 
 const STATE: Record<CompassState, { icon: string; name: string; tone: string }> = {
   fit: { icon: "✅", name: "Phù hợp", tone: "border-emerald-400" },
@@ -20,6 +21,7 @@ function describe(data: Bootstrap, s: Selection): string[] {
     data.occasions.find((o) => o.id === s.occasion_id)?.name ?? s.occasion_id,
     s.colors.map((c) => data.colors[c]?.name ?? c).join(" + ") || "màu mặc định",
     s.accessories.map((a) => data.accessories[a]?.name_vi ?? a).join(", ") || "không phụ kiện",
+    ...zoneChanges(data.garments.find((g) => g.id === s.garment_id) ?? { zones: [] }, s),
   ];
 }
 
