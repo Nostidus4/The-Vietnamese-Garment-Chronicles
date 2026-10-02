@@ -163,8 +163,9 @@ export function ChapterView({
         </p>
       )}
       <div className="space-y-4">
-        <Link href="/" className="text-sm underline">
-          ← Về bản đồ
+        {/* back to the Mặc page this try-on was opened from (DeskScene reopens the book there); Link adds the base path */}
+        <Link href={`/?region=${regionId}&page=wear`} className="text-sm underline">
+          ← Về trang Mặc
         </Link>
         <h1 className="font-hand text-4xl">{region.name}</h1>
         <WeatherNote regionId={regionId} garmentId={garment.id} place={region.name.split("/")[0].trim()} />
