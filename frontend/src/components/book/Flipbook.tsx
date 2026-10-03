@@ -250,20 +250,8 @@ export default function Flipbook({
     if (!atEnd) bookRef.current?.pageFlip()?.flipNext("bottom");
   };
 
-  // "Tôi sắp tham gia sự kiện": open Huế's chapter and turn straight to the áo dài page
-  const toEvent = () => {
-    const hue = regions.get("hue");
-    const idx = hue?.journey?.wear.findIndex((w) => w.garment === "ao-dai") ?? -1;
-    if (!hue?.journey || idx < 0) return router.push("/chapter/hue?entry=event");
-    const wearAt = buildChapter(hue, data, { tryOn: () => {} }).tabs.find((t) => t.label === "Mặc")!.page + idx;
-    const open = () => {
-      setPreview(null);
-      setFocus("hue");
-      setReading(true);
-      setTimeout(() => turnTo(wearAt), 1100);
-    };
-    return page === MAP ? open() : jump(MAP, open);
-  };
+  // "Tôi sắp tham gia sự kiện": straight into Bà's fitting room, which first asks where the reader is going
+  const toEvent = () => router.push(`/chapter/${SUGGEST.id}?entry=event`);
 
   // back from the try-on: open the region on its Mặc page or on "Trang của con"
   const resumed = useRef(false);

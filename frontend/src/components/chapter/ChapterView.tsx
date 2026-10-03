@@ -1,31 +1,37 @@
 "use client";
 
+// Bà's fitting room (/chapter/<region>): a virtual try-on. The mirror in the middle shows the look at once (a preview,
+// then the AI picture), the rack on the left holds the garments, the drawers on the right hold the choices, and the
+// Compass hangs on the mirror as a tag. The three steps of #39 (Chọn đồ → Compass → Thử) still drive it, so the
+// browser's back button and the ⛔ rules work as before: one "Mặc lên người" button walks them for the reader.
+
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { HAS_API, runCompass, serverReady } from "@/lib/api";
+import { asset } from "@/lib/base";
 import { track } from "@/lib/track";
-import { initStepper, readStep, stepper, withStep, type Step, type StepperAction } from "@/lib/tryonStepper";
-import type { CompassResult, Selection } from "@/lib/types";
+import { initStepper, readStep, stepper, withStep, type Step, type StepperAction, type StepperState } from "@/lib/tryonStepper";
+import type { CompassResult, Garment, Selection } from "@/lib/types";
 import { useBootstrap } from "@/lib/useBootstrap";
-import { AskTeo } from "./AskTeo";
-import { Builder } from "./Builder";
-import { ChapterQuiz } from "./ChapterQuiz";
 import { ComparePanel } from "./ComparePanel";
-import { STATE } from "./CompassPanel";
-import { CompassStep, MAIN_BUTTON } from "./CompassStep";
-import { StoryCard } from "./StoryCard";
-import { ShopList } from "./ShopList";
-import { TryOnPanel } from "./TryOnPanel";
+import { CompassPanel } from "./CompassPanel";
+import { Fork } from "./CompassStep";
 import { WeatherNote } from "./WeatherNote";
+import { Mirror } from "../fitting/Mirror";
+import { AboutSheet, Drawers, EventPicker, GarmentRack, type SheetTab } from "../fitting/Parts";
+import { useTryOn } from "../fitting/useTryOn";
 
-export function ChapterView({
-  regionId,
-  garmentId,
-}: {
-  regionId: string;
-  garmentId?: string;
-}) {
+const lookOf = (g: Garment, occasion?: string): Selection => ({
+  garment_id: g.id,
+  occasion_id: occasion && g.occasions.includes(occasion) ? occasion : g.occasions[0],
+  vibe: "traditional",
+  colors: [],
+  accessories: [],
+  modifications: [],
+});
+
+export function ChapterView({ regionId, garmentId }: { regionId: string; garmentId?: string }) {
   const { data, error } = useBootstrap();
   const [sel, setSel] = useState<Selection | null>(null);
   // the verdict is kept with the look it scored, so a stale one never opens step 3 for a changed look
@@ -33,32 +39,35 @@ export function ChapterView({
   const [rescore, setRescore] = useState(0);
   const [steps, setSteps] = useState(() => initStepper({ offline: !HAS_API }));
   const [comparing, setComparing] = useState(false);
-  const stepsTop = useRef<HTMLDivElement>(null);
+  const [why, setWhy] = useState(false);
+  const [sheet, setSheet] = useState<SheetTab | null>(null);
+  const [toast, setToast] = useState(false);
   const params = useSearchParams();
+  const [event, setEvent] = useState<{ asked: boolean; occasion: string | null }>(() => ({ asked: params.get("entry") !== "event", occasion: null }));
+  const tryon = useTryOn({ data: data ?? EMPTY });
 
-  // wake a sleeping server while the viewer is still choosing, not after they press "Thử"
+  // wake a sleeping server while the viewer is still choosing, not after they press "Mặc lên người"
   useEffect(() => {
     void serverReady();
   }, []);
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(false), 9000);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   const region = data?.regions.find((r) => r.id === regionId);
-  const garments = data?.garments.filter((g) => g.region === regionId) ?? [];
+  // the rack: this region's garments first, then the other open regions' (try-on stays closed where the community
+  // has not read the chapter yet, as on the Mặc pages of the book)
+  const open = new Set(data?.regions.filter((r) => r.status === "open").map((r) => r.id) ?? []);
+  const rack = [
+    ...(data?.garments.filter((g) => g.region === regionId) ?? []),
+    ...(data?.garments.filter((g) => g.region !== regionId && open.has(g.region)) ?? []),
+  ];
   // ?garment= is read in the browser: the page itself is prebuilt, one per region
   const wanted = garmentId ?? params.get("garment") ?? undefined;
-  const first = garments.find((g) => g.id === wanted) ?? garments[0]; // "Mặc thử" in the diary picks the garment
-  // Default selection until the user picks something
-  const current: Selection | null =
-    sel ??
-    (first
-      ? {
-          garment_id: first.id,
-          occasion_id: first.occasions[0],
-          vibe: "traditional",
-          colors: [],
-          accessories: [],
-          modifications: [],
-        }
-      : null);
+  const first = rack.find((g) => g.id === wanted) ?? rack[0];
+  const current: Selection | null = sel ?? (first ? lookOf(first) : null);
 
   // anonymous Impact events: which occasion was picked, and whether a flagged look got fixed
   const lastPick = useRef("");
@@ -78,7 +87,7 @@ export function ChapterView({
     }
   }
 
-  // Re-run the Compass on every change
+  // re-run the Compass on every change of the look
   const lookKey = JSON.stringify(current);
   useEffect(() => {
     if (!current || !HAS_API) return;
@@ -99,16 +108,13 @@ export function ChapterView({
   const scored = compass?.key === lookKey ? compass : null;
   const verdict = scored?.result ?? null;
 
-  // ---- the three steps; the current one lives in ?step= so the browser's back button walks the steps ----
-  function act(a: StepperAction) {
-    const next = stepper(steps, a);
+  // ---- the steps: the current one lives in ?step= so the browser's back button walks them ----
+  function moveTo(next: StepperState) {
     if (next === steps) return;
     setSteps(next);
-    if (next.step !== steps.step) {
-      window.history.pushState(null, "", withStep(window.location.search, next.step));
-      stepsTop.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    if (next.step !== steps.step) window.history.pushState(null, "", withStep(window.location.search, next.step));
   }
+  const act = (a: StepperAction) => moveTo(stepper(steps, a));
   const urlStep: Step = readStep(params) ?? 1; // the diary's "Mặc thử →" (?garment= only) opens step 1
   // the URL moved (back / forward button): follow it if the stepper allows, during render rather than in an effect
   const [seenUrlStep, setSeenUrlStep] = useState(urlStep);
@@ -122,13 +128,33 @@ export function ChapterView({
     if (there !== null && there !== steps.step) window.history.replaceState(null, "", withStep(window.location.search, steps.step));
   }, [urlStep, steps.step]);
 
+  /** A new look: the old picture no longer shows it, and the steps start again from the choices. */
   function choose(next: Selection) {
     setSel(next);
-    act({ type: "edit" });
+    tryon.clear();
+    let s = stepper(steps, { type: "edit" });
+    if (s.step !== 1) s = stepper(s, { type: "go", step: 1 });
+    moveTo(s);
+  }
+
+  /** "Mặc lên người": through the Compass (stopping there for ⛔) and on to the render. */
+  function wear() {
+    if (!current || !verdict) return;
+    let s = steps.step === 1 ? stepper(steps, { type: "next", verdict }) : steps;
+    if (verdict.state === "distorted") return moveTo(s); // the fork shows on the mirror
+    if (s.step === 2) s = stepper(s, { type: "next", verdict });
+    moveTo(s);
+    if (s.step === 3) void tryon.run(current);
+  }
+  function wearAlternative() {
+    if (!verdict?.alternative) return;
+    const s = stepper(steps, { type: "alternative" });
+    moveTo(s);
+    if (s.step === 3) void tryon.run(verdict.alternative);
   }
 
   if (error) return <p className="p-8 text-red-700">{error}</p>;
-  if (!data) return <p className="p-8">Đang lật trang…</p>;
+  if (!data) return <p className="p-8">Đang mở phòng thử…</p>;
   if (!region)
     return (
       <p className="p-8">
@@ -150,101 +176,149 @@ export function ChapterView({
     );
   }
 
-  const garment = garments.find((g) => g.id === current.garment_id) ?? first;
-  const badge = verdict ? STATE[verdict.state] : null;
+  const garment = rack.find((g) => g.id === current.garment_id) ?? first;
+  const fork = steps.step === 2 && verdict?.state === "distorted";
+  const offline = steps.offline;
+  const place = region.name.split("/")[0].trim();
 
   return (
-    <main className="mx-auto grid max-w-6xl gap-6 p-6 lg:grid-cols-2">
-      {!HAS_API && (
-        // the static site (GitHub Pages) has no server: reading works, Compass / try-on / Hỏi Tèo do not
-        <p className="m-0 rounded-md border border-dashed border-[#8a4b2a]/60 bg-[#f7e4c8]/70 px-4 py-2 text-sm text-[#6b3c12] lg:col-span-2">
-          Bản web này chưa nối máy chủ: con đọc được câu chuyện và cách mặc, còn <b>Compass chấm look, thử đồ AI, Hỏi Tèo, thời tiết và
-          cửa hàng</b> sẽ chạy khi nhóm bật máy chủ.
-        </p>
-      )}
-      <div className="space-y-4">
+    <main className="fitting" style={{ backgroundImage: `linear-gradient(rgba(20,12,7,0.55), rgba(20,12,7,0.78)), url(${asset("/page/fitting-room.webp")}), url(${asset("/page/Desk.webp")})` }}>
+      <header className="fitting-head">
         {/* back to the Mặc page this try-on was opened from (DeskScene reopens the book there); Link adds the base path */}
-        <Link href={`/?region=${regionId}&page=wear`} className="text-sm underline">
-          ← Về trang Mặc
+        <Link href={`/?region=${garment.region}&page=wear`} className="page-turn shrink-0 !text-[0.95rem]">
+          ‹ Về trang Mặc
         </Link>
-        <h1 className="font-hand text-4xl">{region.name}</h1>
-        <WeatherNote regionId={regionId} garmentId={garment.id} place={region.name.split("/")[0].trim()} />
-        <ChapterQuiz regionId={regionId} phase="pre" />
-        <StoryCard garment={garment} sources={data.sources} />
-        <AskTeo key={garment.id} garment={garment} data={data} />
-      </div>
-      <div className="space-y-4">
-        <section ref={stepsTop} className="paper scroll-mt-20 space-y-4 rounded-lg p-5">
-          <StepTabs current={steps.step} reached={steps.reached} offline={steps.offline} onGo={(step) => act({ type: "go", step })} />
-          {steps.offline && (
-            <p className="m-0 text-sm text-stone-600">
-              Bước 2 (Compass chấm look) và bước 3 (thử lên người) cần máy chủ. Bản web này chưa nối máy chủ nên con chọn đồ được, còn chấm và
-              dựng ảnh thì chưa.
-            </p>
-          )}
+        <div className="min-w-0 text-center">
+          <p className="m-0 text-[0.6rem] uppercase tracking-[0.3em] text-amber-100/70">Phòng thử đồ của Bà · {place}</p>
+          <h1 className="font-hand m-0 truncate text-[1.7rem] leading-tight text-amber-50">{garment.name_vi}</h1>
+        </div>
+        <div className="flex shrink-0 gap-2">
+          <button type="button" onClick={() => setSheet("story")} className="page-turn !text-[0.95rem]">
+            📖 <span className="hidden sm:inline">Hiểu bộ áo</span>
+          </button>
+          <button type="button" onClick={() => setSheet("teo")} className="page-turn !text-[0.95rem]" title="Hỏi Tèo">
+            📌 <span className="hidden sm:inline">Hỏi Tèo</span>
+          </button>
+        </div>
+      </header>
 
-          {steps.step === 1 && (
-            <>
-              {garments.length > 1 && (
-                <div className="flex flex-wrap gap-2">
-                  {garments.map((g) => (
-                    <button
-                      key={g.id}
-                      onClick={() => choose({ ...current, garment_id: g.id, colors: [], accessories: [], modifications: [] })}
-                      className={`rounded-full border px-4 py-1 ${g.id === garment.id ? "bg-stone-800 text-amber-50" : ""}`}
-                    >
-                      {g.name_vi}
-                    </button>
-                  ))}
+      {offline && (
+        // the static site (GitHub Pages) has no server: choosing and the preview work, Compass and the render do not
+        <p className="fitting-note">Bản web này chưa nối máy chủ: con chọn đồ và xem ảnh trước được, còn Compass chấm và mặc thử bằng AI sẽ chạy khi nhóm bật máy chủ.</p>
+      )}
+
+      <div className="fitting-grid">
+        <GarmentRack
+          garments={rack}
+          data={data}
+          current={garment.id}
+          occasion={event.occasion}
+          onPick={(g) => g.id !== garment.id && choose(lookOf(g, event.occasion ?? current.occasion_id))}
+        />
+
+        <div className="fitting-stage">
+          <div className="fitting-weather empty:hidden">
+            <WeatherNote regionId={garment.region} garmentId={garment.id} place={place} />
+          </div>
+          <Mirror
+            key={garment.id}
+            garmentId={garment.id}
+            garmentName={garment.name_vi}
+            verdict={verdict}
+            scoring={!scored}
+            offline={offline}
+            tryon={tryon}
+            onTag={() => verdict && setWhy(true)}
+          >
+            {fork && verdict && (
+              <div className="absolute inset-x-3 bottom-3 max-h-[75%] overflow-y-auto rounded-lg bg-[var(--paper)]/95 p-3 shadow-xl">
+                <Fork data={data} selection={current} verdict={verdict} />
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <button type="button" onClick={wearAlternative} className="rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
+                    Mặc phương án thay thế →
+                  </button>
+                  <button type="button" onClick={() => act({ type: "fix", verdict })} className="rounded-full border border-stone-700 px-4 py-1.5 text-sm">
+                    ← Tự sửa lại
+                  </button>
                 </div>
-              )}
-              {steps.highlight.length > 0 && (
-                <p className="m-0 rounded-md border border-red-300 bg-red-50/70 px-3 py-2 text-sm">
-                  Món viền đỏ là món làm look bị ⛔. Bỏ hoặc đổi món đó rồi đi tiếp.
-                </p>
-              )}
-              <Builder garment={garment} data={data} value={current} onChange={choose} highlight={steps.highlight} />
-              <div className="flex flex-wrap items-center gap-3">
-                <button type="button" disabled={steps.offline} onClick={() => act({ type: "next", verdict })} className={MAIN_BUTTON}>
-                  Tiếp: Compass chấm look →
-                </button>
-                {!steps.offline && (
-                  <span className="text-sm text-stone-600" aria-live="polite">
-                    Compass: {badge ? `${badge.icon} ${badge.name}` : scored ? "chưa chấm được" : "đang chấm…"}
-                  </span>
-                )}
               </div>
-            </>
-          )}
+            )}
+          </Mirror>
+        </div>
 
-          {steps.step === 2 && (
-            <CompassStep
-              data={data}
-              selection={current}
-              verdict={verdict}
-              failed={!!scored && !verdict}
-              onRetry={() => setRescore((n) => n + 1)}
-              onNext={() => act({ type: "next", verdict })}
-              onFix={() => verdict && act({ type: "fix", verdict })}
-              onAlternative={() => act({ type: "alternative" })}
-              onCompare={() => setComparing(true)}
-            />
-          )}
-
-          {steps.step === 3 && (
-            <TryOnPanel
-              selection={current}
-              alternative={steps.alternative ? (verdict?.alternative ?? null) : null}
-              regionId={regionId}
-              data={data}
-              onRestyle={() => act({ type: "go", step: 1 })}
-            />
-          )}
-        </section>
-        <ShopList garmentId={garment.id} garmentName={garment.name_vi} />
-        <ChapterQuiz regionId={regionId} phase="post" />
+        <Drawers garment={garment} data={data} value={current} onChange={choose} highlight={steps.highlight} />
       </div>
-      {/* kept mounted while closed so the pinned looks survive trips back to step 1 */}
+
+      <ActionBar>
+        <PhotoPicker tryon={tryon} />
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {tryon.image && !tryon.busy && tryon.saveLabel ? (
+            <>
+              <button
+                type="button"
+                disabled={tryon.saved}
+                className="page-turn page-turn-main"
+                onClick={async () => {
+                  if (await tryon.save()) setToast(true);
+                }}
+              >
+                {tryon.saved ? "Đã lưu vào Du Ký ✓" : "Lưu vào Du Ký"}
+              </button>
+              <button type="button" disabled={tryon.locked} onClick={() => current && tryon.run(steps.alternative && verdict?.alternative ? verdict.alternative : current)} className="page-turn">
+                {tryon.countdown ?? "↻ Dựng lại"}
+              </button>
+            </>
+          ) : (
+            <button type="button" disabled={offline || tryon.locked || !verdict} onClick={wear} className="page-turn page-turn-main !px-7">
+              {offline
+                ? "Mặc thử cần máy chủ"
+                : tryon.busy
+                  ? (tryon.stageLabel ?? "Đang may…")
+                  : (tryon.countdown ??
+                    (!verdict
+                      ? scored
+                        ? "Compass chưa chấm được"
+                        : "Compass đang chấm…"
+                      : verdict.state === "distorted"
+                        ? "⛔ Xem cách sửa"
+                        : tryon.photo
+                          ? "✨ Mặc lên ảnh của con"
+                          : "✨ Mặc lên người"))}
+            </button>
+          )}
+          {scored && !verdict && !offline && (
+            <button type="button" onClick={() => setRescore((n) => n + 1)} className="text-sm text-amber-50 underline">
+              Chấm lại
+            </button>
+          )}
+        </div>
+        <div className="flex items-center justify-end gap-3 text-sm text-amber-50">
+          {!offline && (
+            <button type="button" onClick={() => setComparing(true)} className="underline">
+              So với bộ khác
+            </button>
+          )}
+          <button type="button" onClick={() => setSheet("shops")} className="underline">
+            Thuê / may ở đâu
+          </button>
+        </div>
+      </ActionBar>
+
+      {/* the Compass's "why", opened from the tag on the mirror */}
+      {why && verdict && (
+        <div className="fixed inset-0 z-40 grid place-items-center bg-[#140c07]/55 p-4" role="dialog" aria-modal="true" aria-label="Compass: vì sao?" onClick={() => setWhy(false)}>
+          <div className="w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
+            <CompassPanel result={verdict} sources={data.sources} />
+            <button type="button" onClick={() => setWhy(false)} className="mx-auto mt-3 block rounded-full bg-amber-50 px-4 py-1.5 text-sm">
+              Đóng
+            </button>
+          </div>
+        </div>
+      )}
+
+      <AboutSheet tab={sheet} onTab={setSheet} onClose={() => setSheet(null)} garment={garment} data={data} regionId={garment.region} />
+
+      {/* kept mounted while closed so the pinned looks survive */}
       <CompareDrawer open={comparing} onClose={() => setComparing(false)}>
         <ComparePanel
           current={current}
@@ -255,45 +329,58 @@ export function ChapterView({
           }}
         />
       </CompareDrawer>
+
+      {!event.asked && (
+        <EventPicker
+          data={data}
+          onPick={(occasion) => {
+            setEvent({ asked: true, occasion });
+            if (!occasion) return;
+            // the garment on the mirror should suit the event: keep it if it does, else the first that does
+            const pick = garment.occasions.includes(occasion) ? garment : (rack.find((g) => g.occasions.includes(occasion)) ?? garment);
+            choose(lookOf(pick, occasion));
+          }}
+        />
+      )}
+
+      {toast && (
+        <div role="status" className="fixed inset-x-4 bottom-24 z-50 mx-auto flex max-w-md flex-wrap items-center gap-3 rounded-lg bg-stone-900 px-4 py-3 text-sm text-amber-50 shadow-lg">
+          <span>Đã lưu vào Du Ký ✓</span>
+          <button type="button" onClick={() => setSheet("quiz-post")} className="underline">
+            Thử lại: Việt hay không?
+          </button>
+          <a href={asset("/du-ky")} className="ml-auto font-semibold text-amber-200 underline">
+            Mở Du Ký
+          </a>
+          <button type="button" aria-label="Đóng" onClick={() => setToast(false)} className="text-amber-50/70">
+            ✕
+          </button>
+        </div>
+      )}
     </main>
   );
 }
 
-const STEP_NAMES: Record<Step, string> = { 1: "Chọn đồ", 2: "Compass", 3: "Thử" };
+const EMPTY = { garments: [] } as unknown as NonNullable<ReturnType<typeof useBootstrap>["data"]>;
 
-function StepTabs({ current, reached, offline, onGo }: { current: Step; reached: Step; offline: boolean; onGo: (s: Step) => void }) {
+function ActionBar({ children }: { children: ReactNode }) {
+  return <div className="fitting-bar">{children}</div>;
+}
+
+/** "Dùng ảnh của con" or the model: the photo stays in the browser until the render, never on the server. */
+function PhotoPicker({ tryon }: { tryon: ReturnType<typeof useTryOn> }) {
   return (
-    <nav aria-label="Các bước thử đồ">
-      <ol className="m-0 flex list-none items-center gap-1 p-0 sm:gap-2">
-        {([1, 2, 3] as Step[]).map((n) => {
-          const here = n === current;
-          const open = n <= reached && (n === 1 || !offline);
-          return (
-            <li key={n} className={`flex items-center gap-1 sm:gap-2 ${n > 1 ? "flex-1" : ""}`}>
-              {n > 1 && <span aria-hidden className={`h-px min-w-2 flex-1 ${n <= reached ? "bg-stone-700" : "bg-stone-300"}`} />}
-              <button
-                type="button"
-                disabled={!open || here}
-                aria-current={here ? "step" : undefined}
-                onClick={() => onGo(n)}
-                className={`flex shrink-0 items-center gap-1.5 rounded-full px-2 py-1 text-sm sm:px-3 ${
-                  here ? "bg-[#27354f] text-amber-50" : open ? "underline-offset-2 hover:underline" : "text-stone-400"
-                }`}
-              >
-                <span
-                  className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border text-xs ${
-                    here ? "border-amber-50" : n < current || (open && n <= reached) ? "border-stone-700" : "border-stone-300"
-                  }`}
-                >
-                  {n < current ? "✓" : n}
-                </span>
-                <span>{STEP_NAMES[n]}</span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
+    <div className="flex flex-wrap items-center gap-2 text-sm text-amber-50">
+      <label className={`page-turn cursor-pointer !text-[0.95rem] ${tryon.locked ? "pointer-events-none opacity-50" : ""}`} title="Nửa người, đứng thẳng, nền đơn giản. Ảnh không lưu trên máy chủ.">
+        📷 {tryon.photo ? "Đổi ảnh" : "Dùng ảnh của con"}
+        <input type="file" accept="image/*" className="sr-only" disabled={tryon.locked} onChange={(e) => tryon.setPhoto(e.target.files?.[0] ?? null)} />
+      </label>
+      {tryon.photo && (
+        <button type="button" disabled={tryon.locked} onClick={() => tryon.setPhoto(null)} className="underline disabled:opacity-50">
+          Dùng người mẫu
+        </button>
+      )}
+    </div>
   );
 }
 
