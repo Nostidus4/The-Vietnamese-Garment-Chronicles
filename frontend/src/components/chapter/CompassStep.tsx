@@ -78,7 +78,7 @@ export function CompassStep({
 }
 
 /** ⛔: what will be swapped before rendering (the reasons are in the verdict above) and how the swapped look scores. */
-function Fork({ data, selection, verdict }: { data: Bootstrap; selection: Selection; verdict: CompassResult }) {
+export function Fork({ data, selection, verdict }: { data: Bootstrap; selection: Selection; verdict: CompassResult }) {
   const changes = verdict.alternative ? swaps(data, selection, verdict.alternative) : [];
   const after = verdict.alternative_state;
   return (

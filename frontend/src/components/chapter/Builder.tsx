@@ -4,11 +4,13 @@ import type { Bootstrap, Garment, Selection, Vibe } from "@/lib/types";
 import { pickOption, pickedOption, zoneControl } from "@/lib/zones";
 import { STATE } from "./CompassPanel";
 
+export type BuilderPart = "occasion" | "style" | "zones" | "accessories";
+
 const VIBES: { id: Vibe; name: string }[] = [
-  { id: "traditional", name: "Traditional" },
-  { id: "minimal", name: "Minimal" },
-  { id: "modern", name: "Modern" },
-  { id: "festival", name: "Festival" },
+  { id: "traditional", name: "Truyền thống" },
+  { id: "minimal", name: "Tối giản" },
+  { id: "modern", name: "Hiện đại" },
+  { id: "festival", name: "Lễ hội" },
 ];
 
 // what the Compass says when a zone moves away from "giữ nguyên"
@@ -25,18 +27,22 @@ export function Builder({
   value,
   onChange,
   highlight = [],
+  only,
 }: {
   garment: Garment;
   data: Bootstrap;
   value: Selection;
   onChange: (s: Selection) => void;
   highlight?: string[]; // after ⛔ "Sửa lại": the choices that caused it
+  only?: BuilderPart; // the fitting room shows one drawer at a time
 }) {
+  const show = (part: BuilderPart) => !only || only === part;
   const chip = (on: boolean, bad = false) =>
     `rounded-full border px-3 py-1 text-sm transition ${on ? "border-stone-800 bg-stone-800 text-amber-50" : "border-stone-300 hover:border-stone-600"} ${bad ? "ring-2 ring-red-500 ring-offset-2" : ""}`;
 
   return (
     <div className="space-y-4">
+      {show("occasion") && (
       <div>
         <h3 className="mb-2 font-semibold">Dịp</h3>
         <div className="flex flex-wrap gap-2">
@@ -47,9 +53,12 @@ export function Builder({
           ))}
         </div>
       </div>
+      )}
 
+      {show("style") && (
+      <>
       <div>
-        <h3 className="mb-2 font-semibold">Vibe</h3>
+        <h3 className="mb-2 font-semibold">Phong cách</h3>
         <div className="flex flex-wrap gap-2">
           {VIBES.map((v) => (
             <button key={v.id} className={chip(value.vibe === v.id)} onClick={() => onChange({ ...value, vibe: v.id })}>
@@ -73,7 +82,10 @@ export function Builder({
           ))}
         </div>
       </div>
+      </>
+      )}
 
+      {show("zones") && (
       <div>
         <h3 className="mb-2 font-semibold">Các phần của áo</h3>
         <ul className="m-0 list-none space-y-3 p-0">
@@ -115,7 +127,9 @@ export function Builder({
           })}
         </ul>
       </div>
+      )}
 
+      {show("accessories") && (
       <div>
         <h3 className="mb-2 font-semibold">Phụ kiện</h3>
         <div className="flex flex-wrap gap-2">
@@ -127,6 +141,7 @@ export function Builder({
           ))}
         </div>
       </div>
+      )}
     </div>
   );
 }
