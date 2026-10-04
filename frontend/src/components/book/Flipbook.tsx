@@ -263,10 +263,31 @@ export default function Flipbook({
   });
 
   // ← → turn pages, Esc steps back out (chapter → region → country); ignored while typing in a field
-  const keys = useRef({ prev, next, active, toCountry, leaveChapter, focus, reading });
+  const keys = useRef({ prev, next, active, toCountry, leaveChapter, focus, reading, atEnd });
   useEffect(() => {
-    keys.current = { prev, next, active, toCountry, leaveChapter, focus, reading };
+    keys.current = { prev, next, active, toCountry, leaveChapter, focus, reading, atEnd };
   });
+
+  // page-flip holds blank pages after the map and after a short chapter (its page count is fixed at the longest
+  // chapter). The buttons and keys stop at the last page there is to read; a corner drag or a swipe would not, so
+  // on the last readable spread a press on the forward half never reaches page-flip.
+  const shell = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = shell.current;
+    if (!el) return;
+    const guard = (e: MouseEvent | TouchEvent) => {
+      if (!keys.current.atEnd) return;
+      const x = "touches" in e ? e.touches[0]?.clientX : e.clientX;
+      const r = el.getBoundingClientRect();
+      if (x !== undefined && x > r.left + r.width / 2) e.stopPropagation();
+    };
+    el.addEventListener("mousedown", guard, true);
+    el.addEventListener("touchstart", guard, { capture: true, passive: true });
+    return () => {
+      el.removeEventListener("mousedown", guard, true);
+      el.removeEventListener("touchstart", guard, true);
+    };
+  }, []);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!keys.current.active) return;
@@ -333,7 +354,7 @@ export default function Flipbook({
 
   return (
     <GlossaryProvider data={data} draft={DRAFT}>
-      <div className={`relative transition-opacity duration-200 ${fading ? "opacity-0" : ""}`}>
+      <div ref={shell} className={`relative transition-opacity duration-200 ${fading ? "opacity-0" : ""}`}>
         <HTMLFlipBook
           ref={bookRef}
           width={width}
@@ -357,7 +378,12 @@ export default function Flipbook({
           swipeDistance={30}
           showPageCorners
           disableFlipByClick // …but a plain click never turns a page
-          onFlip={(e: { data: number }) => setPage(e.data)}
+          onFlip={(e: { data: number }) => {
+            // a turn that still slipped past the last page to read: back to it
+            const last = Math.max(0, reachable - perView);
+            if (e.data > last) return jump(portrait ? last : last - (last % 2));
+            setPage(e.data);
+          }}
           className="book-open book-pages select-none"
           style={{}}
         >
