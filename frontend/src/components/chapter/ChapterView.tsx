@@ -182,7 +182,10 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   const place = region.name.split("/")[0].trim();
 
   return (
-    <main className="fitting" style={{ backgroundImage: `linear-gradient(rgba(20,12,7,0.55), rgba(20,12,7,0.78)), url(${asset("/page/fitting-room.webp")}), url(${asset("/page/Desk.webp")})` }}>
+    <main className="fitting" style={{
+        // the shop's empty wall sits behind the mirror; darker only at the top (titles) and the bottom (action bar)
+        backgroundImage: `linear-gradient(rgba(20,12,7,0.55), rgba(20,12,7,0.12) 26%, rgba(20,12,7,0.12) 70%, rgba(20,12,7,0.8)), url(${asset("/page/fitting-room.webp")}), url(${asset("/page/Desk.webp")})`,
+      }}>
       <header className="fitting-head">
         {/* back to the Mặc page this try-on was opened from (DeskScene reopens the book there); Link adds the base path */}
         <Link href={`/?region=${garment.region}&page=wear`} className="page-turn shrink-0 !text-[0.95rem]">
