@@ -817,3 +817,22 @@ Cốt truyện ở `docs/CHAPTERS_4.md`, nội dung chạy ở `backend/content/
 | tay-nguyen/d09-buu-thiep.png | Picture side of an old hand-painted postcard: coffee hills in bloom and a long house under a big sky. Landscape only, blank stamp square, no text. (3:2) |
 
 Tạo xong chạy `python -m scripts.check_content`, rồi chép prompt và bản được chọn vào tab Tổng hợp Prompt (Form 7).
+
+## 15. Phòng thử đồ của Bà – ảnh nền (03/10)
+
+Nền cho trang thử đồ `/chapter/<vùng>`. Web vẽ đè lên ảnh: **gương ở giữa, giá áo bên trái, ngăn kéo bên phải**, nên ảnh nền **không vẽ gương, không vẽ người, không vẽ chữ**, và **phần giữa phải dịu, ít chi tiết**. Web phủ thêm một lớp tối nhẹ, nên ảnh có thể sáng hơn mặt bàn may một chút.
+
+Tỉ lệ **16:9** (1920×1080 trở lên) · file: `frontend/public/page/fitting-room.webp` (gửi PNG cũng được, nhóm nén sau). Chưa có ảnh thì web dùng tạm mặt bàn may.
+
+```
+{STYLE}
+{AVOID}
+
+Interior of a small family tailor shop in Vietnam, seen as a quiet corner prepared for trying on clothes, warm late-afternoon light through a wooden window with shutters on the left.
+Composition for a web page: the CENTER of the picture is calm and soft – a plain warm plastered wall with gentle light and a little shadow, nothing in front of it (a mirror will be placed there by the web page).
+LEFT third: a wooden clothes rail with a few folded and hanging fabrics in indigo, brown and soft blue, softly out of focus. RIGHT third: an old black treadle sewing machine with gold decorations, a wooden table with bolts of fabric, a tomato pincushion, a yellow measuring tape hanging down, a teapot and small cups.
+Floor of old patterned cement tiles in muted cream and red, a woven mat; a cloth curtain partly drawn at the far right edge.
+Shallow depth of field, everything slightly soft so it reads as a background; cozy, nostalgic, 1980s Vietnam. No people, no mirror, no text, no logos.
+```
+
+Gợi ý chọn bản: phần giữa càng trống càng tốt; nếu máy may hay giá áo lấn vào giữa thì sửa bằng *"Keep everything the same, only move the sewing machine further to the right edge"*.
