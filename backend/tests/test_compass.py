@@ -84,3 +84,33 @@ def test_invalid_selection_is_rejected(bad):
 def test_harmony_notes_never_change_state():
     r = evaluate(sel(colors=["do-son", "vang-nghe"]))
     assert r.state == "adapted"
+
+
+# #62: the words speak of the thing the reader changed, not only of the kind of rule
+@pytest.mark.parametrize(
+    "look, names",
+    [
+        (Selection(garment_id="ao-dai", occasion_id="tet-chua", modifications=[Modification(zone="cổ áo", change="co-thuyen")]), ["cổ áo", "Cổ thuyền"]),
+        (sel(modifications=[Modification(zone="độ dài tay", change="tay-lung")]), ["độ dài tay", "Tay lửng"]),
+        (sel(accessories=["sneakers-trang"]), ["Sneakers trắng"]),
+        (sel(accessories=["mu-canh-chuon"]), ["Mũ cánh chuồn"]),
+    ],
+)
+def test_the_compass_names_what_was_changed(look, names):
+    t = evaluate(look).triggers[0]
+    for text in (t.teo, t.why):
+        for n in names:
+            assert n.lower() in text.lower(), (n, text)
+    assert "{" not in t.ti + t.teo + t.why
+
+
+def test_a_new_colour_is_not_called_an_accessory():
+    g = evaluate(sel()).triggers  # nothing changed
+    assert g == []
+    from app.content import store
+
+    garment = store.get().garments["ao-ngu-than"]
+    other = next(c for c in garment.colors if c not in garment.default_colors)
+    t = evaluate(sel(colors=[other])).triggers[0]
+    assert "phụ kiện" not in (t.ti + t.teo).lower()
+    assert store.get().colors[other].name.lower() in t.teo.lower()

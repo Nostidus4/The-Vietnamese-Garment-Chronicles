@@ -1,4 +1,5 @@
 import { media } from "@/lib/api";
+import { cited } from "@/lib/sources";
 import type { Bootstrap, Garment } from "@/lib/types";
 
 const ZONE_STYLE = {
@@ -10,6 +11,8 @@ const ZONE_LABEL = { keep: "Nên giữ", caution: "Cân nhắc", free: "Tự do 
 const ZONE_ICON = { keep: "🔒", caution: "⚖️", free: "🎨" };
 
 export function StoryCard({ garment, sources }: { garment: Garment; sources: Bootstrap["sources"] }) {
+  // the vetted sources, numbered in the order the facts cite them, then the garment's other ones
+  const notes = [...new Set([...garment.facts.flatMap((f) => f.sources), ...garment.sources])].filter((id) => cited({ sources }, [id]).length);
   return (
     <section className="paper rounded-lg p-5">
       <h2 className="font-hand text-3xl">{garment.name_vi}</h2>
@@ -18,7 +21,12 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
       <ul className="mb-2 list-disc space-y-1 pl-5">
         {garment.facts.map((f) => (
           <li key={f.text} className="leading-relaxed">
-            {f.text} <sup className="text-stone-400">[{f.sources.join(", ")}]</sup>
+            {f.text}{" "}
+            {cited({ sources }, f.sources).map((src) => (
+              <sup key={src.id} className="text-stone-500">
+                {notes.indexOf(src.id) + 1}
+              </sup>
+            ))}
           </li>
         ))}
       </ul>
@@ -69,11 +77,10 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
         </details>
       )}
       <details className="mt-3 text-xs text-stone-500">
-        <summary className="cursor-pointer">Nguồn ({garment.sources.length})</summary>
-        <ul className="mt-1 space-y-1">
-          {garment.sources.map((id) => (
+        <summary className="cursor-pointer">Nguồn ({notes.length})</summary>
+        <ol className="mt-1 list-decimal space-y-1 pl-5">
+          {notes.map((id) => (
             <li key={id}>
-              [{id}]{" "}
               {sources[id]?.url ? (
                 <a href={sources[id].url!} target="_blank" rel="noreferrer" className="underline">{sources[id].title}</a>
               ) : (
@@ -81,9 +88,9 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
               )}
             </li>
           ))}
-        </ul>
+        </ol>
       </details>
-      {!garment.verified && <p className="mt-2 text-xs text-amber-700">Nội dung đang chờ kiểm chứng.</p>}
+      {!garment.verified && <p className="mt-2 text-xs text-stone-500">Tèo còn đang đối chiếu thêm nguồn cho vài chi tiết của bộ áo này.</p>}
     </section>
   );
 }
