@@ -28,29 +28,35 @@ export function LetterPage() {
 
       <div className="mt-auto border-t border-dashed border-stone-400/60 pt-2">
         <p className="m-0 text-[0.6rem] tracking-[0.3em] text-stone-500">CÁCH ĐỌC SỔ</p>
-        <ul className="m-0 mt-1 grid list-none grid-cols-1 gap-1 p-0 text-[0.7rem] leading-snug text-stone-700">
-          <li className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#B5452E]" aria-hidden /> Chấm đỏ trên bản đồ: nơi Bà đã đến.
+        {/* each line is an icon and one run of text: loose text nodes in a flex row wrap word by word (#56) */}
+        <ul className="m-0 mt-1 grid list-none grid-cols-1 gap-1 p-0 text-[0.74rem] leading-snug text-stone-700">
+          <li className="flex items-start gap-2">
+            <span className="mt-[0.3em] h-2.5 w-2.5 shrink-0 rounded-full bg-[#B5452E]" aria-hidden />
+            <span>Chấm đỏ trên bản đồ: nơi Bà đã đến.</span>
           </li>
-          <li className="flex items-center gap-2">
-            <span className="font-hand shrink-0 text-[0.95rem]" style={{ color: YOUNG }}>
+          <li className="flex items-start gap-2">
+            <span className="font-hand shrink-0 text-[0.95rem] leading-none" style={{ color: YOUNG }}>
               Aa
             </span>
-            Mực xanh: Bà năm hai mươi tuổi.
-            <span className="font-hand shrink-0 text-[0.95rem]" style={{ color: OLD }}>
-              Aa
+            <span>
+              Mực xanh: Bà năm hai mươi tuổi.{" "}
+              <span className="font-hand text-[0.95rem] leading-none" style={{ color: OLD }}>
+                Aa
+              </span>{" "}
+              Mực nâu: Bà bây giờ.
             </span>
-            Mực nâu: Bà bây giờ.
           </li>
-          <li className="flex items-center gap-2">
-            <span className="h-3 w-4 shrink-0 rotate-[-4deg] bg-[#fbe99a] shadow" aria-hidden /> Giấy vàng: Tèo tra lại, có ghi nguồn.
-            Chữ <span className="glossary-word cursor-default">gạch chấm</span>: bấm để hỏi Tèo.
+          <li className="flex items-start gap-2">
+            <span className="mt-[0.2em] h-3 w-4 shrink-0 rotate-[-4deg] bg-[#fbe99a] shadow" aria-hidden />
+            <span>
+              Giấy vàng: Tèo tra lại, có ghi nguồn. Chữ <span className="glossary-word cursor-default whitespace-nowrap">gạch chấm</span>: bấm để hỏi Tèo.
+            </span>
           </li>
-          <li className="flex items-center gap-2">
-            <span className="font-hand shrink-0 text-[0.95rem]" style={{ color: PENCIL }}>
+          <li className="flex items-start gap-2">
+            <span className="font-hand shrink-0 text-[0.95rem] leading-none" style={{ color: PENCIL }}>
               ✎
             </span>
-            Bút chì: Tí nghĩ vẩn vơ. Trang “Hôm nay”: Tí đi lại đúng chỗ ấy, có ảnh thật.
+            <span>Bút chì: Tí nghĩ vẩn vơ. Trang “Hôm nay”: Tí đi lại đúng chỗ ấy, có ảnh thật.</span>
           </li>
         </ul>
       </div>
@@ -166,7 +172,7 @@ export function StartPage({
   const stampsOf = (id: string) =>
     [arrived.includes(id), understood.includes(id), pagesOf(book, id).some((p) => p.photos.some((ph) => ph.kind === "real"))].filter(Boolean).length;
   return (
-    <div className="flex h-full flex-col">
+    <div className="start-page flex h-full flex-col">
       <p className="m-0 text-[0.6rem] tracking-[0.3em] text-stone-500">BẮT ĐẦU HÀNH TRÌNH</p>
       <p className="font-hand m-0 mt-1 text-[1.12rem] leading-snug" style={{ color: YOUNG }}>
         Muốn viết tiếp một câu chuyện, trước hết phải hiểu câu chuyện đã có.
@@ -212,14 +218,14 @@ export function StartPage({
 
       {/* the region under the pointer: one line from Bà's diary, in place of this month's festivals */}
       {hoveredRegion?.journey ? (
-        <div className="mt-3 h-[5.4rem] shrink-0 overflow-hidden rounded-md px-3 py-2" style={{ background: `${tints[hoveredRegion.id]}99` }}>
+        <div className="start-fests mt-3 h-[5.4rem] shrink-0 overflow-hidden rounded-md px-3 py-2" style={{ background: `${tints[hoveredRegion.id]}99` }}>
           <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-600">NHẬT KÝ CỦA BÀ · {hoveredRegion.name.toUpperCase()}</p>
           <p className="font-hand m-0 mt-0.5 text-[1rem] leading-snug" style={{ color: YOUNG }}>
             {hoveredRegion.journey.hover_line}
           </p>
         </div>
       ) : shown.length > 0 && (
-        <div className="mt-3 h-[5.4rem] shrink-0 overflow-hidden rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
+        <div className="start-fests mt-3 h-[5.4rem] shrink-0 overflow-hidden rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
           <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">{now.length ? "THÁNG NÀY TRONG SỔ CỦA BÀ" : "SẮP TỚI TRONG SỔ CỦA BÀ"}</p>
           <ul className="m-0 mt-1 list-none space-y-0.5 p-0">
             {shown.map((f) => (

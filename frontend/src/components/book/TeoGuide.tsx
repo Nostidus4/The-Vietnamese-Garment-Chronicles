@@ -89,6 +89,7 @@ export function TeoGuide() {
   if (typeof document === "undefined") return null;
   const W = 250;
   const place = tip && bubble(tip.rect, W);
+  const side = place?.side === "above" || place?.side === "below";
   return createPortal(
     <AnimatePresence>
       {tip && place && (
@@ -97,9 +98,9 @@ export function TeoGuide() {
           role="note"
           aria-live="polite"
           className="pointer-events-auto fixed z-[70] bg-[#fbe99a] px-4 pb-3 pt-3 text-[0.9rem] leading-snug text-[#1f3a78] shadow-[3px_8px_18px_rgba(40,25,0,0.4)]"
-          style={{ left: place.x, ...(place.below ? { top: place.y } : { bottom: place.y }), width: W, rotate: "-1deg" }}
-          initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.85, y: place.below ? -8 : 8 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
+          style={{ left: place.x, top: place.y, width: W, rotate: "-1deg" }}
+          initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.85, ...OFFSET[place.side] }}
+          animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
           exit={{ opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 24 }}
         >
@@ -107,7 +108,11 @@ export function TeoGuide() {
           <span
             aria-hidden
             className="absolute h-3 w-3 rotate-45 bg-[#fbe99a]"
-            style={{ left: place.tail - 6, ...(place.below ? { top: -6 } : { bottom: -6 }) }}
+            style={
+              side
+                ? { left: place.tail - 6, ...(place.side === "below" ? { top: -6 } : { bottom: -6 }) }
+                : { top: place.tail - 6, ...(place.side === "right" ? { left: -6 } : { right: -6 }) }
+            }
           />
           <b className="font-hand block text-[1.05rem] text-[#8a4b2a]">Tèo chỉ con</b>
           {tip.tip.text}
@@ -137,11 +142,43 @@ function sameRect(a: DOMRect, b: DOMRect) {
   return Math.abs(a.left - b.left) < 2 && Math.abs(a.top - b.top) < 2;
 }
 
-/** Where the note goes: above the target if there is room (y = distance from the window's bottom), else below. */
+type Side = "above" | "below" | "right" | "left";
+const OFFSET: Record<Side, { x?: number; y?: number }> = { above: { y: 8 }, below: { y: -8 }, right: { x: -8 }, left: { x: 8 } };
+const H = 150; // about the note's height: title, three lines of text, the footer
+const TEXT = "p, li, h1, h2, h3, a, button, label, img, figure, text, [role=tab]";
+
+/**
+ * Where the note goes: on the side of the target that hides the least of the page (#56). On a short screen the
+ * space above the "next" button is the table of contents, and above the chapter tabs the tabs themselves, so each
+ * side is scored by how much text it would cover, and the target itself counts ten times.
+ */
 function bubble(r: DOMRect, w: number) {
-  const below = r.top < 170;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
   const cx = r.left + r.width / 2;
-  const x = Math.min(window.innerWidth - w - 8, Math.max(8, cx - w / 2));
-  const y = below ? r.bottom + 12 : window.innerHeight - r.top + 12;
-  return { x, y, below, tail: Math.min(w - 14, Math.max(14, cx - x)) };
+  const cy = r.top + r.height / 2;
+  const clampX = (x: number) => Math.min(vw - w - 8, Math.max(8, x));
+  const clampY = (y: number) => Math.min(vh - H - 8, Math.max(8, y));
+  const spots: { side: Side; x: number; y: number }[] = [
+    { side: "above", x: clampX(cx - w / 2), y: r.top - 12 - H },
+    { side: "below", x: clampX(cx - w / 2), y: r.bottom + 12 },
+    { side: "right", x: r.right + 12, y: clampY(cy - H / 2) },
+    { side: "left", x: r.left - 12 - w, y: clampY(cy - H / 2) },
+  ];
+  const texts = [...document.querySelectorAll<Element>(TEXT)]
+    .filter((el) => !el.closest("[role=note]"))
+    .map((el) => el.getBoundingClientRect())
+    .filter((b) => b.width > 0 && b.height > 0);
+  const overlap = (a: { x: number; y: number }, b: { left: number; top: number; right: number; bottom: number }) =>
+    Math.max(0, Math.min(a.x + w, b.right) - Math.max(a.x, b.left)) * Math.max(0, Math.min(a.y + H, b.bottom) - Math.max(a.y, b.top));
+  let best: (typeof spots)[number] | null = null;
+  let bestScore = Infinity;
+  for (const s of spots) {
+    if (s.x < 8 || s.y < 8 || s.x + w > vw - 8 || s.y + H > vh - 8) continue; // off the screen
+    const score = overlap(s, r) * 10 + texts.reduce((n, b) => n + overlap(s, b), 0);
+    if (score < bestScore) [best, bestScore] = [s, score];
+  }
+  if (!best) return null;
+  const tail = best.side === "above" || best.side === "below" ? Math.min(w - 14, Math.max(14, cx - best.x)) : Math.min(H - 14, Math.max(14, cy - best.y));
+  return { ...best, tail };
 }

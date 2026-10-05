@@ -18,7 +18,8 @@ export type TeoNoteView = {
   steps?: string[]; // a how-to (game rules): numbered steps, no source line
 };
 
-/** The red pushpin; `corner` puts it in the page padding (bottom right) so it never covers text. */
+/** The red pushpin; `corner` puts it in the page padding (bottom right) so it never covers text: low and small enough
+    to stay clear of the last line even on a 1280×720 book, where the padding is only about 2rem (#56). */
 export function TeoPin({
   notes,
   data,
@@ -45,7 +46,7 @@ export function TeoPin({
           e.stopPropagation();
           setOpen(true);
         }}
-        className={`teo-pin group z-10 flex items-center gap-1 ${corner ? "absolute -bottom-[1.9rem] -right-[1.6rem]" : "relative"}`}
+        className={`teo-pin group z-10 flex items-center gap-1 ${corner ? "absolute -bottom-[2rem] -right-[1.6rem]" : "relative"}`}
         aria-label={label ?? `Tèo ghim ${notes.length} ghi chú${unesco ? ", có di sản UNESCO" : ""}`}
         title="Tèo ghim ghi chú ở đây"
       >
@@ -62,7 +63,7 @@ export function TeoPin({
 
 function PinSvg() {
   return (
-    <svg viewBox="0 0 24 30" className="h-7 w-6 -rotate-12 drop-shadow-[1px_2px_1.5px_rgba(40,20,0,0.35)] transition-transform group-hover:-translate-y-0.5 group-hover:rotate-0" aria-hidden>
+    <svg viewBox="0 0 24 30" className="h-6 w-5 -rotate-12 drop-shadow-[1px_2px_1.5px_rgba(40,20,0,0.35)] transition-transform group-hover:-translate-y-0.5 group-hover:rotate-0" aria-hidden>
       <path d="M12 17 L12 29" stroke="#9aa0a6" strokeWidth="1.4" strokeLinecap="round" />
       <path d="M6 15 h12 l-2 -5 h-8 z" fill="#8e2a1c" />
       <circle cx="12" cy="8" r="7" fill="#c0392b" />

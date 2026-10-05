@@ -379,12 +379,13 @@ export function VietnamMap({
           <circle key={i} cx={x} cy={y} r={0.55 * Math.max(s, 0.6)} />
         ))}
       </g>
+      {/* 9 map units: about 9px on a 1280×720 screen, readable without zooming (#56) */}
       <g
         className="font-hand"
-        fontSize={7 * s}
+        fontSize={9 * s}
         fill={INK}
         stroke="#f6efe0"
-        strokeWidth={2 * s}
+        strokeWidth={2.4 * s}
         paintOrder="stroke"
         pointerEvents="none"
         opacity="0.85"
