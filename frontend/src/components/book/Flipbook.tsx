@@ -461,8 +461,9 @@ export default function Flipbook({
 
         {focus && reading && tabs.length > 0 && <Bookmarks tabs={tabs} current={page} onJump={turnTo} portrait={portrait} />}
 
-        {/* under the book: Bà's thread through a trip chapter; elsewhere "‹" steps back out and one bright button leads on */}
-        <div className="absolute left-0 right-0 top-full mt-5 flex items-center justify-center gap-6">
+        {/* under the book: Bà's thread through a trip chapter; elsewhere "‹" steps back out and one bright button leads on.
+            As wide as the screen, not the book: on a 1280×720 book the thread and its two buttons do not fit (#56) */}
+        <div className="absolute left-1/2 top-full mt-5 flex w-[calc(100vw-2rem)] -translate-x-1/2 items-center justify-center gap-6">
           {focus && reading && steps.length > 0 && page >= MAP ? (
             <ThreadNav
               steps={steps}

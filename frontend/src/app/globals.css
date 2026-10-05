@@ -480,7 +480,7 @@ body {
   @keyframes lead-on { 0%, 100% { box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 0 0 rgba(227, 176, 75, 0.55); } 50% { box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 0 9px rgba(227, 176, 75, 0); } }
   /* Bà's red thread under a trip chapter: one knot per place */
   .thread { display: flex; flex-direction: column; align-items: center; padding: 0.3rem 0.8rem 0.25rem; border-radius: 999px; background: rgba(20, 12, 7, 0.42); backdrop-filter: blur(3px); }
-  .thread-line { display: block; width: clamp(0.6rem, 2.2vw, 1.9rem); height: 2px; background: repeating-linear-gradient(90deg, rgba(243, 234, 215, 0.45) 0 4px, transparent 4px 7px); }
+  .thread-line { display: block; width: clamp(0.5rem, 1.5vw, 1.9rem); height: 2px; background: repeating-linear-gradient(90deg, rgba(243, 234, 215, 0.45) 0 4px, transparent 4px 7px); }
   .thread-line-done { background: #c0392b; }
   .thread-knot { display: grid; place-items: center; width: 1.45rem; height: 1.45rem; border-radius: 999px; font-size: 0.7rem; line-height: 1; color: #f3ead7; border: 1.5px solid rgba(243, 234, 215, 0.6); background: transparent; transition: transform 160ms ease, background 160ms ease; }
   .thread-knot:hover { transform: scale(1.15); }
@@ -539,6 +539,17 @@ body {
   backdrop-filter: blur(6px);
 }
 .site-nav a:hover { background: rgba(243, 234, 215, 0.9); color: #2b2118; }
+
+/* ---------- the map's right page: on a short book (1280×720, 1366×768) the festival box gives its room to the two
+   buttons at the bottom, which were cut off (#56) ---------- */
+.start-page {
+  container: start-page / size;
+}
+@container start-page (max-height: 34rem) {
+  .start-fests {
+    display: none;
+  }
+}
 
 /* ---------- Bà's fitting room (/chapter/<region>): rack | mirror | drawers, the action bar under them ---------- */
 @layer components {

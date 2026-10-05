@@ -1,6 +1,7 @@
 "use client";
 
-// − / + / "Vừa màn hình" for the notebooks, in the corner of the sewing table (desktop only).
+// − / + / "Vừa màn hình" for the notebooks, in the top corner of the sewing table (desktop only): down by the bottom
+// bar it ran into the chapter's thread and its "Đi tiếp" button on a 1280×720 screen (#56).
 // Ctrl/Cmd + and Ctrl/Cmd − resize the book instead of the page while a book is on the table.
 
 import { useEffect } from "react";
@@ -28,7 +29,7 @@ export function BookSizeControl() {
   });
 
   return (
-    <div className="book-size fixed bottom-4 right-4 z-30 hidden items-center gap-1 rounded-full px-2 py-1 text-sm md:flex" role="group" aria-label="Cỡ cuốn sổ">
+    <div className="book-size fixed left-4 top-4 z-30 hidden items-center gap-1 rounded-full px-2 py-1 text-sm md:flex" role="group" aria-label="Cỡ cuốn sổ">
       <button type="button" onClick={() => setScale((s) => s - SCALE_STEP)} disabled={scale <= SCALE_MIN} aria-label="Thu nhỏ sổ" title="Thu nhỏ (Ctrl/Cmd −)">
         −
       </button>
