@@ -13,16 +13,25 @@ import { asset } from "@/lib/base";
 
 type Look = "on" | "soft" | "off";
 
+// how each stamp is earned, said on the stamp itself while it is still a dashed ring (#63)
+const HOW: Record<string, string> = {
+  "Đã đến": "Mở chương của vùng này trong sổ của Bà",
+  "Đã hiểu": "Trả lời hết “Bà hỏi con” ở cuối chương",
+  "Đã mặc": "Dán ảnh một lần con mặc thật vào Du Ký",
+  "Đã thử": "Đã có ảnh thử đồ; dán ảnh mặc thật để tem đậm lên",
+};
+
 function Stamp({ label, place, look, color }: { label: string; place: string; look: Look; color: string }) {
   return (
     <div
+      title={look === "on" ? `${label} ${place}` : HOW[label]}
       className={`flex h-[3.1rem] w-[3.1rem] shrink-0 flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
-        look === "on" ? "rotate-[-8deg]" : look === "soft" ? "rotate-[6deg] border-dashed opacity-55" : "border-dashed opacity-35"
+        look === "on" ? "rotate-[-8deg]" : look === "soft" ? "rotate-[6deg] border-dashed opacity-55" : "border-dashed opacity-60"
       }`}
       style={{ borderColor: look === "off" ? "#a8a29e" : color, color: look === "off" ? "#a8a29e" : color }}
-      aria-label={`${label} ${place}${look === "off" ? " (chưa có)" : ""}`}
+      aria-label={`${label} ${place}${look === "on" ? "" : `: chưa có. ${HOW[label]}`}`}
     >
-      <span className="text-[0.4rem] tracking-[0.18em]">{label.toUpperCase()}</span>
+      <span className="text-[0.48rem] tracking-[0.14em]">{label.toUpperCase()}</span>
       <span className="font-display px-0.5 text-[0.55rem] leading-tight">{place}</span>
     </div>
   );
@@ -40,15 +49,25 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
   const total = data.regions.filter((r) => r.status === "open" || r.chapters.some((c) => c.status === "open")).length;
   const worn = new Set(book.pages.filter((p) => p.photos.some((ph) => ph.kind === "real")).map((p) => p.region_id));
   const tried = new Set(book.pages.filter((p) => p.photos.length > 0).map((p) => p.region_id));
+  const readable = data.regions.filter((r) => r.status === "open" || r.chapters.some((c) => c.status === "open"));
+  const allStamps = readable.length > 0 && readable.every((r) => arrived.includes(r.id) && understood.includes(r.id) && worn.has(r.id));
   return (
     <div className="flex h-full flex-col">
       <p className="m-0 text-[0.62rem] tracking-[0.3em] text-stone-500">TỦ TEM</p>
       <p className="font-hand m-0 text-[1.15rem] leading-snug text-[#27354f]">
         Đọc sổ của Bà để hiểu, viết sổ của mình để mặc.
       </p>
-      <p className="m-0 mt-0.5 text-[0.66rem] text-stone-500">
+      <p className="m-0 mt-0.5 text-[0.7rem] text-stone-600">
         Đã mặc thật ở {worn.size}/{total} vùng
       </p>
+      {/* the legend: what each ring is for, so an empty cabinet says how to fill it (#63) */}
+      <p className="m-0 mt-1 text-[0.68rem] leading-snug text-stone-600">
+        <b className="font-semibold text-[#B5452E]">Đến</b>: mở chương của Bà · <b className="font-semibold text-[#5E7F4A]">Hiểu</b>: trả lời “Bà hỏi con” ·{" "}
+        <b className="font-semibold text-[#2F4A6D]">Mặc</b>: dán ảnh lần con mặc thật. Tem điểm: mỗi chỗ Bà dừng chân con đã ghé qua.
+      </p>
+      {allStamps && (
+        <p className="font-hand m-0 mt-1 rounded bg-[#f7e4c8] px-2 py-1 text-[1rem] text-[#8a4b2a]">🎉 Con đã đủ tem ở mọi vùng. Bà mừng lắm!</p>
+      )}
       <ul className="m-0 mt-2 flex min-h-0 flex-1 list-none flex-col justify-around gap-1 p-0">
         {data.regions.map((r) => {
           const place = r.name.split("/")[0].trim();
@@ -64,7 +83,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
               <a href={asset(`/?region=${r.id}&page=own`)} className="font-display w-[5.5rem] shrink-0 text-[0.8rem] leading-tight text-[#27354f] hover:underline">
                 {place}
                 {stopsTotal(r) > 0 && (
-                  <span className="block font-sans text-[0.58rem] text-stone-500">
+                  <span className="block font-sans text-[0.64rem] text-stone-500">
                     tem điểm {stopsGot(r)}/{stopsTotal(r)}
                   </span>
                 )}

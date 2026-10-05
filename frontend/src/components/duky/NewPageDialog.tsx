@@ -121,7 +121,7 @@ export function NewPageDialog({
           </label>
           <label>
             {status === "planned" ? "Ngày đi" : "Ngày mặc"}
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={field} />
+            <input type="date" lang="vi" value={date} onChange={(e) => setDate(e.target.value)} className={field} />
           </label>
           <label className="col-span-2">
             Ở đâu (không bắt buộc)
@@ -134,7 +134,12 @@ export function NewPageDialog({
           {status === "worn" && (
             <label className="col-span-2">
               Ảnh mặc thật (thu nhỏ và chỉ lưu trên máy này)
-              <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="mt-1 block w-full text-xs" />
+              {/* the browser's own "Choose File / No file chosen" is English: a button of ours instead (#63) */}
+              <span className="mt-1 flex items-center gap-2">
+                <span className="cursor-pointer rounded-full border border-[#27354f] px-3 py-1 text-xs text-[#27354f] hover:bg-[#27354f]/10">📷 Chọn ảnh</span>
+                <span className="min-w-0 truncate text-xs text-stone-500">{file ? file.name : "chưa chọn ảnh nào"}</span>
+              </span>
+              <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="sr-only" />
             </label>
           )}
         </div>

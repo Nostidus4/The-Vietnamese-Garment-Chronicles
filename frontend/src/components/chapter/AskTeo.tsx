@@ -7,6 +7,7 @@ import { useState } from "react";
 import { askTeo } from "@/lib/api";
 import { sourceOf } from "@/lib/sources";
 import type { Bootstrap, Garment } from "@/lib/types";
+import { friendlyError } from "@/lib/errors";
 
 type Answer = { q: string; answer: string; sources: string[]; grounded: boolean };
 
@@ -34,7 +35,7 @@ export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap })
       setHistory((h) => [{ q: text, ...r }, ...h].slice(0, 5));
       setQ("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Tèo chưa nghe rõ, bạn hỏi lại nhé.");
+      setError(friendlyError(e, "Tèo chưa nghe rõ, bạn hỏi lại nhé."));
     } finally {
       setBusy(false);
     }

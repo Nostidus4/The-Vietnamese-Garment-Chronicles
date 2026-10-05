@@ -8,6 +8,7 @@ import { useState } from "react";
 import { createShare, deleteShare, type ShareMeta } from "@/lib/api";
 import { getPhoto, shrinkPhoto, updatePage, usePhotoUrl, type DuKyPage, type PhotoRef } from "@/lib/dukyBook";
 import { asset } from "@/lib/base";
+import { friendlyError } from "@/lib/errors";
 
 const LABELS = ["Authentic", "Adapted", "Inspired"];
 export const shareUrl = (id: string) => `${window.location.origin}${asset("/du-ky/p/")}?id=${encodeURIComponent(id)}`;
@@ -52,7 +53,7 @@ export function ShareDialog({ page, onClose }: { page: DuKyPage; onClose: () => 
       const r = await createShare(meta, blobs);
       updatePage(page.id, { share: r });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Chưa tạo được link.");
+      setError(friendlyError(e, "Chưa tạo được link, con thử lại nhé."));
     } finally {
       setBusy(false);
     }
@@ -65,7 +66,7 @@ export function ShareDialog({ page, onClose }: { page: DuKyPage; onClose: () => 
       await deleteShare(page.share.id, page.share.delete_key);
       updatePage(page.id, { share: null });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Chưa gỡ được link.");
+      setError(friendlyError(e, "Chưa gỡ được link, con thử lại nhé."));
     } finally {
       setBusy(false);
     }

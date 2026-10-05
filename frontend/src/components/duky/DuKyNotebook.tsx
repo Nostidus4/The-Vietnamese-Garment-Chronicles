@@ -11,7 +11,7 @@ import { animate, motion, useMotionValue, useReducedMotion, useTransform } from 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { pageSize, useBookScale, useViewport } from "@/lib/bookScale";
-import { COVER_COLORS, ensureMigrated, loadBook, setCover, useDuKy, type DuKyBook, type DuKyPage } from "@/lib/dukyBook";
+import { byWhen, COVER_COLORS, ensureMigrated, loadBook, setCover, TAKEN_OUT, useDuKy, type DuKyBook, type DuKyPage, type TakenOut } from "@/lib/dukyBook";
 import { useBootstrap } from "@/lib/useBootstrap";
 import type { Bootstrap } from "@/lib/types";
 import { BookCover } from "../book/BookCover";
@@ -30,7 +30,7 @@ import { asset } from "@/lib/base";
 // where the reader is, kept across a rebuild of the book (new size or a page added)
 const memo = { page: 0 };
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-const byDate = (a: DuKyPage, b: DuKyPage) => a.created_at.localeCompare(b.created_at);
+const byDate = byWhen;
 
 type Actions = {
   onNew: (p: NewPreset) => void;
@@ -47,6 +47,27 @@ export default function DuKyNotebook() {
   const [exportError, setExportError] = useState<string | null>(null);
   const [sharing, setSharing] = useState<string | null>(null);
   const [focusId, setFocusId] = useState<string | null>(null); // a page to turn to once the book is open
+  const [pasted, setPasted] = useState(false); // "Đã dán vào sổ" after a new page
+  const [trash, setTrash] = useState<TakenOut | null>(null); // a page just taken out, still to be undone
+  useEffect(() => {
+    const on = (e: Event) => setTrash((e as CustomEvent<TakenOut>).detail);
+    window.addEventListener(TAKEN_OUT, on);
+    return () => window.removeEventListener(TAKEN_OUT, on);
+  }, []);
+  // five seconds to change one's mind, then the photos leave this device too
+  useEffect(() => {
+    if (!trash) return;
+    const t = setTimeout(() => {
+      void trash.forget();
+      setTrash(null);
+    }, 5000);
+    return () => clearTimeout(t);
+  }, [trash]);
+  useEffect(() => {
+    if (!pasted) return;
+    const t = setTimeout(() => setPasted(false), 2500);
+    return () => clearTimeout(t);
+  }, [pasted]);
   const vp = useViewport();
   const portrait = vp.w < 760;
 
@@ -93,11 +114,33 @@ export default function DuKyNotebook() {
           onCreated={(p) => {
             setCreating(null);
             setFocusId(p.id);
+            setPasted(true);
           }}
         />
       )}
       {sharePage && <ShareDialog page={sharePage} onClose={() => setSharing(null)} />}
       {exporting && <ExportCard page={exporting} data={data} onDone={onExportDone} />}
+      {(pasted || trash) && (
+        <div role="status" className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full bg-black/80 px-4 py-2 text-sm text-white">
+          {trash ? (
+            <>
+              <span>Đã xóa trang.</span>
+              <button
+                type="button"
+                onClick={() => {
+                  trash.undo();
+                  setTrash(null);
+                }}
+                className="font-semibold text-amber-200 underline"
+              >
+                Hoàn tác
+              </button>
+            </>
+          ) : (
+            <span>Đã dán vào sổ ✓</span>
+          )}
+        </div>
+      )}
       {exportError && (
         <p role="alert" className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black/75 px-4 py-2 text-sm text-white" onClick={() => setExportError(null)}>
           {exportError}
@@ -116,6 +159,7 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
       <p className="m-0 text-[0.62rem] tracking-[0.3em] text-stone-500">SỔ NÀY CỦA</p>
       <input
         value={name}
+        maxLength={24}
         onChange={(e) => setName(e.target.value.slice(0, 24))}
         onBlur={() => name !== book.cover.name && setCover({ name: name.trim() })}
         placeholder="tên của con"
@@ -123,6 +167,8 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
         className="font-hand w-full border-0 border-b border-stone-400 bg-transparent text-[1.5rem] outline-none placeholder:text-stone-400"
         style={{ color: "#1f3a78" }}
       />
+      {/* the cover holds 24 letters: say so while typing instead of cutting the name off silently (#63) */}
+      {name.length >= 18 && <p className="m-0 text-right text-[0.66rem] text-stone-500">{name.length}/24 chữ</p>}
       <div className="mt-2 flex items-center gap-2" role="radiogroup" aria-label="Màu bìa">
         <span className="text-[0.7rem] text-stone-500">Màu bìa</span>
         {COVER_COLORS.map((c) => (
@@ -151,7 +197,7 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
       </div>
       <div className="mt-auto">
         <CloudSync compact={compact} />
-        <p className="m-0 mt-1 text-[0.55rem] text-stone-400">Không đăng nhập thì sổ và ảnh chỉ lưu trên máy này.</p>
+        <p className="m-0 mt-1 text-[0.7rem] text-stone-600">Không đăng nhập thì sổ và ảnh chỉ lưu trên máy này.</p>
       </div>
     </div>
   );
@@ -232,7 +278,10 @@ function DeskBook({
     setPhase("closed");
   }
 
-  // a page to show (just created, or asked for from Bà's book): open the book on its spread
+  // a page to show (just created, or asked for from Bà's book): open the book on its spread. An open book is turned
+  // there by DuKyFlip: a page made with a photo built the book before the photo was in, on the old spread (#63)
+  const focusAt = focusId ? pages.findIndex((p) => p.id === focusId) : -1;
+  const focusPage = focusAt < 0 ? null : focusAt + 2 - ((focusAt + 2) % 2);
   useEffect(() => {
     if (!focusId) return;
     const i = pages.findIndex((p) => p.id === focusId);
@@ -277,7 +326,7 @@ function DeskBook({
             <div className="absolute inset-y-0 right-0 w-1/2">
               <div className="book-shadow absolute inset-[1.5%]" />
             </div>
-            <DuKyFlip data={data} book={book} pages={pages} size={size} actions={actions} active={shown} onClose={close} />
+            <DuKyFlip data={data} book={book} pages={pages} size={size} actions={actions} active={shown} onClose={close} focusPage={focusPage} />
           </div>
         </div>
       )}
@@ -335,7 +384,9 @@ function DuKyFlip({
   actions,
   active,
   onClose,
+  focusPage,
 }: {
+  focusPage: number | null;
   data: Bootstrap;
   book: DuKyBook;
   pages: DuKyPage[];
@@ -363,6 +414,11 @@ function DuKyFlip({
   const prev = () => (atStart ? onClose() : ref.current?.pageFlip()?.flipPrev("bottom"));
   const next = () => !atEnd && ref.current?.pageFlip()?.flipNext("bottom");
   const turnTo = (to: number) => ref.current?.pageFlip()?.turnToPage(to - (to % 2));
+  useEffect(() => {
+    if (focusPage === null) return;
+    // after the book has (re)built itself on its old spread; not cancelled when the focus is cleared a moment later
+    setTimeout(() => ref.current?.pageFlip()?.flip(Math.min(focusPage, n - 2), "bottom"), 120);
+  }, [focusPage, n]);
 
   const keys = useRef({ prev, next, active });
   useEffect(() => {

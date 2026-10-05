@@ -174,6 +174,29 @@ export function updatePage(id: string, patch: Partial<DuKyPage>) {
   update((b) => ({ ...b, pages: b.pages.map((p) => (p.id === id ? { ...p, ...patch } : p)) }));
 }
 
+/** Pages in the order of the day they are about (worn or planned), then the order they were written (#63). */
+export const byWhen = (a: DuKyPage, b: DuKyPage) =>
+  (a.date ?? a.created_at.slice(0, 10)).localeCompare(b.date ?? b.created_at.slice(0, 10)) || a.created_at.localeCompare(b.created_at);
+
+/** Fired with a TakenOut when a page leaves the book: the notebook offers to undo it for a few seconds (#63). */
+export const TAKEN_OUT = "vpdk-duky-taken-out";
+export type TakenOut = { undo: () => void; forget: () => Promise<void> };
+
+/** Takes a page out of the book; its photos stay on this device until `forget`, so "Hoàn tác" can put it back. */
+export function takeOutPage(id: string): TakenOut | null {
+  const page = loadBook().pages.find((p) => p.id === id);
+  if (!page) return null;
+  update((b) => ({ ...b, pages: b.pages.filter((p) => p.id !== id) }));
+  const out: TakenOut = {
+    undo: () => update((b) => (b.pages.some((p) => p.id === id) ? b : { ...b, pages: [...b.pages, page] })),
+    forget: async () => {
+      await Promise.all(page.photos.map((ph) => deletePhoto(ph.id).catch(() => {})));
+    },
+  };
+  window.dispatchEvent(new CustomEvent<TakenOut>(TAKEN_OUT, { detail: out }));
+  return out;
+}
+
 export async function removePage(id: string) {
   const page = loadBook().pages.find((p) => p.id === id);
   update((b) => ({ ...b, pages: b.pages.filter((p) => p.id !== id) }));

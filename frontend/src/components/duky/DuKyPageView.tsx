@@ -5,13 +5,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { getShops, getWeatherOn } from "@/lib/api";
-import { addPhoto, removePage, updatePage, usePhotoUrl, type DuKyPage, type PhotoRef } from "@/lib/dukyBook";
+import { addPhoto, takeOutPage, updatePage, usePhotoUrl, type DuKyPage, type PhotoRef } from "@/lib/dukyBook";
 import { sourceOf } from "@/lib/sources";
 import { track } from "@/lib/track";
 import type { Bootstrap, Shop } from "@/lib/types";
 import { asset } from "@/lib/base";
 
 const INK = "#27354f";
+const ACT = "rounded-full border border-stone-400/80 bg-white/40 px-2.5 py-1 leading-tight hover:bg-white/80";
 const VERDICT: Record<string, string> = { Authentic: "✅", Adapted: "✨", Inspired: "⚠️" };
 
 export function formatDate(d: string | null) {
@@ -55,17 +56,23 @@ export function Photo({ photo, className = "", big = false }: { photo: PhotoRef;
   );
 }
 
+/**
+ * The page's stamp says what the page is (#63): bold "ĐÃ MẶC" only with a real photo (the one the Tủ tem counts),
+ * "ĐÃ THỬ" for try-on pictures, "SẮP ĐI" for a plan with nothing yet, and a dashed "ĐÃ MẶC" that says what is missing.
+ */
 function RegionStamp({ page, place }: { page: DuKyPage; place: string }) {
   const real = page.photos.some((p) => p.kind === "real");
-  const label = real || page.status === "worn" ? "ĐÃ MẶC" : "ĐÃ THỬ";
+  const label = real || page.status === "worn" ? "ĐÃ MẶC" : page.photos.length ? "ĐÃ THỬ" : "SẮP ĐI";
+  const hint = real ? `Tem đã mặc ${place}, đã vào Tủ tem` : "Dán ảnh con mặc thật để tem này đậm lên và vào Tủ tem";
   return (
     <div
       className={`pointer-events-none flex h-[3.4rem] w-[3.4rem] shrink-0 rotate-[-10deg] flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
         real ? "border-[#2F4A6D]/80 text-[#2F4A6D]" : "border-dashed border-stone-400/70 text-stone-400"
       }`}
-      aria-label={`Tem ${label.toLowerCase()} ${place}`}
+      aria-label={`Tem ${label.toLowerCase()} ${place}. ${hint}`}
+      title={hint}
     >
-      <span className="text-[0.42rem] tracking-[0.2em]">{label}</span>
+      <span className="text-[0.48rem] tracking-[0.16em]">{label}</span>
       <span className="font-display px-0.5 text-[0.6rem] leading-tight">{place}</span>
     </div>
   );
@@ -90,7 +97,7 @@ function Preparation({ page, data }: { page: DuKyPage; data: Bootstrap }) {
     <div className="mt-2 space-y-1.5 rounded-md bg-white/50 p-2 text-[0.72rem] leading-snug text-stone-700">
       {keep.length > 0 && (
         <p className="m-0">
-          <b>Nhớ giữ:</b> {keep.map((z) => `☐ ${z.part}`).join("  ")}
+          <b>Nhớ giữ nguyên:</b> {keep.map((z) => z.part).join(" · ")}
         </p>
       )}
       <p className="m-0">
@@ -149,6 +156,8 @@ export function DuKyPageView({
   const file = useRef<HTMLInputElement>(null);
   const [note, setNote] = useState(page.note);
   const [busy, setBusy] = useState(false);
+  const [editing, setEditing] = useState(false); // date, occasion and place can be changed after the page is made (#63)
+  const [asking, setAsking] = useState(false); // "Xóa trang này?" on the page itself, not the browser's confirm
 
   async function addReal(f: File) {
     setBusy(true);
@@ -164,7 +173,12 @@ export function DuKyPageView({
     <div className="flex h-full flex-col" style={{ color: INK }}>
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1">
-          <p className="m-0 text-[0.6rem] tracking-[0.25em] text-stone-500">{page.status === "planned" ? "SẮP ĐI" : "ĐÃ MẶC"}</p>
+          <p className="m-0 flex items-center gap-2 text-[0.62rem] tracking-[0.25em] text-stone-500">
+            {page.status === "planned" ? "SẮP ĐI" : "ĐÃ MẶC"}
+            <button type="button" onClick={() => setEditing((v) => !v)} className="tracking-normal text-[#8a4b2a] underline" aria-expanded={editing}>
+              {editing ? "xong" : "✎ sửa"}
+            </button>
+          </p>
           <p className="font-hand m-0 text-[1.05rem] leading-tight">
             {occasion}
             {page.place ? ` · ${page.place}` : ""}
@@ -177,6 +191,28 @@ export function DuKyPageView({
         </div>
         <RegionStamp page={page} place={place} />
       </div>
+      {editing && (
+        <div className="mt-1.5 grid grid-cols-2 gap-1.5 rounded-md bg-white/55 p-2 text-[0.72rem]">
+          <label className="flex flex-col gap-0.5">
+            Ngày
+            <input type="date" lang="vi" value={page.date ?? ""} onChange={(e) => updatePage(page.id, { date: e.target.value || null })} className="rounded border border-stone-300 bg-white/80 px-1.5 py-1" />
+          </label>
+          <label className="flex flex-col gap-0.5">
+            Dịp
+            <select value={page.occasion_id} onChange={(e) => updatePage(page.id, { occasion_id: e.target.value })} className="rounded border border-stone-300 bg-white/80 px-1.5 py-1">
+              {data.occasions.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="col-span-2 flex flex-col gap-0.5">
+            Nơi
+            <input defaultValue={page.place} maxLength={60} placeholder="Chùa, phố, nhà bạn…" onBlur={(e) => e.target.value.trim() !== page.place && updatePage(page.id, { place: e.target.value.trim() })} className="rounded border border-stone-300 bg-white/80 px-1.5 py-1" />
+          </label>
+        </div>
+      )}
 
       {page.photos.length > 0 ? (
         <div className={`mt-2 grid gap-2 ${page.photos.length === 1 ? `grid-cols-1 ${compact ? "px-[24%]" : "px-[18%]"}` : page.photos.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
@@ -210,33 +246,44 @@ export function DuKyPageView({
         </div>
       )}
 
-      <div className="mt-auto flex flex-wrap gap-x-2.5 gap-y-1 pt-2 text-[0.68rem]">
+      {/* the page's actions as small buttons with room between them, not five underlined words (#63) */}
+      <div className="mt-auto flex flex-wrap gap-1.5 pt-2 text-[0.74rem]">
         <input ref={file} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && addReal(e.target.files[0])} />
-        {page.photos.length < 3 && (
-          <button type="button" disabled={busy} onClick={() => file.current?.click()} className="underline disabled:opacity-50">
-            {page.status === "planned" ? "Mình đã mặc rồi, dán ảnh" : "+ Thêm ảnh"}
-          </button>
+        {asking ? (
+          <span className="flex w-full flex-wrap items-center gap-2 rounded-md bg-[#f7e4c8] px-2 py-1.5">
+            <span className="min-w-0 flex-1">Xóa trang này? Ảnh trên máy cũng xóa theo.</span>
+            <button type="button" onClick={() => takeOutPage(page.id)} className="rounded-full bg-[#B5452E] px-2.5 py-1 leading-tight text-amber-50 hover:bg-[#9c3a26]">
+              Xóa
+            </button>
+            <button type="button" onClick={() => setAsking(false)} className={ACT}>
+              Thôi
+            </button>
+          </span>
+        ) : (
+          <>
+            {page.photos.length < 3 && (
+              <button type="button" disabled={busy} onClick={() => file.current?.click()} className={`${ACT} disabled:opacity-50`}>
+                {page.status === "planned" ? "📷 Mình đã mặc rồi, dán ảnh" : "📷 Thêm ảnh"}
+              </button>
+            )}
+            {onExport && (
+              <button type="button" onClick={() => onExport(page)} className={ACT}>
+                Xuất ảnh
+              </button>
+            )}
+            {onShare && (
+              <button type="button" onClick={() => onShare(page)} className={ACT}>
+                {page.share ? "Link chia sẻ" : "Tạo link chia sẻ"}
+              </button>
+            )}
+            <a href={asset(`/chapter/${page.region_id}/?garment=${page.garment_id}`)} className={ACT}>
+              Mặc lại look
+            </a>
+            <button type="button" onClick={() => setAsking(true)} className="ml-auto rounded-full px-2.5 py-1 leading-tight text-stone-500 hover:bg-white/60">
+              Xóa trang
+            </button>
+          </>
         )}
-        {onExport && (
-          <button type="button" onClick={() => onExport(page)} className="underline">
-            Xuất ảnh
-          </button>
-        )}
-        {onShare && (
-          <button type="button" onClick={() => onShare(page)} className="underline">
-            {page.share ? "Link chia sẻ" : "Tạo link chia sẻ"}
-          </button>
-        )}
-        <a href={asset(`/chapter/${page.region_id}/?garment=${page.garment_id}`)} className="underline">
-          Mặc lại look
-        </a>
-        <button
-          type="button"
-          onClick={() => window.confirm("Xóa trang này khỏi Du Ký? Ảnh trên máy cũng bị xóa.") && removePage(page.id)}
-          className="ml-auto text-stone-500 underline"
-        >
-          Xóa trang
-        </button>
       </div>
     </div>
   );
