@@ -407,8 +407,8 @@
         "q": "Khăn piêu được thêu hoa văn ở đâu?",
         "choices": [
           "Ở hai đầu khăn",
-          "Ở giữa khăn",
-          "Không thêu gì"
+          "Ở chính giữa khăn",
+          "Khắp mặt khăn, không chừa chỗ nào"
         ],
         "answer": 0,
         "explain": "Hoa văn thêu ở hai đầu khăn; khăn piêu còn là lời ước hẹn của cô gái Thái.",
@@ -437,8 +437,8 @@
         "q": "Tết Xíp xí của người Thái Trắng ở Sơn La diễn ra vào ngày nào?",
         "choices": [
           "14 tháng Bảy âm lịch",
-          "Mồng Một Tết",
-          "Rằm tháng Giêng"
+          "Mồng Một Tết Nguyên Đán",
+          "Rằm tháng Giêng âm lịch"
         ],
         "answer": 0,
         "explain": "Ngày 14 tháng Bảy âm lịch hằng năm.",

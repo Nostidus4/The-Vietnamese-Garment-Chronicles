@@ -589,8 +589,8 @@ export function WearDiary({
           </button>
         ) : (
           // try-on stays closed until the community has reviewed this garment
-          <span className="ml-auto max-w-[45%] text-right text-[0.66rem] leading-snug text-stone-500">
-            Thử đồ AI mở khi người ở đây đã đọc lại
+          <span className="ml-auto max-w-[45%] text-right text-[0.7rem] leading-snug text-stone-600 [text-wrap:balance]">
+            Thử đồ AI: chờ người ở đây đọc lại
           </span>
         )}
       </div>
@@ -760,7 +760,7 @@ export function PreQuestion({ region, onDone }: { region: Region; onDone: () => 
     <div className="flex h-full flex-col">
       <p className="m-0 text-[0.62rem] tracking-[0.3em] text-stone-500">TRƯỚC KHI ĐỌC</p>
       <p className="font-hand m-0 mt-1 text-[1.2rem] leading-snug" style={{ color: OLD }}>
-        Con đoán thử xem, rồi mình cùng đọc. — Bà
+        Trước khi đọc, Bà hỏi con một câu. Sai cũng chẳng sao. — Bà
       </p>
       <Question q={q} regionId={region.id} phase="pre" onAnswer={() => setAnswered(true)} />
       <div className="mt-auto flex items-center gap-4 pt-3">

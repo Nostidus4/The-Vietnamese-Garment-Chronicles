@@ -422,8 +422,8 @@
         "q": "Trong một dàn cồng chiêng Tây Nguyên, mỗi người chơi…",
         "choices": [
           "Một chiếc chiêng riêng, cả dàn hòa thành bài",
-          "Cả dàn chiêng một mình",
-          "Chỉ gõ một chiếc chiêng to"
+          "Một người gõ cả dàn chiêng, người khác múa",
+          "Gõ chung một chiếc chiêng thật to"
         ],
         "answer": 0,
         "explain": "Mỗi người một chiếc, từ ba đến mười hai chiếc hòa thành bài.",
@@ -437,8 +437,8 @@
         "q": "Lễ cúng bến nước của người Ê Đê thường làm khi nào?",
         "choices": [
           "Cuối tháng Chạp, sau mùa thu hoạch",
-          "Giữa mùa mưa",
-          "Ngày Tết Dương lịch"
+          "Giữa mùa mưa, khi nước suối dâng cao",
+          "Đầu năm Dương lịch, trước mùa gieo hạt"
         ],
         "answer": 0,
         "explain": "Cuối tháng Chạp, kéo dài ba ngày, để tạ ơn mưa thuận gió hòa.",

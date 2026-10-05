@@ -514,8 +514,8 @@
       "q": "Con đoán xem: vì sao áo bà ba ngắn qua hông, không có tà dài?",
       "choices": [
         "Để ngồi xuồng, lội nước không vướng",
-        "Để tiết kiệm vải",
-        "Vì ai cũng thích áo ngắn"
+        "Để tiết kiệm vải khi vải còn đắt",
+        "Vì vải miền Tây chỉ dệt được khổ ngắn"
       ],
       "answer": 0,
       "explain": "Người miền Tây ngồi xuồng, lội ruộng cả ngày, áo ngắn thì không vướng víu.",
@@ -530,8 +530,8 @@
         "q": "Khăn rằn của người Nam Bộ dùng để làm gì?",
         "choices": [
           "Che nắng, che mưa, lau mồ hôi",
-          "Chỉ để trang trí",
-          "Để đựng tiền"
+          "Chỉ để quàng cổ cho đẹp khi đi chơi",
+          "Để làm cờ hiệu khi đua ghe ngo"
         ],
         "answer": 0,
         "explain": "Khăn rằn là người bạn đi đồng: che nắng, che mưa, lau mồ hôi.",
@@ -560,8 +560,8 @@
         "q": "Khi phối áo bà ba theo cách của con, phần nào nên giữ?",
         "choices": [
           "Dáng áo ngắn ngang hông, xẻ hai bên",
-          "Màu đen",
-          "Chất vải lãnh"
+          "Màu đen như áo bà ba xưa",
+          "Chất vải lãnh Mỹ A, không dùng vải khác"
         ],
         "answer": 0,
         "explain": "Dáng ngắn, xẻ hông là dấu hiệu của áo bà ba; màu và chất liệu thì được đổi.",

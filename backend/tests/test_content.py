@@ -204,3 +204,10 @@ def test_wardrobe_piece_needs_one_target_and_the_right_slot(tmp_path):
     _, rep = store.load(root)
     assert any("lac-loai" in e and "slot 'set'" in e for e in rep.errors)
     assert any("khong-co" in e and "unknown accessory" in e for e in rep.errors)
+
+
+def test_the_right_answer_is_not_given_away_by_its_length(content):
+    # #61: every right answer used to be the longest choice, so a reader could pass without reading
+    questions = [q for r in content.regions.values() if r.journey and r.journey.check for q in [r.journey.check.pre, *r.journey.check.post]]
+    longest = [q.id for q in questions if all(len(q.choices[q.answer]) > len(c) for i, c in enumerate(q.choices) if i != q.answer)]
+    assert len(longest) <= 0.6 * len(questions), longest
