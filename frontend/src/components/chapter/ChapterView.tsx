@@ -16,7 +16,7 @@ import { addPage, addPhoto, dataUrlToBlob, ensureMigrated, newPage } from "@/lib
 import { cited } from "@/lib/sources";
 import { track } from "@/lib/track";
 import type { Bootstrap, CompassResult, CompassState, Garment, Selection, WardrobeItem, WardrobeSlot } from "@/lib/types";
-import { firstLook, garmentOf, lookOf, pieceState, selectionOf, toggled, type Look, type PieceState } from "@/lib/wardrobe";
+import { firstLook, garmentOf, lookOf, onBody, pieceState, selectionOf, toggled, type Look, type PieceState } from "@/lib/wardrobe";
 import { useBootstrap } from "@/lib/useBootstrap";
 import { ComparePanel } from "./ComparePanel";
 import { CompassPanel, STATE } from "./CompassPanel";
@@ -177,7 +177,10 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   function pickWho(w: Who) {
     setWho(w);
     setAskWho(false);
-    remember(w, current);
+    // the boy cannot keep on what is drawn only for the girl (#77)
+    const next = current && data ? onBody(current, w, items, data, byId) : current;
+    if (next && next !== current && JSON.stringify(next) !== JSON.stringify(current)) change(next);
+    remember(w, next);
   }
 
   const stateOf = (it: WardrobeItem): PieceState =>
@@ -460,6 +463,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
               <div className="mirror-frame dress-form">
                 <div className="mirror-glass relative h-full w-full overflow-hidden">
                   <PaperDoll
+                    body={who === "nam" ? "nam" : "nu"}
                     dress={dress}
                     colors={{ main: c1, second: c2, yem: yem === "yem-dao" ? "#f4a6a0" : yem === "yem-trang" ? "#fafafa" : undefined }}
                     className="absolute inset-0 h-full w-full p-[6%]"
@@ -484,7 +488,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
               </div>
               <figcaption className="mirror-caption">Bấm một món trong tủ để mặc, bấm lần nữa để cởi</figcaption>
               <div aria-hidden className="pointer-events-none absolute h-0 w-0 overflow-hidden">
-                <PaperDoll ref={doll} still dress={dress} colors={{ main: c1, second: c2, yem: yem === "yem-dao" ? "#f4a6a0" : yem === "yem-trang" ? "#fafafa" : undefined }} />
+                <PaperDoll ref={doll} still body={who === "nam" ? "nam" : "nu"} dress={dress} colors={{ main: c1, second: c2, yem: yem === "yem-dao" ? "#f4a6a0" : yem === "yem-trang" ? "#fafafa" : undefined }} />
               </div>
             </figure>
           )}
