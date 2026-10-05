@@ -7,6 +7,7 @@ import { useState } from "react";
 import { askTeo } from "@/lib/api";
 import { cited, plainAnswer } from "@/lib/sources";
 import type { Bootstrap, Garment } from "@/lib/types";
+import { friendlyError } from "@/lib/errors";
 
 type Answer = { q: string; answer: string; sources: string[]; grounded: boolean };
 
@@ -34,8 +35,7 @@ export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap })
       setHistory((h) => [{ q: text, ...r }, ...h].slice(0, 5));
       setQ("");
     } catch (e) {
-      // a dropped connection is a TypeError ("Failed to fetch"): not words for a reader (#48)
-      setError(e instanceof Error && !(e instanceof TypeError) ? e.message : "Tèo chưa liên lạc được với sổ tay, bạn hỏi lại sau chút nhé.");
+      setError(friendlyError(e, "Tèo chưa nghe rõ, bạn hỏi lại nhé."));
     } finally {
       setBusy(false);
     }

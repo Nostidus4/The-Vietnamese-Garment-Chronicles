@@ -23,6 +23,9 @@ function read(kind: Kind): string[] {
   }
 }
 
+/** Fired with { kind, id } when a region stamp is earned for the first time; StampToast shows it (#63). */
+export const NEW_STAMP = "vpdk-new-stamp";
+
 export function markStamp(kind: Kind, regionId: string) {
   if (typeof window === "undefined") return;
   const s = read(kind);
@@ -33,6 +36,7 @@ export function markStamp(kind: Kind, regionId: string) {
     // private mode: not remembered
   }
   window.dispatchEvent(new Event(EVENT));
+  if (kind === "arrived" || kind === "understood") window.dispatchEvent(new CustomEvent(NEW_STAMP, { detail: { kind, id: regionId } }));
 }
 
 export function unmarkStamp(kind: Kind, regionId: string) {

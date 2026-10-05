@@ -8,6 +8,7 @@ import { API_URL, RateLimited, serverReady, tryOn } from "@/lib/api";
 import { track } from "@/lib/track";
 import { retryLabel, secondsLeft, untilAborted, waitLabel, type WaitStage } from "@/lib/tryonWait";
 import type { Selection, TryOnResult } from "@/lib/types";
+import { friendlyError } from "@/lib/errors";
 
 export type TryOn = ReturnType<typeof useTryOn>;
 
@@ -57,7 +58,7 @@ export function useTryOn() {
     } catch (e) {
       if (ctl.signal.aborted) return; // the viewer pressed Huỷ (or left the page)
       if (e instanceof RateLimited) setRetryAt(Date.now() + e.retryAfterS * 1000);
-      setError(e instanceof Error ? e.message : "Không dựng được ảnh");
+      setError(friendlyError(e, "Chưa dựng được ảnh, con thử lại nhé."));
     } finally {
       if (abort.current === ctl) {
         abort.current = null;

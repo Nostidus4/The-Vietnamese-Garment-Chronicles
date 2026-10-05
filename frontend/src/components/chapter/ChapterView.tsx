@@ -28,6 +28,7 @@ import { DRAWN, PaperDoll, type Dress } from "../fitting/PaperDoll";
 import { AboutSheet, EventPicker, type SheetTab } from "../fitting/Parts";
 import { useTryOn } from "../fitting/useTryOn";
 import { baNote, DRAWERS, LookCard, OutfitList, STAMP, WardrobePanel, WhoPicker, type CardFace, type Drawer, type Who } from "../fitting/Wardrobe";
+import { friendlyError } from "@/lib/errors";
 
 const KEY = "vpdk-wardrobe";
 const COUNT = "vpdk-card-count";
@@ -349,7 +350,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
       setToast(true);
     } catch (e) {
       setSaving("idle");
-      setSaveError(e instanceof Error ? e.message : "Chưa lưu được thẻ, con thử lại nhé.");
+      setSaveError(friendlyError(e, "Chưa lưu được thẻ, con thử lại nhé."));
     }
   }
 

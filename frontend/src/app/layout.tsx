@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Be_Vietnam_Pro, Patrick_Hand } from "next/font/google";
 import Link from "next/link";
 import { AmbientSound } from "@/components/AmbientSound";
+import { StampToast } from "@/components/StampToast";
 import { ServerWake } from "@/components/ServerWake";
 import "./globals.css";
 import { asset } from "@/lib/base";
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="h-10" />
         {children}
         <ServerWake />
+        <StampToast />
       </body>
     </html>
   );

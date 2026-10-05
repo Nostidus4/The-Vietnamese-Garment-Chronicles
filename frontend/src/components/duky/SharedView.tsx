@@ -17,8 +17,17 @@ export function SharedView({ id }: { id: string }) {
   const [page, setPage] = useState<SharedPage | null>(null);
   const [missing, setMissing] = useState(false);
   useEffect(() => {
-    getShare(id).then(setPage).catch(() => setMissing(true));
+    if (id) getShare(id).then(setPage).catch(() => setMissing(true));
   }, [id]);
+
+  // a link cut short before "?id=…": not a page that was taken down (#63)
+  if (!id)
+    return (
+      <main className="mx-auto max-w-md p-6 text-center">
+        <p className="font-hand text-2xl text-stone-600">Link này bị thiếu mã trang. Con nhờ người gửi chép lại cả đường link nhé.</p>
+        <Link href="/" className="mt-4 inline-block underline">Mở Việt Phục Du Ký</Link>
+      </main>
+    );
 
   if (missing)
     return (
@@ -30,7 +39,18 @@ export function SharedView({ id }: { id: string }) {
         <Link href="/" className="mt-4 inline-block underline">Mở Việt Phục Du Ký</Link>
       </main>
     );
-  if (!page || !data) return <p className="font-hand p-6 text-xl text-stone-500">Đang mở trang…</p>;
+  if (!page || !data)
+    return (
+      <main className="desk grid min-h-screen place-items-center px-4 py-8">
+        {/* the paper the page will be on, while it loads */}
+        <div className="paper w-full max-w-md animate-pulse rounded-md p-6 shadow-[0_10px_24px_rgba(20,8,0,0.4)]" aria-busy="true">
+          <p className="font-hand m-0 text-center text-xl text-stone-500">Đang mở trang Du Ký…</p>
+          <div className="mx-auto mt-4 aspect-[3/4] w-2/3 rounded bg-stone-300/50" />
+          <div className="mt-4 h-3 w-3/4 rounded bg-stone-300/50" />
+          <div className="mt-2 h-3 w-1/2 rounded bg-stone-300/50" />
+        </div>
+      </main>
+    );
 
   const m = page.meta;
   const g = data.garments.find((x) => x.id === m.garment_id);

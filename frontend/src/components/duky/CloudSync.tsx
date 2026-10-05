@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getPhoto, loadBook, putPhoto, saveBook, type DuKyBook } from "@/lib/dukyBook";
 import { createClient } from "@/utils/supabase/client";
 import { asset } from "@/lib/base";
+import { friendlyError } from "@/lib/errors";
 
 const BUCKET = "duky-photos";
 const configured = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
@@ -35,7 +36,7 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
     try {
       setMsg(await fn());
     } catch (e) {
-      setMsg(e instanceof Error ? e.message : "Có lỗi, con thử lại nhé.");
+      setMsg(friendlyError(e, "Chưa làm được, con thử lại nhé."));
     } finally {
       setBusy(false);
     }
