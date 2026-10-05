@@ -21,7 +21,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="vi" className={`${body.variable} ${hand.variable} h-full antialiased`}>
       <body className="min-h-full">
         <nav className="site-nav absolute right-4 top-3 z-30 flex gap-4 text-sm sm:fixed">
-          <Link href="/">Sách</Link>
+          {/* a full load on purpose: pressed while Bà's book is open, it puts the book back on the table (#65) */}
+          <a href={asset("/")}>Sổ của Bà</a>
           <Link href="/du-ky">Du Ký của tôi</Link>
           {/* full reload on purpose so the opening restarts from the first screen */}
           <a href={asset("/?opening=1")}>Xem lại mở đầu</a>

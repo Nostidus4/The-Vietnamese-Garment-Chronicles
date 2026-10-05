@@ -142,8 +142,8 @@ function allFestivals(data: Bootstrap) {
 
 /**
  * The right page of the map spread, before a region is chosen: Bà's word on how to read the map, the five regions
- * in the colours of the map (hover lights the region up, click or Enter opens it), what is on this month, and where
- * to begin. → on the keyboard opens the suggested chapter.
+ * in the colours of the map (hover lights the region up, click or Enter opens it), what is on this month, and the
+ * fitting room for someone with an event ahead. Where to begin is the bright button under the book.
  */
 export function StartPage({
   data,
@@ -152,7 +152,6 @@ export function StartPage({
   onHover,
   onRegion,
   onEvent,
-  suggest,
 }: {
   data: Bootstrap;
   tints: Record<string, string>;
@@ -160,7 +159,6 @@ export function StartPage({
   onHover: (id: string | null) => void;
   onRegion: (id: string) => void;
   onEvent: () => void;
-  suggest: { id: string; label: string };
 }) {
   const { arrived, understood } = useStamps();
   const book = useDuKy();
@@ -240,12 +238,10 @@ export function StartPage({
         </div>
       )}
 
+      {/* "Bắt đầu từ Huế" is the bright button under the book; here, the shortcut for someone with an event ahead (#65) */}
       <div className="mt-auto flex flex-wrap items-center gap-2 pt-3">
-        <button type="button" onClick={() => onRegion(suggest.id)} className="rounded-full bg-[#27354f] px-4 py-2 text-sm text-amber-50 hover:bg-[#1c2740]">
-          Bắt đầu từ {suggest.label} →
-        </button>
-        <button type="button" onClick={onEvent} className="rounded-full border border-stone-700 px-3 py-2 text-[0.8rem] hover:bg-stone-800 hover:text-amber-50">
-          Tôi sắp tham gia sự kiện
+        <button type="button" onClick={onEvent} className="rounded-full border border-stone-700 px-3 py-2 text-[0.85rem] hover:bg-stone-800 hover:text-amber-50">
+          👗 Sắp đi sự kiện? Vào thẳng phòng thử đồ
         </button>
       </div>
     </div>
