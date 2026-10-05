@@ -615,6 +615,8 @@ body {
   .w-item-bad::after { content: "⛔"; position: absolute; right: -0.35rem; top: -0.35rem; font-size: 0.85rem; }
   @keyframes bad-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
   .w-item-dim { opacity: 0.5; }
+  .w-item-off { opacity: 0.42; cursor: not-allowed; filter: grayscale(0.6); }
+  .w-item-off:hover { animation: none; }
   .w-item-lock { opacity: 0.55; cursor: not-allowed; background: repeating-linear-gradient(45deg, #e9dcc0 0 6px, #e1d1b0 6px 12px); }
   @media (prefers-reduced-motion: reduce) { .w-item:hover, .w-item-bad { animation: none; } }
 

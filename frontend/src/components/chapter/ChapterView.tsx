@@ -14,7 +14,8 @@ import { asset } from "@/lib/base";
 import { compassContent, evaluate } from "@/lib/compass";
 import { addPage, addPhoto, dataUrlToBlob, ensureMigrated, newPage } from "@/lib/dukyBook";
 import { track } from "@/lib/track";
-import type { Bootstrap, CompassResult, Garment, Selection, WardrobeItem, WardrobeSlot } from "@/lib/types";
+import type { Bootstrap, CompassResult, CompassState, Garment, Selection, WardrobeItem, WardrobeSlot } from "@/lib/types";
+import { firstLook, garmentOf, lookOf, pieceState, selectionOf, toggled, type Look, type PieceState } from "@/lib/wardrobe";
 import { useBootstrap } from "@/lib/useBootstrap";
 import { ComparePanel } from "./ComparePanel";
 import { CompassPanel, STATE } from "./CompassPanel";
@@ -25,11 +26,14 @@ import { Mirror } from "../fitting/Mirror";
 import { DRAWN, PaperDoll, type Dress } from "../fitting/PaperDoll";
 import { AboutSheet, EventPicker, type SheetTab } from "../fitting/Parts";
 import { useTryOn } from "../fitting/useTryOn";
-import { baNote, DRAWERS, LookCard, OutfitList, STAMP, WardrobePanel, WhoPicker, type CardFace, type Drawer, type ItemState, type Who } from "../fitting/Wardrobe";
+import { baNote, DRAWERS, LookCard, OutfitList, STAMP, WardrobePanel, WhoPicker, type CardFace, type Drawer, type Who } from "../fitting/Wardrobe";
 
-type Look = { worn: Partial<Record<WardrobeSlot, string>>; colors: string[]; mods: Selection["modifications"]; occasion: string };
 const KEY = "vpdk-wardrobe";
 const COUNT = "vpdk-card-count";
+// the label a saved card carries, as backend/app/models.py LABELS (⛔ never reaches a card)
+const LABEL: Record<CompassState, string | null> = { fit: "Authentic", adapted: "Adapted", review: "Inspired", distorted: null };
+/** The look a card is made from, fixed when "Xong rồi" / "Dựng ảnh" is pressed, so the card always matches its picture. */
+type Snap = { selection: Selection; look: Look; verdict: CompassResult };
 
 function remembered(): { who: Who | null; look: Look | null } {
   try {
@@ -37,6 +41,13 @@ function remembered(): { who: Who | null; look: Look | null } {
     return { who: v?.who ?? null, look: v?.look ?? null };
   } catch {
     return { who: null, look: null };
+  }
+}
+function remember(who: Who | null, look: Look | null) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify({ who, look }));
+  } catch {
+    // private mode: the look lasts for this visit
   }
 }
 
@@ -49,8 +60,10 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   const [history, setHistory] = useState<Look[]>([]);
   const [drawer, setDrawer] = useState<Drawer>("set");
   const [event, setEvent] = useState(() => ({ asked: params.get("entry") !== "event" }));
-  const [card, setCard] = useState<CardFace | null>(null);
-  const [saved, setSaved] = useState(false);
+  const [card, setCard] = useState<(CardFace & { snap: Snap }) | null>(null);
+  const [saving, setSaving] = useState<"idle" | "saving" | "saved">("idle");
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [sent, setSent] = useState<Snap | null>(null); // "Con": the look sent to the try-on
   const [fork, setFork] = useState(false);
   const [why, setWhy] = useState(false);
   const [sheet, setSheet] = useState<SheetTab | null>(null);
@@ -59,7 +72,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   const [toast, setToast] = useState(false);
   const [pulse, setPulse] = useState(0); // the Compass tag swings on every change
   const doll = useRef<SVGSVGElement>(null); // a still copy of the doll, the source of the card's picture
-  const tryon = useTryOn({ data: data ?? EMPTY });
+  const tryon = useTryOn();
 
   useEffect(() => {
     void serverReady();
@@ -84,57 +97,58 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   const byId = useMemo(() => new Map(items.map((it) => [it.id, it])), [items]);
   const compass = useMemo(() => (data?.rules ? compassContent({ ...data, rules: data.rules } as Parameters<typeof compassContent>[0]) : null), [data]);
 
-  // the first look: what this reader left last time, or the garment the diary's "Mặc thử" asked for
+  // the first look: the diary's "Mặc thử" garment, else last visit's look if it belongs to this region (lib/wardrobe)
   const wanted = garmentId ?? params.get("garment") ?? undefined;
-  const start: Look | null = useMemo(() => {
-    if (!data) return null;
-    const last = typeof window === "undefined" ? null : remembered().look;
-    const set = items.find((it) => it.garment === wanted) ?? (last?.worn.set ? byId.get(last.worn.set) : undefined) ?? items.find((it) => it.slot === "set");
-    const g = data.garments.find((x) => x.id === set?.garment);
-    if (last && set && last.worn.set === set.id) return last;
-    return { worn: set ? { set: set.id } : {}, colors: [], mods: [], occasion: g?.occasions[0] ?? data.occasions[0].id };
-  }, [data, items, byId, wanted]);
+  const start = useMemo(() => (data ? firstLook(data, items, byId, regionId, wanted, typeof window === "undefined" ? null : remembered().look) : null), [data, items, byId, regionId, wanted]);
   const current = look ?? start;
-
-  const setItem = current?.worn.set ? byId.get(current.worn.set) : undefined;
-  const garment = data?.garments.find((g) => g.id === setItem?.garment) ?? null;
-  const selection: Selection | null =
-    current && garment
-      ? {
-          garment_id: garment.id,
-          occasion_id: current.occasion,
-          vibe: "traditional",
-          colors: current.colors,
-          accessories: Object.entries(current.worn)
-            .filter(([slot]) => slot !== "set")
-            .map(([, id]) => byId.get(id!)?.accessory)
-            .filter((a): a is string => !!a && garment.accessories.includes(a)),
-          modifications: current.mods,
-        }
-      : null;
+  const garment = data && current ? garmentOf(data, current, byId) : null;
+  const selection = data && current ? selectionOf(data, current, byId) : null;
   // the Compass is a few lookups: judging on every render costs less than keeping it in sync
   const verdict: CompassResult | null = compass && selection ? judge(compass, selection) : null;
   const bad = new Set(verdict?.triggers.filter((t) => t.state === "distorted").map((t) => t.target) ?? []);
+  // while the card is open or the reader's photo is being sewn, the look stays as it is (the card must match it)
+  const frozen = !!card || tryon.busy;
+
+  // anonymous Impact events, as the server Compass sent them: the verdict, the occasion picked, a flagged look fixed
+  const lastPick = useRef("");
+  const flagged = useRef<Record<string, "review" | "distorted">>({});
+  const judged = verdict && selection ? JSON.stringify([selection, verdict.state]) : "";
+  useEffect(() => {
+    if (!judged) return;
+    const [sel, state] = JSON.parse(judged) as [Selection, CompassState];
+    track("compass_result", { state, garment_id: sel.garment_id, occasion_id: sel.occasion_id });
+    const pick = `${sel.garment_id}/${sel.occasion_id}`;
+    if (pick !== lastPick.current) {
+      lastPick.current = pick;
+      const r = compass ? judge(compass, sel) : null;
+      track("occasion_selected", { garment_id: sel.garment_id, occasion_id: sel.occasion_id, fits: !r?.triggers.some((t) => t.type === "occasion") });
+    }
+    const was = flagged.current[sel.garment_id];
+    if (state === "review" || state === "distorted") flagged.current[sel.garment_id] = state;
+    else if (was) {
+      track("look_fixed", { from_state: was, to_state: state, garment_id: sel.garment_id });
+      delete flagged.current[sel.garment_id];
+    }
+  }, [judged, compass]);
 
   /** Every change of the look goes through here: kept for "Hoàn tác", remembered on this device, the tag swings. */
   function change(next: Look) {
-    if (!current) return;
+    if (!current || frozen) return;
     setHistory((h) => [...h.slice(-19), current]);
-    setLook(next);
-    setPulse((n) => n + 1);
-    tryon.clear();
-    try {
-      localStorage.setItem(KEY, JSON.stringify({ who, look: next }));
-    } catch {
-      // private mode: the look lasts for this visit
-    }
+    show(next);
   }
   function undo() {
     const prev = history[history.length - 1];
-    if (!prev) return;
+    if (!prev || frozen) return;
     setHistory((h) => h.slice(0, -1));
-    setLook(prev);
+    show(prev);
+  }
+  /** Put a look on the doll: the old AI picture no longer shows it, and the next visit opens on it. */
+  function show(next: Look) {
+    setLook(next);
     setPulse((n) => n + 1);
+    tryon.clear();
+    remember(who, next);
   }
   const keys = useRef({ undo });
   useEffect(() => {
@@ -154,63 +168,40 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   function pickWho(w: Who) {
     setWho(w);
     setAskWho(false);
-    try {
-      localStorage.setItem(KEY, JSON.stringify({ who: w, look: current }));
-    } catch {
-      // private mode
-    }
+    remember(w, current);
   }
 
-  function stateOf(it: WardrobeItem): ItemState {
-    if (!current || !data) return "plain";
-    if (!DRAWN.has(it.art) && !it.layers[who ?? "nu"]) return "lock";
-    if (who === "nam" && !it.bodies.includes("nam")) return "lock";
-    if (current.worn[it.slot] === it.id) return it.accessory && bad.has(it.accessory) ? "bad" : "worn";
-    if (it.accessory && garment && !garment.accessories.includes(it.accessory)) return "dim";
-    if (it.garment && !data.garments.find((g) => g.id === it.garment)?.occasions.includes(current.occasion)) return "dim";
-    return "plain";
-  }
+  const stateOf = (it: WardrobeItem): PieceState =>
+    current && data ? pieceState(it, current, garment, data, { body: who ?? "nu", drawable: (x) => DRAWN.has(x.art) || !!x.layers[who ?? "nu"], bad }) : "plain";
   function noteOf(it: WardrobeItem): string {
     if (!data) return "";
     const st = stateOf(it);
     if (st === "lock") return who === "nam" ? "chưa có dáng nam" : "chưa vẽ";
     if (st === "worn") return "đang mặc";
     if (st === "bad") return "gây sai lệch";
+    if (st === "off") return garment ? `không đi với ${garment.name_vi.toLowerCase()}` : "chọn bộ áo trước";
     if (it.garment) {
-      const g = data.garments.find((x) => x.id === it.garment)!;
       if (st === "dim") return "chưa hợp dịp này";
+      const g = data.garments.find((x) => x.id === it.garment)!;
       return data.regions.find((r) => r.id === g.region)?.name.split("/")[0].trim() ?? "";
     }
     const a = data.accessories[it.accessory!];
-    if (st === "dim") return garment ? `không đi với ${garment.name_vi.toLowerCase()}` : "";
     if (a.verified === false && a.kind === "traditional-vn") return "Tèo đang kiểm tra";
     return ({ "traditional-vn": "Việt", modern: "hiện đại", "traditional-foreign": "nước khác", restricted: "lễ nghi" } as Record<string, string>)[a.kind] ?? "";
   }
 
-  /** Wear or take off one piece. A new garment starts its colours and zones afresh and drops what it does not go with. */
+  /** Wear or take off one piece; a piece the garment does not offer cannot be worn at all (lib/wardrobe). */
   function toggle(it: WardrobeItem) {
-    if (!current || !data || stateOf(it) === "lock") return;
-    const worn = { ...current.worn };
-    if (worn[it.slot] === it.id) {
-      delete worn[it.slot];
-      return change({ ...current, worn });
-    }
-    worn[it.slot] = it.id;
-    track("wardrobe_wear", { item_id: it.id, body: who ?? "nu" });
-    if (it.slot === "set") {
-      const g = data.garments.find((x) => x.id === it.garment)!;
-      for (const [slot, id] of Object.entries(worn)) {
-        const acc = byId.get(id!)?.accessory;
-        if (slot !== "set" && acc && !g.accessories.includes(acc)) delete worn[slot as WardrobeSlot];
-      }
-      return change({ worn, colors: [], mods: [], occasion: current.occasion });
-    }
-    change({ ...current, worn });
+    if (!current || !data || frozen) return;
+    const next = toggled(current, it, stateOf(it), data, byId);
+    if (!next) return;
+    if (next.worn[it.slot] === it.id) track("wardrobe_wear", { item_id: it.id, body: who ?? "nu" });
+    change(next);
   }
 
   /** 🎲 Bà chọn giúp: a garment for the occasion and a few Vietnamese pieces, always ✅ or ✨. */
   function surprise() {
-    if (!current || !data || !compass) return;
+    if (!current || !data || !compass || frozen) return;
     const sets = items.filter((it) => it.slot === "set" && stateOf(it) !== "lock" && data.garments.find((g) => g.id === it.garment)?.occasions.includes(current.occasion));
     for (let n = 0; n < 40 && sets.length; n++) {
       const s = pick(sets);
@@ -220,95 +211,94 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
         const fit = items.filter((it) => it.slot === slot && it.accessory && g.accessories.includes(it.accessory) && data.accessories[it.accessory].kind === "traditional-vn");
         if (fit.length && chance(0.8)) worn[slot] = pick(fit).id;
       }
-      const colors = chance(0.6) ? [pick(g.colors)] : [];
-      const accessories = Object.values(worn)
-        .map((id) => byId.get(id!)?.accessory)
-        .filter((a): a is string => !!a);
-      const v = evaluate(compass, { garment_id: g.id, occasion_id: current.occasion, vibe: "traditional", colors, accessories, modifications: [] });
-      if (v.state === "fit" || v.state === "adapted") return change({ worn, colors, mods: [], occasion: current.occasion });
+      const next: Look = { worn, colors: chance(0.6) ? [pick(g.colors)] : [], mods: [], occasion: current.occasion };
+      const v = judge(compass, selectionOf(data, next, byId)!);
+      if (v && (v.state === "fit" || v.state === "adapted")) return change(next);
     }
   }
 
   /** ⛔ "Mặc phương án thay thế": the Compass's swapped look, back on the doll. */
   function wearAlternative() {
-    if (!current || !verdict?.alternative) return;
-    const alt = verdict.alternative;
-    const worn: Look["worn"] = { set: current.worn.set };
-    for (const a of alt.accessories) {
-      const it = items.find((x) => x.accessory === a);
-      if (it) worn[it.slot] = it.id;
-    }
-    change({ worn, colors: alt.colors, mods: alt.modifications, occasion: alt.occasion_id });
+    if (!data || !verdict?.alternative) return;
+    change(lookOf(verdict.alternative, items, data, byId));
     setFork(false);
   }
 
-  function openCard(image: string, isAI: boolean) {
-    if (!data || !garment || !selection || !verdict || !current) return;
+  function openCard(image: string, isAI: boolean, snap: Snap) {
+    if (!data) return;
+    const g = data.garments.find((x) => x.id === snap.selection.garment_id)!;
     let n = 1;
     try {
       n = Number(localStorage.getItem(COUNT) ?? "0") + 1;
     } catch {
       // private mode: every card is number 1
     }
-    const state = isAI && tryon.result?.rendered_alternative ? (tryon.result.compass.alternative_state ?? verdict.state) : verdict.state;
+    // the try-on may have rendered the Compass's alternative: the card carries the verdict of what is in the picture
+    const state = isAI && tryon.result?.rendered_alternative ? (tryon.result.compass.alternative_state ?? snap.verdict.state) : snap.verdict.state;
     setCard({
+      snap,
       image,
       isAI,
+      sample: isAI && tryon.isSample,
       state,
       number: n,
-      title: `${garment.name_vi} · ${data.occasions.find((o) => o.id === current.occasion)?.name.split("/")[0].trim()}`,
-      place: data.regions.find((r) => r.id === garment.region)?.name.split("/")[0].trim() ?? "",
+      title: `${g.name_vi} · ${data.occasions.find((o) => o.id === snap.selection.occasion_id)?.name.split("/")[0].trim()}`,
+      place: data.regions.find((r) => r.id === g.region)?.name.split("/")[0].trim() ?? "",
       date: new Date().toLocaleDateString("vi-VN"),
-      note: baNote(data, garment, selection, verdict),
-      items: [garment.name_vi, ...selection.accessories.map((a) => data.accessories[a]?.name_vi ?? a)],
+      note: baNote(data, g, snap.selection, snap.verdict),
+      items: [g.name_vi, ...snap.selection.accessories.map((a) => data.accessories[a]?.name_vi ?? a)],
     });
-    setSaved(false);
+    setSaving("idle");
+    setSaveError(null);
   }
 
   /** "Xong rồi": the card drops. With "Con", the look is first put on the reader's photo. */
   async function finish() {
-    if (!data || !garment || !selection || !verdict) return;
+    if (!data || !current || !selection || !verdict || frozen) return;
     if (verdict.state === "distorted") return setFork(true);
+    const snap: Snap = { selection, look: current, verdict };
     if (who === "con") {
       if (!tryon.photo) return document.getElementById("con-photo")?.click();
+      setSent(snap);
       await tryon.run(selection);
       return;
     }
-    if (doll.current) openCard(dollImage(doll.current), false);
+    if (doll.current) openCard(dollImage(doll.current), false, snap);
   }
-  // the reader's own photo came back from the try-on: its card drops
+  // the reader's own photo came back from the try-on: its card drops, made from the look that was sent
   const [shownFor, setShownFor] = useState<string | null>(null);
-  if (who === "con" && tryon.image && !tryon.busy && tryon.result && shownFor !== tryon.image && garment && selection && verdict) {
+  if (who === "con" && sent && tryon.image && !tryon.busy && tryon.result && shownFor !== tryon.image) {
     setShownFor(tryon.image);
-    openCard(tryon.image, true);
+    openCard(tryon.image, true, sent);
   }
 
+  /** Save the card into the Du Ký. "Đã lưu" only once it really is; a picture that cannot be drawn says so. */
   async function save(cardEl: HTMLElement) {
-    if (!card || !data || !garment || !selection || saved) return;
-    setSaved(true);
-    const stamp = STAMP[card.state];
-    const png = await cardPicture({ art: card.image, title: card.title, meta: `${card.place} · ${card.date}`, number: card.number, stamp: stamp.word, icon: stamp.icon, aiNote: card.isAI });
-    await ensureMigrated(data.garments);
-    const page = addPage(
-      newPage({
-        region_id: garment.region,
-        garment_id: garment.id,
-        occasion_id: selection.occasion_id,
-        look: selection,
-        compass_label: stamp.word ? (verdict?.label ?? null) : null,
-        compass_state: card.state,
-      }),
-    );
-    await addPhoto(page.id, await dataUrlToBlob(png), card.isAI ? "ai" : "card", card.isAI && tryon.isSample);
+    if (!card || !data || saving !== "idle") return;
+    setSaving("saving");
+    setSaveError(null);
     try {
-      localStorage.setItem(COUNT, String(card.number));
-    } catch {
-      // private mode
+      const { selection: sel } = card.snap;
+      const g = data.garments.find((x) => x.id === sel.garment_id)!;
+      const stamp = STAMP[card.state];
+      const png = await cardPicture({ art: card.image, title: card.title, meta: `${card.place} · ${card.date}`, number: card.number, stamp: stamp.word, icon: stamp.icon, aiLabel: card.isAI ? (card.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI") : null });
+      await ensureMigrated(data.garments);
+      const page = addPage(newPage({ region_id: g.region, garment_id: g.id, occasion_id: sel.occasion_id, look: sel, compass_label: LABEL[card.state], compass_state: card.state }));
+      await addPhoto(page.id, await dataUrlToBlob(png), card.isAI ? "ai" : "card", card.sample);
+      try {
+        localStorage.setItem(COUNT, String(card.number));
+      } catch {
+        // private mode
+      }
+      track("duky_save", { kind: card.isAI ? "ai" : "card", garment_id: g.id });
+      setSaving("saved");
+      await flyToDuKy(cardEl, png);
+      setCard(null);
+      setToast(true);
+    } catch (e) {
+      setSaving("idle");
+      setSaveError(e instanceof Error ? e.message : "Chưa lưu được thẻ, con thử lại nhé.");
     }
-    track("duky_save", { kind: card.isAI ? "ai" : "card", garment_id: garment.id });
-    await flyToDuKy(cardEl, png);
-    setCard(null);
-    setToast(true);
   }
 
   if (error) return <p className="p-8 text-red-700">{error}</p>;
@@ -351,7 +341,9 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           ? { label: "Cần máy chủ để dựng ảnh của con", off: true }
           : tryon.busy
             ? { label: tryon.stageLabel ?? "Đang may…", off: true }
-            : { label: tryon.photo ? "Dựng ảnh của con ›" : "📷 Chọn ảnh của con", off: false }
+            : tryon.countdown
+              ? { label: tryon.countdown, off: true } // after a 429: wait, or the limiter starts over
+              : { label: tryon.photo ? "Dựng ảnh của con ›" : "📷 Chọn ảnh của con", off: tryon.locked }
         : { label: "Xong rồi ›", off: !verdict };
 
   return (
@@ -447,10 +439,10 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
 
       <div className="fitting-bar">
         <div className="flex flex-wrap items-center gap-2">
-          <button type="button" onClick={undo} disabled={!history.length} className="page-turn !text-[0.95rem]">
+          <button type="button" onClick={undo} disabled={!history.length || frozen} className="page-turn !text-[0.95rem]">
             ↶ Hoàn tác
           </button>
-          <button type="button" onClick={surprise} className="page-turn !text-[0.95rem]">
+          <button type="button" onClick={surprise} disabled={frozen} className="page-turn !text-[0.95rem]">
             🎲 Bà chọn giúp
           </button>
         </div>
@@ -493,14 +485,17 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           <LookCard
             key="card"
             face={card}
-            saved={saved}
+            saving={saving}
+            error={saveError}
             onSave={save}
             onClose={() => setCard(null)}
             onRedo={
-              who === "con" && selection
+              card.isAI
                 ? () => {
+                    const snap = card.snap;
                     setCard(null);
-                    void tryon.run(selection);
+                    setSent(snap);
+                    void tryon.run(snap.selection);
                   }
                 : undefined
             }
@@ -552,7 +547,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
             current={selection}
             data={data}
             onUse={(s) => {
-              change({ ...current, colors: s.colors, mods: s.modifications, occasion: s.occasion_id });
+              change(lookOf(s, items, data, byId));
               setComparing(false);
             }}
           />
@@ -577,7 +572,6 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   );
 }
 
-const EMPTY = { garments: [] } as unknown as Bootstrap;
 
 function judge(c: NonNullable<Parameters<typeof evaluate>[0]>, sel: Selection): CompassResult | null {
   try {
@@ -600,7 +594,8 @@ function colorsOf(data: Bootstrap, g: Garment | null, picked: string[]): [string
 
 /** The saved card shrinks and flies into the "Du Ký của tôi" link; the link bounces when it lands. */
 async function flyToDuKy(from: HTMLElement, png: string) {
-  const target = document.querySelector<HTMLElement>('.site-nav a[href$="/du-ky"]');
+  // GitHub Pages builds with trailingSlash, so the link ends in "/du-ky/" there
+  const target = document.querySelector<HTMLElement>('.site-nav a[href$="/du-ky"], .site-nav a[href$="/du-ky/"]');
   if (!target || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const a = from.getBoundingClientRect();
   const b = target.getBoundingClientRect();

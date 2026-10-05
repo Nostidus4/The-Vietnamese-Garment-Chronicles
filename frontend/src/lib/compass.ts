@@ -69,7 +69,8 @@ function collect(c: CompassContent, sel: Selection, g: Garment): Trigger[] {
     const a = c.accessories[id];
     const rule = KIND_RULE[a.kind];
     if (rule) out.push(trigger(c, rule, id, a.name_vi, a.message));
-    if (a.occasions && !a.occasions.includes(sel.occasion_id)) out.push(trigger(c, "occasion", id, a.name_vi));
+    // like Python's `if a.occasions and …`: an empty list means "any occasion", as a missing one does
+    if (a.occasions?.length && !a.occasions.includes(sel.occasion_id)) out.push(trigger(c, "occasion", id, a.name_vi));
   }
   for (const id of sel.colors) {
     const col = c.colors[id];

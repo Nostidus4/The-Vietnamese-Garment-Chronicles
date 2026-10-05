@@ -73,3 +73,15 @@ def test_summary_numbers():
     assert s["occasion_adoption"] == {"picks": 2, "fits": 1, "rate": 0.5}
     assert s["quiz"] == {"sessions_with_both": 1, "pre_avg": 0.0, "post_avg": 1.0, "by_region": {"hue": {"sessions": 1, "pre_avg": 0.0, "post_avg": 1.0}}}
     assert s["looks_fixed"] == {"flagged": 2, "fixed": 1, "rate": 0.5}
+
+
+def test_every_event_type_is_allowed_by_the_supabase_table():
+    # the CHECK constraint in events.sql must list every type the API accepts, or Supabase refuses the insert (400)
+    import re
+    from pathlib import Path
+
+    sql = (Path(__file__).parents[1] / "supabase" / "events.sql").read_text(encoding="utf-8")
+    allowed = set(re.findall(r"'([a-z_]+)'", sql.split("check (type in", 1)[1].split(")", 1)[0]))
+    assert set(events.TYPES) == allowed
+    migration = (Path(__file__).parents[1] / "supabase" / "migrations" / "2026-10-05-wardrobe-events.sql").read_text(encoding="utf-8")
+    assert all(f"'{t}'" in migration for t in events.TYPES)

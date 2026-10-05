@@ -8,6 +8,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { asset } from "@/lib/base";
 import type { Bootstrap, CompassResult, CompassState, Garment, WardrobeItem, WardrobeSlot } from "@/lib/types";
+import type { PieceState } from "@/lib/wardrobe";
 import { pickOption, pickedOption, zoneControl } from "@/lib/zones";
 import type { Selection } from "@/lib/types";
 
@@ -76,7 +77,6 @@ export const DRAWERS: { id: Drawer; name: string; slots: WardrobeSlot[] }[] = [
   { id: "style", name: "Màu & phần áo", slots: [] },
 ];
 
-export type ItemState = "worn" | "bad" | "dim" | "lock" | "plain";
 
 export function WardrobePanel({
   data,
@@ -94,7 +94,7 @@ export function WardrobePanel({
 }: {
   data: Bootstrap;
   items: WardrobeItem[];
-  stateOf: (it: WardrobeItem) => ItemState;
+  stateOf: (it: WardrobeItem) => PieceState;
   noteOf: (it: WardrobeItem) => string;
   onToggle: (it: WardrobeItem) => void;
   garment: Garment | null;
@@ -142,7 +142,8 @@ export function WardrobePanel({
                     <button
                       type="button"
                       aria-pressed={st === "worn"}
-                      aria-label={`${name}${st === "worn" ? ", đang mặc" : st === "bad" ? ", gây sai lệch" : st === "lock" ? ", chưa mở" : ""}`}
+                      aria-label={`${name}${st === "worn" ? ", đang mặc" : st === "bad" ? ", gây sai lệch" : st === "lock" ? ", chưa mở" : st === "off" ? `, ${noteOf(it)}` : ""}`}
+                      aria-disabled={st === "off" || st === "lock"}
                       onClick={() => onToggle(it)}
                       className={`w-item w-item-${st}`}
                       title={noteOf(it)}
@@ -307,17 +308,19 @@ export const STAMP: Record<CompassState, { word: string; icon: string }> = {
   distorted: { word: "", icon: "⛔" },
 };
 
-export type CardFace = { image: string; title: string; place: string; date: string; number: number; state: CompassState; note: string[]; items: string[]; isAI: boolean };
+export type CardFace = { image: string; title: string; place: string; date: string; number: number; state: CompassState; note: string[]; items: string[]; isAI: boolean; sample: boolean };
 
 export function LookCard({
   face,
-  saved,
+  saving,
+  error,
   onSave,
   onClose,
   onRedo,
 }: {
   face: CardFace;
-  saved: boolean;
+  saving: "idle" | "saving" | "saved";
+  error: string | null;
   onSave: (el: HTMLElement) => void;
   onClose: () => void;
   onRedo?: () => void;
@@ -347,7 +350,9 @@ export function LookCard({
               <span className="look-card-art">
                 {/* eslint-disable-next-line @next/next/no-img-element -- a data/blob URL made in the browser */}
                 <img src={face.image} alt="" className="h-full w-full object-contain" />
-                {face.isAI && <span className="absolute bottom-1.5 left-1.5 rounded bg-black/65 px-1.5 py-0.5 text-[0.6rem] font-semibold text-white">Ảnh minh họa AI</span>}
+                {face.isAI && (
+                  <span className="absolute bottom-1.5 left-1.5 rounded bg-black/65 px-1.5 py-0.5 text-[0.6rem] font-semibold text-white">{face.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI"}</span>
+                )}
               </span>
               <motion.span
                 className="look-stamp"
@@ -383,9 +388,10 @@ export function LookCard({
           </motion.div>
         </motion.div>
         <p className="m-0 text-xs text-amber-50/80">Bấm vào thẻ để lật</p>
+        {error && <p className="m-0 rounded bg-red-50/95 px-3 py-1 text-sm text-red-800" role="alert">{error}</p>}
         <div className="flex flex-wrap justify-center gap-2">
-          <button type="button" disabled={saved} onClick={() => cardEl && onSave(cardEl)} className="page-turn page-turn-main">
-            {saved ? "Đã lưu vào Du Ký ✓" : "Lưu vào Du Ký"}
+          <button type="button" disabled={saving !== "idle"} onClick={() => cardEl && onSave(cardEl)} className="page-turn page-turn-main">
+            {saving === "saved" ? "Đã lưu vào Du Ký ✓" : saving === "saving" ? "Đang dán vào sổ…" : "Lưu vào Du Ký"}
           </button>
           {onRedo && (
             <button type="button" onClick={onRedo} className="page-turn">

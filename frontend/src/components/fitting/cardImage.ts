@@ -17,6 +17,9 @@ export function dollImage(svg: SVGSVGElement): string {
 function load(src: string): Promise<HTMLImageElement> {
   return new Promise((ok, fail) => {
     const img = new Image();
+    // the try-on's fallback picture comes from the server (/media): without CORS it would taint the canvas and
+    // toDataURL would throw, so ask for it with CORS (the backend's CORS middleware covers /media)
+    if (/^https?:/.test(src)) img.crossOrigin = "anonymous";
     img.onload = () => ok(img);
     img.onerror = () => fail(new Error("Không vẽ được ảnh của thẻ"));
     img.src = src;
@@ -33,7 +36,7 @@ function fontOf(className: string, fallback: string) {
   return f || fallback;
 }
 
-export async function cardPicture(o: { art: string; title: string; meta: string; number: number; stamp: string; icon: string; aiNote: boolean }): Promise<string> {
+export async function cardPicture(o: { art: string; title: string; meta: string; number: number; stamp: string; icon: string; aiLabel: string | null }): Promise<string> {
   const canvas = document.createElement("canvas");
   canvas.width = W;
   canvas.height = H;
@@ -62,12 +65,12 @@ export async function cardPicture(o: { art: string; title: string; meta: string;
   const s = Math.min(aw / img.width, ah / img.height) * 0.94;
   const iw = img.width * s, ih = img.height * s;
   ctx.drawImage(img, ax + (aw - iw) / 2, ay + (ah - ih) / 2, iw, ih);
-  if (o.aiNote) {
-    ctx.fillStyle = "rgba(0,0,0,0.65)";
-    ctx.fillRect(ax + 14, ay + ah - 48, 250, 34);
-    ctx.fillStyle = "#fff";
+  if (o.aiLabel) {
     ctx.font = `600 22px ${body}`;
-    ctx.fillText("Ảnh minh họa AI", ax + 26, ay + ah - 24);
+    ctx.fillStyle = "rgba(0,0,0,0.65)";
+    ctx.fillRect(ax + 14, ay + ah - 48, ctx.measureText(o.aiLabel).width + 24, 34);
+    ctx.fillStyle = "#fff";
+    ctx.fillText(o.aiLabel, ax + 26, ay + ah - 24);
   }
 
   // the Compass stamp, red and a little crooked
