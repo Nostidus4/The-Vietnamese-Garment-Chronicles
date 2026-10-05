@@ -211,3 +211,22 @@ def test_the_right_answer_is_not_given_away_by_its_length(content):
     questions = [q for r in content.regions.values() if r.journey and r.journey.check for q in [r.journey.check.pre, *r.journey.check.post]]
     longest = [q.id for q in questions if all(len(q.choices[q.answer]) > len(c) for i, c in enumerate(q.choices) if i != q.answer)]
     assert len(longest) <= 0.6 * len(questions), longest
+
+
+def test_team_notes_never_reach_the_reader(tmp_path):
+    # #50: "Research Mục…" and "(cần thẩm định)" belong in internal_ref / note, not in shown text
+    root = _copy(tmp_path)
+    p = root / "rules.json"
+    data = json.loads(p.read_text(encoding="utf-8"))
+    data["rules"][0]["why"] = "Research Mục 19.2, tiêu chí 3."
+    p.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    s = root / "sources.json"
+    src = json.loads(s.read_text(encoding="utf-8"))
+    src["sources"][0]["title"] += " (cần thẩm định)"
+    src["sources"][1]["note"] = "Research Report – cần thẩm định"  # a team note is fine
+    s.write_text(json.dumps(src, ensure_ascii=False), encoding="utf-8")
+    _, rep = store.load(root)
+    shown = [e for e in rep.errors if "team note shown" in e]
+    assert any("rules.json" in e and "why" in e for e in shown)
+    assert any("sources.json" in e and "title" in e for e in shown)
+    assert not any("note" in e.split("at ")[-1] for e in shown)

@@ -176,7 +176,7 @@ export interface Journey {
   arrive: (DiaryPage & { landmarks: { name: string; lon: number; lat: number; note: string }[] }) | null;
   look: (DiaryPage & { frames: Frame[] }) | null;
   stops: Stop[];
-  letter: { text: string; image: string | null } | null;
+  letter: { text: string; image: string | null; signed?: string | null } | null;
   community_review: boolean;
   life: (DiaryPage & { items: { id: string; kind: "custom" | "dish"; title: string; text: string; community_review: boolean }[] }) | null;
   festivals:
@@ -289,7 +289,7 @@ export interface Bootstrap {
   occasions: { id: string; name: string }[];
   colors: Record<string, { id: string; name: string; hex: string; restricted: boolean }>;
   accessories: Record<string, { id: string; name_vi: string; kind: string; description?: string | null; occasions?: string[] | null; message?: { ti: string; teo: string; why: string } | null; alternative?: string | null; verified?: boolean }>;
-  sources: Record<string, { id: string; title: string; url: string | null }>;
+  sources: Record<string, { id: string; title: string; url: string | null; verified?: boolean }>;
   opening: OpeningScreen[];
   glossary: Record<string, GlossaryTerm>;
   /** Bà's wardrobe for the dress-up room (backend/content/wardrobe.json) */

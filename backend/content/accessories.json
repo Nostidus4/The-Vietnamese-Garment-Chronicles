@@ -67,7 +67,8 @@
       "message": {
         "ti": "Obi đẹp thật, nhưng để dành cho một bộ kimono nhé!",
         "teo": "Obi là đai lưng truyền thống của Nhật Bản. Đặt lên Việt phục dễ khiến người xem nhầm bản sắc của cả hai.",
-        "why": "Research Mục 19.2, tiêu chí 3: không pha trộn quốc gia trên cùng một tổng thể."
+        "why": "Mỗi nước có trang phục truyền thống riêng. Pha hai nước trong một bộ dễ khiến người xem nhầm bản sắc của cả hai.",
+        "internal_ref": "Research Mục 19.2, tiêu chí 3: không pha trộn quốc gia trên cùng một tổng thể."
       },
       "sources": [
         "research-19-2"
@@ -80,7 +81,8 @@
       "message": {
         "ti": "Chiếc nơ này rất xinh, nhưng nó thuộc về hanbok rồi.",
         "teo": "Nơ buộc là chi tiết của áo jeogori trong hanbok Hàn Quốc, không thuộc Việt phục.",
-        "why": "Research Mục 19.2, tiêu chí 3: không pha trộn quốc gia trên cùng một tổng thể."
+        "why": "Mỗi nước có trang phục truyền thống riêng. Pha hai nước trong một bộ dễ khiến người xem nhầm bản sắc của cả hai.",
+        "internal_ref": "Research Mục 19.2, tiêu chí 3: không pha trộn quốc gia trên cùng một tổng thể."
       },
       "sources": [
         "research-19-2"

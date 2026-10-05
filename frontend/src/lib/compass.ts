@@ -6,7 +6,8 @@
 import type { CompassResult, CompassState, Selection, Trigger } from "./types";
 
 type Message = { ti: string; teo: string; why: string };
-type Rule = Message & { type: string; state: CompassState; sources: string[] };
+type Rule = Message & { type: string; state: CompassState; sources: string[]; by?: Partial<Record<ChangeKind, Message>> };
+type ChangeKind = "accessory" | "color" | "zone" | "garment";
 type ZoneOption = { id: string; label: string };
 type Zone = { part: string; level: "keep" | "caution" | "free"; options: ZoneOption[] };
 type Garment = { id: string; name_vi: string; colors: string[]; default_colors: string[]; accessories: string[]; occasions: string[]; zones: Zone[] };
@@ -54,10 +55,18 @@ function validate(c: CompassContent, sel: Selection): Garment {
   return g;
 }
 
-function trigger(c: CompassContent, type: string, target: string, targetName: string, override?: Message | null): Trigger {
+/** The rule's words with the blanks filled; a sentence that opens with a part's name ("cổ áo …") gets its capital. */
+function fill(text: string, blanks: Record<string, string>): string {
+  for (const [k, v] of Object.entries(blanks)) text = text.replaceAll(`{${k}}`, v);
+  return text.slice(0, 1).toUpperCase() + text.slice(1);
+}
+
+/** One rule that fired, in words about the thing that was changed (an accessory's own message wins). */
+function trigger(c: CompassContent, type: string, target: string, targetName: string, kind: ChangeKind, override?: Message | null, blanks: Record<string, string> = {}): Trigger {
   const rule = c.rules[type];
-  const msg = override ?? rule;
-  return { type, state: rule.state, target, target_name: targetName, ti: msg.ti, teo: msg.teo, why: msg.why, sources: rule.sources };
+  const msg = override ?? rule.by?.[kind] ?? rule;
+  const b = { name: targetName, ...blanks };
+  return { type, state: rule.state, target, target_name: targetName, ti: fill(msg.ti, b), teo: fill(msg.teo, b), why: fill(msg.why, b), sources: rule.sources };
 }
 
 const KIND_RULE: Record<string, string> = { "traditional-foreign": "fusion", restricted: "restricted", modern: "flexible" };
@@ -68,23 +77,23 @@ function collect(c: CompassContent, sel: Selection, g: Garment): Trigger[] {
   for (const id of sel.accessories) {
     const a = c.accessories[id];
     const rule = KIND_RULE[a.kind];
-    if (rule) out.push(trigger(c, rule, id, a.name_vi, a.message));
+    if (rule) out.push(trigger(c, rule, id, a.name_vi, "accessory", a.message));
     // like Python's `if a.occasions and …`: an empty list means "any occasion", as a missing one does
-    if (a.occasions?.length && !a.occasions.includes(sel.occasion_id)) out.push(trigger(c, "occasion", id, a.name_vi));
+    if (a.occasions?.length && !a.occasions.includes(sel.occasion_id)) out.push(trigger(c, "occasion", id, a.name_vi, "accessory"));
   }
   for (const id of sel.colors) {
     const col = c.colors[id];
-    if (col.restricted) out.push(trigger(c, "restricted", id, col.name));
+    if (col.restricted) out.push(trigger(c, "restricted", id, col.name, "color"));
   }
   const changed = sel.colors.filter((x) => !g.default_colors.includes(x) && !c.colors[x].restricted);
-  if (changed.length) out.push(trigger(c, "flexible", changed[0], c.colors[changed[0]].name));
+  if (changed.length) out.push(trigger(c, "flexible", changed[0], c.colors[changed[0]].name, "color"));
   for (const m of sel.modifications) {
     if (m.change === KEEP_OPTION) continue;
     const z = g.zones.find((x) => x.part === m.zone)!;
     const option = z.options.find((o) => o.id === m.change)!;
-    out.push(trigger(c, LEVEL_RULE[z.level], m.zone, `${m.zone}: ${option.label}`));
+    out.push(trigger(c, LEVEL_RULE[z.level], m.zone, `${m.zone}: ${option.label}`, "zone", null, { zone: m.zone, option: option.label }));
   }
-  if (!g.occasions.includes(sel.occasion_id)) out.push(trigger(c, "occasion", g.id, g.name_vi));
+  if (!g.occasions.includes(sel.occasion_id)) out.push(trigger(c, "occasion", g.id, g.name_vi, "garment"));
   return out;
 }
 

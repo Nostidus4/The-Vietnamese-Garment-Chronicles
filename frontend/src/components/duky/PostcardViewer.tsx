@@ -26,7 +26,7 @@ export function PostcardViewer({
   onClose,
 }: {
   region?: Region;
-  letter?: { text: string; image: string | null };
+  letter?: { text: string; image: string | null; signed?: string | null };
   title?: string;
   onClose: () => void;
 }) {
@@ -124,7 +124,7 @@ export function PostcardViewer({
                     ),
                   )}
               </p>
-              <p className="font-hand m-0 mt-2 text-right text-lg text-[#8a4b2a]">— Bà</p>
+              <p className="font-hand m-0 mt-2 text-right text-lg text-[#8a4b2a]">— {letter.signed ?? "Bà"}</p>
             </div>
             <div className="flex flex-[1.2] flex-col items-end border-l border-dashed border-stone-400/70 pl-3">
               <div className="flex h-16 w-14 rotate-[3deg] flex-col items-center justify-center border-2 border-dotted border-[#B5452E]/70 bg-[#f7e4c8] text-center text-[#B5452E]">

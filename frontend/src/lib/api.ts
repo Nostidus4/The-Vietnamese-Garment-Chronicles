@@ -8,8 +8,10 @@ export const HAS_API = API_URL !== "";
 
 /** Absolute URL for a file under backend/content/media, e.g. media("comic/page-1.png") */
 export const media = (path: string) => `${API_URL}/media/${path}`;
+/** What a reader sees if a server-only feature is reached anyway in a build with no server (#48): no technical words. */
+export const NO_SERVER = "Bản đọc thử này chưa làm được việc này, con mở bản đầy đủ nhé.";
 // every server call goes through here: with no backend it fails at once instead of hitting the Pages host
-const call: typeof fetch = (input, init) => (HAS_API ? fetch(input, init) : Promise.reject(new Error("Bản web này chưa nối máy chủ")));
+const call: typeof fetch = (input, init) => (HAS_API ? fetch(input, init) : Promise.reject(new Error(NO_SERVER)));
 
 async function json<T>(res: Response): Promise<T> {
   if (!res.ok) {
