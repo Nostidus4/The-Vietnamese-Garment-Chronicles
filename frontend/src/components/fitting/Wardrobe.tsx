@@ -20,7 +20,7 @@ export type Who = "nu" | "nam" | "con";
 
 const WHO: { id: Who; name: string; note: string; soon?: boolean }[] = [
   { id: "nu", name: "Nữ", note: "búp bê giấy" },
-  { id: "nam", name: "Nam", note: "sắp có", soon: true },
+  { id: "nam", name: "Nam", note: "búp bê giấy" },
   // a build without the server (GitHub Pages before the backend is up, a fork) has no room to dress a photo in (#48)
   { id: "con", name: "Con", note: HAS_API ? "ảnh của con" : "bản đầy đủ", soon: !HAS_API },
 ];

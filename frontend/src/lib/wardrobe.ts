@@ -70,6 +70,21 @@ export function keepOffered(look: Look, data: Data, byId: Map<string, WardrobeIt
   return { ...look, worn, colors, mods };
 }
 
+/**
+ * The look on another body (#77): pieces not made for it come off; if the garment itself is not (the áo tứ thân on
+ * the boy), the first garment of the same region that is, else of any region, goes on with its own colours.
+ */
+export function onBody(look: Look, body: Body, items: WardrobeItem[], data: Data, byId: Map<string, WardrobeItem>): Look {
+  const fits = (it?: WardrobeItem) => !!it && (body === "con" || it.bodies.includes(body));
+  const worn: Look["worn"] = {};
+  for (const [slot, id] of Object.entries(look.worn) as [WardrobeSlot, string][]) if (fits(byId.get(id))) worn[slot] = id;
+  if (worn.set || !look.worn.set) return { ...look, worn };
+  const region = data.garments.find((g) => g.id === byId.get(look.worn.set!)?.garment)?.region;
+  const sets = items.filter((it) => it.slot === "set" && fits(it));
+  const next = sets.find((it) => data.garments.find((g) => g.id === it.garment)?.region === region) ?? sets[0];
+  return next ? keepOffered({ ...look, worn: { ...worn, set: next.id }, colors: [], mods: [] }, data, byId) : { ...look, worn };
+}
+
 /** A Compass selection (its alternative, a pinned look) back on the doll: garment, pieces, colours, zones, occasion. */
 export function lookOf(sel: Selection, items: WardrobeItem[], data: Data, byId: Map<string, WardrobeItem>): Look {
   const worn: Look["worn"] = {};

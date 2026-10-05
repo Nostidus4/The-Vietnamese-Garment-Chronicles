@@ -19,8 +19,8 @@ const HAIR = "#2b2118";
 const line = { stroke: INK, strokeWidth: 1.5, strokeLinejoin: "round" as const, strokeLinecap: "round" as const };
 
 /** Whole doll, in an <svg> the room can also turn into the picture on the card. */
-export const PaperDoll = forwardRef<SVGSVGElement, { dress: Dress; colors: DollColors; className?: string; title?: string; still?: boolean }>(function PaperDoll(
-  { dress, colors, className, title, still = false },
+export const PaperDoll = forwardRef<SVGSVGElement, { dress: Dress; colors: DollColors; className?: string; title?: string; still?: boolean; body?: "nu" | "nam" }>(function PaperDoll(
+  { dress, colors, className, title, still = false, body = "nu" },
   ref,
 ) {
   const reduced = !!useReducedMotion();
@@ -44,7 +44,7 @@ export const PaperDoll = forwardRef<SVGSVGElement, { dress: Dress; colors: DollC
     );
   const a = (slot: WardrobeSlot) => ART[dress[slot] ?? ""]?.(colors) ?? null;
   return (
-    <svg ref={ref} viewBox="0 0 200 400" className={className} role="img" aria-label={title ?? "Búp bê giấy"} xmlns="http://www.w3.org/2000/svg">
+    <svg ref={ref} viewBox="0 0 200 400" className={className} role="img" aria-label={title ?? (body === "nam" ? "Búp bê giấy nam" : "Búp bê giấy")} xmlns="http://www.w3.org/2000/svg">
       <defs>
         {/* a faint paper grain over the colours, like a watercolour wash */}
         <filter id="wash" x="-10%" y="-10%" width="120%" height="120%">
@@ -75,7 +75,7 @@ export const PaperDoll = forwardRef<SVGSVGElement, { dress: Dress; colors: DollC
         {layer("chest", a("chest"))}
         <Hands />
         {layer("hand", a("hand"))}
-        <Head />
+        {body === "nam" ? <BoyHead /> : <Head />}
         {layer("face", a("face"))}
         {layer("head", a("head"))}
       </g>
@@ -137,6 +137,21 @@ function Head() {
       <circle cx="88" cy="64" r="3" fill="#e8a1a1" opacity="0.45" />
       <circle cx="112" cy="64" r="3" fill="#e8a1a1" opacity="0.45" />
       <path d="M86 77 Q100 82 114 77" fill="none" stroke={SKIN_SHADE} strokeWidth={1} />
+    </g>
+  );
+}
+
+/** The boy (#77): the same frame as the girl, so every garment drawn for her lines up on him; short hair, no bun. */
+function BoyHead() {
+  return (
+    <g>
+      <ellipse cx="100" cy="56" rx="20" ry="23" fill={SKIN} {...line} />
+      <path d="M79 56 Q76 30 100 30 Q124 30 121 56 Q119 44 112 41 Q104 46 92 42 Q84 44 79 56 Z" fill={HAIR} {...line} />
+      <path d="M90 58 q3 -2 6 0" fill="none" {...line} strokeWidth={1.2} />
+      <path d="M104 58 q3 -2 6 0" fill="none" {...line} strokeWidth={1.2} />
+      <path d="M95 68 q5 3 10 0" fill="none" stroke="#9a4a36" strokeWidth={1.3} strokeLinecap="round" />
+      <path d="M86 77 Q100 82 114 77" fill="none" stroke={SKIN_SHADE} strokeWidth={1} />
+      <path d="M79 56 q-3 2 -1 7 q2 3 4 0 M121 56 q3 2 1 7 q-2 3 -4 0" fill={SKIN} {...line} strokeWidth={1.1} />
     </g>
   );
 }

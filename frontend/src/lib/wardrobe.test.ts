@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { compassContent, evaluate } from "./compass";
 import type { Garment, WardrobeItem } from "./types";
-import { firstLook, keepOffered, lookOf, pieceState, selectionOf, toggled, type Look } from "./wardrobe";
+import { firstLook, keepOffered, lookOf, onBody, pieceState, selectionOf, toggled, type Look } from "./wardrobe";
 
 // the real content, as the room gets it
 const C = join(__dirname, "../../../backend/content");
@@ -73,5 +73,22 @@ describe("a selection back on the doll (review #46, 6)", () => {
     expect(back.worn.waist).toBeUndefined();
     expect(back.worn.head).toBe("non-la");
     expect(evaluate(compass, selectionOf(data, back, byId)!).state).not.toBe("distorted");
+  });
+});
+
+describe("the boy's doll (#77)", () => {
+  it("keeps what is drawn for him and takes off what is not", () => {
+    const look = onBody(wearing("ao-ngu-than", { head: "khan-van", feet: "hai-vai" }), "nam", items, data, byId);
+    expect(look.worn).toEqual({ set: "ao-ngu-than", head: "khan-van" });
+  });
+  it("swaps the áo tứ thân for a garment he can wear, from the same region if there is one", () => {
+    const look = onBody(wearing("ao-tu-than", { head: "non-quai-thao" }), "nam", items, data, byId);
+    expect(look.worn.set).toBeDefined();
+    expect(byId.get(look.worn.set!)!.bodies).toContain("nam");
+    expect(look.worn.head).toBeUndefined();
+  });
+  it("locks the girl's pieces on him", () => {
+    const st = pieceState(byId.get("non-quai-thao")!, wearing("ao-dai"), garments.find((g) => g.id === "ao-dai")!, data, { ...opts, body: "nam" });
+    expect(st).toBe("lock");
   });
 });

@@ -5,13 +5,15 @@
       "id": "ao-dai",
       "slot": "set",
       "garment": "ao-dai",
-      "art": "ao-dai"
+      "art": "ao-dai",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "ao-ngu-than",
       "slot": "set",
       "garment": "ao-ngu-than",
-      "art": "ao-ngu-than"
+      "art": "ao-ngu-than",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "ao-tu-than",
@@ -23,13 +25,15 @@
       "id": "ao-ba-ba",
       "slot": "set",
       "garment": "ao-ba-ba",
-      "art": "ao-ba-ba"
+      "art": "ao-ba-ba",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "non-la",
       "slot": "head",
       "accessory": "non-la",
-      "art": "non-la"
+      "art": "non-la",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "non-quai-thao",
@@ -41,7 +45,8 @@
       "id": "khan-van",
       "slot": "head",
       "accessory": "khan-van",
-      "art": "khan-van"
+      "art": "khan-van",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "khan-mo-qua",
@@ -53,31 +58,36 @@
       "id": "khan-ran",
       "slot": "neck",
       "accessory": "khan-ran",
-      "art": "khan-ran"
+      "art": "khan-ran",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "quat-giay",
       "slot": "hand",
       "accessory": "quat-giay",
-      "art": "quat-giay"
+      "art": "quat-giay",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "tui-tote",
       "slot": "hand",
       "accessory": "tui-tote",
-      "art": "tui-tote"
+      "art": "tui-tote",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "kinh-mat",
       "slot": "face",
       "accessory": "kinh-mat",
-      "art": "kinh-mat"
+      "art": "kinh-mat",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "guoc-moc",
       "slot": "feet",
       "accessory": "guoc-moc",
-      "art": "guoc-moc"
+      "art": "guoc-moc",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "hai-vai",
@@ -89,25 +99,29 @@
       "id": "sneakers-trang",
       "slot": "feet",
       "accessory": "sneakers-trang",
-      "art": "sneakers"
+      "art": "sneakers",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "obi",
       "slot": "waist",
       "accessory": "obi",
-      "art": "obi"
+      "art": "obi",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "no-jeogori",
       "slot": "chest",
       "accessory": "no-jeogori",
-      "art": "no-jeogori"
+      "art": "no-jeogori",
+      "bodies": ["nu", "nam"]
     },
     {
       "id": "mu-canh-chuon",
       "slot": "head",
       "accessory": "mu-canh-chuon",
-      "art": "mu-canh-chuon"
+      "art": "mu-canh-chuon",
+      "bodies": ["nu", "nam"]
     }
   ]
 }
