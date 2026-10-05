@@ -476,8 +476,8 @@
       "q": "Con đoán xem: “áo mớ ba” của liền chị quan họ nghĩa là gì?",
       "choices": [
         "Mặc ba lớp áo chồng lên nhau",
-        "Ba chiếc áo giống hệt nhau",
-        "Áo có ba cúc"
+        "Ba chiếc áo giống hệt nhau cho ba chị em",
+        "Áo có ba hàng cúc chạy dọc thân"
       ],
       "answer": 0,
       "explain": "Liền chị mặc ba lớp áo dài xanh, hồng, đen chồng lên nhau, gọi là áo mớ ba.",
@@ -492,8 +492,8 @@
         "q": "Khăn mỏ quạ của liền chị được vấn thế nào?",
         "choices": [
           "Mũi khăn chụm về phía trước như nụ sen",
-          "Buông dài sau lưng",
-          "Quấn kín cả mặt"
+          "Buông hai đuôi khăn dài thả sau lưng",
+          "Quấn tròn quanh đầu như khăn xếp"
         ],
         "answer": 0,
         "explain": "Khăn vấn sao cho đường giữa thẳng, mũi khăn nhọn chụm về phía trước như nụ sen.",
@@ -507,8 +507,8 @@
         "q": "Ở hội Lim, các liền anh liền chị làm gì?",
         "choices": [
           "Hát quan họ đối đáp, không có nhạc đệm",
-          "Đua thuyền rồng",
-          "Múa lân"
+          "Đua thuyền rồng trên sông Cầu suốt ba ngày",
+          "Múa lân và đánh trống hội quanh đình"
         ],
         "answer": 0,
         "explain": "Hai bên hát qua hát lại, cùng giai điệu mà lời khác nhau.",
@@ -522,8 +522,8 @@
         "q": "Khi phối áo tứ thân theo cách của con, phần nào nên giữ nguyên?",
         "choices": [
           "Bốn thân áo và chiếc yếm bên trong",
-          "Màu vải",
-          "Chất liệu"
+          "Màu nâu non của vải, không được đổi màu",
+          "Chất vải the, không được dùng vải khác"
         ],
         "answer": 0,
         "explain": "Bốn thân và yếm là dấu hiệu nhận ra áo tứ thân; màu và chất liệu được đổi.",

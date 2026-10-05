@@ -80,6 +80,28 @@ const Hint = ({ children, tone = "neutral" }: { children: React.ReactNode; tone?
 
 /* ---------- 1 · In tranh Đông Hồ: colours in any order, the black key block last ---------- */
 
+/** The black key block of "Đám cưới chuột": four mice, the palanquin, two lanterns. */
+function MouseOutlines({ stroke, opacity, dash }: { stroke: string; opacity: number; dash?: string }) {
+  return (
+    <g opacity={opacity} style={{ transition: "opacity .4s" }} fill="none" stroke={stroke} strokeWidth="1.1" strokeLinecap="round" strokeDasharray={dash}>
+      {[18, 38, 84, 102].map((x) => (
+        <g key={x}>
+          <circle cx={x} cy="49" r="5" />
+          <circle cx={x - 3} cy="44.5" r="1.8" />
+          <circle cx={x + 3} cy="44.5" r="1.8" />
+          <rect x={x - 5} y="54" width="10" height="11" rx="3" />
+          <path d={`M${x + 5} 62 q 6 2 7 8`} />
+        </g>
+      ))}
+      <rect x="52" y="40" width="22" height="18" rx="2" />
+      <path d="M50 38 h26 l-4 -6 h-18z M46 58 h34" />
+      <circle cx="30" cy="30" r="4" />
+      <circle cx="96" cy="30" r="4" />
+      <path d="M30 26 v-8 M96 26 v-8" />
+    </g>
+  );
+}
+
 function DongHo({ game, onWin }: Props) {
   const layers = game.rounds;
   const black = layers.length - 1; // the content lists the black outline last
@@ -127,23 +149,16 @@ function DongHo({ game, onWin }: Props) {
             ))}
             <path d="M50 38 h26 l-4 -6 h-18z" />
           </g>
+          {/* before the key block: the same lines, faint and dashed, like the sketch on the paper (a blank sheet looked
+              like a picture that had not loaded, #61) */}
+          <MouseOutlines stroke="#a8977a" opacity={on(black) ? 0 : 0.55} dash="1.5 1.5" />
           {/* black: the key block, all outlines */}
-          <g opacity={on(black) ? 1 : 0} style={{ transition: "opacity .4s" }} fill="none" stroke={color(black)} strokeWidth="1.1" strokeLinecap="round">
-            {[18, 38, 84, 102].map((x) => (
-              <g key={x}>
-                <circle cx={x} cy="49" r="5" />
-                <circle cx={x - 3} cy="44.5" r="1.8" />
-                <circle cx={x + 3} cy="44.5" r="1.8" />
-                <rect x={x - 5} y="54" width="10" height="11" rx="3" />
-                <path d={`M${x + 5} 62 q 6 2 7 8`} />
-              </g>
-            ))}
-            <rect x="52" y="40" width="22" height="18" rx="2" />
-            <path d="M50 38 h26 l-4 -6 h-18z M46 58 h34" />
-            <circle cx="30" cy="30" r="4" />
-            <circle cx="96" cy="30" r="4" />
-            <path d="M30 26 v-8 M96 26 v-8" />
-          </g>
+          <MouseOutlines stroke={color(black)} opacity={on(black) ? 1 : 0} />
+          {printed.length === 0 && (
+            <text x="60" y="14" textAnchor="middle" fontSize="5" fill="#8a6a4a" className="font-hand">
+              Tờ giấy điệp chờ bản khắc đầu tiên
+            </text>
+          )}
           {smudged && <ellipse cx="60" cy="52" rx="34" ry="16" fill="#7a5a40" opacity=".28" />}
         </svg>
         {/* the wooden block coming down */}
@@ -432,7 +447,7 @@ function XepDo({ game, onWin }: Props) {
       {checked &&
         (wrong.length ? (
           <Hint tone="bad">
-            Tí: {game.rounds[wrong[0]].label}? {game.rounds[wrong[0]].explain}
+            ✎ Tí: {game.rounds[wrong[0]].label}? {game.rounds[wrong[0]].explain}
           </Hint>
         ) : missing.length ? (
           <Hint tone="bad">Còn thiếu một món cần cho ngày trên sông đó con.</Hint>
@@ -694,6 +709,12 @@ function Det({ game, onWin }: Props) {
                 </g>
               )}
               {i === cur && <rect x="0" y={y} width="100" height={h} fill="none" stroke="#D9A43B" strokeWidth="0.8" strokeDasharray="2 1" />}
+              {/* the loom before the first thread: say what it waits for, not a striped blank (#61) */}
+              {cur === 0 && i === 0 && (
+                <text x="50" y={y + h / 2 + 1.6} textAnchor="middle" fontSize="4.2" fill="#6b4a2f" className="font-hand">
+                  Khung cửi chờ sợi đầu tiên: chọn màu bên dưới
+                </text>
+              )}
             </g>
           );
         })}

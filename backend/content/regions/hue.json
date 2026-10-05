@@ -568,8 +568,8 @@
       "q": "Con đoán xem: nón bài thơ của Huế có gì đặc biệt?",
       "choices": [
         "Kẹp hình, câu thơ giữa hai lớp lá, soi nắng mới thấy",
-        "Thơ được viết bằng mực lên mặt nón",
-        "Nón có in chữ vàng quanh vành"
+        "Câu thơ được viết bằng mực tàu lên mặt ngoài nón",
+        "Vành nón in chữ vàng để ai cũng đọc được"
       ],
       "answer": 0,
       "explain": "Giữa hai lớp lá có kẹp hình hoặc câu thơ, phải soi lên nắng mới thấy.",
@@ -584,8 +584,8 @@
         "q": "Áo ngũ thân có mấy thân áo?",
         "choices": [
           "Năm: bốn thân lớn và một thân con nằm trong",
-          "Bốn thân",
-          "Hai thân"
+          "Bốn: hai thân trước và hai thân sau",
+          "Sáu: bốn thân lớn, thêm hai vạt tay áo may rời"
         ],
         "answer": 0,
         "explain": "Bốn thân lớn là tứ thân phụ mẫu, thân con nằm trong là người mặc.",
@@ -600,8 +600,8 @@
         "q": "Bài chòi là gì?",
         "choices": [
           "Trò chơi và hát diễn dân gian dịp Tết ở Trung Bộ",
-          "Một món ăn của Huế",
-          "Một kiểu áo dài"
+          "Món bánh gói lá chuối người Huế ăn dịp Tết",
+          "Một kiểu áo dài của các cô gái Huế"
         ],
         "answer": 0,
         "explain": "Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh năm 2017.",
@@ -615,8 +615,8 @@
         "q": "Năm cúc trên áo ngũ thân tượng trưng cho gì?",
         "choices": [
           "Nhân, Lễ, Nghĩa, Trí, Tín",
-          "Năm người con trong nhà",
-          "Năm mùa trong năm"
+          "Năm người con trong một gia đình",
+          "Năm mùa vụ trong một năm"
         ],
         "answer": 0,
         "explain": "Năm cúc là đạo lý làm người: Nhân, Lễ, Nghĩa, Trí, Tín.",

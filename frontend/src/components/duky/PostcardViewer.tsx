@@ -131,7 +131,8 @@ export function PostcardViewer({
                 <span className="text-[0.5rem] tracking-[0.2em]">VIỆT NAM</span>
                 <span className="font-display text-[0.7rem] leading-tight">{where}</span>
               </div>
-              <div className="mt-2 h-12 w-12 rotate-[-14deg] rounded-full border-2 border-[#2F4A6D]/50 text-center text-[0.5rem] leading-[3rem] tracking-widest text-[#2F4A6D]/70">
+              {/* the place may take two lines: "BẮC NINH" in one line ran out of the ring (#61) */}
+              <div className="mt-2 flex h-12 w-12 rotate-[-14deg] items-center justify-center overflow-hidden rounded-full border-2 border-[#2F4A6D]/50 px-1 text-center text-[0.5rem] leading-tight tracking-[0.12em] text-[#2F4A6D]/70">
                 {where.toUpperCase()}
               </div>
               <p className="font-hand m-0 mt-auto text-right text-sm text-[#27354f]">Gửi con</p>

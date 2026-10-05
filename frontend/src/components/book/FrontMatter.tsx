@@ -49,14 +49,14 @@ export function LetterPage() {
           <li className="flex items-start gap-2">
             <span className="mt-[0.2em] h-3 w-4 shrink-0 rotate-[-4deg] bg-[#fbe99a] shadow" aria-hidden />
             <span>
-              Giấy vàng: Tèo tra lại, có ghi nguồn. Chữ <span className="glossary-word cursor-default whitespace-nowrap">gạch chấm</span>: bấm để hỏi Tèo.
+              Giấy vàng: Tèo tra lại, có ghi nguồn. Chữ có <span className="glossary-word cursor-default whitespace-nowrap">gạch chấm</span> bên dưới: bấm để hỏi Tèo.
             </span>
           </li>
           <li className="flex items-start gap-2">
             <span className="font-hand shrink-0 text-[0.95rem] leading-none" style={{ color: PENCIL }}>
               ✎
             </span>
-            <span>Bút chì: Tí nghĩ vẩn vơ. Trang “Hôm nay”: Tí đi lại đúng chỗ ấy, có ảnh thật.</span>
+            <span>Bút chì: lời Tí, cháu của Bà, viết thêm bên lề. Trang “Hôm nay”: Tí đi lại đúng chỗ Bà từng đến, có ảnh thật.</span>
           </li>
         </ul>
       </div>
@@ -99,7 +99,8 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
                   </span>
                 </span>
                 <span className="shrink-0 text-right text-[0.62rem] leading-tight text-stone-500">
-                  {open.length}/{r.chapters.length} chương
+                  {/* what there is to read first, then what is still to be written (#61) */}
+                  {open.length} chương{r.chapters.length > open.length ? ` · ${r.chapters.length - open.length} chờ viết` : ""}
                   {readable && (
                     <span className="mt-0.5 flex justify-end gap-0.5" aria-label={`${n}/3 tem`}>
                       {[0, 1, 2].map((k) => (

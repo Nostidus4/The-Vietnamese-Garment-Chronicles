@@ -20,6 +20,20 @@ import { asset } from "@/lib/base";
 /** Where someone who wants to write a province's chapter starts (README, "Viết một chương cho tỉnh của bạn"). */
 export const CONTRIBUTE_URL = "https://github.com/Nostidus4/The-Vietnamese-Garment-Chronicles#viết-một-chương-cho-tỉnh-của-bạn";
 
+/** The way to write a chapter: a guide on GitHub, so the link says it opens another site in a new tab. */
+function WriteLink() {
+  return (
+    <a
+      href={CONTRIBUTE_URL}
+      target="_blank"
+      rel="noreferrer"
+      className="mt-1.5 inline-flex items-center gap-1 rounded-full border border-[#8a4b2a] px-3 py-1 text-[0.8rem] text-[#8a4b2a] hover:bg-[#8a4b2a] hover:text-amber-50"
+    >
+      Viết một chương cho tỉnh của con <span className="text-[0.7rem] opacity-80">(mở GitHub ↗)</span>
+    </a>
+  );
+}
+
 const HOUR: Record<TimeOfDay, string> = {
   dawn: "SÁNG SỚM",
   morning: "BUỔI SÁNG",
@@ -102,36 +116,23 @@ export function RegionIntro({
           <span className="text-sm transition-transform group-hover:translate-x-1">Đọc →</span>
         </button>
       ))}
+      {/* one invitation instead of a faint list that looked unfinished (#61): readable, and it says it leaves the app */}
       {waiting.length > 0 && (
-        <p className="m-0 mt-3 text-[0.55rem] tracking-[0.22em] text-stone-400">CHƯA CÓ CHƯƠNG · CHỜ NGƯỜI Ở ĐÓ VIẾT</p>
-      )}
-      <ul className="m-0 mt-1 grid list-none grid-cols-2 gap-x-3 gap-y-0.5 p-0 opacity-70">
-        {waiting.map((c) => (
-          <li key={c.province}>
-            <a
-              href={CONTRIBUTE_URL}
-              target="_blank"
-              rel="noreferrer"
-              onMouseEnter={() => onProvinceHover(c.province)}
-              onMouseLeave={() => onProvinceHover(null)}
-              className="flex items-baseline gap-1.5 text-[0.74rem] text-stone-400 hover:text-[#8a4b2a]"
-              title="Chương này đang chờ người viết: bấm để xem cách cùng viết"
-            >
-              <span className="text-[0.6rem]" aria-hidden>
-                ○
+        <div className="mt-auto rounded-md border border-dashed border-[#8a4b2a]/50 bg-white/35 px-3 py-2">
+          <p className="m-0 text-[0.68rem] tracking-[0.18em] text-stone-600">MỜI CON VIẾT TIẾP</p>
+          <p className="m-0 mt-1 text-[0.8rem] leading-relaxed text-stone-700">
+            {waiting.map((c, i) => (
+              <span key={c.province} onMouseEnter={() => onProvinceHover(c.province)} onMouseLeave={() => onProvinceHover(null)} className="hover:text-[#8a4b2a]">
+                {i > 0 && " · "}
+                {c.province}
               </span>
-              {c.province}
-            </a>
-          </li>
-        ))}
-      </ul>
-      {waiting.length > 0 && (
-        <p className="font-hand m-0 mt-auto pt-2 text-[0.92rem]" style={{ color: OLD }}>
-          Những chương còn trống đang chờ người ở đó viết.{" "}
-          <a href={CONTRIBUTE_URL} target="_blank" rel="noreferrer" className="underline">
-            Con muốn viết cùng Bà?
-          </a>
-        </p>
+            ))}
+          </p>
+          <p className="font-hand m-0 mt-1 text-[0.95rem] leading-snug" style={{ color: OLD }}>
+            Bà chưa đi tới những nơi này. Ai ở đó viết, Bà dán vào sổ.
+          </p>
+          <WriteLink />
+        </div>
       )}
     </div>
   );
@@ -175,7 +176,7 @@ export function ChapterTitle({
         <p className="m-0 mt-2 rounded border border-dashed border-[#8a4b2a]/60 bg-[#f7e4c8]/60 px-2 py-1 text-[0.7rem] leading-snug text-[#6b3c12]">
           Chương này viết từ lời kể, <b>đang chờ người ở {ch.province} đọc lại và góp ý</b>. Tên gọi, ý nghĩa trang phục và nghi lễ có thể chưa chính xác.{" "}
           <a href={CONTRIBUTE_URL} target="_blank" rel="noreferrer" className="underline">
-            Góp ý cho Bà
+            Góp ý cho Bà (mở GitHub ↗)
           </a>
         </p>
       )}
@@ -200,7 +201,7 @@ function ChapterContents({ region }: { region: Region }) {
   const played = games.filter((s) => won.includes(`${region.id}:${s.id}`)).length;
   return (
     <div className="mt-1 rounded-md bg-white/35 px-3 py-2">
-      <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">TRONG CHƯƠNG NÀY</p>
+      <p className="m-0 text-[0.64rem] tracking-[0.22em] text-stone-500">TRONG CHƯƠNG NÀY</p>
       <ul className="m-0 mt-1 grid list-none grid-cols-2 gap-x-3 gap-y-0.5 p-0 text-[0.76rem] text-stone-700">
         <li>🗺 {j.stops.length} điểm dừng</li>
         <li>🎲 {played}/{games.length} trò chơi</li>
@@ -213,7 +214,7 @@ function ChapterContents({ region }: { region: Region }) {
           return (
             <span
               key={s.id}
-              className={`flex h-8 w-8 items-center justify-center rounded-full border-2 text-center text-[0.38rem] leading-[1.05] ${on ? "rotate-[-8deg] border-[#B5452E] text-[#B5452E]" : "border-dashed border-stone-400/60 text-stone-400"}`}
+              className={`flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border-2 px-0.5 text-center text-[0.38rem] leading-[1.05] [overflow-wrap:anywhere] ${on ? "rotate-[-8deg] border-[#B5452E] text-[#B5452E]" : "border-dashed border-stone-400/60 text-stone-400"}`}
               title={s.stamp ?? ""}
             >
               {s.stamp}
@@ -303,7 +304,7 @@ export function StopDiary({ stop, index, data, chapterPlace, regionId }: { stop:
       <div className={`hour-${stop.time} pointer-events-none absolute -inset-[14%]`} aria-hidden />
       <div className="relative flex h-full flex-col">
         <div className="flex items-start justify-between gap-2">
-          <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">
+          <p className="m-0 text-[0.64rem] tracking-[0.22em] text-stone-500">
             ĐIỂM {index + 1} · {stop.place.toUpperCase()} · {HOUR[stop.time]}
           </p>
           {stop.stamp && <StopStamp label={stop.stamp} regionId={regionId} stopId={stop.id} />}
@@ -424,7 +425,7 @@ function HiddenSvg() {
 
 function PhotoCredit({ photo }: { photo: Photo }) {
   return (
-    <figcaption className="mt-0.5 truncate text-right text-[0.52rem] text-stone-500">
+    <figcaption className="mt-0.5 truncate text-right text-[0.62rem] text-stone-600">
       Ảnh:{" "}
       <a href={photo.source_url} target="_blank" rel="noreferrer" className="underline">
         {photo.credit}
@@ -444,12 +445,46 @@ function TodayPhoto({ photo, tilt = 1.5 }: { photo: Photo; tilt?: number }) {
   );
 }
 
-export function StopToday({ stop }: { stop: Stop }) {
+/**
+ * An empty photo corner left on purpose: where the reader's own picture of this place goes, with the way to put one
+ * in the Du Ký. Fills the pages that had nothing on them but a line or two (#61).
+ */
+function PasteSlot({ regionId, place }: { regionId: string; place: string }) {
+  return (
+    <a
+      href={asset(`/du-ky?new=worn&region=${regionId}`)}
+      className="group mt-3 flex w-[62%] rotate-[1.5deg] flex-col items-center self-center bg-white/70 p-2 pb-3 shadow-[0_4px_10px_rgba(60,35,10,0.18)] transition-transform hover:rotate-0"
+    >
+      <span className="grid aspect-[4/3] w-full place-items-center border-2 border-dashed border-stone-400/70 text-[1.6rem] text-stone-400" aria-hidden>
+        📷
+      </span>
+      <span className="font-hand mt-1.5 text-center text-[0.95rem] leading-snug" style={{ color: OLD }}>
+        Chỗ dán ảnh của con. Tới {place} thì chụp một tấm, dán vào Du Ký nhé.
+      </span>
+      <span className="mt-0.5 text-[0.72rem] text-[#8a4b2a] underline group-hover:no-underline">Mở một trang Du Ký →</span>
+    </a>
+  );
+}
+
+/** The right page of a stop that has no game, no "Hôm nay" and no festival: the reader's corner, not a blank page. */
+export function StopPaste({ stop, regionId }: { stop: Stop; regionId: string }) {
+  return (
+    <div className="flex h-full flex-col justify-center">
+      <p className="m-0 text-[0.64rem] tracking-[0.22em] text-stone-500">HÔM NAY · {stop.place.toUpperCase()}</p>
+      <p className="font-hand m-0 mt-1 text-[1.12rem] leading-snug" style={{ color: TODAY_INK }}>
+        Tí chưa đi lại chỗ này. Trang này để dành cho con.
+      </p>
+      <PasteSlot regionId={regionId} place={stop.place} />
+    </div>
+  );
+}
+
+export function StopToday({ stop, regionId }: { stop: Stop; regionId: string }) {
   const t = stop.today!;
   const items = stop.items.filter((it) => !it.community_review || DRAFT);
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">HÔM NAY · TÍ ĐI LẠI {stop.place.toUpperCase()}</p>
+      <p className="m-0 text-[0.64rem] tracking-[0.22em] text-stone-500">HÔM NAY · TÍ ĐI LẠI {stop.place.toUpperCase()}</p>
       {t.photo && (
         <div className="mt-2 w-[88%] self-center">
           <TodayPhoto photo={t.photo} />
@@ -473,6 +508,7 @@ export function StopToday({ stop }: { stop: Stop }) {
           ))}
         </ul>
       )}
+      {!t.photo && <PasteSlot regionId={regionId} place={stop.place} />}
       {items.length > 0 && (
         <div className="mt-auto border-t border-dashed border-stone-400/60 pt-1.5">
           <p className="font-hand m-0 text-[0.9rem]" style={{ color: OLD }}>
@@ -507,13 +543,13 @@ export function StopGame({ stop, regionId, data }: { stop: Stop; regionId: strin
           ‹ {game.title}
         </button>
         <div className="min-h-0 flex-1">
-          <StopToday stop={stop} />
+          <StopToday stop={stop} regionId={regionId} />
         </div>
       </div>
     );
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">TRÒ CHƠI · {stop.place.toUpperCase()}</p>
+      <p className="m-0 text-[0.64rem] tracking-[0.22em] text-stone-500">TRÒ CHƠI · {stop.place.toUpperCase()}</p>
       <div className="flex items-start gap-2">
         <p className="font-display m-0 flex-1 text-[1.15rem] leading-tight" style={{ color: YOUNG }}>
           {game.title}
@@ -588,7 +624,7 @@ export function FestivalBoard({ stop, chapterPlace }: { stop: Stop; chapterPlace
   const left = fests.length - seen.length;
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">LỄ HỘI QUANH NĂM Ở {chapterPlace.toUpperCase()}</p>
+      <p className="m-0 text-[0.64rem] tracking-[0.22em] text-stone-500">LỄ HỘI QUANH NĂM Ở {chapterPlace.toUpperCase()}</p>
       <p className="font-hand m-0 mt-0.5 text-[0.92rem]" style={{ color: OLD }}>
         {now ? `Nếu con đến ${chapterPlace} tháng này: ${now.name}!` : `Tháng này chưa có hội lớn. Gần nhất là ${next?.name ?? fests[0].name}.`}
       </p>
@@ -632,13 +668,12 @@ export function FestivalBoard({ stop, chapterPlace }: { stop: Stop; chapterPlace
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          {sel.photo ? (
+          {/* only the festival's own photo: the stop's drawing is already on the left page, twice looked like a bug (#61) */}
+          {sel.photo && (
             <div className="w-[86%] self-center">
               <TodayPhoto photo={sel.photo} tilt={-1.2} />
             </div>
-          ) : stop.frame ? (
-            <Polaroid frame={stop.frame} i={1} className="w-[70%] self-center" />
-          ) : null}
+          )}
           <p className="m-0 mt-2 text-[0.68rem] text-stone-500">
             {sel.time} · {sel.place}
           </p>
@@ -648,7 +683,7 @@ export function FestivalBoard({ stop, chapterPlace }: { stop: Stop; chapterPlace
           {sel.review && (
             <p className="m-0 mt-1 text-[0.76rem] leading-relaxed text-stone-700">
               <span className="font-hand text-[0.9rem]" style={{ color: TODAY_INK }}>
-                Tí:{" "}
+                ✎ Tí:{" "}
               </span>
               {sel.review}
             </p>
@@ -762,9 +797,7 @@ export function ChapterEnd({ region }: { region: Region }) {
         <a href={asset("/du-ky")} className="font-hand text-[1.05rem] text-[#8a4b2a] underline">
           Mở Du Ký của con →
         </a>
-        <a href={CONTRIBUTE_URL} target="_blank" rel="noreferrer" className="text-[0.78rem] text-stone-500 underline">
-          Viết một chương cho tỉnh của con
-        </a>
+        <WriteLink />
       </div>
     </div>
   );

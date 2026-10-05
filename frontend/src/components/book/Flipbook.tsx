@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { markStamp } from "@/lib/stamps";
 import type { Bootstrap, Region } from "@/lib/types";
-import { ChapterEnd, ChapterTitle, LEAVE_CHAPTER, StopGame, EnvelopeLetter, FestivalBoard, RegionIntro, StopDiary, StopToday } from "./Chapter";
+import { ChapterEnd, ChapterTitle, LEAVE_CHAPTER, StopGame, EnvelopeLetter, FestivalBoard, RegionIntro, StopDiary, StopPaste, StopToday } from "./Chapter";
 import {
   ArriveDiary,
   AskDiary,
@@ -71,10 +71,10 @@ function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) =
         game
           ? { node: <StopGame stop={st} regionId={region.id} data={data} />, still: true }
           : st.today
-          ? { node: <StopToday stop={st} /> }
+          ? { node: <StopToday stop={st} regionId={region.id} /> }
           : st.festivals.length
             ? { node: <FestivalBoard stop={st} chapterPlace={chapterPlace} />, still: true }
-            : { node: <BlankPage /> },
+            : { node: <StopPaste stop={st} regionId={region.id} />, still: true },
       );
     });
   } else {
@@ -249,6 +249,11 @@ export default function Flipbook({
     if (!focus && (page === MAP || (portrait && page === MAP + 1))) return go(SUGGEST.id);
     if (!atEnd) bookRef.current?.pageFlip()?.flipNext("bottom");
   };
+  // → only turns pages: on the map of the whole country it does not pick a region for the reader (#61)
+  const keyNext = () => {
+    if (!focus && (page === MAP || (portrait && page === MAP + 1))) return;
+    next();
+  };
 
   // "Tôi sắp tham gia sự kiện": straight into Bà's fitting room, which first asks where the reader is going
   const toEvent = () => router.push(`/chapter/${SUGGEST.id}?entry=event`);
@@ -263,9 +268,9 @@ export default function Flipbook({
   });
 
   // ← → turn pages, Esc steps back out (chapter → region → country); ignored while typing in a field
-  const keys = useRef({ prev, next, active, toCountry, leaveChapter, focus, reading, atEnd });
+  const keys = useRef({ prev, next: keyNext, active, toCountry, leaveChapter, focus, reading, atEnd });
   useEffect(() => {
-    keys.current = { prev, next, active, toCountry, leaveChapter, focus, reading, atEnd };
+    keys.current = { prev, next: keyNext, active, toCountry, leaveChapter, focus, reading, atEnd };
   });
 
   // page-flip holds blank pages after the map and after a short chapter (its page count is fixed at the longest
