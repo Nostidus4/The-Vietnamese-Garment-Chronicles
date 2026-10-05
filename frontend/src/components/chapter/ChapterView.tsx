@@ -355,8 +355,9 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     >
       <header className="fitting-head">
         {/* back to the Mặc page this room was opened from (DeskScene reopens the book there); Link adds the base path */}
-        <Link href={`/?region=${garment?.region ?? regionId}&page=wear`} className="page-turn shrink-0 !text-[0.95rem]">
-          ‹ Về trang Mặc
+        {/* on a phone the words give their room to the garment's name (#57) */}
+        <Link href={`/?region=${garment?.region ?? regionId}&page=wear`} className="page-turn shrink-0 !text-[0.95rem]" aria-label="Về trang Mặc">
+          ‹ <span className="hidden sm:inline">Về trang Mặc</span>
         </Link>
         <div className="min-w-0 text-center">
           <p className="m-0 text-[0.6rem] uppercase tracking-[0.3em] text-amber-100/80">Tủ áo của Bà · {place}</p>
@@ -389,6 +390,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
         />
 
         <div className="fitting-stage">
+          <p className="rotate-hint">📱 Xoay dọc máy để thấy cả búp bê và tủ áo nhé.</p>
           {garment && (
             <div className="fitting-weather empty:hidden">
               <WeatherNote regionId={garment.region} garmentId={garment.id} place={place} />
@@ -439,11 +441,11 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
 
       <div className="fitting-bar">
         <div className="flex flex-wrap items-center gap-2">
-          <button type="button" onClick={undo} disabled={!history.length || frozen} className="page-turn !text-[0.95rem]">
-            ↶ Hoàn tác
+          <button type="button" onClick={undo} disabled={!history.length || frozen} className="page-turn !text-[0.95rem]" aria-label="Hoàn tác">
+            ↶ <span className="hidden sm:inline">Hoàn tác</span>
           </button>
-          <button type="button" onClick={surprise} disabled={frozen} className="page-turn !text-[0.95rem]">
-            🎲 Bà chọn giúp
+          <button type="button" onClick={surprise} disabled={frozen} className="page-turn !text-[0.95rem]" aria-label="Bà chọn giúp">
+            🎲 <span className="hidden sm:inline">Bà chọn giúp</span>
           </button>
         </div>
         <div className="flex justify-center">
