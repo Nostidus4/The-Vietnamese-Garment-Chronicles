@@ -39,8 +39,9 @@ export function BookSizeControl() {
       <button type="button" onClick={() => setScale((s) => s + SCALE_STEP)} disabled={scale >= SCALE_MAX} aria-label="Phóng to sổ" title="Phóng to (Ctrl/Cmd +)">
         +
       </button>
-      <button type="button" onClick={() => setScale(SCALE_MAX)} className="ml-1 whitespace-nowrap" title="Vừa màn hình (Ctrl/Cmd 0)">
-        Vừa màn hình
+      {/* "Vừa màn hình" read as the size already shown (90%): it is the biggest that fits, so it says so (#65) */}
+      <button type="button" onClick={() => setScale(SCALE_MAX)} disabled={scale >= SCALE_MAX} className="ml-1 whitespace-nowrap" title="To nhất vừa màn hình (Ctrl/Cmd 0)">
+        To nhất
       </button>
     </div>
   );

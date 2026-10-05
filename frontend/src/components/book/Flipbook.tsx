@@ -347,7 +347,6 @@ export default function Flipbook({
       onHover={onHover}
       onRegion={openRegion}
       onEvent={toEvent}
-      suggest={SUGGEST}
     />
   );
   // the chapter's place as a single red dot while reading a trip chapter; Bà's marks otherwise

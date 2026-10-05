@@ -196,6 +196,7 @@ export function DeskScene({
       {!reduced && <SunDust />}
       <DeskProps />
       <DuKyOnDesk />
+      {phase === "closed" && <WhatsInside onRead={open} />}
 
       {/* the real flipbook, mounted as soon as the cover starts moving so it is fully laid out before the hand-over */}
       {(prepared || phase === "open") && (
@@ -362,12 +363,12 @@ export function DeskScene({
                 <motion.p
                   key="hint"
                   exit={{ opacity: 0, y: 6, transition: { duration: 0.3 } }}
-                  className="font-hand absolute -bottom-16 left-0 right-0 text-center text-xl text-[#F3EAD7]/85"
+                  className="font-hand absolute -bottom-14 left-0 right-0 text-center text-2xl text-[#F3EAD7]"
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: [0, 1, 0.65, 1] }}
                   transition={{
                     duration: 3.2,
-                    delay: 0.9,
+                    delay: 0.3, // straight away: a first visitor should not wait to learn the book opens (#65)
                     times: [0, 0.3, 0.65, 1],
                     repeat: Infinity,
                     repeatType: "mirror",
@@ -450,6 +451,41 @@ function DeskProps() {
         />
       </div>
     </div>
+  );
+}
+
+/**
+ * What this is for, before anything is opened (#65): the line Bà's book stands for and the ways in, so a first visitor
+ * can say what the app does without reading the whole opening, and reach the fitting room in one tap.
+ */
+function WhatsInside({ onRead }: { onRead: () => void }) {
+  const entry = "flex items-center gap-2 rounded-md px-2 py-1.5 text-left text-[0.92rem] text-[#27354f] hover:bg-[#27354f]/10";
+  return (
+    <>
+      <nav aria-label="Trong sổ có gì" className="paper absolute left-4 top-16 z-20 hidden w-[15.5rem] rotate-[-1.2deg] rounded-md p-3 shadow-[0_10px_24px_rgba(20,8,0,0.45)] md:block">
+        <p className="font-hand m-0 text-[1.05rem] leading-snug text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
+        <div className="mt-2 flex flex-col">
+          <button type="button" onClick={onRead} className={entry}>
+            <span aria-hidden>📖</span> Đọc nhật ký của Bà theo vùng
+          </button>
+          <a href={asset("/chapter/hue?entry=event")} className={entry}>
+            <span aria-hidden>👗</span> Vào thẳng phòng thử đồ
+          </a>
+          <a href={asset("/du-ky")} className={entry}>
+            <span aria-hidden>📓</span> Ghi Du Ký những lần con mặc
+          </a>
+        </div>
+        <p className="m-0 mt-1.5 px-2 text-[0.72rem] leading-snug text-stone-600">Phối áo cùng Bà, Compass nói bộ nào đúng và vì sao.</p>
+      </nav>
+      <nav aria-label="Trong sổ có gì" className="absolute inset-x-0 bottom-3 z-20 flex justify-center gap-2 px-3 md:hidden">
+        <a href={asset("/chapter/hue?entry=event")} className="page-turn !text-[0.95rem]">
+          👗 Phòng thử đồ
+        </a>
+        <a href={asset("/du-ky")} className="page-turn !text-[0.95rem]">
+          📓 Du Ký
+        </a>
+      </nav>
+    </>
   );
 }
 

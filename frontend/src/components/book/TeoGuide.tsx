@@ -10,7 +10,7 @@ import { createPortal } from "react-dom";
 
 const KEY = "vpdk-guide";
 const TIPS = [
-  { id: "next", target: '[data-guide="next"]', text: "Bấm nút vàng này để đi tiếp. Dùng phím ← → trên bàn phím cũng được." },
+  { id: "next", target: '[data-guide="next"]', text: "Bấm nút vàng này để đi tiếp. Kéo góc trang, hay dùng phím ← →, cũng lật được." },
   { id: "pin", target: ".teo-pin", text: "Thấy ghim đỏ là có ghi chú của tớ. Bấm vào để đọc thêm nhé." },
   { id: "tabs", target: '[data-guide="tabs"]', text: "Mấy dải màu này là mục lục nhanh của chương: bấm để nhảy tới phần con muốn." },
 ] as const;
