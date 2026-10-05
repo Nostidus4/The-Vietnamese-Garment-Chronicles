@@ -424,7 +424,11 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
             exit={{ opacity: 0, transition: { duration: 0.4 } }}
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="font-display m-0 text-3xl text-[#2F4A6D]">Việt Phục Du Ký</p>
+            {/* the calligraphy logo the viewer has just seen, not the name again in bold type (#81) */}
+            <h1 className="m-0 w-[min(15rem,60vw)]">
+              <Image src={asset("/page/logo-mark.webp")} alt="Việt Phục Du Ký" width={1118} height={802} sizes="240px" className="h-auto w-full" />
+            </h1>
+            <p className="font-hand m-0 -mt-2 text-lg text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
             <p className="font-hand m-0 text-xl text-stone-600">Con muốn nghe kể, hay tự đọc?</p>
             <div className="mt-2 flex flex-wrap justify-center gap-3">
               <button type="button" autoFocus onClick={() => choose(true)} className="rounded-full bg-[#2F4A6D] px-6 py-3 text-amber-50 shadow hover:bg-[#243a57]">
