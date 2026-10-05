@@ -223,6 +223,41 @@ const ART: Record<string, (c: DollColors) => ReactNode> = {
     </g>
   ),
 
+  "ao-com": ({ main, second }) => (
+    <g>
+      {/* the Thái woman's dress: a long tube skirt (váy ống) to the ankle, a green sash, and the short áo cóm hugging
+          the body to the waist, its row of silver butterfly buttons down the front (#76) */}
+      <path d="M80 150 L120 150 L126 370 L74 370 Z" fill={second} {...line} />
+      <path d="M77 340 L123 340 L124 352 L76 352 Z" fill={mix(second, "#b5452e", 0.55)} opacity="0.85" />
+      <path d="M79 146 L121 146 L122 160 L78 160 Z" fill="#5e7f4a" {...line} />
+      <path d="M76 100 Q86 89 92 88 L108 88 Q114 89 124 100 L121 150 Q100 154 79 150 Z" fill={main} {...line} />
+      <path d="M100 92 L100 150" stroke={shade(main)} strokeWidth="0.9" />
+      <g fill="#d9d9d9" stroke={INK} strokeWidth="0.5">
+        {[100, 110, 120, 130, 140].map((y) => (
+          <path key={y} d={`M96 ${y} l-3 -2.5 l0 5 z M104 ${y} l3 -2.5 l0 5 z`} />
+        ))}
+      </g>
+      <Sleeves fill={main} />
+      <path d="M90 84 Q100 92 110 84" fill="none" stroke={shade(main)} strokeWidth="1.2" />
+    </g>
+  ),
+  "tho-cam-e-de": ({ main, second }) => (
+    <g>
+      {/* Ê Đê thổ cẩm: a black wrap skirt and a black top, both crossed by woven bands of red, yellow and blue (#76) */}
+      <path d="M80 190 L120 190 L127 370 L73 370 Z" fill={main} {...line} />
+      {[300, 322, 344].map((y, i) => (
+        // the skirt widens from 40 at y 190 to 54 at the hem: each band follows its edges
+        <rect key={y} x={80 - (y - 190) * 0.039} y={y} width={40 + (y - 190) * 0.078} height="9" fill={[second, "#d9a43b", "#3f6f9a"][i]} opacity="0.9" />
+      ))}
+      <path d="M76 100 Q86 90 92 89 L108 89 Q114 90 124 100 L121 196 Q100 201 79 196 Z" fill={main} {...line} />
+      <rect x="80" y="176" width="40" height="10" fill={second} opacity="0.9" />
+      <rect x="81" y="168" width="38" height="4" fill="#d9a43b" opacity="0.9" />
+      <Sleeves fill={main} />
+      <path d="M58 200 L70 202 L69 208 L57.5 206 Z M142 200 L130 202 L131 208 L142.5 206 Z" fill={second} opacity="0.9" />
+      <path d="M90 90 Q100 98 110 90" fill="none" stroke={second} strokeWidth="2" />
+    </g>
+  ),
+
   /* khăn và nón */
   "non-la": () => (
     <g>
@@ -263,6 +298,15 @@ const ART: Record<string, (c: DollColors) => ReactNode> = {
     <g>
       <path d="M86 84 Q100 96 114 84 L116 94 Q100 106 84 94 Z" fill="url(#ran)" {...line} />
       <path d="M108 96 L120 130 L112 132 L102 100 Z" fill="url(#ran)" {...line} />
+    </g>
+  ),
+  "khan-pieu": () => (
+    <g>
+      {/* the black piêu folded over the hair, its two embroidered ends falling at the sides */}
+      <path d="M78 48 Q78 26 100 24 Q122 26 122 48 Q112 38 100 38 Q88 38 78 48 Z" fill="#1f1f1f" {...line} />
+      <path d="M78 44 L70 66 L78 68 L84 46 Z M122 44 L130 66 L122 68 L116 46 Z" fill="#1f1f1f" {...line} />
+      <path d="M71 62 L78 64 M129 62 L122 64" stroke="#b5452e" strokeWidth="2" />
+      <path d="M72 58 L79 60 M128 58 L121 60" stroke="#d9a43b" strokeWidth="1.5" />
     </g>
   ),
   "mu-canh-chuon": () => (

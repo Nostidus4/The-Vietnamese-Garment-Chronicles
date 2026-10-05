@@ -26,6 +26,7 @@ import { RichText } from "./Glossary";
 import { TeoPin } from "./TeoPin";
 import { FOCUS } from "./vietnam-geo";
 import { asset } from "@/lib/base";
+import { DRAWN, PaperDoll } from "../fitting/PaperDoll";
 
 export const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
 export const OLD = "#8a4b2a"; // old Bà: sepia, written years later
@@ -574,7 +575,11 @@ export function WearDiary({
     <Sheet page={page} data={data} keepsake={<KeepsakeArt kind="fabric" color={color} />}>
       {/* the garment first, pinned at the left; its name, Bà's summary and "Khi mặc" run beside it and on below */}
       <div className="mt-3 flow-root">
-      {g?.reference_image && <GarmentPlate id={g.id} name={g.name_vi} />}
+      {g?.reference_image ? (
+        <GarmentPlate id={g.id} name={g.name_vi} />
+      ) : g && DRAWN.has(g.id) ? (
+        <DrawnPlate garment={g} data={data} pending={region.status !== "open"} />
+      ) : null}
       <div className="flex items-center gap-3">
         <p className="font-display m-0 text-[1.15rem] leading-tight text-stone-800">
           {g?.name_vi ?? page.garment}
@@ -648,6 +653,26 @@ export function WearDiary({
 }
 
 /** The garment as a pattern plate pinned beside Bà's notes: the same reference picture the try-on draws from. */
+/**
+ * A garment with no reference photo yet (Tây Bắc, Tây Nguyên), drawn by Bà on the paper doll instead of an empty
+ * swatch (#76). While the people of the region have not read the chapter, the caption says so.
+ */
+function DrawnPlate({ garment, data, pending }: { garment: Garment; data: Bootstrap; pending: boolean }) {
+  const [c1, c2] = garment.default_colors.map((c) => data.colors[c]?.hex ?? "#27354f");
+  return (
+    <figure className="float-left m-0 mb-1 mr-3 w-[24%] -rotate-[1.5deg] bg-white p-1 pb-0 shadow-[0_4px_10px_rgba(60,35,10,0.25)]">
+      <PaperDoll
+        dress={{ set: garment.id, ...(garment.accessories.includes("khan-pieu") ? { head: "khan-pieu" } : {}) }}
+        colors={{ main: c1, second: c2 ?? c1 }}
+        still
+        className="block aspect-[1/2] w-full bg-[#fbf6ea]"
+        title={`Bà vẽ ${garment.name_vi}`}
+      />
+      <figcaption className="py-0.5 text-center text-[0.62rem] leading-tight text-stone-500">{pending ? "Bà vẽ lại · chờ người ở đây đọc lại" : "Bà vẽ lại"}</figcaption>
+    </figure>
+  );
+}
+
 function GarmentPlate({ id, name }: { id: string; name: string }) {
   const [ok, setOk] = useState(true);
   if (!ok) return null;
