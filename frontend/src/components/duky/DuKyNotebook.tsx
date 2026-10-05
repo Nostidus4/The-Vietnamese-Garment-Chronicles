@@ -157,7 +157,7 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
   const [name, setName] = useState(book.cover.name);
   return (
     <div className="flex h-full flex-col text-[#27354f]">
-      <p className="m-0 text-[0.62rem] tracking-[0.3em] text-stone-500">SỔ NÀY CỦA</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">SỔ NÀY CỦA</p>
       <input
         value={name}
         maxLength={24}
@@ -169,9 +169,9 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
         style={{ color: "#1f3a78" }}
       />
       {/* the cover holds 24 letters: say so while typing instead of cutting the name off silently (#63) */}
-      {name.length >= 18 && <p className="m-0 text-right text-[0.66rem] text-stone-500">{name.length}/24 chữ</p>}
+      {name.length >= 18 && <p className="m-0 text-right text-[0.75rem] text-stone-500">{name.length}/24 chữ</p>}
       <div className="mt-2 flex items-center gap-2" role="radiogroup" aria-label="Màu bìa">
-        <span className="text-[0.7rem] text-stone-500">Màu bìa</span>
+        <span className="text-[0.75rem] text-stone-500">Màu bìa</span>
         {COVER_COLORS.map((c) => (
           <button
             key={c}
@@ -198,7 +198,7 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
       </div>
       <div className="mt-auto">
         <CloudSync compact={compact} />
-        <p className="m-0 mt-1 text-[0.7rem] text-stone-600">Không đăng nhập thì sổ và ảnh chỉ lưu trên máy này.</p>
+        <p className="m-0 mt-1 text-[0.75rem] text-stone-600">Không đăng nhập thì sổ và ảnh chỉ lưu trên máy này.</p>
       </div>
     </div>
   );

@@ -53,15 +53,15 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
   const allStamps = readable.length > 0 && readable.every((r) => arrived.includes(r.id) && understood.includes(r.id) && worn.has(r.id));
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.62rem] tracking-[0.3em] text-stone-500">TỦ TEM</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">TỦ TEM</p>
       <p className="font-hand m-0 text-[1.15rem] leading-snug text-[#27354f]">
         Đọc sổ của Bà để hiểu, viết sổ của mình để mặc.
       </p>
-      <p className="m-0 mt-0.5 text-[0.7rem] text-stone-600">
+      <p className="m-0 mt-0.5 text-[0.75rem] text-stone-600">
         Đã mặc thật ở {worn.size}/{total} vùng
       </p>
       {/* the legend: what each ring is for, so an empty cabinet says how to fill it (#63) */}
-      <p className="m-0 mt-1 text-[0.68rem] leading-snug text-stone-600">
+      <p className="m-0 mt-1 text-[0.75rem] leading-snug text-stone-600">
         <b className="font-semibold text-[#B5452E]">Đến</b>: mở chương của Bà · <b className="font-semibold text-[#5E7F4A]">Hiểu</b>: trả lời “Bà hỏi con” ·{" "}
         <b className="font-semibold text-[#2F4A6D]">Mặc</b>: dán ảnh lần con mặc thật. Tem điểm: mỗi chỗ Bà dừng chân con đã ghé qua.
       </p>
@@ -83,7 +83,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
               <a href={asset(`/?region=${r.id}&page=own`)} className="font-display w-[5.5rem] shrink-0 text-[0.8rem] leading-tight text-[#27354f] hover:underline">
                 {place}
                 {stopsTotal(r) > 0 && (
-                  <span className="block font-sans text-[0.64rem] text-stone-500">
+                  <span className="block font-sans text-[0.75rem] text-stone-500">
                     tem điểm {stopsGot(r)}/{stopsTotal(r)}
                   </span>
                 )}
@@ -112,7 +112,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
           );
         })}
       </ul>
-      <div className="mt-2 flex items-center justify-between border-t border-dashed border-stone-300 pt-1.5 text-[0.7rem] text-stone-600">
+      <div className="mt-2 flex items-center justify-between border-t border-dashed border-stone-300 pt-1.5 text-[0.75rem] text-stone-600">
         <span>
           Hộp thư của Bà: {kept}/{withLetter.length} bưu thiếp
         </span>

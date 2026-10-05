@@ -129,7 +129,7 @@ export function PostcardViewer({
             <div className="flex flex-[1.2] flex-col items-end border-l border-dashed border-stone-400/70 pl-3">
               <div className="flex h-16 w-14 rotate-[3deg] flex-col items-center justify-center border-2 border-dotted border-[#B5452E]/70 bg-[#f7e4c8] text-center text-[#B5452E]">
                 <span className="text-[0.5rem] tracking-[0.2em]">VIỆT NAM</span>
-                <span className="font-display text-[0.7rem] leading-tight">{where}</span>
+                <span className="font-display text-[0.75rem] leading-tight">{where}</span>
               </div>
               {/* the place may take two lines: "BẮC NINH" in one line ran out of the ring (#61) */}
               <div className="mt-2 flex h-12 w-12 rotate-[-14deg] items-center justify-center overflow-hidden rounded-full border-2 border-[#2F4A6D]/50 px-1 text-center text-[0.5rem] leading-tight tracking-[0.12em] text-[#2F4A6D]/70">

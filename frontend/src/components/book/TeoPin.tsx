@@ -51,7 +51,7 @@ export function TeoPin({
         title="Tèo ghim ghi chú ở đây"
       >
         <PinSvg />
-        <span className="rounded-full bg-[#fbe99a] px-1.5 text-[0.62rem] font-semibold leading-4 text-[#1f3a78] shadow-[1px_1px_3px_rgba(60,40,0,0.3)] transition-transform group-hover:scale-110">
+        <span className="rounded-full bg-[#fbe99a] px-1.5 text-[0.75rem] font-semibold leading-4 text-[#1f3a78] shadow-[1px_1px_3px_rgba(60,40,0,0.3)] transition-transform group-hover:scale-110">
           {badge ?? notes.length}
           {!badge && unesco ? " · UNESCO" : ""}
         </span>
@@ -137,20 +137,20 @@ function StickyNote({ note, i, data, heading }: { note: TeoNoteView; i: number; 
     >
       {heading && <p className="font-hand m-0 mb-1 text-[1.15rem] text-[#8a4b2a]">{heading}</p>}
       {note.title && <b className="font-display block text-[1.05rem]">{note.title}</b>}
-      {note.unesco && <b className="mr-1.5 rounded-sm bg-[#1f3a78] px-1.5 py-0.5 text-[0.7rem] text-[#fbe99a]">UNESCO {note.unesco}</b>}
+      {note.unesco && <b className="mr-1.5 rounded-sm bg-[#1f3a78] px-1.5 py-0.5 text-[0.75rem] text-[#fbe99a]">UNESCO {note.unesco}</b>}
       {note.text}
       {note.steps && (
         <ol className="m-0 mt-2 list-none space-y-1.5 p-0">
           {note.steps.map((s, k) => (
             <li key={k} className="flex gap-2">
-              <span className="font-display flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1f3a78] text-[0.7rem] text-[#fbe99a]">{k + 1}</span>
+              <span className="font-display flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1f3a78] text-[0.75rem] text-[#fbe99a]">{k + 1}</span>
               <span>{s}</span>
             </li>
           ))}
         </ol>
       )}
       {!note.steps && (
-      <span className="mt-2 block text-[0.72rem] opacity-80">
+      <span className="mt-2 block text-[0.75rem] opacity-80">
         {src?.url ? (
           <a href={src.url} target="_blank" rel="noreferrer" className="underline">
             nguồn: {src.title}

@@ -112,9 +112,9 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
       return "Đã xóa dữ liệu trên mây.";
     });
 
-  const btn = "rounded-full border border-stone-600 px-3 py-1 text-[0.72rem] disabled:opacity-50";
+  const btn = "rounded-full border border-stone-600 px-3 py-1 text-[0.75rem] disabled:opacity-50";
   return (
-    <div className={`rounded-md bg-white/40 p-2 text-[0.72rem] text-stone-700 ${compact ? "" : "mt-3"}`}>
+    <div className={`rounded-md bg-white/40 p-2 text-[0.75rem] text-stone-700 ${compact ? "" : "mt-3"}`}>
       {session ? (
         <>
           <p className="m-0">Đang lưu cho {session.user.email}</p>

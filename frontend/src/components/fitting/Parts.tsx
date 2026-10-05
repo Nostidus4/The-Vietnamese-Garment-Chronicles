@@ -18,7 +18,7 @@ export function EventPicker({ data, onPick }: { data: Bootstrap; onPick: (occasi
   return (
     <motion.div className="fixed inset-0 z-50 grid place-items-center bg-[#140c07]/70 p-4 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-label="Con sắp đi đâu?" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <motion.div className="paper w-full max-w-md rounded-xl p-6 shadow-2xl" initial={{ y: 30, scale: 0.96 }} animate={{ y: 0, scale: 1 }}>
-        <p className="m-0 text-[0.65rem] uppercase tracking-[0.25em] text-stone-500">Phòng thử đồ của Bà</p>
+        <p className="m-0 text-[0.75rem] uppercase tracking-[0.25em] text-stone-500">Phòng thử đồ của Bà</p>
         <p className="font-hand m-0 mt-1 text-[1.6rem] leading-tight text-[#8a4b2a]">Con sắp đi đâu? Bà lấy áo cho hợp.</p>
         <div className="mt-4 grid gap-2">
           {data.occasions.map((o) => (

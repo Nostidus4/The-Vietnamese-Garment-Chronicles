@@ -411,7 +411,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           ‹ <span className="hidden sm:inline">Về trang Mặc</span>
         </Link>
         <div className="min-w-0 text-center">
-          <p className="m-0 text-[0.6rem] uppercase tracking-[0.3em] text-amber-100/80">Tủ áo của Bà · {place}</p>
+          <p className="m-0 text-[0.75rem] uppercase tracking-[0.3em] text-amber-100/80">Tủ áo của Bà · {place}</p>
           <h1 className="font-hand m-0 truncate text-[1.7rem] leading-tight text-amber-50">{garment?.name_vi ?? "Chọn một bộ áo"}</h1>
         </div>
         <div className="flex shrink-0 gap-2">
@@ -477,9 +477,9 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
                   transition={{ duration: 0.6 }}
                 >
                   <span className="mirror-tag-hole" aria-hidden />
-                  <span className="block text-[0.6rem] uppercase tracking-[0.18em] opacity-70">Compass</span>
+                  <span className="block text-[0.75rem] uppercase tracking-[0.18em] opacity-70">Compass</span>
                   <span className="block text-sm font-semibold leading-tight">{tag ? `${tag.icon} ${tag.name}` : garment ? "chưa chấm được" : "chưa mặc gì"}</span>
-                  {tag && <span className="block text-[0.62rem] underline opacity-70">vì sao?</span>}
+                  {tag && <span className="block text-[0.75rem] underline opacity-70">vì sao?</span>}
                 </motion.button>
               </div>
               <figcaption className="mirror-caption">Bấm một món trong tủ để mặc, bấm lần nữa để cởi</figcaption>

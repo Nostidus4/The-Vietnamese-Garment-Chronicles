@@ -563,6 +563,30 @@ body {
   }
 }
 
+/* ---------- the Mặc page on a short book (1280×720): the garment's summary and the notes in brackets give their room
+   to the steps and to Bà's last line, which were cut off at the bottom (#78) ---------- */
+.wear-page {
+  container: wear-page / size;
+}
+@container wear-page (max-height: 34rem) {
+  .wear-extra {
+    display: none;
+  }
+}
+
+/* the chapter's title page and Tí's "Hôm nay": the same on a short book (#78) */
+.short-page {
+  container: short-page / size;
+}
+@container short-page (max-height: 34rem) {
+  .short-extra {
+    display: none;
+  }
+  .short-shrink {
+    width: 54%;
+  }
+}
+
 /* ---------- Bà's fitting room (/chapter/<region>): rack | mirror | drawers, the action bar under them ---------- */
 @layer components {
   /* pulled up over the layout's 2.5rem spacer so the room runs to the top edge under the site links */

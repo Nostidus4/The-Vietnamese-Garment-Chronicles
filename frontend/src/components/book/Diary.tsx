@@ -119,7 +119,7 @@ export function KeepsakeArt({
       {kind === "stamp" && (
         <div className="flex h-[3.9rem] w-[3.9rem] flex-col items-center justify-center rounded-full border-[2.5px] border-[#B5452E]/75 text-center text-[#B5452E]/80">
           <span className="text-[0.48rem] tracking-[0.2em]">ĐÃ ĐẾN</span>
-          <span className="font-display px-1 text-[0.62rem] leading-tight">
+          <span className="font-display px-1 text-[0.75rem] leading-tight">
             {label}
           </span>
         </div>
@@ -146,7 +146,7 @@ export function KeepsakeArt({
               "repeating-linear-gradient(transparent 0 7px, rgba(90,120,170,0.25) 7px 8px)",
           }}
         >
-          <p className="font-hand m-0 text-[0.6rem] leading-[8px] text-stone-600">
+          <p className="font-hand m-0 text-[0.75rem] leading-[8px] text-stone-600">
             {label}
           </p>
         </div>
@@ -162,7 +162,7 @@ export function KeepsakeArt({
           <p className="m-0 text-[0.45rem] tracking-[0.25em] text-[#6b3c12]">
             VÉ ĐI HỘI
           </p>
-          <p className="font-display m-0 text-[0.62rem] leading-tight text-[#6b3c12]">
+          <p className="font-display m-0 text-[0.75rem] leading-tight text-[#6b3c12]">
             {label}
           </p>
         </div>
@@ -242,7 +242,7 @@ export function Polaroid({ frame, i, className = "w-[31%]" }: { frame: Frame; i:
           </svg>
         )}
       </div>
-      <figcaption className="font-hand mt-0.5 text-center text-[0.72rem] leading-tight text-stone-700">
+      <figcaption className="font-hand mt-0.5 text-center text-[0.75rem] leading-tight text-stone-700">
         {frame.caption}
       </figcaption>
     </motion.figure>
@@ -255,21 +255,27 @@ function Sheet({
   data,
   keepsake,
   children,
+  className = "",
 }: {
   page: DiaryPage;
   data: Bootstrap;
   keepsake?: ReactNode;
   children?: ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="relative flex h-full flex-col">
+    <div className={`relative flex h-full flex-col ${className}`}>
       {/* the keepsake floats at the top right, so the entry wraps around it like glued paper */}
       <div>
         {keepsake}
         <DateLine>{page.date}</DateLine>
         <Entry text={page.entry} />
       </div>
-      {page.ti && <Pencil text={page.ti} />}
+      {page.ti && (
+        <div className="wear-extra">
+          <Pencil text={page.ti} />
+        </div>
+      )}
       {children}
       <div className="mt-auto">
         {page.margin && <Margin text={page.margin} />}
@@ -292,7 +298,7 @@ export function HoverPage({
   const j = region.journey;
   return (
     <div className="flex h-full flex-col justify-center">
-      <p className="m-0 text-[0.66rem] tracking-[0.3em] text-stone-500">
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">
         TRANG NHẬT KÝ
       </p>
       <h2
@@ -381,7 +387,7 @@ export function ArriveDiary({
       )}
       {sheet && (
         <div className="mt-3">
-          <p className="m-0 text-[0.6rem] tracking-[0.2em] text-stone-500">
+          <p className="m-0 text-[0.75rem] tracking-[0.2em] text-stone-500">
             TỈNH, THÀNH ({sheet.provinces.length})
           </p>
           <ul className="m-0 mt-0.5 flex list-none flex-wrap gap-x-2.5 gap-y-0.5 p-0">
@@ -390,7 +396,7 @@ export function ArriveDiary({
                 key={p.name}
                 onMouseEnter={() => onProvinceHover(p.name)}
                 onMouseLeave={() => onProvinceHover(null)}
-                className={`cursor-default text-[0.74rem] ${hotProvince === p.name ? "text-[#8a5a16] underline decoration-[#D9A43B] decoration-2" : "text-stone-700"}`}
+                className={`cursor-default text-[0.75rem] ${hotProvince === p.name ? "text-[#8a5a16] underline decoration-[#D9A43B] decoration-2" : "text-stone-700"}`}
                 title={`Gồm ${p.old.join(", ")}`}
               >
                 {p.name}
@@ -398,7 +404,7 @@ export function ArriveDiary({
               </li>
             ))}
           </ul>
-          <p className="m-0 mt-1 text-[0.56rem] leading-snug text-stone-400">
+          <p className="m-0 mt-1 text-[0.75rem] leading-snug text-stone-500">
             Đơn vị hành chính từ 01/07/2025
             {sheet.provinces.some((p) => p.partial)
               ? " · * một phần thuộc vùng này"
@@ -495,7 +501,7 @@ export function FestivalDiary({
         {items.map((x) => (
           <li
             key={x.id}
-            className={`rounded px-1 text-[0.72rem] leading-snug text-stone-700 transition-colors ${hot === x.id ? "bg-[#D9A43B]/20" : ""}`}
+            className={`rounded px-1 text-[0.75rem] leading-snug text-stone-700 transition-colors ${hot === x.id ? "bg-[#D9A43B]/20" : ""}`}
           >
             <b className="font-display text-[0.86rem] text-stone-800">
               {x.name}
@@ -529,7 +535,7 @@ export function FestivalDiary({
             />
           ))}
       </div>
-      <div className="mx-1 flex justify-between text-[0.5rem] text-stone-400">
+      <div className="mx-1 flex justify-between text-[0.75rem] text-stone-500">
         <span>tháng 1</span>
         <span>âm lịch</span>
         <span>tháng 12</span>
@@ -572,7 +578,7 @@ export function WearDiary({
     .map((c) => data.colors[c]?.hex)
     .find(Boolean);
   return (
-    <Sheet page={page} data={data} keepsake={<KeepsakeArt kind="fabric" color={color} />}>
+    <Sheet page={page} data={data} keepsake={<KeepsakeArt kind="fabric" color={color} />} className="wear-page">
       {/* the garment first, pinned at the left; its name, Bà's summary and "Khi mặc" run beside it and on below */}
       <div className="mt-3 flow-root">
       {g?.reference_image ? (
@@ -594,13 +600,13 @@ export function WearDiary({
           </button>
         ) : (
           // try-on stays closed until the community has reviewed this garment
-          <span className="ml-auto max-w-[45%] text-right text-[0.7rem] leading-snug text-stone-600 [text-wrap:balance]">
+          <span className="ml-auto max-w-[45%] text-right text-[0.75rem] leading-snug text-stone-600 [text-wrap:balance]">
             Thử đồ AI: chờ người ở đây đọc lại
           </span>
         )}
       </div>
       {g && (
-        <p className="m-0 mt-1 text-[0.8rem] leading-snug text-stone-600">
+        <p className="wear-extra m-0 mt-1 text-[0.8rem] leading-snug text-stone-600">
           {g.summary}
         </p>
       )}
@@ -614,9 +620,9 @@ export function WearDiary({
               const parts = g.zones.filter((z) => z.level === lv);
               if (!parts.length) return null;
               return (
-                <li key={lv} className="flex gap-2">
+                <li key={lv} className={`flex gap-2 ${lv === "free" ? "wear-extra" : ""}`}>
                   <span
-                    className={`mt-0.5 shrink-0 rounded-sm px-1.5 text-[0.62rem] font-semibold ${lv === "keep" ? "bg-[#27354f] text-amber-50" : lv === "caution" ? "bg-[#D9A43B] text-[#3b2a10]" : "bg-[#5E7F4A] text-white"}`}
+                    className={`mt-0.5 shrink-0 rounded-sm px-1.5 text-[0.75rem] font-semibold ${lv === "keep" ? "bg-[#27354f] text-amber-50" : lv === "caution" ? "bg-[#D9A43B] text-[#3b2a10]" : "bg-[#5E7F4A] text-white"}`}
                   >
                     {LEVEL[lv]}
                   </span>
@@ -625,7 +631,7 @@ export function WearDiary({
                       <span key={z.part}>
                         {i > 0 && " · "}
                         {z.part}
-                        {z.note && <span className="text-stone-500"> ({z.note})</span>}
+                        {z.note && <span className="wear-extra text-stone-500"> ({z.note})</span>}
                       </span>
                     ))}
                   </span>
@@ -637,7 +643,7 @@ export function WearDiary({
       )}
       </div>
       {g && g.wearing_steps.length > 0 && (
-        <ol className={`m-0 mt-2 list-none space-y-0.5 p-0 leading-snug text-stone-700 ${g.wearing_steps.length > 4 ? "text-[0.7rem]" : "text-[0.76rem]"}`}>
+        <ol className={`m-0 mt-2 list-none space-y-0.5 p-0 leading-snug text-stone-700 ${g.wearing_steps.length > 4 ? "text-[0.75rem]" : "text-[0.76rem]"}`}>
           {g.wearing_steps.map((st, k) => (
             <li key={st.title} className="flex gap-2">
               <span className="font-display shrink-0 text-[#8a4b2a]">{k + 1}.</span>
@@ -652,7 +658,6 @@ export function WearDiary({
   );
 }
 
-/** The garment as a pattern plate pinned beside Bà's notes: the same reference picture the try-on draws from. */
 /**
  * A garment with no reference photo yet (Tây Bắc, Tây Nguyên), drawn by Bà on the paper doll instead of an empty
  * swatch (#76). While the people of the region have not read the chapter, the caption says so.
@@ -668,11 +673,12 @@ function DrawnPlate({ garment, data, pending }: { garment: Garment; data: Bootst
         className="block aspect-[1/2] w-full bg-[#fbf6ea]"
         title={`Bà vẽ ${garment.name_vi}`}
       />
-      <figcaption className="py-0.5 text-center text-[0.62rem] leading-tight text-stone-500">{pending ? "Bà vẽ lại · chờ người ở đây đọc lại" : "Bà vẽ lại"}</figcaption>
+      <figcaption className="py-0.5 text-center text-[0.75rem] leading-tight text-stone-500">{pending ? "Bà vẽ lại · chờ người ở đây đọc lại" : "Bà vẽ lại"}</figcaption>
     </figure>
   );
 }
 
+/** The garment as a pattern plate pinned beside Bà's notes: the same reference picture the try-on draws from. */
 function GarmentPlate({ id, name }: { id: string; name: string }) {
   const [ok, setOk] = useState(true);
   if (!ok) return null;
@@ -681,7 +687,7 @@ function GarmentPlate({ id, name }: { id: string; name: string }) {
     <figure className="float-left m-0 mb-1 mr-3 w-[30%] -rotate-[1.5deg] bg-white p-1 pb-0 shadow-[0_4px_10px_rgba(60,35,10,0.25)]">
       {/* eslint-disable-next-line @next/next/no-img-element -- static export: plain image, sized by its frame */}
       <img src={asset(`/garments/${id}.webp`)} alt={`Ảnh mẫu ${name}`} className="block aspect-[3/4] w-full object-contain" loading="lazy" onError={() => setOk(false)} />
-      <figcaption className="py-0.5 text-center text-[0.5rem] leading-tight text-stone-500">ảnh mẫu · AI vẽ</figcaption>
+      <figcaption className="py-0.5 text-center text-[0.75rem] leading-tight text-stone-500">ảnh mẫu · AI vẽ</figcaption>
     </figure>
   );
 }
@@ -783,7 +789,7 @@ export function PreQuestion({ region, onDone }: { region: Region; onDone: () => 
   };
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.62rem] tracking-[0.3em] text-stone-500">TRƯỚC KHI ĐỌC</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">TRƯỚC KHI ĐỌC</p>
       <p className="font-hand m-0 mt-1 text-[1.2rem] leading-snug" style={{ color: OLD }}>
         Trước khi đọc, Bà hỏi con một câu. Sai cũng chẳng sao. — Bà
       </p>
@@ -837,7 +843,7 @@ export function AskDiary({ region }: { region: Region }) {
           transition={{ type: "spring", stiffness: 420, damping: 16 }}
         >
           <span className="text-[0.45rem] tracking-[0.2em]">ĐÃ HIỂU</span>
-          <span className="font-display px-1 text-[0.6rem] leading-tight">{place(region)}</span>
+          <span className="font-display px-1 text-[0.75rem] leading-tight">{place(region)}</span>
         </motion.div>
       )}
     </div>
@@ -897,7 +903,7 @@ export function OwnDiary({
                 {latest.photos.length > 0 ? (
                   <DuKyPhoto photo={latest.photos[latest.photos.length - 1]} className="rotate-[-2.5deg]" />
                 ) : (
-                  <p className="m-0 border-2 border-dashed border-stone-300 p-4 text-center text-[0.72rem] text-stone-500">Chưa có ảnh</p>
+                  <p className="m-0 border-2 border-dashed border-stone-300 p-4 text-center text-[0.75rem] text-stone-500">Chưa có ảnh</p>
                 )}
                 <p className="font-hand m-0 mt-2 text-center text-[0.95rem]" style={{ color: "#1f3a78" }}>
                   {latest.note ||
@@ -906,7 +912,7 @@ export function OwnDiary({
               </motion.div>
             ) : (
               <div className="flex w-[62%] flex-col items-center gap-2 border-2 border-dashed border-stone-300 p-4 text-center">
-                <p className="m-0 text-[0.72rem] text-stone-500">Chỗ dán ảnh</p>
+                <p className="m-0 text-[0.75rem] text-stone-500">Chỗ dán ảnh</p>
                 {canTry
                   ? garments.map((g) => (
                       <button
@@ -919,7 +925,7 @@ export function OwnDiary({
                       </button>
                     ))
                   : (
-                    <p className="m-0 text-[0.7rem] text-stone-500">Con mặc {garments[0]?.name_vi} đi hội rồi thì dán ảnh vào Du Ký nhé.</p>
+                    <p className="m-0 text-[0.75rem] text-stone-500">Con mặc {garments[0]?.name_vi} đi hội rồi thì dán ảnh vào Du Ký nhé.</p>
                   )}
               </div>
             )}
@@ -932,13 +938,13 @@ export function OwnDiary({
               Mở Du Ký của con →
             </a>
           </div>
-          <p className="m-0 mt-1 text-[0.55rem] text-stone-400">
+          <p className="m-0 mt-1 text-[0.75rem] text-stone-500">
             Du Ký chỉ lưu trên máy của con.
           </p>
           {worn && (
             <div className="pointer-events-none absolute right-[4%] top-[10%] flex h-[3.9rem] w-[3.9rem] rotate-[10deg] flex-col items-center justify-center rounded-full border-[2.5px] border-[#2F4A6D]/70 text-center text-[#2F4A6D]/80">
               <span className="text-[0.48rem] tracking-[0.2em]">ĐÃ MẶC</span>
-              <span className="font-display px-1 text-[0.62rem] leading-tight">
+              <span className="font-display px-1 text-[0.75rem] leading-tight">
                 {place(region)}
               </span>
             </div>
