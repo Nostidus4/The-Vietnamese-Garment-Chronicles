@@ -26,6 +26,7 @@ export function ChapterQuiz({ regionId, phase }: { regionId: string; phase: "pre
   const [results, setResults] = useState<Record<string, Result>>({});
   const [open, setOpen] = useState(phase === "pre");
   const [broken, setBroken] = useState<Record<string, boolean>>({});
+  const [failed, setFailed] = useState(false); // the server did not answer: say so instead of an empty tab (#48)
   const answered = useRef(new Set<string>()); // one answer per question, even on a fast double click
 
   useEffect(() => {
@@ -46,12 +47,17 @@ export function ChapterQuiz({ regionId, phase }: { regionId: string; phase: "pre
         setChoices(q.choices);
         setItems(list.length ? list : q.items);
       })
-      .catch(() => alive && setItems([]));
+      .catch(() => {
+        if (!alive) return;
+        setFailed(true);
+        setItems([]);
+      });
     return () => {
       alive = false;
     };
   }, [regionId]);
 
+  if (failed) return <p className="paper m-0 rounded-lg p-5 text-sm text-stone-600">Chưa lấy được câu đố lúc này, con mở lại sau chút nhé.</p>;
   if (!items || items.length === 0) return null;
   const done = items.filter((i) => results[i.id]).length;
   const correct = items.filter((i) => results[i.id]?.correct).length;

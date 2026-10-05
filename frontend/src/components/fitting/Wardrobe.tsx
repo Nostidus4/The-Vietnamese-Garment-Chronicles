@@ -6,6 +6,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { HAS_API } from "@/lib/api";
 import { asset } from "@/lib/base";
 import type { Bootstrap, CompassResult, CompassState, Garment, WardrobeItem, WardrobeSlot } from "@/lib/types";
 import type { PieceState } from "@/lib/wardrobe";
@@ -19,7 +20,8 @@ export type Who = "nu" | "nam" | "con";
 const WHO: { id: Who; name: string; note: string; soon?: boolean }[] = [
   { id: "nu", name: "Nữ", note: "búp bê giấy" },
   { id: "nam", name: "Nam", note: "sắp có", soon: true },
-  { id: "con", name: "Con", note: "ảnh của con" },
+  // a build without the server (GitHub Pages before the backend is up, a fork) has no room to dress a photo in (#48)
+  { id: "con", name: "Con", note: HAS_API ? "ảnh của con" : "bản đầy đủ", soon: !HAS_API },
 ];
 
 export function WhoPicker({ value, onPick, onClose }: { value: Who | null; onPick: (w: Who) => void; onClose?: () => void }) {
@@ -46,6 +48,11 @@ export function WhoPicker({ value, onPick, onClose }: { value: Who | null; onPic
             </button>
           ))}
         </div>
+        {!HAS_API && (
+          <p className="font-hand m-0 mt-4 text-[1.05rem] leading-snug text-stone-600">
+            Bản đọc thử chưa có phòng chụp, con ạ. Con mặc cho búp bê giấy trước, mở bản đầy đủ thì thử được với ảnh của con.
+          </p>
+        )}
         {onClose && value && (
           <button type="button" onClick={onClose} className="mt-4 text-sm text-stone-600 underline">
             Giữ nguyên
