@@ -14,6 +14,7 @@ from typing import TypeVar
 from pydantic import BaseModel, ValidationError
 
 from .schemas import (
+    BLANKS,
     KEEP_OPTION,
     Accessory,
     Color,
@@ -176,6 +177,12 @@ def _check_refs(c: Content, r: Report) -> None:
             r.errors.append(f"rules.json: missing rule of type '{t}'")
     for rule in c.rules.values():
         srcs(rule.sources, f"rules.json [{rule.type}]")
+        # a blank the Compass cannot fill would reach the reader as "{zone}"
+        for kind, words in [("", rule), *rule.by.items()]:
+            allowed = BLANKS.get(kind, set())
+            for field in ("ti", "teo", "why"):
+                for blank in set(re.findall(r"\{(\w+)\}", getattr(words, field))) - allowed:
+                    r.errors.append(f"rules.json [{rule.type}]{f'.by.{kind}' if kind else ''}.{field}: unknown blank {{{blank}}}")
 
     for a in c.accessories.values():
         w = f"accessories.json [{a.id}]"
@@ -330,6 +337,29 @@ def _check_refs(c: Content, r: Report) -> None:
         for body, path in it.layers.items():
             if not (frontend_public / path.lstrip("/")).is_file():
                 r.warnings.append(f"{w}: layer for '{body}' not found ({path}), the drawn doll is used")
+
+    # team notes must never reach the reader (#50): research references, vetting status, TODOs in shown text
+    internal = re.compile(r"Research (Mục|Report)|cần thẩm định|\bTODO\b|chờ cộng đồng góp ý", re.I)
+    hidden = {"note", "internal_ref", "_help", "prompt", "url", "image", "sources", "id"}
+
+    def scan(value, where: str, path: str = "") -> None:
+        if isinstance(value, dict):
+            for k, v in value.items():
+                if k not in hidden:
+                    scan(v, where, f"{path}.{k}" if path else k)
+        elif isinstance(value, list):
+            for i, v in enumerate(value):
+                scan(v, where, f"{path}[{i}]")
+        elif isinstance(value, str) and internal.search(value):
+            r.errors.append(f"{where}: team note shown to readers at {path or 'text'}: '{value[:60]}…'")
+
+    for kind, pool in (("rules.json", c.rules), ("accessories.json", c.accessories), ("sources.json", c.sources), ("glossary.json", c.glossary)):
+        for k, v in pool.items():
+            scan(v.model_dump(), f"{kind} [{k}]")
+    for g in c.garments.values():
+        scan(g.model_dump(), f"garments/{g.id}.json")
+    for reg in c.regions.values():
+        scan(reg.model_dump(), f"regions [{reg.id}]")
 
     # [[shown words|term-id]] in any diary text must point to glossary.json
     for t in c.glossary.values():

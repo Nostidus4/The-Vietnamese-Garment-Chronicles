@@ -16,11 +16,16 @@ const AUTH: Record<string, { text: string; tone: string }> = {
 
 export function ShopList({ garmentId, garmentName }: { garmentId: string; garmentName: string }) {
   const [shops, setShops] = useState<Shop[] | null>(null);
+  const [failed, setFailed] = useState(false); // the server did not answer: not the same as "no shop yet" (#48)
   useEffect(() => {
     let alive = true;
     getShops({ garment_id: garmentId })
       .then((r) => alive && setShops(r))
-      .catch(() => alive && setShops([]));
+      .catch(() => {
+        if (!alive) return;
+        setFailed(true);
+        setShops([]);
+      });
     return () => {
       alive = false;
     };
@@ -30,7 +35,9 @@ export function ShopList({ garmentId, garmentName }: { garmentId: string; garmen
   return (
     <section id="shops" className="paper scroll-mt-16 rounded-lg p-5">
       <h3 className="m-0 font-semibold">Thuê hoặc may {garmentName} ở đâu?</h3>
-      {shops.length === 0 ? (
+      {failed ? (
+        <p className="m-0 mt-2 text-sm text-stone-600">Chưa lấy được danh sách tiệm lúc này, con mở lại sau chút nhé.</p>
+      ) : shops.length === 0 ? (
         <p className="m-0 mt-2 text-sm text-stone-600">Nhóm đang tìm và kiểm tra các tiệm cho trang phục này.</p>
       ) : (
         <ul className="m-0 mt-3 list-none space-y-3 p-0">

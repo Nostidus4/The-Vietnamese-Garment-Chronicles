@@ -5,7 +5,7 @@
 
 import { useState } from "react";
 import { askTeo } from "@/lib/api";
-import { sourceOf } from "@/lib/sources";
+import { cited, plainAnswer } from "@/lib/sources";
 import type { Bootstrap, Garment } from "@/lib/types";
 
 type Answer = { q: string; answer: string; sources: string[]; grounded: boolean };
@@ -34,7 +34,8 @@ export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap })
       setHistory((h) => [{ q: text, ...r }, ...h].slice(0, 5));
       setQ("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Tèo chưa nghe rõ, bạn hỏi lại nhé.");
+      // a dropped connection is a TypeError ("Failed to fetch"): not words for a reader (#48)
+      setError(e instanceof Error && !(e instanceof TypeError) ? e.message : "Tèo chưa liên lạc được với sổ tay, bạn hỏi lại sau chút nhé.");
     } finally {
       setBusy(false);
     }
@@ -77,15 +78,14 @@ export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap })
           <li key={`${a.q}-${i}`} className="rounded bg-white/55 p-3 text-sm">
             <p className="m-0 text-xs font-semibold opacity-70">Bạn: {a.q}</p>
             <p className={`m-0 mt-1 text-stone-800 ${a.grounded ? "" : "italic"}`}>
-              <b className="text-[#1f3a78]">Tèo:</b> {a.answer}
+              <b className="text-[#1f3a78]">Tèo:</b> {plainAnswer(a.answer)}
             </p>
             {a.grounded ? (
               <p className="m-0 mt-1 text-xs">
                 Nguồn:{" "}
-                {a.sources.map((id, n) => {
-                  const s = sourceOf(data, id);
+                {cited(data, a.sources).map((s, n) => {
                   return (
-                    <span key={id}>
+                    <span key={s.id}>
                       {n > 0 && " · "}
                       {s.url ? (
                         <a href={s.url} target="_blank" rel="noreferrer" className="underline">
