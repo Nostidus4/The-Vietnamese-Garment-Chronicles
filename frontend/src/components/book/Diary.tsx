@@ -8,7 +8,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
 import { ensureMigrated, pagesOf, useDuKy } from "@/lib/dukyBook";
-import { markStamp } from "@/lib/stamps";
+import { markStamp, useStamps } from "@/lib/stamps";
 import { track } from "@/lib/track";
 import { Photo as DuKyPhoto } from "../duky/DuKyPageView";
 import type {
@@ -794,6 +794,24 @@ export function PreQuestion({ region, onDone }: { region: Region; onDone: () => 
         Trước khi đọc, Bà hỏi con một câu. Sai cũng chẳng sao. — Bà
       </p>
       <Question q={q} regionId={region.id} phase="pre" onAnswer={() => setAnswered(true)} />
+      {/* what the chapter holds, so the page reads as a door, not a quiz on an empty sheet (#79) */}
+      {region.journey!.stops.length > 0 && (
+        <div className="mt-3 rounded-md border border-dashed border-stone-400/60 px-3 py-2">
+          <p className="m-0 text-[0.75rem] tracking-[0.2em] text-stone-500">CHƯƠNG NÀY ĐI QUA</p>
+          <p className="font-hand m-0 mt-0.5 text-[1rem] leading-snug" style={{ color: YOUNG }}>
+            {region.journey!.stops.map((st) => st.place).join(" → ")}
+          </p>
+          <p className="m-0 mt-1 text-[0.75rem] text-stone-600">
+            {[
+              `${region.journey!.stops.length} điểm dừng`,
+              region.journey!.stops.some((st) => st.game) && `${region.journey!.stops.filter((st) => st.game).length} trò chơi`,
+              region.journey!.letter && "một phong thư của Bà ở cuối chương",
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </p>
+        </div>
+      )}
       <div className="mt-auto flex items-center gap-4 pt-3">
         {answered ? (
           <button type="button" onClick={done} className="rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
@@ -874,6 +892,12 @@ export function OwnDiary({
     .map((id) => data.garments.find((g) => g.id === id))
     .filter((g) => !!g);
   const worn = latest?.photos.some((p) => p.kind === "real");
+  const { arrived, understood } = useStamps();
+  const stamps = [
+    { label: "Đến", got: arrived.includes(region.id) },
+    { label: "Hiểu", got: understood.includes(region.id) },
+    { label: "Mặc", got: pagesOf(book, region.id).some((p) => p.photos.some((ph) => ph.kind === "real")) },
+  ];
 
   return (
     <div
@@ -892,7 +916,7 @@ export function OwnDiary({
 
       {open && (
         <>
-          <div className="mt-4 flex flex-1 flex-col items-center justify-start">
+          <div className="mt-4 flex flex-col items-center justify-start">
             {latest ? (
               <motion.div
                 key={latest.id}
@@ -929,6 +953,25 @@ export function OwnDiary({
                   )}
               </div>
             )}
+          </div>
+          {/* the rest of the page: how this page fills up, and where the reader stands (#79) */}
+          <div className="mt-3 rounded-md bg-white/45 px-3 py-2 text-[0.78rem] leading-snug text-stone-700">
+            <p className="font-hand m-0 text-[1rem]" style={{ color: OLD }}>
+              Trang này đầy dần thế này:
+            </p>
+            <ol className="m-0 mt-0.5 list-none space-y-0.5 p-0">
+              <li>👗 Mặc thử trong tủ áo của Bà, Compass nói bộ nào đúng và vì sao.</li>
+              <li>📸 Đi lễ, đi hội thật, nhờ ai chụp cho một tấm.</li>
+              <li>📓 Dán vào Du Ký: tem “Đã mặc” của {place(region)} sẽ đậm lên.</li>
+            </ol>
+            <p className="m-0 mt-1.5 flex flex-wrap items-center gap-x-2 text-[0.75rem] text-stone-600">
+              Tem của {place(region)}:
+              {stamps.map((st) => (
+                <span key={st.label} className={st.got ? "font-semibold text-[#B5452E]" : "text-stone-400"}>
+                  {st.got ? "●" : "○"} {st.label}
+                </span>
+              ))}
+            </p>
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
             <a href={asset(`/du-ky?new=worn&region=${region.id}`)} className="text-[0.78rem] text-stone-700 underline">
