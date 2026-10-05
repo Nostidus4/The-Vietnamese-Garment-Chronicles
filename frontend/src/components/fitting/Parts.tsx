@@ -5,6 +5,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, type ReactNode } from "react";
+import { HAS_API } from "@/lib/api";
 import type { Bootstrap, Garment } from "@/lib/types";
 import { AskTeo } from "../chapter/AskTeo";
 import { ChapterQuiz } from "../chapter/ChapterQuiz";
@@ -37,12 +38,15 @@ export function EventPicker({ data, onPick }: { data: Bootstrap; onPick: (occasi
 /* ---------- the side sheet ---------- */
 
 export type SheetTab = "story" | "teo" | "quiz-pre" | "quiz-post" | "shops";
-const SHEET_TABS: { id: SheetTab; name: string }[] = [
-  { id: "story", name: "Bộ áo" },
-  { id: "teo", name: "Hỏi Tèo" },
-  { id: "quiz-pre", name: "Việt hay không?" },
-  { id: "shops", name: "Thuê / may" },
-];
+// Hỏi Tèo, the quiz and the shops all ask the server: a build without one shows only the garment's story (#48)
+const SHEET_TABS: { id: SheetTab; name: string }[] = HAS_API
+  ? [
+      { id: "story", name: "Bộ áo" },
+      { id: "teo", name: "Hỏi Tèo" },
+      { id: "quiz-pre", name: "Việt hay không?" },
+      { id: "shops", name: "Thuê / may" },
+    ]
+  : [{ id: "story", name: "Bộ áo" }];
 
 export function AboutSheet({
   tab,
@@ -99,7 +103,7 @@ export function AboutSheet({
                 Đóng
               </button>
             </div>
-            {body[tab]}
+            {body[HAS_API ? tab : "story"]}
           </motion.aside>
         </motion.div>
       )}

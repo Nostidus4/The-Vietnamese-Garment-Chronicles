@@ -26,6 +26,7 @@ import { NewPageDialog, type NewPreset } from "./NewPageDialog";
 import { ShareDialog } from "./ShareDialog";
 import { StampCabinet } from "./StampCabinet";
 import { asset } from "@/lib/base";
+import { HAS_API } from "@/lib/api";
 
 // where the reader is, kept across a rebuild of the book (new size or a page added)
 const memo = { page: 0 };
@@ -35,7 +36,7 @@ const byDate = (a: DuKyPage, b: DuKyPage) => a.created_at.localeCompare(b.create
 type Actions = {
   onNew: (p: NewPreset) => void;
   onExport: (p: DuKyPage) => void;
-  onShare: (p: DuKyPage) => void;
+  onShare?: (p: DuKyPage) => void;
 };
 
 export default function DuKyNotebook() {
@@ -75,7 +76,7 @@ export default function DuKyNotebook() {
   if (error) return <p className="p-6 text-red-700">{error}</p>;
   if (!data || !ready) return <p className="font-hand p-6 text-xl text-stone-500">Đang mở sổ…</p>;
 
-  const actions: Actions = { onNew: setCreating, onExport: setExporting, onShare: (p) => setSharing(p.id) };
+  const actions: Actions = { onNew: setCreating, onExport: setExporting, onShare: HAS_API ? (p) => setSharing(p.id) : undefined }; // a share link lives on the server (#48)
   const sharePage = book.pages.find((p) => p.id === sharing);
 
   return (

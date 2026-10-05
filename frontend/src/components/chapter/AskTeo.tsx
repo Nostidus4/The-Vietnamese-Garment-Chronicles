@@ -34,7 +34,8 @@ export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap })
       setHistory((h) => [{ q: text, ...r }, ...h].slice(0, 5));
       setQ("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Tèo chưa nghe rõ, bạn hỏi lại nhé.");
+      // a dropped connection is a TypeError ("Failed to fetch"): not words for a reader (#48)
+      setError(e instanceof Error && !(e instanceof TypeError) ? e.message : "Tèo chưa liên lạc được với sổ tay, bạn hỏi lại sau chút nhé.");
     } finally {
       setBusy(false);
     }

@@ -54,7 +54,8 @@ function remember(who: Who | null, look: Look | null) {
 export function ChapterView({ regionId, garmentId }: { regionId: string; garmentId?: string }) {
   const { data, error } = useBootstrap();
   const params = useSearchParams();
-  const [who, setWho] = useState<Who | null>(() => (typeof window === "undefined" ? null : remembered().who));
+  // "Con" needs the server: a static build puts a reader who chose it last time back on the paper doll (#48)
+  const [who, setWho] = useState<Who | null>(() => (typeof window === "undefined" ? null : remembered().who === "con" && !HAS_API ? "nu" : remembered().who));
   const [askWho, setAskWho] = useState(false);
   const [look, setLook] = useState<Look | null>(null);
   const [history, setHistory] = useState<Look[]>([]);
@@ -337,13 +338,11 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     : verdict?.state === "distorted"
       ? { label: "⛔ Xem cách sửa", off: false }
       : who === "con"
-        ? !HAS_API
-          ? { label: "Cần máy chủ để dựng ảnh của con", off: true }
-          : tryon.busy
-            ? { label: tryon.stageLabel ?? "Đang may…", off: true }
-            : tryon.countdown
-              ? { label: tryon.countdown, off: true } // after a 429: wait, or the limiter starts over
-              : { label: tryon.photo ? "Dựng ảnh của con ›" : "📷 Chọn ảnh của con", off: tryon.locked }
+        ? tryon.busy
+          ? { label: tryon.stageLabel ?? "Đang may…", off: true }
+          : tryon.countdown
+            ? { label: tryon.countdown, off: true } // after a 429: wait, or the limiter starts over
+            : { label: tryon.photo ? "Dựng ảnh của con ›" : "📷 Chọn ảnh của con", off: tryon.locked }
         : { label: "Xong rồi ›", off: !verdict };
 
   return (
@@ -366,9 +365,11 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           <button type="button" onClick={() => setSheet("story")} disabled={!garment} className="page-turn !text-[0.95rem]">
             📖 <span className="hidden sm:inline">Hiểu bộ áo</span>
           </button>
-          <button type="button" onClick={() => setSheet("teo")} disabled={!garment} className="page-turn !text-[0.95rem]" title="Hỏi Tèo">
-            📌 <span className="hidden sm:inline">Hỏi Tèo</span>
-          </button>
+          {HAS_API && (
+            <button type="button" onClick={() => setSheet("teo")} disabled={!garment} className="page-turn !text-[0.95rem]" title="Hỏi Tèo">
+              📌 <span className="hidden sm:inline">Hỏi Tèo</span>
+            </button>
+          )}
         </div>
       </header>
 
@@ -458,7 +459,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
               So với bộ khác
             </button>
           )}
-          {garment && (
+          {HAS_API && garment && (
             <button type="button" onClick={() => setSheet("shops")} className="underline">
               Thuê / may ở đâu
             </button>
@@ -557,9 +558,11 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
       {toast && (
         <div role="status" className="fixed inset-x-4 bottom-24 z-50 mx-auto flex max-w-md flex-wrap items-center gap-3 rounded-lg bg-stone-900 px-4 py-3 text-sm text-amber-50 shadow-lg">
           <span>Đã lưu thẻ vào Du Ký ✓</span>
-          <button type="button" onClick={() => setSheet("quiz-post")} className="underline">
-            Thử lại: Việt hay không?
-          </button>
+          {HAS_API && (
+            <button type="button" onClick={() => setSheet("quiz-post")} className="underline">
+              Thử lại: Việt hay không?
+            </button>
+          )}
           <a href={asset("/du-ky")} className="ml-auto font-semibold text-amber-200 underline">
             Mở Du Ký
           </a>

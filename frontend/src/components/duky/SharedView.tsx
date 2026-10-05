@@ -4,7 +4,7 @@ import Link from "next/link";
 // The public page behind a "Tạo link" (#27): what the reader chose to share, nothing more.
 
 import { useEffect, useState } from "react";
-import { API_URL, getShare, type SharedPage } from "@/lib/api";
+import { API_URL, getShare, HAS_API, type SharedPage } from "@/lib/api";
 import { useBootstrap } from "@/lib/useBootstrap";
 
 const MONTH = (m: string) => {
@@ -23,7 +23,10 @@ export function SharedView({ id }: { id: string }) {
   if (missing)
     return (
       <main className="mx-auto max-w-md p-6 text-center">
-        <p className="font-hand text-2xl text-stone-600">Trang này không còn nữa, hoặc người viết đã gỡ link.</p>
+        <p className="font-hand text-2xl text-stone-600">
+          {/* a build without the server cannot open any shared page: say so, not that the page is gone (#48) */}
+          {HAS_API ? "Trang này không còn nữa, hoặc người viết đã gỡ link." : "Bản đọc thử này chưa mở được link chia sẻ. Con mở link trên bản đầy đủ nhé."}
+        </p>
         <Link href="/" className="mt-4 inline-block underline">Mở Việt Phục Du Ký</Link>
       </main>
     );
