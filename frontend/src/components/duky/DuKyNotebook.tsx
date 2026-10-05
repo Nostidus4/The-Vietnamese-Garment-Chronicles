@@ -456,8 +456,15 @@ function DuKyFlip({
 /* ---------------- phones: one page under the other ---------------- */
 
 function ScrollBook({ data, book, actions }: { data: Bootstrap; book: DuKyBook; actions: Actions }) {
-  const pages = [...book.pages].sort(byDate).reverse(); // newest first on a phone
+  const pages = [...book.pages].sort(byDate); // the same order as the book on a computer: a notebook, not a feed (#57)
   const card = "paper rounded-md p-5 shadow-[0_8px_20px_rgba(20,8,0,0.35)]";
+  // a page just written goes to the end: take the reader there
+  const count = useRef(pages.length);
+  const newest = pages.at(-1)?.id;
+  useEffect(() => {
+    if (pages.length > count.current && newest) document.getElementById(`page-${newest}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    count.current = pages.length;
+  }, [pages.length, newest]);
   return (
     <main className="desk min-h-screen px-4 pb-16 pt-4">
       <div className="relative mx-auto aspect-[3/4] w-[62%] max-w-[260px] shadow-[10px_16px_24px_rgba(20,8,0,0.5)]">

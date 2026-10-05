@@ -19,7 +19,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="vi" className={`${body.variable} ${hand.variable} h-full antialiased`}>
       <body className="min-h-full">
-        <nav className="site-nav fixed right-4 top-3 z-30 flex gap-4 text-sm">
+        <nav className="site-nav absolute right-4 top-3 z-30 flex gap-4 text-sm sm:fixed">
           <Link href="/">Sách</Link>
           <Link href="/du-ky">Du Ký của tôi</Link>
           {/* full reload on purpose so the opening restarts from the first screen */}

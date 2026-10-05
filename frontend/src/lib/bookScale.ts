@@ -66,12 +66,18 @@ export function useViewport() {
   return vp;
 }
 
-/** Page size (one page, 3:4) of a notebook for this viewport and scale. Phones show one page at a time. */
+/**
+ * Page size of a notebook for this viewport and scale. Phones and upright tablets show one page at a time, and that
+ * page may be taller than 3:4 (down to 0.58): a 3:4 page as wide as a phone used only half its height, and cut the
+ * longer pages off at the bottom (#57). Two pages side by side stay 3:4.
+ */
 export function pageSize(vp: { w: number; h: number }, scale: number) {
-  const portrait = vp.w < 760;
+  const portrait = vp.w < 760 || (vp.h > vp.w && vp.w < 1100);
   if (portrait) {
-    const h = Math.min(vp.h * 0.7, (vp.w * 0.86) / 0.75);
-    return { w: Math.round(h * 0.75), h: Math.round(h), portrait };
+    // room for the site links and the chapter's bookmarks above, the page-turn buttons below
+    const w = Math.min(vp.w * 0.9, 720, (vp.h - 220) * 0.75);
+    const h = Math.min(vp.h - 220, w / 0.58);
+    return { w: Math.round(w), h: Math.round(h), portrait };
   }
   // biggest that fits: height minus the top menu and the page-turn buttons, width for two pages side by side
   const maxH = Math.min(vp.h - 116, (vp.w * 0.48) / 0.75);

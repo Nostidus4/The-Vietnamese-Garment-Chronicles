@@ -963,7 +963,7 @@ export function Bookmarks({
             role="tab"
             aria-selected={on}
             onClick={() => onJump(t.page)}
-            className={`font-hand whitespace-nowrap py-1 text-left text-amber-50 shadow-[2px_2px_5px_rgba(0,0,0,0.3)] transition-transform ${portrait ? "rounded-t-md px-2 text-[0.75rem]" : "rounded-r-md pl-2 pr-3 text-[0.85rem]"}`}
+            className={`bookmark-tab font-hand whitespace-nowrap py-1 text-left text-amber-50 shadow-[2px_2px_5px_rgba(0,0,0,0.3)] transition-transform ${portrait ? "rounded-t-md px-2 text-[0.8rem]" : "rounded-r-md pl-2 pr-3 text-[0.85rem]"}`}
             style={{
               background: colors[i % colors.length],
               transform: portrait

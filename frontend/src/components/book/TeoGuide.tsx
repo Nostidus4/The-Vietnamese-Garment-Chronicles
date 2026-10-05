@@ -87,8 +87,7 @@ export function TeoGuide() {
   }, [tip]);
 
   if (typeof document === "undefined") return null;
-  const W = 250;
-  const place = tip && bubble(tip.rect, W);
+  const place = tip && bubble(tip.rect);
   const side = place?.side === "above" || place?.side === "below";
   return createPortal(
     <AnimatePresence>
@@ -98,22 +97,24 @@ export function TeoGuide() {
           role="note"
           aria-live="polite"
           className="pointer-events-auto fixed z-[70] bg-[#fbe99a] px-4 pb-3 pt-3 text-[0.9rem] leading-snug text-[#1f3a78] shadow-[3px_8px_18px_rgba(40,25,0,0.4)]"
-          style={{ left: place.x, top: place.y, width: W, rotate: "-1deg" }}
+          style={{ left: place.x, top: place.y, width: place.w, rotate: place.side === "dock" ? "0deg" : "-1deg" }}
           initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.85, ...OFFSET[place.side] }}
           animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
           exit={{ opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 24 }}
         >
           {/* the little tail pointing at the target */}
-          <span
-            aria-hidden
-            className="absolute h-3 w-3 rotate-45 bg-[#fbe99a]"
-            style={
-              side
-                ? { left: place.tail - 6, ...(place.side === "below" ? { top: -6 } : { bottom: -6 }) }
-                : { top: place.tail - 6, ...(place.side === "right" ? { left: -6 } : { right: -6 }) }
-            }
-          />
+          {place.side !== "dock" && (
+            <span
+              aria-hidden
+              className="absolute h-3 w-3 rotate-45 bg-[#fbe99a]"
+              style={
+                side
+                  ? { left: place.tail - 6, ...(place.side === "below" ? { top: -6 } : { bottom: -6 }) }
+                  : { top: place.tail - 6, ...(place.side === "right" ? { left: -6 } : { right: -6 }) }
+              }
+            />
+          )}
           <b className="font-hand block text-[1.05rem] text-[#8a4b2a]">Tèo chỉ con</b>
           {tip.tip.text}
           <span className="mt-2 flex items-center justify-between">
@@ -142,8 +143,9 @@ function sameRect(a: DOMRect, b: DOMRect) {
   return Math.abs(a.left - b.left) < 2 && Math.abs(a.top - b.top) < 2;
 }
 
-type Side = "above" | "below" | "right" | "left";
-const OFFSET: Record<Side, { x?: number; y?: number }> = { above: { y: 8 }, below: { y: -8 }, right: { x: -8 }, left: { x: 8 } };
+type Side = "above" | "below" | "right" | "left" | "dock";
+const OFFSET: Record<Side, { x?: number; y?: number }> = { above: { y: 8 }, below: { y: -8 }, right: { x: -8 }, left: { x: 8 }, dock: { y: 8 } };
+const W = 250;
 const H = 150; // about the note's height: title, three lines of text, the footer
 const TEXT = "p, li, h1, h2, h3, a, button, label, img, figure, text, [role=tab]";
 
@@ -152,19 +154,27 @@ const TEXT = "p, li, h1, h2, h3, a, button, label, img, figure, text, [role=tab]
  * space above the "next" button is the table of contents, and above the chapter tabs the tabs themselves, so each
  * side is scored by how much text it would cover, and the target itself counts ten times.
  */
-function bubble(r: DOMRect, w: number) {
+function bubble(r: DOMRect) {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
+  // a phone has no free side: the note lies across the top or the bottom of the screen, whichever hides less (#57)
+  const phone = vw < 640;
+  const w = phone ? vw - 16 : W;
   const cx = r.left + r.width / 2;
   const cy = r.top + r.height / 2;
   const clampX = (x: number) => Math.min(vw - w - 8, Math.max(8, x));
   const clampY = (y: number) => Math.min(vh - H - 8, Math.max(8, y));
-  const spots: { side: Side; x: number; y: number }[] = [
-    { side: "above", x: clampX(cx - w / 2), y: r.top - 12 - H },
-    { side: "below", x: clampX(cx - w / 2), y: r.bottom + 12 },
-    { side: "right", x: r.right + 12, y: clampY(cy - H / 2) },
-    { side: "left", x: r.left - 12 - w, y: clampY(cy - H / 2) },
-  ];
+  const spots: { side: Side; x: number; y: number }[] = phone
+    ? [
+        { side: "dock", x: 8, y: 8 },
+        { side: "dock", x: 8, y: vh - H - 8 },
+      ]
+    : [
+        { side: "above", x: clampX(cx - w / 2), y: r.top - 12 - H },
+        { side: "below", x: clampX(cx - w / 2), y: r.bottom + 12 },
+        { side: "right", x: r.right + 12, y: clampY(cy - H / 2) },
+        { side: "left", x: r.left - 12 - w, y: clampY(cy - H / 2) },
+      ];
   const texts = [...document.querySelectorAll<Element>(TEXT)]
     .filter((el) => !el.closest("[role=note]"))
     .map((el) => el.getBoundingClientRect())
@@ -180,5 +190,5 @@ function bubble(r: DOMRect, w: number) {
   }
   if (!best) return null;
   const tail = best.side === "above" || best.side === "below" ? Math.min(w - 14, Math.max(14, cx - best.x)) : Math.min(H - 14, Math.max(14, cy - best.y));
-  return { ...best, tail };
+  return { ...best, tail, w };
 }

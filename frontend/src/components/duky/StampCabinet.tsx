@@ -83,7 +83,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
                 <button
                   type="button"
                   onClick={() => setReading(r)}
-                  className="font-hand ml-auto rotate-[-4deg] rounded bg-[#f7e4c8] px-1.5 text-[0.85rem] text-[#8a4b2a] shadow-[1px_2px_4px_rgba(60,35,10,0.25)] hover:rotate-0"
+                  className="font-hand ml-auto shrink-0 whitespace-nowrap rotate-[-4deg] rounded bg-[#f7e4c8] px-1.5 text-[0.85rem] text-[#8a4b2a] shadow-[1px_2px_4px_rgba(60,35,10,0.25)] hover:rotate-0"
                   title="Đọc lại thư của Bà"
                 >
                   ✉ đọc thư

@@ -459,7 +459,7 @@ function DuKyOnDesk() {
   return (
     <a
       href={asset("/du-ky")}
-      className="group absolute bottom-[6%] left-[4%] z-10 hidden w-[8vw] min-w-[86px] max-w-[132px] rotate-[8deg] transition-transform hover:-translate-y-1 hover:rotate-[5deg] md:block"
+      className="group absolute bottom-[6%] left-[4%] z-10 hidden w-[8vw] min-w-[86px] max-w-[132px] rotate-[8deg] transition-transform hover:-translate-y-1 hover:rotate-[5deg] lg:block"
       aria-label="Mở Du Ký của con"
     >
       <div className="relative aspect-[3/4] shadow-[10px_16px_22px_rgba(20,8,0,0.55)]">
