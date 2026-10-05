@@ -54,6 +54,8 @@ jobs:
         run: |
           npm ci
           npx next build
+          # /voice-review is a team tool (it needs DEV_TOOLS on a local backend): not part of the public site (#50)
+          rm -rf out/voice-review out/voice-review.html out/voice-review.txt
           touch out/.nojekyll
 
       - uses: actions/configure-pages@v5

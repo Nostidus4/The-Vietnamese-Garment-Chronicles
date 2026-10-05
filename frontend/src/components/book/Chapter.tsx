@@ -711,7 +711,7 @@ export function EnvelopeLetter({ region }: { region: Region }) {
               )}
             </div>
             <p className="font-hand m-0 mt-3 w-[90%] text-[1rem] leading-snug" style={{ color: OLD }}>
-              <RichText text={letter.text} /> <span className="whitespace-nowrap">— Bà</span>
+              <RichText text={letter.text} /> <span className="whitespace-nowrap">— {letter.signed ?? "Bà"}</span>
             </p>
             <div className="mt-3 flex items-center gap-3">
               <button

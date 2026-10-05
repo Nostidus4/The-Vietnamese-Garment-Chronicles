@@ -6,7 +6,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getShops, getWeatherOn } from "@/lib/api";
 import { addPhoto, removePage, updatePage, usePhotoUrl, type DuKyPage, type PhotoRef } from "@/lib/dukyBook";
-import { sourceOf } from "@/lib/sources";
+import { cited } from "@/lib/sources";
 import { track } from "@/lib/track";
 import type { Bootstrap, Shop } from "@/lib/types";
 import { asset } from "@/lib/base";
@@ -23,11 +23,12 @@ export function formatDate(d: string | null) {
 /** Tèo's note for a page: one sourced fact of the garment, chosen from the page id so it stays the same. */
 export function teoFact(data: Bootstrap, page: DuKyPage) {
   const g = data.garments.find((x) => x.id === page.garment_id);
-  const facts = (g?.facts ?? []).filter((f) => f.sources.length > 0);
+  // only facts with a vetted source: Du Ký pages are exported and shared (#50)
+  const facts = (g?.facts ?? []).filter((f) => cited(data, f.sources).length > 0);
   if (!facts.length) return null;
   const n = [...page.id].reduce((a, c) => a + c.charCodeAt(0), 0) % facts.length;
   const f = facts[n];
-  return { text: f.text, source: sourceOf(data, f.sources[0]) };
+  return { text: f.text, source: cited(data, f.sources)[0] };
 }
 
 export function Photo({ photo, className = "", big = false }: { photo: PhotoRef; className?: string; big?: boolean }) {
