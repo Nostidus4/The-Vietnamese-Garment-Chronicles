@@ -10,6 +10,7 @@ import { asset } from "@/lib/base";
 import type { Bootstrap, CompassResult, CompassState, Garment, WardrobeItem, WardrobeSlot } from "@/lib/types";
 import type { PieceState } from "@/lib/wardrobe";
 import { pickOption, pickedOption, zoneControl } from "@/lib/zones";
+import { ArtThumb, DRAWN } from "./PaperDoll";
 import type { Selection } from "@/lib/types";
 
 export type Who = "nu" | "nam" | "con";
@@ -83,6 +84,7 @@ export function WardrobePanel({
   items,
   stateOf,
   noteOf,
+  whyOf,
   onToggle,
   garment,
   selection,
@@ -96,6 +98,7 @@ export function WardrobePanel({
   items: WardrobeItem[];
   stateOf: (it: WardrobeItem) => PieceState;
   noteOf: (it: WardrobeItem) => string;
+  whyOf?: (it: WardrobeItem) => string; // the label in a sentence, for the tooltip
   onToggle: (it: WardrobeItem) => void;
   garment: Garment | null;
   selection: Selection | null;
@@ -146,15 +149,15 @@ export function WardrobePanel({
                       aria-disabled={st === "off" || st === "lock"}
                       onClick={() => onToggle(it)}
                       className={`w-item w-item-${st}`}
-                      title={noteOf(it)}
+                      title={whyOf?.(it) ?? noteOf(it)}
                     >
                       <span className="w-hanger" aria-hidden />
                       <ItemPicture item={it} />
                       <span className="block text-[0.7rem] font-semibold leading-tight">{name}</span>
-                      <span className="block text-[0.58rem] leading-tight text-stone-500">{noteOf(it)}</span>
+                      <span className="block text-[0.66rem] leading-tight text-stone-500">{noteOf(it)}</span>
                     </button>
                     {it.garment && (
-                      <button type="button" onClick={() => onLookReal(it.garment!)} className="mt-0.5 block w-full text-center text-[0.58rem] text-[#27354f] underline">
+                      <button type="button" onClick={() => onLookReal(it.garment!)} className="mt-0.5 block w-full text-center text-[0.66rem] text-[#27354f] underline">
                         Xem ảnh thật
                       </button>
                     )}
@@ -176,24 +179,9 @@ function ItemPicture({ item }: { item: WardrobeItem }) {
   if (item.garment && !broken)
     // eslint-disable-next-line @next/next/no-img-element -- static export
     return <img src={asset(`/garments/${item.garment}.webp`)} alt="" className="mx-auto h-16 w-full object-contain" loading="lazy" onError={() => setBroken(true)} />;
-  return <span className="mx-auto grid h-16 place-items-center text-[1.7rem]" aria-hidden>{ICON[item.art] ?? "🧵"}</span>;
+  if (DRAWN.has(item.art)) return <ArtThumb art={item.art} className="mx-auto block h-16 w-full" />;
+  return <span className="mx-auto grid h-16 place-items-center text-[1.7rem]" aria-hidden>🧵</span>;
 }
-const ICON: Record<string, string> = {
-  "non-la": "👒",
-  "non-quai-thao": "🎐",
-  "khan-van": "🧣",
-  "khan-mo-qua": "🧕",
-  "khan-ran": "🏁",
-  "mu-canh-chuon": "🎩",
-  "quat-giay": "🪭",
-  "tui-tote": "👜",
-  "kinh-mat": "🕶️",
-  "guoc-moc": "🩴",
-  "hai-vai": "🥿",
-  sneakers: "👟",
-  obi: "🎀",
-  "no-jeogori": "🎗️",
-};
 
 /** Colours (max 2: the main cloth, then the second piece) and the zone options of the garment. */
 function StyleDrawer({ data, garment, selection, onSelection }: { data: Bootstrap; garment: Garment | null; selection: Selection | null; onSelection: (s: Selection) => void }) {
@@ -211,9 +199,12 @@ function StyleDrawer({ data, garment, selection, onSelection }: { data: Bootstra
           {garment.colors.map((c) => {
             const i = selection.colors.indexOf(c);
             return (
-              <button key={c} type="button" onClick={() => toggle(c)} aria-pressed={i >= 0} title={data.colors[c]?.name} className={`fabric ${i >= 0 ? "fabric-on" : ""}`} style={{ backgroundColor: data.colors[c]?.hex }}>
-                {i >= 0 && <span className="fabric-n">{i + 1}</span>}
-                <span className="sr-only">{data.colors[c]?.name}</span>
+              // the colour's name under the cloth: a tooltip alone never shows on a phone (#62)
+              <button key={c} type="button" onClick={() => toggle(c)} aria-pressed={i >= 0} className="flex w-14 flex-col items-center gap-1">
+                <span className={`fabric ${i >= 0 ? "fabric-on" : ""}`} style={{ backgroundColor: data.colors[c]?.hex }}>
+                  {i >= 0 && <span className="fabric-n">{i + 1}</span>}
+                </span>
+                <span className="text-center text-[0.68rem] leading-tight text-stone-600">{data.colors[c]?.name}</span>
               </button>
             );
           })}
@@ -308,7 +299,19 @@ export const STAMP: Record<CompassState, { word: string; icon: string }> = {
   distorted: { word: "", icon: "⛔" },
 };
 
-export type CardFace = { image: string; title: string; place: string; date: string; number: number; state: CompassState; note: string[]; items: string[]; isAI: boolean; sample: boolean };
+export type CardFace = {
+  image: string;
+  title: string;
+  place: string;
+  date: string;
+  number: number;
+  state: CompassState;
+  note: string[];
+  items: string[];
+  isAI: boolean;
+  sample: boolean;
+  fact: { text: string; source: string } | null; // one sourced line of Tèo's for the back (#62)
+};
 
 export function LookCard({
   face,
@@ -317,6 +320,7 @@ export function LookCard({
   onSave,
   onClose,
   onRedo,
+  onDownload,
 }: {
   face: CardFace;
   saving: "idle" | "saving" | "saved";
@@ -324,6 +328,7 @@ export function LookCard({
   onSave: (el: HTMLElement) => void;
   onClose: () => void;
   onRedo?: () => void;
+  onDownload: () => void; // the whole card, framed and stamped, not the bare picture
 }) {
   const reduced = !!useReducedMotion();
   const [back, setBack] = useState(false);
@@ -381,8 +386,17 @@ export function LookCard({
                   </span>
                 ))}
               </span>
+              {face.fact && (
+                <span className="mb-2 block rotate-[-0.6deg] bg-[#fbe99a] px-2 py-1.5 text-[0.72rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">
+                  {face.fact.text}
+                  <span className="mt-0.5 block text-[0.6rem] opacity-80">nguồn: {face.fact.source} – Tèo</span>
+                </span>
+              )}
               <span className="look-card-meta">
                 <span className="min-w-0 truncate">{face.items.join(" · ")}</span>
+                <span className="shrink-0">
+                  {face.place} · {face.date}
+                </span>
               </span>
             </button>
           </motion.div>
@@ -398,11 +412,11 @@ export function LookCard({
               ↻ Dựng lại
             </button>
           )}
-          <a href={face.image} download={`the-viet-phuc-${face.number}.png`} className="page-turn">
-            Tải ảnh
-          </a>
+          <button type="button" onClick={onDownload} className="page-turn">
+            Tải thẻ
+          </button>
           <button type="button" onClick={onClose} className="page-turn">
-            Thay tiếp
+            Thử bộ khác
           </button>
         </div>
       </div>

@@ -14,6 +14,7 @@ from typing import TypeVar
 from pydantic import BaseModel, ValidationError
 
 from .schemas import (
+    BLANKS,
     KEEP_OPTION,
     Accessory,
     Color,
@@ -176,6 +177,12 @@ def _check_refs(c: Content, r: Report) -> None:
             r.errors.append(f"rules.json: missing rule of type '{t}'")
     for rule in c.rules.values():
         srcs(rule.sources, f"rules.json [{rule.type}]")
+        # a blank the Compass cannot fill would reach the reader as "{zone}"
+        for kind, words in [("", rule), *rule.by.items()]:
+            allowed = BLANKS.get(kind, set())
+            for field in ("ti", "teo", "why"):
+                for blank in set(re.findall(r"\{(\w+)\}", getattr(words, field))) - allowed:
+                    r.errors.append(f"rules.json [{rule.type}]{f'.by.{kind}' if kind else ''}.{field}: unknown blank {{{blank}}}")
 
     for a in c.accessories.values():
         w = f"accessories.json [{a.id}]"
