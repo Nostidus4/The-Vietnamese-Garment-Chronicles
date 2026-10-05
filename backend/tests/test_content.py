@@ -183,3 +183,24 @@ def test_a_chapter_published_before_community_review_is_flagged(content):
     for rid in ("tay-bac", "tay-nguyen"):
         reg = content.regions[rid]
         assert reg.journey.community_review and any(c.status == "open" for c in reg.chapters)
+
+
+def test_wardrobe_points_at_real_garments_and_accessories(content):
+    assert content.wardrobe, "wardrobe.json should load"
+    for it in content.wardrobe.values():
+        if it.slot == "set":
+            assert it.garment in content.garments
+        else:
+            assert it.accessory in content.accessories
+
+
+def test_wardrobe_piece_needs_one_target_and_the_right_slot(tmp_path):
+    root = _copy(tmp_path)
+    p = root / "wardrobe.json"
+    data = json.loads(p.read_text(encoding="utf-8"))
+    data["items"].append({"id": "lac-loai", "slot": "head", "garment": "ao-dai", "art": "x"})
+    data["items"].append({"id": "khong-co", "slot": "feet", "accessory": "giay-khong-co", "art": "x"})
+    p.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    _, rep = store.load(root)
+    assert any("lac-loai" in e and "slot 'set'" in e for e in rep.errors)
+    assert any("khong-co" in e and "unknown accessory" in e for e in rep.errors)

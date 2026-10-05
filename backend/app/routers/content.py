@@ -23,6 +23,9 @@ def bootstrap() -> dict:
         "sources": {k: v.model_dump() for k, v in c.sources.items()},
         "opening": [s.model_dump() for s in c.opening],
         "glossary": {k: v.model_dump() for k, v in c.glossary.items()},
+        # the wardrobe and the Compass rules, so the dress-up room can judge a look in the browser
+        "wardrobe": [it.model_dump() for it in c.wardrobe.values()],
+        "rules": [r.model_dump() for r in c.rules.values()],
     }
 
 

@@ -7,30 +7,105 @@
   "period": "Trang phục dân gian Nam Bộ",
   "summary": "Trang phục đời thường miền sông nước, nhẹ và thoáng, hợp khí hậu nóng.",
   "facts": [
-    {"text": "Nhẹ, thoáng, hợp khí hậu nóng của Nam Bộ.", "sources": ["research-5-3"]}
+    {
+      "text": "Nhẹ, thoáng, hợp khí hậu nóng của Nam Bộ.",
+      "sources": [
+        "research-5-3"
+      ]
+    }
   ],
-  "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong"],
+  "occasions": [
+    "tet-chua",
+    "le-hoi",
+    "di-tich",
+    "su-kien-truong"
+  ],
   "zones": [
-    {"part": "dáng áo ngắn, xẻ hông", "level": "keep", "note": "Áo ngắn, xẻ hông là dáng nhận diện của áo bà ba"},
-    {"part": "màu vải", "level": "free", "control": "colors"},
-    {"part": "chất liệu", "level": "free", "options": [
-        {"id": "giu-nguyen", "label": "Giữ nguyên"},
-        {"id": "vai-tho", "label": "Vải thô", "prompt": "the tunic is plain, matte coarse cotton, the simple everyday kind", "sources": ["ref-79"]},
-        {"id": "lua-leo", "label": "Lụa lèo", "prompt": "the tunic is smooth silk (lua leo) with a soft sheen", "sources": ["ref-79"]}
-    ]}
+    {
+      "part": "dáng áo ngắn, xẻ hông",
+      "level": "keep",
+      "note": "Áo ngắn, xẻ hông là dáng nhận diện của áo bà ba"
+    },
+    {
+      "part": "màu vải",
+      "level": "free",
+      "control": "colors"
+    },
+    {
+      "part": "chất liệu",
+      "level": "free",
+      "options": [
+        {
+          "id": "giu-nguyen",
+          "label": "Giữ nguyên"
+        },
+        {
+          "id": "vai-tho",
+          "label": "Vải thô",
+          "prompt": "the tunic is plain, matte coarse cotton, the simple everyday kind",
+          "sources": [
+            "ref-79"
+          ]
+        },
+        {
+          "id": "lua-leo",
+          "label": "Lụa lèo",
+          "prompt": "the tunic is smooth silk (lua leo) with a soft sheen",
+          "sources": [
+            "ref-79"
+          ]
+        }
+      ]
+    }
   ],
-  "colors": ["den", "trang", "nau-non", "xanh-mint", "hong-dao"],
-  "default_colors": ["den", "trang"],
-  "accessories": ["non-la", "khan-ran", "sneakers-trang", "tui-tote", "kinh-mat", "obi"],
-  "must_keep": ["short tunic with side slits", "worn with loose trousers"],
-  "must_avoid": ["Japanese obi", "hanfu elements"],
+  "colors": [
+    "den",
+    "trang",
+    "nau-non",
+    "xanh-mint",
+    "hong-dao"
+  ],
+  "default_colors": [
+    "den",
+    "trang"
+  ],
+  "accessories": [
+    "non-la",
+    "khan-ran",
+    "sneakers-trang",
+    "tui-tote",
+    "kinh-mat",
+    "obi",
+    "guoc-moc",
+    "hai-vai"
+  ],
+  "must_keep": [
+    "short tunic with side slits",
+    "worn with loose trousers"
+  ],
+  "must_avoid": [
+    "Japanese obi",
+    "hanfu elements"
+  ],
   "reference_image": "ref/ao-ba-ba.png",
   "hot_weather_tip": "Áo bà ba vốn đã hợp trời nóng – chọn cotton hoặc lụa mỏng.",
   "wearing_steps": [
-    {"title": "Mặc quần", "detail": "Quần dài ống rộng cho dễ ngồi, dễ lội nước."},
-    {"title": "Mặc áo", "detail": "Cài hàng khuy chạy dọc giữa thân trước."},
-    {"title": "Khăn rằn", "detail": "Quàng cổ hoặc trùm đầu khi ra nắng, đội thêm nón lá."}
+    {
+      "title": "Mặc quần",
+      "detail": "Quần dài ống rộng cho dễ ngồi, dễ lội nước."
+    },
+    {
+      "title": "Mặc áo",
+      "detail": "Cài hàng khuy chạy dọc giữa thân trước."
+    },
+    {
+      "title": "Khăn rằn",
+      "detail": "Quàng cổ hoặc trùm đầu khi ra nắng, đội thêm nón lá."
+    }
   ],
-  "sources": ["research-5-3", "ref-01"],
+  "sources": [
+    "research-5-3",
+    "ref-01"
+  ],
   "verified": false
 }

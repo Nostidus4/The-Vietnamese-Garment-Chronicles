@@ -108,6 +108,22 @@
       "sources": [
         "baolaocai-pieu"
       ]
+    },
+    {
+      "id": "guoc-moc",
+      "name_vi": "Guốc mộc",
+      "kind": "traditional-vn",
+      "description": "Guốc gỗ đế bằng, quai vải hoặc da; đi cùng áo dài, áo bà ba trong ngày thường và ngày hội.",
+      "sources": [],
+      "verified": false
+    },
+    {
+      "id": "hai-vai",
+      "name_vi": "Hài vải",
+      "kind": "traditional-vn",
+      "description": "Giày vải mũi cong, thêu hoa, đi cùng áo ngũ thân, áo tứ thân trong dịp lễ.",
+      "sources": [],
+      "verified": false
     }
   ]
 }

@@ -7,38 +7,147 @@
   "period": "Trang phục dân gian đồng bằng Bắc Bộ",
   "summary": "Trang phục đời thường của phụ nữ Bắc Bộ, hợp nhất để đưa vào đời sống hôm nay.",
   "facts": [
-    {"text": "Thường đi cùng yếm, nón quai thao và khăn mỏ quạ.", "sources": ["research-5-3"]},
-    {"text": "Màu nâu, đen, sồi là màu của đời thường.", "sources": ["research-5-3"]}
+    {
+      "text": "Thường đi cùng yếm, nón quai thao và khăn mỏ quạ.",
+      "sources": [
+        "research-5-3"
+      ]
+    },
+    {
+      "text": "Màu nâu, đen, sồi là màu của đời thường.",
+      "sources": [
+        "research-5-3"
+      ]
+    }
   ],
-  "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong"],
+  "occasions": [
+    "tet-chua",
+    "le-hoi",
+    "di-tich",
+    "su-kien-truong"
+  ],
   "zones": [
-    {"part": "số thân áo", "level": "keep", "note": "Bốn thân là dấu hiệu nhận diện"},
-    {"part": "yếm bên trong", "level": "caution", "options": [
-        {"id": "giu-nguyen", "label": "Giữ nguyên"},
-        {"id": "yem-dao", "label": "Yếm đào", "prompt": "the yem (bodice) showing at the open front is peach-pink silk (yem dao)", "sources": ["ref-68", "ref-80"]},
-        {"id": "yem-trang", "label": "Yếm trắng", "prompt": "the yem (bodice) showing at the open front is plain white or ivory silk", "sources": ["ref-80"]}
-    ]},
-    {"part": "màu vải", "level": "free", "control": "colors"},
-    {"part": "chất liệu", "level": "free", "options": [
-        {"id": "giu-nguyen", "label": "Giữ nguyên"},
-        {"id": "vai-nai-soi", "label": "Vải nái, sồi", "prompt": "the outer dress is plain, matte homespun fabric (vai nai, soi), everyday working wear", "sources": ["ref-04"]},
-        {"id": "the-lua", "label": "The, lụa tơ tằm", "prompt": "the outer dress is thin, slightly sheer silk gauze (the) over silk, festival wear", "sources": ["ref-68", "ref-04"]}
-    ]}
+    {
+      "part": "số thân áo",
+      "level": "keep",
+      "note": "Bốn thân là dấu hiệu nhận diện"
+    },
+    {
+      "part": "yếm bên trong",
+      "level": "caution",
+      "options": [
+        {
+          "id": "giu-nguyen",
+          "label": "Giữ nguyên"
+        },
+        {
+          "id": "yem-dao",
+          "label": "Yếm đào",
+          "prompt": "the yem (bodice) showing at the open front is peach-pink silk (yem dao)",
+          "sources": [
+            "ref-68",
+            "ref-80"
+          ]
+        },
+        {
+          "id": "yem-trang",
+          "label": "Yếm trắng",
+          "prompt": "the yem (bodice) showing at the open front is plain white or ivory silk",
+          "sources": [
+            "ref-80"
+          ]
+        }
+      ]
+    },
+    {
+      "part": "màu vải",
+      "level": "free",
+      "control": "colors"
+    },
+    {
+      "part": "chất liệu",
+      "level": "free",
+      "options": [
+        {
+          "id": "giu-nguyen",
+          "label": "Giữ nguyên"
+        },
+        {
+          "id": "vai-nai-soi",
+          "label": "Vải nái, sồi",
+          "prompt": "the outer dress is plain, matte homespun fabric (vai nai, soi), everyday working wear",
+          "sources": [
+            "ref-04"
+          ]
+        },
+        {
+          "id": "the-lua",
+          "label": "The, lụa tơ tằm",
+          "prompt": "the outer dress is thin, slightly sheer silk gauze (the) over silk, festival wear",
+          "sources": [
+            "ref-68",
+            "ref-04"
+          ]
+        }
+      ]
+    }
   ],
-  "colors": ["nau-non", "den", "hong-dao", "xanh-mint", "vang-nghe"],
-  "default_colors": ["nau-non", "den"],
-  "accessories": ["non-quai-thao", "khan-mo-qua", "sneakers-trang", "tui-tote", "kinh-mat", "obi"],
-  "must_keep": ["four-panel outer dress, front panels left open or tied", "worn over a yem (Vietnamese bodice)"],
-  "must_avoid": ["hanfu cross collar", "Japanese obi"],
+  "colors": [
+    "nau-non",
+    "den",
+    "hong-dao",
+    "xanh-mint",
+    "vang-nghe"
+  ],
+  "default_colors": [
+    "nau-non",
+    "den"
+  ],
+  "accessories": [
+    "non-quai-thao",
+    "khan-mo-qua",
+    "sneakers-trang",
+    "tui-tote",
+    "kinh-mat",
+    "obi",
+    "guoc-moc",
+    "hai-vai"
+  ],
+  "must_keep": [
+    "four-panel outer dress, front panels left open or tied",
+    "worn over a yem (Vietnamese bodice)"
+  ],
+  "must_avoid": [
+    "hanfu cross collar",
+    "Japanese obi"
+  ],
   "reference_image": "ref/ao-tu-than.png",
   "hot_weather_tip": "Chọn vải lanh hoặc cotton mỏng – vẫn giữ bốn thân áo, đây là cách tân có chủ đích.",
   "wearing_steps": [
-    {"title": "Mặc yếm", "detail": "Yếm là lớp trong cùng, buộc dây sau cổ và sau lưng."},
-    {"title": "Mặc váy hoặc quần", "detail": "Ngày xưa là váy dài đen; ngày nay có thể thay bằng quần dài."},
-    {"title": "Khoác áo tứ thân", "detail": "Hai vạt trước để thả hoặc buộc lại với nhau trước bụng, để lộ yếm."},
-    {"title": "Thắt lưng", "detail": "Thắt lưng lụa buộc ngang eo, để hai đầu buông xuống phía trước."},
-    {"title": "Khăn và nón", "detail": "Vấn khăn mỏ quạ, đi hội thì đội thêm nón quai thao."}
+    {
+      "title": "Mặc yếm",
+      "detail": "Yếm là lớp trong cùng, buộc dây sau cổ và sau lưng."
+    },
+    {
+      "title": "Mặc váy hoặc quần",
+      "detail": "Ngày xưa là váy dài đen; ngày nay có thể thay bằng quần dài."
+    },
+    {
+      "title": "Khoác áo tứ thân",
+      "detail": "Hai vạt trước để thả hoặc buộc lại với nhau trước bụng, để lộ yếm."
+    },
+    {
+      "title": "Thắt lưng",
+      "detail": "Thắt lưng lụa buộc ngang eo, để hai đầu buông xuống phía trước."
+    },
+    {
+      "title": "Khăn và nón",
+      "detail": "Vấn khăn mỏ quạ, đi hội thì đội thêm nón quai thao."
+    }
   ],
-  "sources": ["research-5-3", "ref-01"],
+  "sources": [
+    "research-5-3",
+    "ref-01"
+  ],
   "verified": false
 }

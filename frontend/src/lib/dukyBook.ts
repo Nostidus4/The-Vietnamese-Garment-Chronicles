@@ -9,7 +9,8 @@
 import { useEffect, useState } from "react";
 import type { CompassState, DuKyEntry, Selection } from "./types";
 
-export type PhotoRef = { id: string; kind: "ai" | "real"; sample?: boolean };
+export type PhotoKind = "ai" | "real" | "card"; // card: a paper-doll card from Bà's wardrobe, not AI, not a real photo
+export type PhotoRef = { id: string; kind: PhotoKind; sample?: boolean };
 export type DuKyPage = {
   id: string;
   status: "planned" | "worn";
@@ -184,7 +185,7 @@ export function setCover(cover: Partial<DuKyCover>) {
 }
 
 /** Store a photo and attach it to a page; a real photo turns a planned page into a worn one. */
-export async function addPhoto(pageId: string, blob: Blob, kind: "ai" | "real", sample = false) {
+export async function addPhoto(pageId: string, blob: Blob, kind: PhotoKind, sample = false) {
   const id = uid();
   await putPhoto(id, await shrinkPhoto(blob)); // an AI render arrives as a ~1–2 MB PNG; as JPEG it is a few hundred KB
   update((b) => ({

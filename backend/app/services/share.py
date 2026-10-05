@@ -42,7 +42,7 @@ class ShareMeta(BaseModel):
     status: Literal["planned", "worn"]
     note: str = Field("", max_length=200)
     compass_label: Literal["Authentic", "Adapted", "Inspired"] | None = None
-    photo_kinds: list[Literal["ai", "real"]] = Field(default_factory=list, max_length=3)
+    photo_kinds: list[Literal["ai", "real", "card"]] = Field(default_factory=list, max_length=3)
     photo_samples: list[bool] = Field(default_factory=list, max_length=3)
 
 

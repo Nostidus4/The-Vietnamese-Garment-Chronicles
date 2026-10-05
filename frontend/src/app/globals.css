@@ -553,8 +553,8 @@ body {
   /* symmetric: equal side columns, so the mirror stands on the middle of the shop's empty wall */
   @media (min-width: 1024px) {
     .fitting-grid { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; }
-    .fitting-grid > .rack { justify-self: start; }
-    .fitting-grid > .drawers { justify-self: end; width: min(23rem, 100%); }
+    .fitting-grid > .wardrobe { justify-self: start; width: min(22rem, 100%); }
+    .fitting-grid > .outfit { justify-self: end; width: min(18rem, 100%); }
   }
   .fitting-stage { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; min-width: 0; }
 
@@ -573,26 +573,78 @@ body {
   @keyframes sew { to { stroke-dashoffset: 0; } }
   @media (prefers-reduced-motion: reduce) { .sewing rect { animation: none; stroke-dashoffset: 0; } }
 
-  /* the rack: garments on hangers (a column on desktop, a row to swipe on phones) */
-  .rack { min-width: 0; }
-  .rack-title { display: inline-block; margin: 0 0 0.4rem; border-radius: 999px; background: rgba(20, 12, 7, 0.55); padding: 0.1rem 0.6rem; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.25em; color: #f3ead7; }
-  .rack-list { margin: 0; padding: 0 0 0.3rem; list-style: none; display: flex; gap: 0.6rem; overflow-x: auto; }
-  @media (min-width: 1024px) { .rack-list { flex-direction: column; overflow: visible; } }
-  .rack-item { position: relative; display: block; width: 8.5rem; padding: 1rem 0.5rem 0.5rem; border-radius: 0.6rem; background: rgba(251, 246, 234, 0.92); text-align: center; color: #27354f; border: 2px solid transparent; transition: transform 160ms ease, border-color 160ms ease; }
-  .rack-item:hover { transform: translateY(-2px); }
-  .rack-item-on { border-color: #e3b04b; box-shadow: 0 0 0 3px rgba(227, 176, 75, 0.35); }
-  .rack-hanger { position: absolute; left: 50%; top: 0.25rem; width: 1.6rem; height: 0.55rem; margin-left: -0.8rem; border: 2px solid #8a6a3a; border-bottom: none; border-radius: 1rem 1rem 0 0; }
-
-  /* the drawers: tabs like the bookmarks of the book, the choices on paper */
-  .drawers { min-width: 0; border-radius: 0.8rem; background: rgba(251, 246, 234, 0.95); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35); overflow: hidden; }
-  .drawer-tabs { display: flex; flex-wrap: wrap; gap: 0.2rem; padding: 0.5rem 0.5rem 0; background: #e9dcc0; }
-  .drawer-tab { border-radius: 0.5rem 0.5rem 0 0; padding: 0.35rem 0.7rem; font-size: 0.82rem; color: #5a4632; }
-  .drawer-tab-on { background: rgba(251, 246, 234, 0.95); color: #27354f; font-weight: 600; }
-  .drawer-body { padding: 0.9rem 1rem 1.1rem; max-height: 60vh; overflow-y: auto; }
-
   /* the action bar along the bottom: photo · the one main button · compare and shops */
   .fitting-bar { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 0.75rem; padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom, 0px)); background: linear-gradient(transparent, rgba(20, 12, 7, 0.88) 35%); }
   @media (max-width: 760px) { .fitting-bar { grid-template-columns: 1fr; justify-items: center; gap: 0.4rem; } }
   /* in the room a button that cannot be pressed yet still says why ("Compass đang chấm…", "cần máy chủ") */
   .fitting-bar .page-turn:disabled { display: inline-block; opacity: 0.6; cursor: not-allowed; animation: none; }
+
+  /* ---------- Tủ áo của Bà ---------- */
+  .dress-form { aspect-ratio: 3 / 5; }
+  /* phones and tablets: the doll first, then the wardrobe, then what is worn */
+  @media (max-width: 1023px) { .fitting-grid > .fitting-stage { order: -1; } .wardrobe-body { max-height: 46vh; } }
+  .mirror-tag-bad { border-color: #b5452e; color: #b5452e; }
+  .who-switch { position: relative; z-index: 6; margin-bottom: -0.4rem; border-radius: 999px; background: rgba(251, 246, 234, 0.92); padding: 0.1rem 0.8rem; font-size: 0.78rem; color: #27354f; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); }
+  .who-card { width: 6.4rem; border-radius: 0.7rem; border: 2px solid transparent; background: #fbf6ea; padding: 0.6rem 0.4rem; color: #27354f; transition: transform 160ms ease, border-color 160ms ease; }
+  .who-card:hover:not(:disabled) { transform: translateY(-3px); }
+  .who-card:disabled { opacity: 0.5; cursor: not-allowed; }
+  .who-card-on { border-color: #e3b04b; box-shadow: 0 0 0 3px rgba(227, 176, 75, 0.35); transform: translateY(-3px); }
+
+  /* the wardrobe: dark wood with brass, the drawers' tabs like the book's bookmarks, the pieces on paper */
+  .wardrobe { position: relative; min-width: 0; display: flex; flex-direction: column; border-radius: 0.9rem 0.9rem 0.5rem 0.5rem; background: linear-gradient(#5b3a22, #3b2615); border: 2px solid #c9a35a; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); overflow: hidden; perspective: 1200px; }
+  .wardrobe-doors { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+  .wardrobe-doors::before, .wardrobe-doors::after { content: ""; position: absolute; top: 0; bottom: 0; width: 50%; background: linear-gradient(90deg, #4a2f1b, #5b3a22 40%, #3b2615); border: 2px solid #c9a35a; animation: door-open 0.7s cubic-bezier(.2,.8,.2,1) 0.15s forwards; }
+  .wardrobe-doors::before { left: 0; transform-origin: left center; }
+  .wardrobe-doors::after { right: 0; transform-origin: right center; animation-name: door-open-r; }
+  @keyframes door-open { to { transform: rotateY(-100deg); opacity: 0; } }
+  @keyframes door-open-r { to { transform: rotateY(100deg); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .wardrobe-doors { display: none; } }
+  .wardrobe-tabs { display: flex; flex-wrap: wrap; gap: 0.2rem; padding: 0.55rem 0.55rem 0; }
+  .wardrobe-tab { border-radius: 0.5rem 0.5rem 0 0; padding: 0.3rem 0.65rem; font-size: 0.78rem; color: #f3ead7; background: rgba(243, 234, 215, 0.12); }
+  .wardrobe-tab:hover { background: rgba(243, 234, 215, 0.22); }
+  .wardrobe-tab-on { background: #fbf6ea; color: #27354f; font-weight: 600; }
+  .wardrobe-body { margin: 0 0.55rem; border-radius: 0 0.5rem 0.5rem 0.5rem; background: #fbf6ea; padding: 0.7rem; min-height: 16rem; max-height: 58vh; overflow-y: auto; }
+  .wardrobe > p { color: rgba(243, 234, 215, 0.75) !important; padding-top: 0.4rem; }
+  .wardrobe-grid { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.55rem; }
+  .w-item { position: relative; display: block; width: 100%; border-radius: 0.55rem; border: 2px solid transparent; background: #f3ead7; padding: 0.9rem 0.3rem 0.4rem; text-align: center; color: #27354f; box-shadow: 0 4px 10px rgba(60, 35, 10, 0.18); transition: transform 160ms ease, border-color 160ms ease, opacity 160ms ease; }
+  .w-item:hover { animation: hanger-sway 0.4s ease-in-out; }
+  @keyframes hanger-sway { 0%, 100% { transform: rotate(0); } 30% { transform: rotate(2deg); } 70% { transform: rotate(-2deg); } }
+  .w-hanger { position: absolute; left: 50%; top: 0.2rem; width: 1.4rem; height: 0.5rem; margin-left: -0.7rem; border: 2px solid #8a6a3a; border-bottom: none; border-radius: 1rem 1rem 0 0; }
+  .w-item-worn { border-color: #e3b04b; box-shadow: 0 0 0 3px rgba(227, 176, 75, 0.35); }
+  .w-item-bad { border-color: #b5452e; animation: bad-shake 0.4s ease-in-out 2; }
+  .w-item-bad::after { content: "⛔"; position: absolute; right: -0.35rem; top: -0.35rem; font-size: 0.85rem; }
+  @keyframes bad-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+  .w-item-dim { opacity: 0.5; }
+  .w-item-off { opacity: 0.42; cursor: not-allowed; filter: grayscale(0.6); }
+  .w-item-off:hover { animation: none; }
+  .w-item-lock { opacity: 0.55; cursor: not-allowed; background: repeating-linear-gradient(45deg, #e9dcc0 0 6px, #e1d1b0 6px 12px); }
+  @media (prefers-reduced-motion: reduce) { .w-item:hover, .w-item-bad { animation: none; } }
+
+  /* colour: little pieces of cloth with a weave */
+  .fabric { position: relative; width: 2.3rem; height: 2.3rem; border-radius: 999px; border: 2px solid rgba(43, 33, 24, 0.25); background-image: linear-gradient(135deg, rgba(255,255,255,.18) 25%, transparent 25% 50%, rgba(255,255,255,.18) 50% 75%, transparent 75%); background-size: 6px 6px; transition: transform 160ms ease; }
+  .fabric:hover { transform: scale(1.08); }
+  .fabric-on { border-color: #2b2118; box-shadow: 0 0 0 3px #e3b04b; }
+  .fabric-n { position: absolute; right: -0.3rem; top: -0.3rem; width: 1rem; height: 1rem; border-radius: 999px; background: #27354f; color: #fbf6ea; font-size: 0.6rem; display: grid; place-items: center; }
+  .chip-paper { border-radius: 999px; border: 1px solid #d8c9a8; padding: 0.2rem 0.7rem; font-size: 0.8rem; color: #2b2118; background: #fbf6ea; }
+  .chip-paper-on { background: #27354f; border-color: #27354f; color: #fbf6ea; }
+
+  /* Đang mặc */
+  .outfit { min-width: 0; border-radius: 0.8rem; background: rgba(251, 246, 234, 0.95); padding: 0.9rem 1rem 1rem; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35); }
+  .outfit-title { margin: 0 0 0.5rem; font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: #6b5a49; }
+  .outfit-chip { display: flex; align-items: center; gap: 0.4rem; border-radius: 999px; border: 1px solid #d8c9a8; background: #fbf6ea; padding: 0.2rem 0.3rem 0.2rem 0.8rem; font-size: 0.85rem; color: #27354f; }
+  .outfit-chip-bad { border-color: #b5452e; color: #b5452e; }
+  .outfit-x { flex-shrink: 0; width: 1.4rem; height: 1.4rem; border-radius: 999px; font-size: 0.7rem; color: inherit; }
+  .outfit-x:hover { background: rgba(181, 69, 46, 0.12); }
+
+  /* the Việt phục card: 2:3 paper, flips like Bà's postcards */
+  .look-card-wrap { width: min(340px, 80vw); aspect-ratio: 2 / 3; perspective: 1600px; }
+  .look-card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
+  .look-card { position: absolute; inset: 0; display: flex; flex-direction: column; border-radius: 8px; padding: 14px; text-align: left; background-color: #fbf6ea; background-image: radial-gradient(rgba(139,107,61,.07) 1px, transparent 1px); background-size: 5px 5px; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5); backface-visibility: hidden; color: #2b2118; }
+  .look-card-back { transform: rotateY(180deg); background-color: #f6eedc; }
+  .look-card-art { position: relative; flex: 1; min-height: 0; border-radius: 4px; border: 1px solid #d8c9a8; background: radial-gradient(ellipse at 50% 30%, #fbf6ea, #ead9b6); overflow: hidden; }
+  .look-card-title { display: block; margin-top: 0.4rem; font-size: 1.55rem; line-height: 1.1; color: #8a4b2a; }
+  .look-card-meta { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.68rem; color: #6b5a49; margin-top: 0.2rem; }
+  .look-card-lines { flex: 1; padding-top: 0.2rem; background-image: repeating-linear-gradient(transparent 0 25px, rgba(31,58,120,.18) 25px 26px); font-size: 1.1rem; line-height: 26px; color: #8a4b2a; }
+  .look-stamp { position: absolute; right: 18px; top: 18px; width: 4.4rem; height: 4.4rem; border-radius: 999px; border: 2.5px dashed #b5452e; background: rgba(251, 246, 234, 0.75); color: #b5452e; display: grid; place-items: center; text-align: center; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.04em; line-height: 1.25; }
 }
+

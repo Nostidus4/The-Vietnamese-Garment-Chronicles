@@ -228,6 +228,22 @@ class WearPage(DiaryPage):
     garment: Id
 
 
+WardrobeSlot = Literal["set", "head", "face", "neck", "chest", "waist", "hand", "feet"]
+
+
+class WardrobeItem(Strict):
+    """One piece in Bà's wardrobe (the dress-up room). It points at a garment (slot "set") or an accessory; the
+    Compass judges it through that garment / accessory, so the wardrobe adds no cultural rules of its own."""
+
+    id: Id = Field(pattern=ID_PATTERN)
+    slot: WardrobeSlot = Field(description="One piece per slot is worn at a time; 'set' is the garment itself")
+    garment: Id | None = None
+    accessory: Id | None = None
+    bodies: list[Literal["nu", "nam"]] = Field(default_factory=lambda: ["nu"], description="Bodies this piece is drawn for")
+    art: str = Field(description="Drawing key of the paper doll (frontend PaperDoll.tsx) until painted layers exist")
+    layers: dict[str, str] = Field(default_factory=dict, description="Painted layer per body, under frontend/public, e.g. /wardrobe/nu/non-la.webp")
+
+
 class GlossaryTerm(Strict):
     """Tèo's pop-up note for a hard word. Texts mark a word with [[shown words|term-id]]."""
 
