@@ -6,7 +6,7 @@
 // legs → body → feet → set (bottom, then top with sleeves) → waist → neck → chest → hands → hand item → head → face → head item.
 
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { forwardRef, type ReactNode } from "react";
+import { forwardRef, useLayoutEffect, useRef, type ReactNode } from "react";
 import type { WardrobeSlot } from "@/lib/types";
 
 export type Dress = Partial<Record<WardrobeSlot, string>>; // slot → art key
@@ -332,6 +332,31 @@ const ART: Record<string, (c: DollColors) => ReactNode> = {
     </g>
   ),
 };
+
+/**
+ * One piece as the wardrobe's thumbnail, drawn by the same hand as the doll and cropped to the piece: emoji showed a
+ * hijab for the khăn mỏ quạ and a top hat for the mũ cánh chuồn (#62).
+ */
+export function ArtThumb({ art, className }: { art: string; className?: string }) {
+  const svg = useRef<SVGSVGElement>(null);
+  const piece = useRef<SVGGElement>(null);
+  useLayoutEffect(() => {
+    const b = piece.current?.getBBox();
+    if (b && b.width && b.height) svg.current?.setAttribute("viewBox", `${b.x - 4} ${b.y - 4} ${b.width + 8} ${b.height + 8}`);
+  }, [art]);
+  return (
+    <svg ref={svg} viewBox="0 0 200 400" className={className} aria-hidden xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="ran" width="6" height="6" patternUnits="userSpaceOnUse">
+          <rect width="6" height="6" fill="#f3ead7" />
+          <rect width="3" height="3" fill={INK} />
+          <rect x="3" y="3" width="3" height="3" fill={INK} />
+        </pattern>
+      </defs>
+      <g ref={piece}>{ART[art]?.({ main: "#7ec8e3", second: "#27354f" })}</g>
+    </svg>
+  );
+}
 
 /** Art keys this doll can draw (the room greys out anything else). */
 export const DRAWN = new Set(Object.keys(ART));

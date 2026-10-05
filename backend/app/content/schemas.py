@@ -417,6 +417,10 @@ class Region(Strict):
 
 
 RuleType = Literal["fusion", "restricted", "core", "caution", "occasion", "flexible"]
+# what was changed: a rule speaks of the thing the reader touched, not only of the kind of rule (#62)
+ChangeKind = Literal["accessory", "color", "zone", "garment"]
+# the blanks a rule's words may use, for each kind of change
+BLANKS: dict[str, set[str]] = {"accessory": {"name"}, "color": {"name"}, "garment": {"name"}, "zone": {"name", "zone", "option"}}
 State = Literal["fit", "adapted", "review", "distorted"]
 
 
@@ -428,6 +432,10 @@ class Rule(Strict):
     why: str = Field(description="Shown under 'Vì sao?': a sentence a reader understands on its own")
     internal_ref: str | None = Field(None, description="Where the team's research says so (e.g. Research Mục 19.2); never shown")
     sources: list[Id] = []
+    by: dict[ChangeKind, Message] = Field(
+        default_factory=dict,
+        description="Words for one kind of change, with blanks {name} (the thing), {zone} and {option} (a part of the garment)",
+    )
 
 
 QuizAnswer = Literal["viet", "hanfu", "hanbok", "kimono", "khac"]

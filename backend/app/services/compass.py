@@ -43,17 +43,33 @@ def changes(sel: Selection, g: Garment) -> list[tuple[str, ZoneOption]]:
     return [(m.zone, options[m.zone, m.change]) for m in sel.modifications if m.change != KEEP_OPTION]
 
 
-def _trigger(rule_type: str, target: str, target_name: str, override: Message | None = None) -> Trigger:
+def _fill(text: str, blanks: dict[str, str]) -> str:
+    """The rule's words with the blanks filled; a sentence that opens with a part's name ("cổ áo …") gets its capital."""
+    for k, v in blanks.items():
+        text = text.replace("{" + k + "}", v)
+    return text[:1].upper() + text[1:]
+
+
+def _trigger(
+    rule_type: str,
+    target: str,
+    target_name: str,
+    kind: str,
+    override: Message | None = None,
+    blanks: dict[str, str] | None = None,
+) -> Trigger:
+    """One rule that fired, in words about the thing that was changed (an accessory's own message wins)."""
     rule = store.get().rules[rule_type]
-    msg = override or rule
+    msg = override or rule.by.get(kind) or rule
+    fill = {"name": target_name, **(blanks or {})}
     return Trigger(
         type=rule_type,
         state=rule.state,
         target=target,
         target_name=target_name,
-        ti=msg.ti,
-        teo=msg.teo,
-        why=msg.why,
+        ti=_fill(msg.ti, fill),
+        teo=_fill(msg.teo, fill),
+        why=_fill(msg.why, fill),
         sources=rule.sources,
     )
 
@@ -66,25 +82,25 @@ def _collect(sel: Selection, g: Garment) -> list[Trigger]:
         a = c.accessories[acc_id]
         kind_rule = {"traditional-foreign": "fusion", "restricted": "restricted", "modern": "flexible"}.get(a.kind)
         if kind_rule:
-            out.append(_trigger(kind_rule, acc_id, a.name_vi, a.message))
+            out.append(_trigger(kind_rule, acc_id, a.name_vi, "accessory", a.message))
         if a.occasions and sel.occasion_id not in a.occasions:
-            out.append(_trigger("occasion", acc_id, a.name_vi))
+            out.append(_trigger("occasion", acc_id, a.name_vi, "accessory"))
 
     for col_id in sel.colors:
         col = c.colors[col_id]
         if col.restricted:
-            out.append(_trigger("restricted", col_id, col.name))
+            out.append(_trigger("restricted", col_id, col.name, "color"))
     changed = [x for x in sel.colors if x not in g.default_colors and not c.colors[x].restricted]
     if changed:
-        out.append(_trigger("flexible", changed[0], c.colors[changed[0]].name))
+        out.append(_trigger("flexible", changed[0], c.colors[changed[0]].name, "color"))
 
     levels = {z.part: z.level for z in g.zones}
     for zone, option in changes(sel, g):
         rule_type = {"keep": "core", "caution": "caution", "free": "flexible"}[levels[zone]]
-        out.append(_trigger(rule_type, zone, f"{zone}: {option.label}"))
+        out.append(_trigger(rule_type, zone, f"{zone}: {option.label}", "zone", blanks={"zone": zone, "option": option.label}))
 
     if sel.occasion_id not in g.occasions:
-        out.append(_trigger("occasion", g.id, g.name_vi))
+        out.append(_trigger("occasion", g.id, g.name_vi, "garment"))
 
     return out
 

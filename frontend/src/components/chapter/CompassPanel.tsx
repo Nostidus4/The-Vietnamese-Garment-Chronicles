@@ -1,5 +1,5 @@
 import { cited, sourceOf } from "@/lib/sources";
-import type { Bootstrap, CompassResult, CompassState, Trigger } from "@/lib/types";
+import type { Bootstrap, CompassResult, CompassState, Garment, Trigger } from "@/lib/types";
 
 export const STATE: Record<CompassState, { icon: string; name: string; tone: string }> = {
   fit: { icon: "✅", name: "Phù hợp", tone: "border-emerald-400 bg-emerald-50" },
@@ -19,7 +19,7 @@ const RULE: Record<string, string> = {
 };
 const RANK: Record<CompassState, number> = { distorted: 3, review: 2, adapted: 1, fit: 0 };
 
-export function CompassPanel({ result, sources }: { result: CompassResult | null; sources: Bootstrap["sources"] }) {
+export function CompassPanel({ result, sources, garment }: { result: CompassResult | null; sources: Bootstrap["sources"]; garment?: Garment | null }) {
   if (!result) return null;
   const s = STATE[result.state];
   // The API sorts triggers most severe first
@@ -39,11 +39,35 @@ export function CompassPanel({ result, sources }: { result: CompassResult | null
           )}
         </div>
       )}
+      {result.state === "fit" && garment && <WhyRight garment={garment} sources={sources} />}
       {result.harmony_notes.map((n) => (
         <p key={n} className="mt-2 text-sm"><b>Tí (màu sắc):</b> {n}</p>
       ))}
       <WhyPanel triggers={result.triggers} sources={sources} />
     </section>
+  );
+}
+
+/**
+ * ✅ is the best moment to teach (#62): what this look kept that makes the garment itself, and one sourced fact,
+ * instead of "no rule fired".
+ */
+function WhyRight({ garment, sources }: { garment: Garment; sources: Bootstrap["sources"] }) {
+  const kept = garment.zones.filter((z) => z.level === "keep").map((z) => z.part);
+  const fact = garment.facts.find((f) => cited({ sources }, f.sources).length > 0);
+  return (
+    <div className="mt-3 space-y-1.5">
+      <p className="m-0">
+        <b>Vì sao bộ này đúng:</b> {garment.name_vi} vẫn giữ {kept.length ? kept.join(", ") : "dáng áo gốc"}, những phần làm nên tên gọi của bộ áo. Đổi màu,
+        thêm phụ kiện hợp dịp vẫn giữ được điều đó.
+      </p>
+      {fact && (
+        <div className="text-sm text-stone-700">
+          <b>Tèo:</b> {fact.text}
+          <Sources ids={fact.sources} sources={sources} />
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -54,7 +78,7 @@ function WhyPanel({ triggers, sources }: { triggers: Trigger[]; sources: Bootstr
     <details className="mt-4 rounded-md bg-white/60 px-3 py-2 text-sm">
       <summary className="cursor-pointer font-semibold">Vì sao? {sorted.length > 0 && <span className="font-normal text-stone-500">({sorted.length} luật)</span>}</summary>
       {sorted.length === 0 ? (
-        <p className="m-0 mt-2">Không luật nào bị kích hoạt, look giữ đúng cấu trúc chuẩn.</p>
+        <p className="m-0 mt-2">Không có gì phải sửa: bộ này giữ đúng những phần cốt lõi của trang phục.</p>
       ) : (
         <ul className="m-0 mt-2 list-none space-y-3 p-0">
           {sorted.map((t) => (

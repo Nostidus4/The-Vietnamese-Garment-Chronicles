@@ -13,6 +13,7 @@ import { HAS_API, serverReady } from "@/lib/api";
 import { asset } from "@/lib/base";
 import { compassContent, evaluate } from "@/lib/compass";
 import { addPage, addPhoto, dataUrlToBlob, ensureMigrated, newPage } from "@/lib/dukyBook";
+import { cited } from "@/lib/sources";
 import { track } from "@/lib/track";
 import type { Bootstrap, CompassResult, CompassState, Garment, Selection, WardrobeItem, WardrobeSlot } from "@/lib/types";
 import { firstLook, garmentOf, lookOf, pieceState, selectionOf, toggled, type Look, type PieceState } from "@/lib/wardrobe";
@@ -71,6 +72,12 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   const [comparing, setComparing] = useState(false);
   const [real, setReal] = useState<string | null>(null); // "Xem ảnh thật" of a garment
   const [toast, setToast] = useState(false);
+  const [hint, setHint] = useState<string | null>(null); // why a piece cannot be worn, after a tap on it
+  useEffect(() => {
+    if (!hint) return;
+    const t = setTimeout(() => setHint(null), 5000);
+    return () => clearTimeout(t);
+  }, [hint]);
   const [pulse, setPulse] = useState(0); // the Compass tag swings on every change
   const doll = useRef<SVGSVGElement>(null); // a still copy of the doll, the source of the card's picture
   const tryon = useTryOn();
@@ -190,12 +197,31 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     if (a.verified === false && a.kind === "traditional-vn") return "Tèo đang kiểm tra";
     return ({ "traditional-vn": "Việt", modern: "hiện đại", "traditional-foreign": "nước khác", restricted: "lễ nghi" } as Record<string, string>)[a.kind] ?? "";
   }
+  /** The short label in a sentence (#62): shown as the piece's tooltip and when a piece that cannot be worn is tapped. */
+  function whyOf(it: WardrobeItem): string {
+    if (!data) return "";
+    const st = stateOf(it);
+    const name = it.garment ? data.garments.find((g) => g.id === it.garment)?.name_vi : data.accessories[it.accessory!]?.name_vi;
+    if (st === "lock") return who === "nam" ? `${name}: Bà chưa vẽ dáng nam cho món này.` : `${name}: Bà chưa vẽ món này lên búp bê.`;
+    if (st === "off")
+      return garment
+        ? `Bà chưa thấy ${name} đi cùng ${garment.name_vi} trong các nguồn đã tra, nên tủ chưa cho mặc chung. Con chọn bộ áo khác thì thử được.`
+        : "Con chọn một bộ áo trước nhé.";
+    if (st === "dim") return `${name} thường không mặc cho dịp này. Mặc vẫn được, Compass sẽ nói vì sao.`;
+    const a = it.accessory ? data.accessories[it.accessory] : null;
+    if (a && a.verified === false && a.kind === "traditional-vn") return `Tèo đang kiểm tra: Bà chưa tìm được nguồn thật chắc cho ${name}. Mặc thử vẫn được.`;
+    return noteOf(it);
+  }
 
   /** Wear or take off one piece; a piece the garment does not offer cannot be worn at all (lib/wardrobe). */
   function toggle(it: WardrobeItem) {
     if (!current || !data || frozen) return;
     const next = toggled(current, it, stateOf(it), data, byId);
-    if (!next) return;
+    if (!next) {
+      setHint(whyOf(it));
+      return;
+    }
+    setHint(null);
     if (next.worn[it.slot] === it.id) track("wardrobe_wear", { item_id: it.id, body: who ?? "nu" });
     change(next);
   }
@@ -203,7 +229,10 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   /** 🎲 Bà chọn giúp: a garment for the occasion and a few Vietnamese pieces, always ✅ or ✨. */
   function surprise() {
     if (!current || !data || !compass || frozen) return;
-    const sets = items.filter((it) => it.slot === "set" && stateOf(it) !== "lock" && data.garments.find((g) => g.id === it.garment)?.occasions.includes(current.occasion));
+    const fits = items.filter((it) => it.slot === "set" && stateOf(it) !== "lock" && data.garments.find((g) => g.id === it.garment)?.occasions.includes(current.occasion));
+    // this room's own region first: in Nam Bộ Bà reaches for the áo bà ba, not the áo tứ thân (#62)
+    const here = fits.filter((it) => data.garments.find((g) => g.id === it.garment)?.region === regionId);
+    const sets = here.length ? here : fits;
     for (let n = 0; n < 40 && sets.length; n++) {
       const s = pick(sets);
       const g = data.garments.find((x) => x.id === s.garment)!;
@@ -247,6 +276,10 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
       place: data.regions.find((r) => r.id === g.region)?.name.split("/")[0].trim() ?? "",
       date: new Date().toLocaleDateString("vi-VN"),
       note: baNote(data, g, snap.selection, snap.verdict),
+      fact: (() => {
+        const f = g.facts.find((x) => cited(data, x.sources).length > 0);
+        return f ? { text: f.text, source: cited(data, f.sources)[0].title } : null;
+      })(),
       items: [g.name_vi, ...snap.selection.accessories.map((a) => data.accessories[a]?.name_vi ?? a)],
     });
     setSaving("idle");
@@ -273,6 +306,25 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     openCard(tryon.image, true, sent);
   }
 
+  /** The card as one picture: frame, title, place and date, the Compass stamp. */
+  function cardPng(c: NonNullable<typeof card>) {
+    const stamp = STAMP[c.state];
+    return cardPicture({ art: c.image, title: c.title, meta: `${c.place} · ${c.date}`, number: c.number, stamp: stamp.word, icon: stamp.icon, aiLabel: c.isAI ? (c.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI") : null });
+  }
+
+  /** "Tải thẻ": the framed card, not the bare doll (#62). */
+  async function download() {
+    if (!card) return;
+    try {
+      const a = document.createElement("a");
+      a.href = await cardPng(card);
+      a.download = `the-viet-phuc-${card.number}.png`;
+      a.click();
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : "Chưa tải được thẻ, con thử lại nhé.");
+    }
+  }
+
   /** Save the card into the Du Ký. "Đã lưu" only once it really is; a picture that cannot be drawn says so. */
   async function save(cardEl: HTMLElement) {
     if (!card || !data || saving !== "idle") return;
@@ -281,8 +333,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     try {
       const { selection: sel } = card.snap;
       const g = data.garments.find((x) => x.id === sel.garment_id)!;
-      const stamp = STAMP[card.state];
-      const png = await cardPicture({ art: card.image, title: card.title, meta: `${card.place} · ${card.date}`, number: card.number, stamp: stamp.word, icon: stamp.icon, aiLabel: card.isAI ? (card.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI") : null });
+      const png = await cardPng(card);
       await ensureMigrated(data.garments);
       const page = addPage(newPage({ region_id: g.region, garment_id: g.id, occasion_id: sel.occasion_id, look: sel, compass_label: LABEL[card.state], compass_state: card.state }));
       await addPhoto(page.id, await dataUrlToBlob(png), card.isAI ? "ai" : "card", card.sample);
@@ -380,6 +431,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           items={items}
           stateOf={stateOf}
           noteOf={noteOf}
+          whyOf={whyOf}
           onToggle={toggle}
           garment={garment}
           selection={selection}
@@ -458,7 +510,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
         <div className="flex items-center justify-end gap-3 text-sm text-amber-50">
           {HAS_API && garment && (
             <button type="button" onClick={() => setComparing(true)} className="underline">
-              So với bộ khác
+              Ghim để so sánh
             </button>
           )}
           {HAS_API && garment && (
@@ -491,6 +543,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
             saving={saving}
             error={saveError}
             onSave={save}
+            onDownload={download}
             onClose={() => setCard(null)}
             onRedo={
               card.isAI
@@ -530,7 +583,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
 
       {why && verdict && (
         <Modal label="Compass: vì sao?" onClose={() => setWhy(false)} bare>
-          <CompassPanel result={verdict} sources={data.sources} />
+          <CompassPanel result={verdict} sources={data.sources} garment={garment} />
         </Modal>
       )}
 
@@ -557,8 +610,18 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
         </CompareDrawer>
       )}
 
+      {hint && (
+        <div role="status" className="fixed inset-x-4 bottom-28 z-40 mx-auto flex max-w-md items-start gap-3 rounded-lg bg-[#fbf6ea] px-4 py-3 text-sm text-[#27354f] shadow-lg">
+          <span className="min-w-0 flex-1">{hint}</span>
+          <button type="button" aria-label="Đóng" onClick={() => setHint(null)} className="shrink-0 text-stone-500">
+            ✕
+          </button>
+        </div>
+      )}
+
       {toast && (
-        <div role="status" className="fixed inset-x-4 bottom-24 z-50 mx-auto flex max-w-md flex-wrap items-center gap-3 rounded-lg bg-stone-900 px-4 py-3 text-sm text-amber-50 shadow-lg">
+        // at the top: down by the bar it covered the doll's feet; the ✕ keeps its corner however the words wrap (#62)
+        <div role="status" className="fixed inset-x-4 top-16 z-50 mx-auto flex max-w-md flex-wrap items-center gap-3 rounded-lg bg-stone-900 py-3 pl-4 pr-10 text-sm text-amber-50 shadow-lg">
           <span>Đã lưu thẻ vào Du Ký ✓</span>
           {HAS_API && (
             <button type="button" onClick={() => setSheet("quiz-post")} className="underline">
@@ -568,7 +631,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           <a href={asset("/du-ky")} className="ml-auto font-semibold text-amber-200 underline">
             Mở Du Ký
           </a>
-          <button type="button" aria-label="Đóng" onClick={() => setToast(false)} className="text-amber-50/70">
+          <button type="button" aria-label="Đóng" onClick={() => setToast(false)} className="absolute right-3 top-2.5 text-amber-50/70">
             ✕
           </button>
         </div>
@@ -641,7 +704,7 @@ function Modal({ label, onClose, children, bare = false }: { label: string; onCl
   );
 }
 
-/** Side drawer (bottom sheet on phones) for "So với bộ khác". */
+/** Side drawer (bottom sheet on phones) for "Ghim để so sánh": pinned looks side by side. */
 function CompareDrawer({ open, onClose, children }: { open: boolean; onClose: () => void; children: ReactNode }) {
   useEffect(() => {
     if (!open) return;
@@ -650,11 +713,11 @@ function CompareDrawer({ open, onClose, children }: { open: boolean; onClose: ()
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
   return (
-    <div className={open ? "fixed inset-0 z-40" : "hidden"} role="dialog" aria-modal="true" aria-label="So với bộ khác">
+    <div className={open ? "fixed inset-0 z-40" : "hidden"} role="dialog" aria-modal="true" aria-label="Ghim để so sánh">
       <button type="button" aria-label="Đóng" onClick={onClose} className="absolute inset-0 bg-stone-900/40" />
       <div className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-xl bg-[var(--paper)] p-4 shadow-xl sm:inset-y-0 sm:left-auto sm:right-0 sm:max-h-none sm:w-[34rem] sm:rounded-none sm:rounded-l-xl">
         <div className="mb-2 flex items-center">
-          <p className="m-0 font-semibold">So với bộ khác</p>
+          <p className="m-0 font-semibold">Ghim để so sánh</p>
           <button type="button" onClick={onClose} className="ml-auto text-sm underline">
             Đóng
           </button>
