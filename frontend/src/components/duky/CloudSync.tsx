@@ -10,6 +10,7 @@ import { getPhoto, loadBook, putPhoto, saveBook, type DuKyBook } from "@/lib/duk
 import { createClient } from "@/utils/supabase/client";
 import { asset } from "@/lib/base";
 import { friendlyError } from "@/lib/errors";
+import { mergeBooks } from "@/lib/dukyMerge";
 
 const BUCKET = "duky-photos";
 const configured = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
@@ -20,6 +21,8 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [savedAt, setSavedAt] = useState<string | null>(null); // when the cloud copy was last written (#80)
+  const [wiping, setWiping] = useState(false); // the second press of "Xóa dữ liệu trên mây"
 
   useEffect(() => {
     if (!sb) return;
@@ -27,6 +30,15 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
     const { data } = sb.auth.onAuthStateChange((_e, s) => setSession(s));
     return () => data.subscription.unsubscribe();
   }, [sb]);
+  const uid = session?.user.id;
+  useEffect(() => {
+    if (!sb || !uid) return;
+    sb.from("duky_books")
+      .select("updated_at")
+      .eq("user_id", uid)
+      .maybeSingle()
+      .then(({ data }) => setSavedAt((data?.updated_at as string | undefined) ?? null));
+  }, [sb, uid]);
 
   if (!sb) return null;
 
@@ -62,8 +74,10 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
         const { error } = await sb.storage.from(BUCKET).upload(`${uid}/${ph.id}`, blob, { contentType: blob.type || "image/jpeg", upsert: true });
         if (error) throw error;
       }
-      const { error } = await sb.from("duky_books").upsert({ user_id: uid, data: book, updated_at: new Date().toISOString() });
+      const at = new Date().toISOString();
+      const { error } = await sb.from("duky_books").upsert({ user_id: uid, data: book, updated_at: at });
       if (error) throw error;
+      setSavedAt(at);
       return `Đã lưu ${book.pages.length} trang lên mây.`;
     });
 
@@ -73,25 +87,28 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
       const { data, error } = await sb.from("duky_books").select("data").eq("user_id", uid).maybeSingle();
       if (error) throw error;
       if (!data) return "Trên mây chưa có sổ nào.";
-      const book = data.data as DuKyBook;
-      if (loadBook().pages.length && !window.confirm("Thay sổ trên máy này bằng sổ trên mây?")) return "Đã giữ nguyên sổ trên máy.";
+      // put together with the book on this device, never instead of it: nothing written here is lost
+      const here = loadBook();
+      const book = mergeBooks(here, data.data as DuKyBook);
+      const added = book.pages.length - here.pages.length;
       for (const ph of book.pages.flatMap((p) => p.photos)) {
         if (await getPhoto(ph.id)) continue;
         const { data: blob } = await sb.storage.from(BUCKET).download(`${uid}/${ph.id}`);
         if (blob) await putPhoto(ph.id, blob);
       }
       saveBook(book);
-      return `Đã tải về ${book.pages.length} trang.`;
+      return added > 0 ? `Đã thêm ${added} trang từ mây vào sổ.` : "Sổ trên máy đã có đủ các trang trên mây.";
     });
 
   const wipe = () =>
     run(async () => {
-      if (!window.confirm("Xóa hẳn sổ và ảnh trên mây? Sổ trên máy này vẫn giữ nguyên.")) return "Chưa xóa gì.";
+      setWiping(false);
       const uid = session!.user.id;
       const { data: files } = await sb.storage.from(BUCKET).list(uid, { limit: 1000 });
       if (files?.length) await sb.storage.from(BUCKET).remove(files.map((f) => `${uid}/${f.name}`));
       const { error } = await sb.from("duky_books").delete().eq("user_id", uid);
       if (error) throw error;
+      setSavedAt(null);
       return "Đã xóa dữ liệu trên mây.";
     });
 
@@ -101,15 +118,25 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
       {session ? (
         <>
           <p className="m-0">Đang lưu cho {session.user.email}</p>
+          <p className="m-0 text-stone-500">
+            {savedAt ? `Lần lưu lên mây gần nhất: ${new Date(savedAt).toLocaleString("vi-VN", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "numeric" })}` : "Chưa lưu lên mây lần nào."}
+          </p>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
             <button type="button" disabled={busy} onClick={upload} className={btn}>
               Lưu sổ lên mây
             </button>
-            <button type="button" disabled={busy} onClick={download} className={btn}>
-              Tải sổ về
+            <button type="button" disabled={busy} onClick={download} className={btn} title="Gộp các trang trên mây vào sổ trên máy này">
+              Lấy trang từ mây về
             </button>
-            <button type="button" disabled={busy} onClick={wipe} className={`${btn} border-[#B5452E] text-[#B5452E]`}>
-              Xóa dữ liệu trên mây
+            {/* asked on the button itself: press again to delete, the book on this device stays */}
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => (wiping ? wipe() : setWiping(true))}
+              onBlur={() => setWiping(false)}
+              className={`${btn} border-[#B5452E] ${wiping ? "bg-[#B5452E] text-amber-50" : "text-[#B5452E]"}`}
+            >
+              {wiping ? "Bấm lần nữa để xóa hẳn trên mây" : "Xóa dữ liệu trên mây"}
             </button>
             <button type="button" onClick={() => sb.auth.signOut()} className="underline">
               Đăng xuất
