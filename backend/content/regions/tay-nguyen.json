@@ -350,8 +350,9 @@
     }
   ],
   "letter": {
-    "text": "Chiêng nhà mình vẫn đánh mỗi mùa lúa mới. Tấm vải ấy, con cháu hỏi thì nhà mình kể cho nghe. Bao giờ lên, cứ vào nhà dài mà ở. (lời anh Y Blăk gửi Ông, chờ cộng đồng góp ý)",
-    "image": "/regions/tay-nguyen/d09-buu-thiep.jpg"
+    "text": "Chiêng nhà mình vẫn đánh mỗi mùa lúa mới. Tấm vải ấy, con cháu hỏi thì nhà mình kể cho nghe. Bao giờ lên, cứ vào nhà dài mà ở.",
+    "image": "/regions/tay-nguyen/d09-buu-thiep.jpg",
+    "signed": "Anh Y Blăk"
   },
   "wear": [
     {

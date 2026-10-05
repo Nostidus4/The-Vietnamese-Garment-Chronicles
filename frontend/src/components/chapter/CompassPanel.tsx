@@ -1,4 +1,4 @@
-import { sourceOf } from "@/lib/sources";
+import { cited, sourceOf } from "@/lib/sources";
 import type { Bootstrap, CompassResult, CompassState, Trigger } from "@/lib/types";
 
 export const STATE: Record<CompassState, { icon: string; name: string; tone: string }> = {
@@ -76,7 +76,8 @@ function WhyPanel({ triggers, sources }: { triggers: Trigger[]; sources: Bootstr
 }
 
 /** "Nguồn: A · B", linked where the source has a URL. */
-export function Sources({ ids, sources }: { ids: string[]; sources: Bootstrap["sources"] }) {
+export function Sources({ ids: all, sources }: { ids: string[]; sources: Bootstrap["sources"] }) {
+  const ids = cited({ sources }, all).map((s) => s.id);
   if (ids.length === 0) return null;
   return (
     <p className="m-0 mt-0.5 text-xs text-stone-600">

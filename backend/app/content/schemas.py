@@ -19,9 +19,10 @@ class Strict(BaseModel):
 
 class Source(Strict):
     id: Id = Field(pattern=r"^[a-z0-9-]+$")
-    title: str
+    title: str = Field(description="Shown to readers (Tèo's notes, Compass, Du Ký, exports): plain words, no team notes")
     url: str | None = None
-    note: str | None = None
+    note: str | None = Field(None, description="For the team only, never shown")
+    verified: bool = Field(True, description="False while the team still has to vet it: the app then does not cite it")
 
 
 class Color(Strict):
@@ -37,7 +38,8 @@ class Message(Strict):
 
     ti: str
     teo: str
-    why: str
+    why: str = Field(description="Shown under 'Vì sao?': a sentence a reader understands on its own")
+    internal_ref: str | None = Field(None, description="Where the team's research says so (e.g. Research Mục 19.2); never shown")
 
 
 AccessoryKind = Literal["traditional-vn", "modern", "traditional-foreign", "restricted"]
@@ -332,6 +334,7 @@ class Letter(Strict):
 
     text: str = Field(max_length=400)
     image: str | None = Field(None, description="Postcard picture under frontend/public")
+    signed: str | None = Field(None, description="Who wrote it, when not Bà (e.g. 'Anh Y Blăk'); shown as '— <signed>'")
 
 
 class OwnPage(Strict):
@@ -422,7 +425,8 @@ class Rule(Strict):
     state: State
     ti: str
     teo: str
-    why: str
+    why: str = Field(description="Shown under 'Vì sao?': a sentence a reader understands on its own")
+    internal_ref: str | None = Field(None, description="Where the team's research says so (e.g. Research Mục 19.2); never shown")
     sources: list[Id] = []
 
 

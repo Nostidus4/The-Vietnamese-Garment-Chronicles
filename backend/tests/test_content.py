@@ -204,3 +204,22 @@ def test_wardrobe_piece_needs_one_target_and_the_right_slot(tmp_path):
     _, rep = store.load(root)
     assert any("lac-loai" in e and "slot 'set'" in e for e in rep.errors)
     assert any("khong-co" in e and "unknown accessory" in e for e in rep.errors)
+
+
+def test_team_notes_never_reach_the_reader(tmp_path):
+    # #50: "Research Mục…" and "(cần thẩm định)" belong in internal_ref / note, not in shown text
+    root = _copy(tmp_path)
+    p = root / "rules.json"
+    data = json.loads(p.read_text(encoding="utf-8"))
+    data["rules"][0]["why"] = "Research Mục 19.2, tiêu chí 3."
+    p.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    s = root / "sources.json"
+    src = json.loads(s.read_text(encoding="utf-8"))
+    src["sources"][0]["title"] += " (cần thẩm định)"
+    src["sources"][1]["note"] = "Research Report – cần thẩm định"  # a team note is fine
+    s.write_text(json.dumps(src, ensure_ascii=False), encoding="utf-8")
+    _, rep = store.load(root)
+    shown = [e for e in rep.errors if "team note shown" in e]
+    assert any("rules.json" in e and "why" in e for e in shown)
+    assert any("sources.json" in e and "title" in e for e in shown)
+    assert not any("note" in e.split("at ")[-1] for e in shown)

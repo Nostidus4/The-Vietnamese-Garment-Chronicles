@@ -6,6 +6,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { cited } from "@/lib/sources";
 import type { Bootstrap } from "@/lib/types";
 
 export type TeoNoteView = {
@@ -124,7 +125,7 @@ export function TeoModal({ open, onClose, notes, data, heading = "Tèo tra lại
 }
 
 function StickyNote({ note, i, data, heading }: { note: TeoNoteView; i: number; data: Pick<Bootstrap, "sources">; heading?: ReactNode }) {
-  const src = note.sources.map((id) => data.sources[id]).find(Boolean);
+  const src = cited(data, note.sources)[0];
   return (
     <motion.div
       className="relative bg-[#fbe99a] px-5 pb-3 pt-5 text-[0.95rem] leading-relaxed text-[#1f3a78] shadow-[3px_8px_18px_rgba(40,25,0,0.35)]"
