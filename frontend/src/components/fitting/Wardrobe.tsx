@@ -30,7 +30,7 @@ export function WhoPicker({ value, onPick, onClose }: { value: Who | null; onPic
   return (
     <motion.div className="fixed inset-0 z-50 grid place-items-center bg-[#140c07]/70 p-4 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-label="Ai mặc?" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <motion.div className="paper w-full max-w-lg rounded-xl p-6 text-center shadow-2xl" initial={reduced ? false : { y: 30, scale: 0.96 }} animate={{ y: 0, scale: 1 }}>
-        <p className="m-0 text-[0.62rem] uppercase tracking-[0.28em] text-stone-500">Tủ áo của Bà</p>
+        <p className="m-0 text-[0.75rem] uppercase tracking-[0.28em] text-stone-500">Tủ áo của Bà</p>
         <p className="font-hand m-0 mt-1 text-[1.6rem] leading-tight text-[#8a4b2a]">Hôm nay ai mặc đây con?</p>
         <div className="mt-5 flex justify-center gap-3" role="radiogroup" aria-label="Người mặc">
           {WHO.map((w) => (
@@ -45,7 +45,7 @@ export function WhoPicker({ value, onPick, onClose }: { value: Who | null; onPic
             >
               <WhoFigure who={w.id} />
               <span className="block text-[0.95rem] font-semibold">{w.name}</span>
-              <span className="block text-[0.68rem] text-stone-500">{w.note}</span>
+              <span className="block text-[0.75rem] text-stone-500">{w.note}</span>
             </button>
           ))}
         </div>
@@ -160,11 +160,11 @@ export function WardrobePanel({
                     >
                       <span className="w-hanger" aria-hidden />
                       <ItemPicture item={it} />
-                      <span className="block text-[0.7rem] font-semibold leading-tight">{name}</span>
-                      <span className="block text-[0.66rem] leading-tight text-stone-500">{noteOf(it)}</span>
+                      <span className="block text-[0.75rem] font-semibold leading-tight">{name}</span>
+                      <span className="block text-[0.75rem] leading-tight text-stone-500">{noteOf(it)}</span>
                     </button>
                     {it.garment && (
-                      <button type="button" onClick={() => onLookReal(it.garment!)} className="mt-0.5 block w-full text-center text-[0.66rem] text-[#27354f] underline">
+                      <button type="button" onClick={() => onLookReal(it.garment!)} className="mt-0.5 block w-full text-center text-[0.75rem] text-[#27354f] underline">
                         Xem ảnh thật
                       </button>
                     )}
@@ -175,7 +175,7 @@ export function WardrobePanel({
           )}
         </motion.div>
       </AnimatePresence>
-      <p className="m-0 px-3 pb-2 text-[0.62rem] text-stone-500">Dịp: {data.occasions.find((o) => o.id === occasion)?.name}</p>
+      <p className="m-0 px-3 pb-2 text-[0.75rem] text-stone-500">Dịp: {data.occasions.find((o) => o.id === occasion)?.name}</p>
     </section>
   );
 }
@@ -211,7 +211,7 @@ function StyleDrawer({ data, garment, selection, onSelection }: { data: Bootstra
                 <span className={`fabric ${i >= 0 ? "fabric-on" : ""}`} style={{ backgroundColor: data.colors[c]?.hex }}>
                   {i >= 0 && <span className="fabric-n">{i + 1}</span>}
                 </span>
-                <span className="text-center text-[0.68rem] leading-tight text-stone-600">{data.colors[c]?.name}</span>
+                <span className="text-center text-[0.75rem] leading-tight text-stone-600">{data.colors[c]?.name}</span>
               </button>
             );
           })}
@@ -235,7 +235,7 @@ function StyleDrawer({ data, garment, selection, onSelection }: { data: Bootstra
           );
         })}
       {garment.zones.some((z) => zoneControl(z) === "locked") && (
-        <p className="m-0 text-[0.72rem] text-stone-500">🔒 Giữ nguyên: {garment.zones.filter((z) => zoneControl(z) === "locked").map((z) => z.part).join(" · ")}</p>
+        <p className="m-0 text-[0.75rem] text-stone-500">🔒 Giữ nguyên: {garment.zones.filter((z) => zoneControl(z) === "locked").map((z) => z.part).join(" · ")}</p>
       )}
     </div>
   );
@@ -283,7 +283,7 @@ export function OutfitList({
           </AnimatePresence>
         </ul>
       )}
-      <label className="mt-3 block text-[0.72rem] text-stone-600">
+      <label className="mt-3 block text-[0.75rem] text-stone-600">
         Dịp
         <select value={occasion} onChange={(e) => onOccasion(e.target.value)} className="mt-0.5 block w-full rounded-md border border-stone-300 bg-white/80 px-2 py-1 text-sm text-[#27354f]">
           {data.occasions.map((o) => (
@@ -363,7 +363,7 @@ export function LookCard({
                 {/* eslint-disable-next-line @next/next/no-img-element -- a data/blob URL made in the browser */}
                 <img src={face.image} alt="" className="h-full w-full object-contain" />
                 {face.isAI && (
-                  <span className="absolute bottom-1.5 left-1.5 rounded bg-black/65 px-1.5 py-0.5 text-[0.6rem] font-semibold text-white">{face.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI"}</span>
+                  <span className="absolute bottom-1.5 left-1.5 rounded bg-black/65 px-1.5 py-0.5 text-[0.75rem] font-semibold text-white">{face.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI"}</span>
                 )}
               </span>
               <motion.span
@@ -394,9 +394,9 @@ export function LookCard({
                 ))}
               </span>
               {face.fact && (
-                <span className="mb-2 block rotate-[-0.6deg] bg-[#fbe99a] px-2 py-1.5 text-[0.72rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">
+                <span className="mb-2 block rotate-[-0.6deg] bg-[#fbe99a] px-2 py-1.5 text-[0.75rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">
                   {face.fact.text}
-                  <span className="mt-0.5 block text-[0.6rem] opacity-80">nguồn: {face.fact.source} – Tèo</span>
+                  <span className="mt-0.5 block text-[0.75rem] opacity-80">nguồn: {face.fact.source} – Tèo</span>
                 </span>
               )}
               <span className="look-card-meta">

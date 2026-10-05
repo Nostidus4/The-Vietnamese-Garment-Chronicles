@@ -183,11 +183,11 @@ function DongHo({ game, onWin }: Props) {
             disabled={on(i) || smudged || done}
             onClick={() => press(i)}
             data-hint
-            className="flex items-center gap-2 rounded border border-stone-300 bg-white/60 px-2 py-1 text-left text-[0.74rem] text-stone-700 hover:bg-amber-50 disabled:opacity-45"
+            className="flex items-center gap-2 rounded border border-stone-300 bg-white/60 px-2 py-1 text-left text-[0.75rem] text-stone-700 hover:bg-amber-50 disabled:opacity-45"
           >
             <span className="h-4 w-4 shrink-0 rounded-sm border border-black/20" style={{ background: color(i) }} />
             {layers[i].label}
-            {on(i) && <span className="ml-auto text-[0.65rem] text-stone-500">#{printed.indexOf(i) + 1}</span>}
+            {on(i) && <span className="ml-auto text-[0.75rem] text-stone-500">#{printed.indexOf(i) + 1}</span>}
           </button>
         ))}
       </div>
@@ -219,7 +219,7 @@ function QuanHo({ game, onWin }: Props) {
   };
   return (
     <div>
-      <div className="flex items-center gap-1.5 text-[0.62rem] tracking-[0.2em] text-stone-500">
+      <div className="flex items-center gap-1.5 text-[0.75rem] tracking-[0.2em] text-stone-500">
         {game.rounds.map((_, i) => (
           <span key={i} className={`h-1.5 w-6 rounded-full ${i < round || (i === round && right) ? "bg-[#5E7F4A]" : i === round ? "bg-[#D9A43B]" : "bg-stone-300"}`} />
         ))}
@@ -325,13 +325,13 @@ function NguThan({ game, onWin }: Props) {
               type="button"
               data-hint
               onClick={() => setSel(i)}
-              className={`rounded border px-2 py-0.5 text-[0.72rem] ${sel === i ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
+              className={`rounded border px-2 py-0.5 text-[0.75rem] ${sel === i ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
             >
               {game.rounds[i].label}
             </button>
           ))}
       </div>
-      <p className="m-0 mt-1 text-[0.68rem] text-stone-500">
+      <p className="m-0 mt-1 text-[0.75rem] text-stone-500">
         Đã ghép {placed.length}/{game.rounds.length} thân · chọn mảnh rồi bấm vào chỗ trên áo
       </p>
       {note && <Hint tone={note.good ? "good" : "bad"}>{note.text}</Hint>}
@@ -387,7 +387,7 @@ function CayBeo({ game, onWin }: Props) {
           );
         })}
       </div>
-      <p className="m-0 mt-2 text-[0.68rem] text-stone-500">Chọn một tấm biển, rồi bấm vào chiếc ghe:</p>
+      <p className="m-0 mt-2 text-[0.75rem] text-stone-500">Chọn một tấm biển, rồi bấm vào chiếc ghe:</p>
       <div className="mt-1 flex flex-wrap gap-1">
         {signs
           .filter((s) => !placed.includes(s))
@@ -397,7 +397,7 @@ function CayBeo({ game, onWin }: Props) {
               type="button"
               data-hint
               onClick={() => setSel(s)}
-              className={`rounded border px-2 py-0.5 text-[0.72rem] ${sel === s ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
+              className={`rounded border px-2 py-0.5 text-[0.75rem] ${sel === s ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
             >
               {game.rounds[s].label}
             </button>
@@ -433,7 +433,7 @@ function XepDo({ game, onWin }: Props) {
             type="button"
             data-hint
             onClick={() => toggle(i)}
-            className={`rounded border px-2 py-1 text-left text-[0.74rem] ${bag.includes(i) ? "border-[#27354f] bg-[#27354f]/10" : "border-stone-300 bg-white/60 hover:bg-amber-50"}`}
+            className={`rounded border px-2 py-1 text-left text-[0.75rem] ${bag.includes(i) ? "border-[#27354f] bg-[#27354f]/10" : "border-stone-300 bg-white/60 hover:bg-amber-50"}`}
             aria-pressed={bag.includes(i)}
           >
             {bag.includes(i) ? "🎒 " : ""}
@@ -493,7 +493,7 @@ function KhuyBac({ game, onWin }: Props) {
           );
         })}
       </svg>
-      <p className="m-0 mt-1 text-center text-[0.7rem] text-stone-500">
+      <p className="m-0 mt-1 text-center text-[0.75rem] text-stone-500">
         Đã cài {done}/{n} đôi · bấm vào đôi khuy tiếp theo
       </p>
       {miss && <Hint tone="bad">Cài từ trên cổ xuống con ạ, đừng bỏ sót đôi nào.</Hint>}
@@ -574,7 +574,7 @@ function Xoe({ game, onWin }: Props) {
       <button type="button" data-hint onClick={tap} className="mt-2 rounded-full bg-[#27354f] px-5 py-2 text-sm text-amber-50 active:scale-95">
         {running ? "Bước!" : "Bắt đầu nghe trống"}
       </button>
-      <p className="m-0 mt-1 text-[0.7rem] text-stone-500">
+      <p className="m-0 mt-1 text-[0.75rem] text-stone-500">
         {hits}/{need} bước đúng nhịp · phím cách cũng được
       </p>
       {msg && running && <Hint tone={msg === "Đúng nhịp!" ? "good" : "bad"}>{msg}</Hint>}
@@ -662,7 +662,7 @@ function CongChieng({ game, onWin }: Props) {
           Nghe nghệ nhân đánh
         </button>
       )}
-      <p className="m-0 mt-2 text-[0.7rem] text-stone-500">
+      <p className="m-0 mt-2 text-[0.75rem] text-stone-500">
         {state === "listen" ? "Nghe…" : state === "play" ? `Đến lượt con: ${pos}/${seq.length}` : `Đánh đúng chuỗi ${target} tiếng`}
       </p>
       {msg && <Hint tone={msg.startsWith("Đúng") ? "good" : "bad"}>{msg}</Hint>}
@@ -725,7 +725,7 @@ function Det({ game, onWin }: Props) {
         </defs>
       </svg>
       {cur < rows.length && (
-        <p className="m-0 mt-2 text-[0.72rem] text-stone-600">
+        <p className="m-0 mt-2 text-[0.75rem] text-stone-600">
           Hàng {cur + 1}/{rows.length}: <b>{rows[cur].label}</b> · chọn màu sợi
         </p>
       )}

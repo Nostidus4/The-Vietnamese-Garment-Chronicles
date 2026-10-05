@@ -59,7 +59,7 @@ export function SharedView({ id }: { id: string }) {
   return (
     <main className="desk min-h-screen px-4 py-8">
       <article className="paper mx-auto max-w-md rounded-md p-6 text-[#27354f] shadow-[0_10px_24px_rgba(20,8,0,0.4)]">
-        <p className="m-0 text-[0.65rem] tracking-[0.3em] text-stone-500">
+        <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">
           TRANG DU KÝ · {m.status === "planned" ? "SẮP ĐI" : "ĐÃ MẶC"} · {place.toUpperCase()}
         </p>
         <h1 className="font-hand m-0 mt-1 text-3xl font-normal">{occasion}</h1>

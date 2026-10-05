@@ -118,7 +118,7 @@ export function TeoGuide() {
           <b className="font-hand block text-[1.05rem] text-[#8a4b2a]">Tèo chỉ con</b>
           {tip.tip.text}
           <span className="mt-2 flex items-center justify-between">
-            <span className="text-[0.7rem] opacity-70">
+            <span className="text-[0.75rem] opacity-70">
               {TIPS.indexOf(tip.tip) + 1}/{TIPS.length}
             </span>
             <button

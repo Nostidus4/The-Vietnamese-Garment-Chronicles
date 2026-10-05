@@ -20,7 +20,7 @@ function Thumb({ photo, on, toggle }: { photo: PhotoRef; on: boolean; toggle: ()
       {/* eslint-disable-next-line @next/next/no-img-element -- object URL from IndexedDB */}
       {url && <img src={url} alt="" className="aspect-[3/4] w-full object-cover" />}
       <input type="checkbox" checked={on} onChange={toggle} className="absolute left-1 top-1" />
-      <span className="block text-center text-[0.6rem]">{photo.kind === "real" ? "Ảnh thật" : "Ảnh AI"}</span>
+      <span className="block text-center text-[0.75rem]">{photo.kind === "real" ? "Ảnh thật" : "Ảnh AI"}</span>
     </label>
   );
 }

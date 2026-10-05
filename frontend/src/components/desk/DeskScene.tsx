@@ -475,7 +475,7 @@ function WhatsInside({ onRead }: { onRead: () => void }) {
             <span aria-hidden>📓</span> Ghi Du Ký những lần con mặc
           </a>
         </div>
-        <p className="m-0 mt-1.5 px-2 text-[0.72rem] leading-snug text-stone-600">Phối áo cùng Bà, Compass nói bộ nào đúng và vì sao.</p>
+        <p className="m-0 mt-1.5 px-2 text-[0.75rem] leading-snug text-stone-600">Phối áo cùng Bà, Compass nói bộ nào đúng và vì sao.</p>
       </nav>
       <nav aria-label="Trong sổ có gì" className="absolute inset-x-0 bottom-3 z-20 flex justify-center gap-2 px-3 md:hidden">
         <a href={asset("/chapter/hue?entry=event")} className="page-turn !text-[0.95rem]">

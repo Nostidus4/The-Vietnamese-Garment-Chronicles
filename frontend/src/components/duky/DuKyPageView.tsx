@@ -42,13 +42,13 @@ export function Photo({ photo, className = "", big = false }: { photo: PhotoRef;
           <img src={url} alt={photo.kind === "real" ? "Ảnh mặc thật" : photo.kind === "card" ? "Thẻ Việt phục" : "Ảnh thử đồ"} className={`h-full w-full ${photo.kind === "card" ? "object-contain" : "object-cover"}`} />
         )}
         {photo.kind === "card" ? (
-          <span className="absolute bottom-1 left-1 rounded bg-[#8a4b2a]/85 px-1.5 py-0.5 text-[0.6rem] font-semibold text-white">Thẻ búp bê giấy</span>
+          <span className="absolute bottom-1 left-1 rounded bg-[#8a4b2a]/85 px-1.5 py-0.5 text-[0.75rem] font-semibold text-white">Thẻ búp bê giấy</span>
         ) : photo.kind === "ai" ? (
-          <span className="absolute bottom-1 left-1 rounded bg-black/65 px-1.5 py-0.5 text-[0.6rem] font-semibold text-white">
+          <span className="absolute bottom-1 left-1 rounded bg-black/65 px-1.5 py-0.5 text-[0.75rem] font-semibold text-white">
             {photo.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI"}
           </span>
         ) : (
-          <span className="font-hand absolute right-1 top-1 rotate-[-8deg] rounded border-2 border-[#B5452E] bg-white/80 px-1 text-[0.7rem] text-[#B5452E]">
+          <span className="font-hand absolute right-1 top-1 rotate-[-8deg] rounded border-2 border-[#B5452E] bg-white/80 px-1 text-[0.75rem] text-[#B5452E]">
             Đã mặc thật
           </span>
         )}
@@ -95,7 +95,7 @@ function Preparation({ page, data }: { page: DuKyPage; data: Bootstrap }) {
   }, [page.region_id, page.date, page.garment_id]);
   const tip = w?.available && w.is_hot ? w.tips?.find((t) => t.garment_id === page.garment_id)?.tip : null;
   return (
-    <div className="mt-2 space-y-1.5 rounded-md bg-white/50 p-2 text-[0.72rem] leading-snug text-stone-700">
+    <div className="mt-2 space-y-1.5 rounded-md bg-white/50 p-2 text-[0.75rem] leading-snug text-stone-700">
       {keep.length > 0 && (
         <p className="m-0">
           <b>Nhớ giữ nguyên:</b> {keep.map((z) => z.part).join(" · ")}
@@ -174,7 +174,7 @@ export function DuKyPageView({
     <div className="flex h-full flex-col" style={{ color: INK }}>
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1">
-          <p className="m-0 flex items-center gap-2 text-[0.62rem] tracking-[0.25em] text-stone-500">
+          <p className="m-0 flex items-center gap-2 text-[0.75rem] tracking-[0.25em] text-stone-500">
             {page.status === "planned" ? "SẮP ĐI" : "ĐÃ MẶC"}
             <button type="button" onClick={() => setEditing((v) => !v)} className="tracking-normal text-[#8a4b2a] underline" aria-expanded={editing}>
               {editing ? "xong" : "✎ sửa"}
@@ -184,7 +184,7 @@ export function DuKyPageView({
             {occasion}
             {page.place ? ` · ${page.place}` : ""}
           </p>
-          <p className="m-0 text-[0.7rem] text-stone-600">
+          <p className="m-0 text-[0.75rem] text-stone-600">
             {g?.name_vi ?? page.garment_id}
             {page.date ? ` · ${formatDate(page.date)}` : ""}
             {page.compass_label ? ` · ${VERDICT[page.compass_label] ?? ""} ${page.compass_label}` : ""}
@@ -193,7 +193,7 @@ export function DuKyPageView({
         <RegionStamp page={page} place={place} />
       </div>
       {editing && (
-        <div className="mt-1.5 grid grid-cols-2 gap-1.5 rounded-md bg-white/55 p-2 text-[0.72rem]">
+        <div className="mt-1.5 grid grid-cols-2 gap-1.5 rounded-md bg-white/55 p-2 text-[0.75rem]">
           <label className="flex flex-col gap-0.5">
             Ngày
             <input type="date" lang="vi" value={page.date ?? ""} onChange={(e) => updatePage(page.id, { date: e.target.value || null })} className="rounded border border-stone-300 bg-white/80 px-1.5 py-1" />
@@ -239,16 +239,16 @@ export function DuKyPageView({
       />
 
       {fact && (
-        <div className="mt-2 rotate-[-0.6deg] bg-[#fbe99a] px-2 py-1.5 text-[0.66rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">
+        <div className="mt-2 rotate-[-0.6deg] bg-[#fbe99a] px-2 py-1.5 text-[0.75rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">
           {fact.text}
-          <span className="mt-0.5 block text-[0.55rem] opacity-80">
+          <span className="mt-0.5 block text-[0.75rem] opacity-80">
             nguồn: {fact.source.title} – Tèo
           </span>
         </div>
       )}
 
       {/* the page's actions as small buttons with room between them, not five underlined words (#63) */}
-      <div className="mt-auto flex flex-wrap gap-1.5 pt-2 text-[0.74rem]">
+      <div className="mt-auto flex flex-wrap gap-1.5 pt-2 text-[0.75rem]">
         <input ref={file} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && addReal(e.target.files[0])} />
         {asking ? (
           <span className="flex w-full flex-wrap items-center gap-2 rounded-md bg-[#f7e4c8] px-2 py-1.5">

@@ -11,7 +11,7 @@ import { OLD, PENCIL, YOUNG } from "./Diary";
 export function LetterPage() {
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.6rem] tracking-[0.3em] text-stone-500">GỬI CON</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">GỬI CON</p>
       <div className="font-hand mt-2 space-y-2 text-[1.12rem] leading-[1.42]" style={{ color: YOUNG }}>
         <p className="m-0">Con của Bà,</p>
         <p className="m-0">
@@ -27,9 +27,9 @@ export function LetterPage() {
       </div>
 
       <div className="mt-auto border-t border-dashed border-stone-400/60 pt-2">
-        <p className="m-0 text-[0.6rem] tracking-[0.3em] text-stone-500">CÁCH ĐỌC SỔ</p>
+        <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">CÁCH ĐỌC SỔ</p>
         {/* each line is an icon and one run of text: loose text nodes in a flex row wrap word by word (#56) */}
-        <ul className="m-0 mt-1 grid list-none grid-cols-1 gap-1 p-0 text-[0.74rem] leading-snug text-stone-700">
+        <ul className="m-0 mt-1 grid list-none grid-cols-1 gap-1 p-0 text-[0.75rem] leading-snug text-stone-700">
           <li className="flex items-start gap-2">
             <span className="mt-[0.3em] h-2.5 w-2.5 shrink-0 rounded-full bg-[#B5452E]" aria-hidden />
             <span>Chấm đỏ trên bản đồ: nơi Bà đã đến.</span>
@@ -75,7 +75,7 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
   const got = data.regions.reduce((n, r) => n + stampsOf(r.id), 0);
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.6rem] tracking-[0.3em] text-stone-500">MỤC LỤC</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">MỤC LỤC</p>
       <p className="font-hand m-0 text-[1.2rem] leading-snug" style={{ color: YOUNG }}>
         Những nơi Bà đã đi
       </p>
@@ -98,7 +98,7 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
                     {open.length ? open.map((c) => `${c.province}: ${c.title ?? ""}`).join(" · ") : "chờ người ở đó cùng viết"}
                   </span>
                 </span>
-                <span className="shrink-0 text-right text-[0.62rem] leading-tight text-stone-500">
+                <span className="shrink-0 text-right text-[0.75rem] leading-tight text-stone-500">
                   {/* what there is to read first, then what is still to be written (#61) */}
                   {open.length} chương{r.chapters.length > open.length ? ` · ${r.chapters.length - open.length} chờ viết` : ""}
                   {readable && (
@@ -172,7 +172,7 @@ export function StartPage({
     [arrived.includes(id), understood.includes(id), pagesOf(book, id).some((p) => p.photos.some((ph) => ph.kind === "real"))].filter(Boolean).length;
   return (
     <div className="start-page flex h-full flex-col">
-      <p className="m-0 text-[0.6rem] tracking-[0.3em] text-stone-500">BẮT ĐẦU HÀNH TRÌNH</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">BẮT ĐẦU HÀNH TRÌNH</p>
       <p className="font-hand m-0 mt-1 text-[1.12rem] leading-snug" style={{ color: YOUNG }}>
         Muốn viết tiếp một câu chuyện, trước hết phải hiểu câu chuyện đã có.
       </p>
@@ -202,7 +202,7 @@ export function StartPage({
                     {r.name}
                     {ch && <span className="font-hand ml-1.5 text-[0.88rem] font-normal text-[#8a4b2a]">· {ch.province}: {ch.title}</span>}
                   </span>
-                  <span className="block truncate text-[0.7rem] text-stone-600">{r.map_note.lines[0]}</span>
+                  <span className="block truncate text-[0.75rem] text-stone-600">{r.map_note.lines[0]}</span>
                 </span>
                 <span className="flex shrink-0 gap-0.5" aria-label={`${n}/3 tem`}>
                   {[0, 1, 2].map((k) => (
@@ -218,14 +218,14 @@ export function StartPage({
       {/* the region under the pointer: one line from Bà's diary, in place of this month's festivals */}
       {hoveredRegion?.journey ? (
         <div className="start-fests mt-3 h-[5.4rem] shrink-0 overflow-hidden rounded-md px-3 py-2" style={{ background: `${tints[hoveredRegion.id]}99` }}>
-          <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-600">NHẬT KÝ CỦA BÀ · {hoveredRegion.name.toUpperCase()}</p>
+          <p className="m-0 text-[0.75rem] tracking-[0.28em] text-stone-600">NHẬT KÝ CỦA BÀ · {hoveredRegion.name.toUpperCase()}</p>
           <p className="font-hand m-0 mt-0.5 text-[1rem] leading-snug" style={{ color: YOUNG }}>
             {hoveredRegion.journey.hover_line}
           </p>
         </div>
       ) : shown.length > 0 && (
         <div className="start-fests mt-3 h-[5.4rem] shrink-0 overflow-hidden rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
-          <p className="m-0 text-[0.58rem] tracking-[0.28em] text-stone-500">{now.length ? "THÁNG NÀY TRONG SỔ CỦA BÀ" : "SẮP TỚI TRONG SỔ CỦA BÀ"}</p>
+          <p className="m-0 text-[0.75rem] tracking-[0.28em] text-stone-500">{now.length ? "THÁNG NÀY TRONG SỔ CỦA BÀ" : "SẮP TỚI TRONG SỔ CỦA BÀ"}</p>
           <ul className="m-0 mt-1 list-none space-y-0.5 p-0">
             {shown.map((f) => (
               <li key={f.id}>
