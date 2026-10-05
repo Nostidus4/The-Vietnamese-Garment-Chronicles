@@ -49,7 +49,9 @@ export function SharedView({ id }: { id: string }) {
             <figure key={u} className="relative m-0 bg-white p-2 pb-3 shadow-[0_6px_14px_rgba(60,35,10,0.3)]">
               {/* eslint-disable-next-line @next/next/no-img-element -- a photo the reader shared */}
               <img src={u.startsWith("/") ? `${API_URL}${u}` : u} alt="" className="aspect-[3/4] w-full object-cover" />
-              {m.photo_kinds[i] === "ai" ? (
+              {m.photo_kinds[i] === "card" ? (
+                <span className="absolute bottom-3 left-3 rounded bg-[#8a4b2a]/85 px-2 py-0.5 text-xs font-semibold text-white">Thẻ búp bê giấy</span>
+              ) : m.photo_kinds[i] === "ai" ? (
                 <span className="absolute bottom-3 left-3 rounded bg-black/70 px-2 py-0.5 text-xs font-semibold text-white">
                   {m.photo_samples[i] ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI"}
                 </span>

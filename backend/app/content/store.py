@@ -28,6 +28,7 @@ from .schemas import (
     Shop,
     Source,
     Voice,
+    WardrobeItem,
 )
 
 CONTENT_DIR = Path(__file__).resolve().parents[2] / "content"
@@ -58,6 +59,7 @@ class Content:
     opening: list[OpeningScreen]
     glossary: dict[str, GlossaryTerm] = field(default_factory=dict)
     voices: dict[str, Voice] = field(default_factory=dict)
+    wardrobe: dict[str, WardrobeItem] = field(default_factory=dict)
 
     def media_exists(self, rel: str | None) -> bool:
         return bool(rel) and (self.root / "media" / rel).is_file()
@@ -135,6 +137,7 @@ def load(root: Path = CONTENT_DIR) -> tuple[Content, Report]:
         opening=lst("opening.json", "screens", OpeningScreen),
         glossary=_index(lst("glossary.json", "terms", GlossaryTerm), "glossary.json", r) if (root / "glossary.json").is_file() else {},
         voices=_index(lst("voices.json", "voices", Voice), "voices.json", r),
+        wardrobe=_index(lst("wardrobe.json", "items", WardrobeItem), "wardrobe.json", r) if (root / "wardrobe.json").is_file() else {},
     )
     for jf in sorted((root / "regions").glob("*.json")) if (root / "regions").is_dir() else []:
         raw = _read(jf, r)
@@ -314,6 +317,19 @@ def _check_refs(c: Content, r: Report) -> None:
                 r.errors.append(f"{w}: chapter '{ch.province}' is 'draft' but its journey is not community_review")
         if reg.status == "open" and reg.chapters and not opened:
             r.warnings.append(f"{w}: no chapter is marked open")
+
+    # the wardrobe only re-uses garments and accessories: every piece points at exactly one of them
+    for it in c.wardrobe.values():
+        w = f"wardrobe.json [{it.id}]"
+        if (it.garment is None) == (it.accessory is None):
+            r.errors.append(f"{w}: needs exactly one of 'garment' or 'accessory'")
+        if (it.slot == "set") != (it.garment is not None):
+            r.errors.append(f"{w}: slot 'set' is for garments, other slots for accessories")
+        need([it.garment] if it.garment else [], c.garments, w, "garment")
+        need([it.accessory] if it.accessory else [], c.accessories, w, "accessory")
+        for body, path in it.layers.items():
+            if not (frontend_public / path.lstrip("/")).is_file():
+                r.warnings.append(f"{w}: layer for '{body}' not found ({path}), the drawn doll is used")
 
     # [[shown words|term-id]] in any diary text must point to glossary.json
     for t in c.glossary.values():

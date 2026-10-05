@@ -1,0 +1,113 @@
+{
+  "_help": "Tủ áo của Bà (phòng thử đồ). Mỗi món trỏ tới một trang phục (slot 'set') hoặc một phụ kiện; Compass chấm qua trang phục / phụ kiện đó. 'art' là hình vẽ búp bê giấy trong frontend/src/components/fitting/PaperDoll.tsx; khi có ảnh vẽ thật, thêm 'layers': {'nu': '/wardrobe/nu/<id>.webp'}.",
+  "items": [
+    {
+      "id": "ao-dai",
+      "slot": "set",
+      "garment": "ao-dai",
+      "art": "ao-dai"
+    },
+    {
+      "id": "ao-ngu-than",
+      "slot": "set",
+      "garment": "ao-ngu-than",
+      "art": "ao-ngu-than"
+    },
+    {
+      "id": "ao-tu-than",
+      "slot": "set",
+      "garment": "ao-tu-than",
+      "art": "ao-tu-than"
+    },
+    {
+      "id": "ao-ba-ba",
+      "slot": "set",
+      "garment": "ao-ba-ba",
+      "art": "ao-ba-ba"
+    },
+    {
+      "id": "non-la",
+      "slot": "head",
+      "accessory": "non-la",
+      "art": "non-la"
+    },
+    {
+      "id": "non-quai-thao",
+      "slot": "head",
+      "accessory": "non-quai-thao",
+      "art": "non-quai-thao"
+    },
+    {
+      "id": "khan-van",
+      "slot": "head",
+      "accessory": "khan-van",
+      "art": "khan-van"
+    },
+    {
+      "id": "khan-mo-qua",
+      "slot": "head",
+      "accessory": "khan-mo-qua",
+      "art": "khan-mo-qua"
+    },
+    {
+      "id": "khan-ran",
+      "slot": "neck",
+      "accessory": "khan-ran",
+      "art": "khan-ran"
+    },
+    {
+      "id": "quat-giay",
+      "slot": "hand",
+      "accessory": "quat-giay",
+      "art": "quat-giay"
+    },
+    {
+      "id": "tui-tote",
+      "slot": "hand",
+      "accessory": "tui-tote",
+      "art": "tui-tote"
+    },
+    {
+      "id": "kinh-mat",
+      "slot": "face",
+      "accessory": "kinh-mat",
+      "art": "kinh-mat"
+    },
+    {
+      "id": "guoc-moc",
+      "slot": "feet",
+      "accessory": "guoc-moc",
+      "art": "guoc-moc"
+    },
+    {
+      "id": "hai-vai",
+      "slot": "feet",
+      "accessory": "hai-vai",
+      "art": "hai-vai"
+    },
+    {
+      "id": "sneakers-trang",
+      "slot": "feet",
+      "accessory": "sneakers-trang",
+      "art": "sneakers"
+    },
+    {
+      "id": "obi",
+      "slot": "waist",
+      "accessory": "obi",
+      "art": "obi"
+    },
+    {
+      "id": "no-jeogori",
+      "slot": "chest",
+      "accessory": "no-jeogori",
+      "art": "no-jeogori"
+    },
+    {
+      "id": "mu-canh-chuon",
+      "slot": "head",
+      "accessory": "mu-canh-chuon",
+      "art": "mu-canh-chuon"
+    }
+  ]
+}

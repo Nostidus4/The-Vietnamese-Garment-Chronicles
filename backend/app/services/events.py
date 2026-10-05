@@ -63,8 +63,13 @@ class TryOnPayload(_P):
 
 
 class DuKyPayload(_P):
-    kind: Literal["ai", "real"]
+    kind: Literal["ai", "real", "card"]
     garment_id: Slug
+
+
+class WardrobePayload(_P):
+    item_id: Slug
+    body: Literal["nu", "nam", "con"]
 
 
 class _E(BaseModel):
@@ -103,11 +108,16 @@ class DuKyEvent(_E):
     payload: DuKyPayload
 
 
+class WardrobeEvent(_E):
+    type: Literal["wardrobe_wear"]
+    payload: WardrobePayload
+
+
 Event = Annotated[
-    Union[CompassEvent, LookFixedEvent, OccasionEvent, QuizEvent, TryOnEvent, DuKyEvent],
+    Union[CompassEvent, LookFixedEvent, OccasionEvent, QuizEvent, TryOnEvent, DuKyEvent, WardrobeEvent],
     Field(discriminator="type"),
 ]
-TYPES = ["compass_result", "look_fixed", "occasion_selected", "quiz_answer", "tryon", "duky_save"]
+TYPES = ["compass_result", "look_fixed", "occasion_selected", "quiz_answer", "tryon", "duky_save", "wardrobe_wear"]
 
 
 def _supabase() -> tuple[str, str] | None:

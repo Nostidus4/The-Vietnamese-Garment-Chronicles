@@ -7,37 +7,149 @@
   "period": "Thế kỷ XX: áo Le Mur (Cát Tường) đầu thập niên 1930, áo Lê Phổ, dáng ôm Sài Gòn thập niên 1950",
   "summary": "Biểu tượng mạnh nhất của Việt Nam, và cũng là kết quả của một lần cách tân từ áo ngũ thân.",
   "facts": [
-    {"text": "Kiểu áo dài tân thời do họa sĩ Cát Tường (Le Mur) giới thiệu đầu thập niên 1930, tiếp đó là cải tiến của Lê Phổ.", "sources": ["ref-04"]},
-    {"text": "Thợ may Sài Gòn làm áo ôm dáng, tay raglan trong thập niên 1950 – dạng phổ biến hiện nay.", "sources": ["ref-66"]},
-    {"text": "'Tri thức may và mặc áo dài Huế' là Di sản văn hóa phi vật thể quốc gia (2024).", "sources": ["ref-08", "ref-11"]}
+    {
+      "text": "Kiểu áo dài tân thời do họa sĩ Cát Tường (Le Mur) giới thiệu đầu thập niên 1930, tiếp đó là cải tiến của Lê Phổ.",
+      "sources": [
+        "ref-04"
+      ]
+    },
+    {
+      "text": "Thợ may Sài Gòn làm áo ôm dáng, tay raglan trong thập niên 1950 – dạng phổ biến hiện nay.",
+      "sources": [
+        "ref-66"
+      ]
+    },
+    {
+      "text": "'Tri thức may và mặc áo dài Huế' là Di sản văn hóa phi vật thể quốc gia (2024).",
+      "sources": [
+        "ref-08",
+        "ref-11"
+      ]
+    }
   ],
-  "occasions": ["tet-chua", "le-hoi", "di-tich", "su-kien-truong", "dam-cuoi"],
+  "occasions": [
+    "tet-chua",
+    "le-hoi",
+    "di-tich",
+    "su-kien-truong",
+    "dam-cuoi"
+  ],
   "zones": [
-    {"part": "hai tà dài", "level": "keep", "note": "Hai tà trước sau là dáng nhận diện của áo dài"},
-    {"part": "xẻ tà hai bên", "level": "keep", "note": "Xẻ tà từ eo là nét riêng của áo dài"},
-    {"part": "cổ áo", "level": "caution", "options": [
-        {"id": "giu-nguyen", "label": "Giữ nguyên"},
-        {"id": "co-thuyen", "label": "Cổ thuyền", "prompt": "boat neck: a wide, shallow neckline with no standing collar", "sources": ["ref-03", "ref-04", "ref-66"]}
-    ]},
-    {"part": "màu vải, họa tiết", "level": "free", "control": "colors"},
-    {"part": "chất liệu", "level": "free", "options": [
-        {"id": "giu-nguyen", "label": "Giữ nguyên"},
-        {"id": "lua-to-tam", "label": "Lụa tơ tằm", "prompt": "the ao dai is smooth silk with a soft sheen", "sources": ["ref-04"]},
-        {"id": "voan", "label": "Voan", "prompt": "the ao dai is light, slightly sheer chiffon", "sources": ["ref-04"]}
-    ]}
+    {
+      "part": "hai tà dài",
+      "level": "keep",
+      "note": "Hai tà trước sau là dáng nhận diện của áo dài"
+    },
+    {
+      "part": "xẻ tà hai bên",
+      "level": "keep",
+      "note": "Xẻ tà từ eo là nét riêng của áo dài"
+    },
+    {
+      "part": "cổ áo",
+      "level": "caution",
+      "options": [
+        {
+          "id": "giu-nguyen",
+          "label": "Giữ nguyên"
+        },
+        {
+          "id": "co-thuyen",
+          "label": "Cổ thuyền",
+          "prompt": "boat neck: a wide, shallow neckline with no standing collar",
+          "sources": [
+            "ref-03",
+            "ref-04",
+            "ref-66"
+          ]
+        }
+      ]
+    },
+    {
+      "part": "màu vải, họa tiết",
+      "level": "free",
+      "control": "colors"
+    },
+    {
+      "part": "chất liệu",
+      "level": "free",
+      "options": [
+        {
+          "id": "giu-nguyen",
+          "label": "Giữ nguyên"
+        },
+        {
+          "id": "lua-to-tam",
+          "label": "Lụa tơ tằm",
+          "prompt": "the ao dai is smooth silk with a soft sheen",
+          "sources": [
+            "ref-04"
+          ]
+        },
+        {
+          "id": "voan",
+          "label": "Voan",
+          "prompt": "the ao dai is light, slightly sheer chiffon",
+          "sources": [
+            "ref-04"
+          ]
+        }
+      ]
+    }
   ],
-  "colors": ["trang", "xanh-thien-thanh", "tim-hue", "do-son", "xanh-mint"],
-  "default_colors": ["trang", "xanh-thien-thanh"],
-  "accessories": ["non-la", "khan-van", "sneakers-trang", "tui-tote", "kinh-mat", "obi", "no-jeogori"],
-  "must_keep": ["two long flaps front and back", "side slits from the waist", "worn over long trousers"],
-  "must_avoid": ["hanfu cross collar", "Japanese obi", "Korean jeogori ribbon", "Chinese qipao styling"],
+  "colors": [
+    "trang",
+    "xanh-thien-thanh",
+    "tim-hue",
+    "do-son",
+    "xanh-mint"
+  ],
+  "default_colors": [
+    "trang",
+    "xanh-thien-thanh"
+  ],
+  "accessories": [
+    "non-la",
+    "khan-van",
+    "sneakers-trang",
+    "tui-tote",
+    "kinh-mat",
+    "obi",
+    "no-jeogori",
+    "guoc-moc",
+    "hai-vai"
+  ],
+  "must_keep": [
+    "two long flaps front and back",
+    "side slits from the waist",
+    "worn over long trousers"
+  ],
+  "must_avoid": [
+    "hanfu cross collar",
+    "Japanese obi",
+    "Korean jeogori ribbon",
+    "Chinese qipao styling"
+  ],
   "reference_image": "ref/ao-dai.png",
   "hot_weather_tip": "Áo dài vải lụa mỏng hoặc voan nhẹ vẫn giữ hai tà và đường xẻ.",
   "wearing_steps": [
-    {"title": "Mặc quần", "detail": "Quần dài, thường trắng hoặc cùng màu áo."},
-    {"title": "Mặc áo", "detail": "Cài khuy hoặc kéo khóa bên sườn phải cho áo ôm vừa người."},
-    {"title": "Chỉnh hai tà", "detail": "Vuốt thẳng tà trước và tà sau, đường xẻ nằm đúng hai bên hông."}
+    {
+      "title": "Mặc quần",
+      "detail": "Quần dài, thường trắng hoặc cùng màu áo."
+    },
+    {
+      "title": "Mặc áo",
+      "detail": "Cài khuy hoặc kéo khóa bên sườn phải cho áo ôm vừa người."
+    },
+    {
+      "title": "Chỉnh hai tà",
+      "detail": "Vuốt thẳng tà trước và tà sau, đường xẻ nằm đúng hai bên hông."
+    }
   ],
-  "sources": ["ref-04", "ref-08", "research-6"],
+  "sources": [
+    "ref-04",
+    "ref-08",
+    "research-6"
+  ],
   "verified": false
 }

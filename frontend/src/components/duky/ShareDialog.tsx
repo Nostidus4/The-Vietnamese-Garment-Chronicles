@@ -25,7 +25,7 @@ function Thumb({ photo, on, toggle }: { photo: PhotoRef; on: boolean; toggle: ()
 }
 
 export function ShareDialog({ page, onClose }: { page: DuKyPage; onClose: () => void }) {
-  const [picked, setPicked] = useState<string[]>(page.photos.filter((p) => p.kind === "ai").map((p) => p.id));
+  const [picked, setPicked] = useState<string[]>(page.photos.filter((p) => p.kind !== "real").map((p) => p.id));
   const [agree, setAgree] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);

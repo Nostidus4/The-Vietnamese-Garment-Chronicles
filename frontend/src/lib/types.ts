@@ -288,10 +288,25 @@ export interface Bootstrap {
   garments: Garment[];
   occasions: { id: string; name: string }[];
   colors: Record<string, { id: string; name: string; hex: string; restricted: boolean }>;
-  accessories: Record<string, { id: string; name_vi: string; kind: string }>;
+  accessories: Record<string, { id: string; name_vi: string; kind: string; description?: string | null; occasions?: string[] | null; message?: { ti: string; teo: string; why: string } | null; alternative?: string | null; verified?: boolean }>;
   sources: Record<string, { id: string; title: string; url: string | null }>;
   opening: OpeningScreen[];
   glossary: Record<string, GlossaryTerm>;
+  /** Bà's wardrobe for the dress-up room (backend/content/wardrobe.json) */
+  wardrobe?: WardrobeItem[];
+  /** the Compass rules, so the browser can judge a look (lib/compass.ts) */
+  rules?: { type: string; state: CompassState; ti: string; teo: string; why: string; sources: string[] }[];
+}
+
+export type WardrobeSlot = "set" | "head" | "face" | "neck" | "chest" | "waist" | "hand" | "feet";
+export interface WardrobeItem {
+  id: string;
+  slot: WardrobeSlot;
+  garment: string | null;
+  accessory: string | null;
+  bodies: ("nu" | "nam")[];
+  art: string;
+  layers: Record<string, string>;
 }
 
 export interface TryOnResult {

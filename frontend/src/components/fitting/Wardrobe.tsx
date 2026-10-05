@@ -1,0 +1,418 @@
+"use client";
+
+// The pieces of Bà's wardrobe room: who wears (Nữ · Nam · Con), the wardrobe with its drawers, the "Đang mặc" list,
+// and the card that drops from the top when the look is done. The room itself (state, Compass, saving) lives in
+// ChapterView; everything here only shows and reports.
+
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { asset } from "@/lib/base";
+import type { Bootstrap, CompassResult, CompassState, Garment, WardrobeItem, WardrobeSlot } from "@/lib/types";
+import { pickOption, pickedOption, zoneControl } from "@/lib/zones";
+import type { Selection } from "@/lib/types";
+
+export type Who = "nu" | "nam" | "con";
+
+/* ---------- who wears ---------- */
+
+const WHO: { id: Who; name: string; note: string; soon?: boolean }[] = [
+  { id: "nu", name: "Nữ", note: "búp bê giấy" },
+  { id: "nam", name: "Nam", note: "sắp có", soon: true },
+  { id: "con", name: "Con", note: "ảnh của con" },
+];
+
+export function WhoPicker({ value, onPick, onClose }: { value: Who | null; onPick: (w: Who) => void; onClose?: () => void }) {
+  const reduced = !!useReducedMotion();
+  return (
+    <motion.div className="fixed inset-0 z-50 grid place-items-center bg-[#140c07]/70 p-4 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-label="Ai mặc?" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <motion.div className="paper w-full max-w-lg rounded-xl p-6 text-center shadow-2xl" initial={reduced ? false : { y: 30, scale: 0.96 }} animate={{ y: 0, scale: 1 }}>
+        <p className="m-0 text-[0.62rem] uppercase tracking-[0.28em] text-stone-500">Tủ áo của Bà</p>
+        <p className="font-hand m-0 mt-1 text-[1.6rem] leading-tight text-[#8a4b2a]">Hôm nay ai mặc đây con?</p>
+        <div className="mt-5 flex justify-center gap-3" role="radiogroup" aria-label="Người mặc">
+          {WHO.map((w) => (
+            <button
+              key={w.id}
+              type="button"
+              role="radio"
+              aria-checked={value === w.id}
+              disabled={w.soon}
+              onClick={() => onPick(w.id)}
+              className={`who-card ${value === w.id ? "who-card-on" : ""}`}
+            >
+              <WhoFigure who={w.id} />
+              <span className="block text-[0.95rem] font-semibold">{w.name}</span>
+              <span className="block text-[0.68rem] text-stone-500">{w.note}</span>
+            </button>
+          ))}
+        </div>
+        {onClose && value && (
+          <button type="button" onClick={onClose} className="mt-4 text-sm text-stone-600 underline">
+            Giữ nguyên
+          </button>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function WhoFigure({ who }: { who: Who }) {
+  if (who === "con") return <span className="grid h-16 place-items-center text-[1.9rem]" aria-hidden>📷</span>;
+  return (
+    <svg className="mx-auto h-16" viewBox="0 0 34 64" aria-hidden>
+      <circle cx="17" cy="10" r="8" fill="#efcfae" stroke="#2b2118" strokeWidth="1.2" />
+      <path d={who === "nu" ? "M8 20h18l5 40H3z" : "M8 20h18l2 40H6z"} fill={who === "nu" ? "#7ec8e3" : "#27354f"} stroke="#2b2118" strokeWidth="1.2" />
+    </svg>
+  );
+}
+
+/* ---------- the wardrobe ---------- */
+
+export type Drawer = "set" | "head" | "acc" | "feet" | "style";
+export const DRAWERS: { id: Drawer; name: string; slots: WardrobeSlot[] }[] = [
+  { id: "set", name: "Bộ áo", slots: ["set"] },
+  { id: "head", name: "Khăn & nón", slots: ["head", "neck"] },
+  { id: "acc", name: "Phụ kiện", slots: ["hand", "face", "waist", "chest"] },
+  { id: "feet", name: "Giày dép", slots: ["feet"] },
+  { id: "style", name: "Màu & phần áo", slots: [] },
+];
+
+export type ItemState = "worn" | "bad" | "dim" | "lock" | "plain";
+
+export function WardrobePanel({
+  data,
+  items,
+  stateOf,
+  noteOf,
+  onToggle,
+  garment,
+  selection,
+  onSelection,
+  occasion,
+  open,
+  onOpen,
+  onLookReal,
+}: {
+  data: Bootstrap;
+  items: WardrobeItem[];
+  stateOf: (it: WardrobeItem) => ItemState;
+  noteOf: (it: WardrobeItem) => string;
+  onToggle: (it: WardrobeItem) => void;
+  garment: Garment | null;
+  selection: Selection | null;
+  onSelection: (s: Selection) => void;
+  occasion: string;
+  open: Drawer;
+  onOpen: (d: Drawer) => void;
+  onLookReal: (garmentId: string) => void;
+}) {
+  const reduced = !!useReducedMotion();
+  const drawer = DRAWERS.find((d) => d.id === open)!;
+  const shown = items.filter((it) => drawer.slots.includes(it.slot));
+  const badIn = (d: (typeof DRAWERS)[number]) => items.some((it) => d.slots.includes(it.slot) && stateOf(it) === "bad");
+  return (
+    <section className="wardrobe" aria-label="Tủ áo">
+      <div className="wardrobe-doors" aria-hidden />
+      <div role="tablist" aria-label="Ngăn tủ" className="wardrobe-tabs">
+        {DRAWERS.map((d) => (
+          <button key={d.id} type="button" role="tab" aria-selected={open === d.id} onClick={() => onOpen(d.id)} className={`wardrobe-tab ${open === d.id ? "wardrobe-tab-on" : ""}`}>
+            {d.name}
+            {badIn(d) && <span className="ml-1 text-[#b5452e]">●</span>}
+          </button>
+        ))}
+      </div>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={open}
+          role="tabpanel"
+          className="wardrobe-body"
+          initial={reduced ? { opacity: 0 } : { opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={reduced ? { opacity: 0 } : { opacity: 0, x: -12 }}
+          transition={{ duration: reduced ? 0.12 : 0.24 }}
+        >
+          {open === "style" ? (
+            <StyleDrawer data={data} garment={garment} selection={selection} onSelection={onSelection} />
+          ) : (
+            <ul className="wardrobe-grid">
+              {shown.map((it, i) => {
+                const st = stateOf(it);
+                const name = it.garment ? data.garments.find((g) => g.id === it.garment)?.name_vi : data.accessories[it.accessory!]?.name_vi;
+                return (
+                  <motion.li key={it.id} initial={reduced ? false : { opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduced ? 0 : i * 0.03 }}>
+                    <button
+                      type="button"
+                      aria-pressed={st === "worn"}
+                      aria-label={`${name}${st === "worn" ? ", đang mặc" : st === "bad" ? ", gây sai lệch" : st === "lock" ? ", chưa mở" : ""}`}
+                      onClick={() => onToggle(it)}
+                      className={`w-item w-item-${st}`}
+                      title={noteOf(it)}
+                    >
+                      <span className="w-hanger" aria-hidden />
+                      <ItemPicture item={it} />
+                      <span className="block text-[0.7rem] font-semibold leading-tight">{name}</span>
+                      <span className="block text-[0.58rem] leading-tight text-stone-500">{noteOf(it)}</span>
+                    </button>
+                    {it.garment && (
+                      <button type="button" onClick={() => onLookReal(it.garment!)} className="mt-0.5 block w-full text-center text-[0.58rem] text-[#27354f] underline">
+                        Xem ảnh thật
+                      </button>
+                    )}
+                  </motion.li>
+                );
+              })}
+            </ul>
+          )}
+        </motion.div>
+      </AnimatePresence>
+      <p className="m-0 px-3 pb-2 text-[0.62rem] text-stone-500">Dịp: {data.occasions.find((o) => o.id === occasion)?.name}</p>
+    </section>
+  );
+}
+
+/** The picture on a wardrobe card: the garment's reference plate, or a small drawing of the accessory. */
+function ItemPicture({ item }: { item: WardrobeItem }) {
+  const [broken, setBroken] = useState(false);
+  if (item.garment && !broken)
+    // eslint-disable-next-line @next/next/no-img-element -- static export
+    return <img src={asset(`/garments/${item.garment}.webp`)} alt="" className="mx-auto h-16 w-full object-contain" loading="lazy" onError={() => setBroken(true)} />;
+  return <span className="mx-auto grid h-16 place-items-center text-[1.7rem]" aria-hidden>{ICON[item.art] ?? "🧵"}</span>;
+}
+const ICON: Record<string, string> = {
+  "non-la": "👒",
+  "non-quai-thao": "🎐",
+  "khan-van": "🧣",
+  "khan-mo-qua": "🧕",
+  "khan-ran": "🏁",
+  "mu-canh-chuon": "🎩",
+  "quat-giay": "🪭",
+  "tui-tote": "👜",
+  "kinh-mat": "🕶️",
+  "guoc-moc": "🩴",
+  "hai-vai": "🥿",
+  sneakers: "👟",
+  obi: "🎀",
+  "no-jeogori": "🎗️",
+};
+
+/** Colours (max 2: the main cloth, then the second piece) and the zone options of the garment. */
+function StyleDrawer({ data, garment, selection, onSelection }: { data: Bootstrap; garment: Garment | null; selection: Selection | null; onSelection: (s: Selection) => void }) {
+  if (!garment || !selection) return <p className="m-0 p-2 text-sm text-stone-600">Chọn một bộ áo trước, rồi mở ngăn này để đổi màu và các phần của áo.</p>;
+  const toggle = (c: string) => {
+    const on = selection.colors.includes(c);
+    const colors = on ? selection.colors.filter((x) => x !== c) : selection.colors.length >= 2 ? [selection.colors[1], c] : [...selection.colors, c];
+    onSelection({ ...selection, colors });
+  };
+  return (
+    <div className="space-y-4 p-1">
+      <div>
+        <p className="m-0 mb-1.5 text-sm font-semibold text-[#27354f]">Màu vải <span className="font-normal text-stone-500">· tối đa 2: vải chính, rồi phần phối</span></p>
+        <div className="flex flex-wrap gap-2.5">
+          {garment.colors.map((c) => {
+            const i = selection.colors.indexOf(c);
+            return (
+              <button key={c} type="button" onClick={() => toggle(c)} aria-pressed={i >= 0} title={data.colors[c]?.name} className={`fabric ${i >= 0 ? "fabric-on" : ""}`} style={{ backgroundColor: data.colors[c]?.hex }}>
+                {i >= 0 && <span className="fabric-n">{i + 1}</span>}
+                <span className="sr-only">{data.colors[c]?.name}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      {garment.zones
+        .filter((z) => zoneControl(z) === "options")
+        .map((z) => {
+          const picked = pickedOption(selection, z.part);
+          return (
+            <div key={z.part}>
+              <p className="m-0 mb-1.5 text-sm font-semibold text-[#27354f]">{z.part}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {z.options.map((o) => (
+                  <button key={o.id} type="button" aria-pressed={picked === o.id} onClick={() => onSelection(pickOption(selection, z.part, o.id))} className={`chip-paper ${picked === o.id ? "chip-paper-on" : ""}`}>
+                    {o.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      {garment.zones.some((z) => zoneControl(z) === "locked") && (
+        <p className="m-0 text-[0.72rem] text-stone-500">🔒 Giữ nguyên: {garment.zones.filter((z) => zoneControl(z) === "locked").map((z) => z.part).join(" · ")}</p>
+      )}
+    </div>
+  );
+}
+
+/* ---------- Đang mặc ---------- */
+
+export function OutfitList({
+  data,
+  worn,
+  bad,
+  occasion,
+  onOccasion,
+  onTakeOff,
+}: {
+  data: Bootstrap;
+  worn: WardrobeItem[];
+  bad: Set<string>;
+  occasion: string;
+  onOccasion: (id: string) => void;
+  onTakeOff: (it: WardrobeItem) => void;
+}) {
+  const nameOf = (it: WardrobeItem) => (it.garment ? data.garments.find((g) => g.id === it.garment)?.name_vi : data.accessories[it.accessory!]?.name_vi) ?? it.id;
+  const order: WardrobeSlot[] = ["head", "face", "neck", "chest", "set", "waist", "hand", "feet"];
+  const list = [...worn].sort((a, b) => Number(bad.has(b.accessory ?? "")) - Number(bad.has(a.accessory ?? "")) || order.indexOf(a.slot) - order.indexOf(b.slot));
+  return (
+    <section className="outfit" aria-label="Đang mặc">
+      <p className="outfit-title">Đang mặc</p>
+      {list.length === 0 ? (
+        <p className="m-0 text-sm text-stone-600">Chưa mặc gì. Mở tủ, bấm một bộ áo.</p>
+      ) : (
+        <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
+          <AnimatePresence initial={false}>
+            {list.map((it) => {
+              const isBad = bad.has(it.accessory ?? "");
+              return (
+                <motion.li key={it.id} layout initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className={`outfit-chip ${isBad ? "outfit-chip-bad" : ""}`}>
+                  <span className="min-w-0 flex-1 truncate">{isBad && "⛔ "}{nameOf(it)}</span>
+                  <button type="button" onClick={() => onTakeOff(it)} aria-label={`Cởi ${nameOf(it)}`} className="outfit-x">
+                    ✕
+                  </button>
+                </motion.li>
+              );
+            })}
+          </AnimatePresence>
+        </ul>
+      )}
+      <label className="mt-3 block text-[0.72rem] text-stone-600">
+        Dịp
+        <select value={occasion} onChange={(e) => onOccasion(e.target.value)} className="mt-0.5 block w-full rounded-md border border-stone-300 bg-white/80 px-2 py-1 text-sm text-[#27354f]">
+          {data.occasions.map((o) => (
+            <option key={o.id} value={o.id}>
+              {o.name}
+            </option>
+          ))}
+        </select>
+      </label>
+    </section>
+  );
+}
+
+/* ---------- the card ---------- */
+
+export const STAMP: Record<CompassState, { word: string; icon: string }> = {
+  fit: { word: "AUTHENTIC", icon: "✅" },
+  adapted: { word: "ADAPTED", icon: "✨" },
+  review: { word: "INSPIRED", icon: "⚠️" },
+  distorted: { word: "", icon: "⛔" },
+};
+
+export type CardFace = { image: string; title: string; place: string; date: string; number: number; state: CompassState; note: string[]; items: string[]; isAI: boolean };
+
+export function LookCard({
+  face,
+  saved,
+  onSave,
+  onClose,
+  onRedo,
+}: {
+  face: CardFace;
+  saved: boolean;
+  onSave: (el: HTMLElement) => void;
+  onClose: () => void;
+  onRedo?: () => void;
+}) {
+  const reduced = !!useReducedMotion();
+  const [back, setBack] = useState(false);
+  const [cardEl, setCardEl] = useState<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  const stamp = STAMP[face.state];
+  return (
+    <motion.div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-[#140c07]/60 p-4 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-label="Thẻ Việt phục của con" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+      <div className="flex flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
+        <motion.div
+          ref={setCardEl}
+          className="look-card-wrap"
+          initial={reduced ? { opacity: 0 } : { y: "-115vh", rotate: -4 }}
+          animate={{ y: 0, rotate: 0, opacity: 1 }}
+          transition={reduced ? { duration: 0.2 } : { type: "spring", stiffness: 220, damping: 18 }}
+        >
+          <motion.div className="look-card-inner" animate={{ rotateY: back ? 180 : 0 }} transition={{ duration: reduced ? 0 : 0.6, ease: [0.4, 0, 0.2, 1] }}>
+            {/* front: the reader in the look, the Compass stamp, what and where */}
+            <button type="button" className="look-card look-card-front" onClick={() => setBack(true)} aria-label="Lật thẻ">
+              <span className="look-card-art">
+                {/* eslint-disable-next-line @next/next/no-img-element -- a data/blob URL made in the browser */}
+                <img src={face.image} alt="" className="h-full w-full object-contain" />
+                {face.isAI && <span className="absolute bottom-1.5 left-1.5 rounded bg-black/65 px-1.5 py-0.5 text-[0.6rem] font-semibold text-white">Ảnh minh họa AI</span>}
+              </span>
+              <motion.span
+                className="look-stamp"
+                initial={reduced ? false : { scale: 1.5, opacity: 0, rotate: -30 }}
+                animate={{ scale: 1, opacity: 1, rotate: -12 }}
+                transition={{ delay: reduced ? 0 : 0.55, type: "spring", stiffness: 380, damping: 14 }}
+              >
+                {stamp.word}
+                <br />
+                {stamp.icon}
+              </motion.span>
+              <span className="font-hand look-card-title">{face.title}</span>
+              <span className="look-card-meta">
+                <span>
+                  {face.place} · {face.date}
+                </span>
+                <span>Thẻ số {face.number}</span>
+              </span>
+            </button>
+            {/* back: Bà's note in her ink on ruled paper */}
+            <button type="button" className="look-card look-card-back" onClick={() => setBack(false)} aria-label="Lật lại mặt trước">
+              <span className="look-card-lines">
+                {face.note.map((l, i) => (
+                  <span key={i} className="font-hand block">
+                    {l}
+                  </span>
+                ))}
+              </span>
+              <span className="look-card-meta">
+                <span className="min-w-0 truncate">{face.items.join(" · ")}</span>
+              </span>
+            </button>
+          </motion.div>
+        </motion.div>
+        <p className="m-0 text-xs text-amber-50/80">Bấm vào thẻ để lật</p>
+        <div className="flex flex-wrap justify-center gap-2">
+          <button type="button" disabled={saved} onClick={() => cardEl && onSave(cardEl)} className="page-turn page-turn-main">
+            {saved ? "Đã lưu vào Du Ký ✓" : "Lưu vào Du Ký"}
+          </button>
+          {onRedo && (
+            <button type="button" onClick={onRedo} className="page-turn">
+              ↻ Dựng lại
+            </button>
+          )}
+          <a href={face.image} download={`the-viet-phuc-${face.number}.png`} className="page-turn">
+            Tải ảnh
+          </a>
+          <button type="button" onClick={onClose} className="page-turn">
+            Thay tiếp
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/** Bà's lines on the back of the card, from what the reader picked (no AI: the words are put together here). */
+export function baNote(data: Bootstrap, garment: Garment, sel: Selection, verdict: CompassResult | null): string[] {
+  const color = sel.colors[0] ? data.colors[sel.colors[0]]?.name.toLowerCase() : null;
+  const acc = sel.accessories.map((a) => data.accessories[a]?.name_vi.toLowerCase()).filter(Boolean);
+  const kept = garment.zones.filter((z) => z.level === "keep").map((z) => z.part);
+  const lines = [`Con mặc ${garment.name_vi.toLowerCase()}${color ? ` màu ${color}` : ""}${acc.length ? `, ${acc.join(", ")}` : ""}.`];
+  if (kept.length) lines.push(`Phần ${kept.join(", ")} con giữ nguyên, đúng như Bà dặn.`);
+  if (verdict?.state === "adapted") lines.push("Có chỗ con đổi cho hợp ngày nay, mà vẫn ra áo của mình.");
+  if (verdict?.state === "review") lines.push("Có món Bà thấy chưa hợp dịp lắm, lần sau con xem lại nhé.");
+  lines.push("— Bà");
+  return lines;
+}

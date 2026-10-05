@@ -8,7 +8,8 @@ type Payloads = {
   occasion_selected: { garment_id: string; occasion_id: string; fits: boolean };
   quiz_answer: { phase: "pre" | "post"; item_id: string; correct: boolean; region_id: string };
   tryon: { garment_id: string; alternative: boolean; sample: boolean };
-  duky_save: { kind: "ai" | "real"; garment_id: string };
+  duky_save: { kind: "ai" | "real" | "card"; garment_id: string };
+  wardrobe_wear: { item_id: string; body: "nu" | "nam" | "con" };
 };
 
 const KEY = "vpdk-session";

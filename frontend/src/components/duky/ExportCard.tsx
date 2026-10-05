@@ -82,7 +82,9 @@ export function ExportCard({ page, data, onDone }: { page: DuKyPage; data: Boots
               <div className="relative aspect-[3/4] w-full overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element -- a data URL built for the export */}
                 <img src={p.src} alt="" className="h-full w-full object-cover" />
-                {p.kind === "ai" ? (
+                {p.kind === "card" ? (
+                  <span className="absolute bottom-1.5 left-1.5 rounded bg-[#8a4b2a]/85 px-2 py-0.5 text-[12px] font-semibold text-white">Thẻ búp bê giấy</span>
+                ) : p.kind === "ai" ? (
                   <span className="absolute bottom-1.5 left-1.5 rounded bg-black/70 px-2 py-0.5 text-[12px] font-semibold text-white">
                     {p.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI"}
                   </span>

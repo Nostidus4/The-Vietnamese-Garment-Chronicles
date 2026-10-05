@@ -117,7 +117,7 @@ export type ShareMeta = {
   status: "planned" | "worn";
   note: string;
   compass_label: string | null;
-  photo_kinds: ("ai" | "real")[];
+  photo_kinds: ("ai" | "real" | "card")[];
   photo_samples: boolean[];
 };
 export type SharedPage = { id: string; meta: ShareMeta; photo_urls: string[]; created_at: string };

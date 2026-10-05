@@ -37,9 +37,11 @@ export function Photo({ photo, className = "", big = false }: { photo: PhotoRef;
       <div className={`relative w-full overflow-hidden bg-stone-100 ${big ? "aspect-[4/5]" : "aspect-[3/4]"}`}>
         {url && (
           // eslint-disable-next-line @next/next/no-img-element -- an object URL from IndexedDB
-          <img src={url} alt={photo.kind === "real" ? "Ảnh mặc thật" : "Ảnh thử đồ"} className="h-full w-full object-cover" />
+          <img src={url} alt={photo.kind === "real" ? "Ảnh mặc thật" : photo.kind === "card" ? "Thẻ Việt phục" : "Ảnh thử đồ"} className={`h-full w-full ${photo.kind === "card" ? "object-contain" : "object-cover"}`} />
         )}
-        {photo.kind === "ai" ? (
+        {photo.kind === "card" ? (
+          <span className="absolute bottom-1 left-1 rounded bg-[#8a4b2a]/85 px-1.5 py-0.5 text-[0.6rem] font-semibold text-white">Thẻ búp bê giấy</span>
+        ) : photo.kind === "ai" ? (
           <span className="absolute bottom-1 left-1 rounded bg-black/65 px-1.5 py-0.5 text-[0.6rem] font-semibold text-white">
             {photo.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI"}
           </span>
