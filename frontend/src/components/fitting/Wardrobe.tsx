@@ -102,7 +102,7 @@ export function WardrobePanel({
   occasion,
   open,
   onOpen,
-  onLookReal,
+  onLookPreview,
 }: {
   data: Bootstrap;
   items: WardrobeItem[];
@@ -116,7 +116,7 @@ export function WardrobePanel({
   occasion: string;
   open: Drawer;
   onOpen: (d: Drawer) => void;
-  onLookReal: (garmentId: string) => void;
+  onLookPreview: (garmentId: string) => void;
 }) {
   const reduced = !!useReducedMotion();
   const drawer = DRAWERS.find((d) => d.id === open)!;
@@ -167,7 +167,7 @@ export function WardrobePanel({
                       <span className="block text-[0.75rem] leading-tight text-stone-600">{noteOf(it)}</span>
                     </button>
                     {it.garment && (
-                      <button type="button" onClick={() => onLookReal(it.garment!)} className="mt-0.5 block w-full text-center text-[0.75rem] text-[#27354f] underline">
+                      <button type="button" onClick={() => onLookPreview(it.garment!)} className="mt-0.5 block w-full text-center text-[0.75rem] text-[#27354f] underline">
                         Xem ảnh mẫu
                       </button>
                     )}
@@ -309,7 +309,7 @@ export const STAMP: Record<CompassState, { word: string; icon: string }> = {
   distorted: { word: "", icon: "⛔" },
 };
 /** The stamp judges the look picked, not the picture: an AI render can still get a detail wrong (#52). */
-export const AI_LABEL = "Ảnh AI vẽ · có thể sai chi tiết";
+export const AI_LABEL = "Tranh minh họa (AI) · có thể sai chi tiết";
 
 export type CardFace = {
   image: string;
@@ -368,9 +368,10 @@ export function LookCard({
                 )}
               </span>
               <motion.span
-                className={`look-stamp ${face.checking ? "look-stamp-light" : ""}`}
+                className="look-stamp"
                 initial={reduced ? false : { scale: 1.5, opacity: 0, rotate: -30 }}
-                animate={{ scale: 1, opacity: 1, rotate: -12 }}
+                // lighter while Tèo still checks a piece; set here, as framer's inline opacity would beat a class
+                animate={{ scale: 1, opacity: face.checking ? 0.5 : 1, rotate: -12 }}
                 transition={{ delay: reduced ? 0 : 0.55, type: "spring", stiffness: 380, damping: 14 }}
               >
                 {stamp.word}

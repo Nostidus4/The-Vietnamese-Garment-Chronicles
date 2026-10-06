@@ -311,7 +311,7 @@ export interface WardrobeItem {
 }
 
 /** Why the try-on sent only its sample picture (backend tryon.fallback_reason, #52). */
-export type FallbackReason = "no_person" | "busy" | "timeout" | "blocked";
+export type FallbackReason = "no_person" | "busy" | "timeout" | "blocked" | "unavailable";
 
 export interface TryOnResult {
   compass: CompassResult;

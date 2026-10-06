@@ -40,7 +40,7 @@ describe("checkPhoto", () => {
 
 describe("sampleNotice", () => {
   it("says there is no one in the photo, and asks for one with a person", () => {
-    expect(sampleNotice("no_person")).toEqual({ title: "Không thấy người nào trong ảnh này.", hint: "Con chọn ảnh chụp cả người, đứng thẳng, rõ mặt nhé." });
+    expect(sampleNotice("no_person")).toEqual({ title: "Không thấy người nào trong ảnh này.", hint: "Con chọn ảnh chụp cả người, đứng thẳng, rõ mặt nhé.", newPhoto: true });
   });
 
   it("tells the reader to try again when the AI is busy or slow", () => {
@@ -51,7 +51,15 @@ describe("sampleNotice", () => {
   });
 
   it("does not offer the same photo again after a refusal", () => {
-    expect(sampleNotice("blocked")).toEqual({ title: "AI không dựng ảnh này.", hint: "Con thử một ảnh khác nhé." });
+    expect(sampleNotice("blocked")).toEqual({ title: "AI không dựng ảnh này.", hint: "Con thử một ảnh khác nhé.", newPhoto: true });
+  });
+
+  it("does not promise a retry, or a new photo, when the AI cannot be used at all", () => {
+    const n = sampleNotice("unavailable");
+    expect(n.title).toBe("Thử đồ bằng AI tạm thời chưa dùng được.");
+    expect(n.hint).not.toContain("thử lại");
+    expect(n.newPhoto).toBe(false);
+    expect(sampleNotice("no_person").newPhoto).toBe(true);
   });
 
   it("treats an older server without a reason as busy", () => {

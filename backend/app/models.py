@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 from .content.schemas import QuizAnswer, State
 
 SEVERITY: dict[str, int] = {"fit": 0, "adapted": 1, "review": 2, "distorted": 3}
-FallbackReason = Literal["no_person", "busy", "timeout", "blocked"]
+FallbackReason = Literal["no_person", "busy", "timeout", "blocked", "unavailable"]
 LABELS: dict[str, str | None] = {"fit": "Authentic", "adapted": "Adapted", "review": "Inspired", "distorted": None}
 
 
@@ -77,7 +77,8 @@ class TryOnResponse(BaseModel):
     rendered_selection: Selection
     image_base64: str | None
     fallback_url: str | None
-    # why there is only the sample picture (#52): no one in the photo, AI busy or too slow, or the picture refused
+    # why there is only the sample picture (#52): no one in the photo, AI busy or too slow, the picture refused, or no AI
+    # to ask at all (no key, credits used up)
     fallback_reason: FallbackReason | None = None
     cached: bool
-    label_note: str = "Ảnh minh họa AI – cấu trúc chuẩn xem ở Story Card"
+    label_note: str = "Tranh minh họa (AI) – cấu trúc chuẩn xem ở “Hiểu bộ áo”"
