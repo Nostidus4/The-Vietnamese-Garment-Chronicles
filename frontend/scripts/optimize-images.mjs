@@ -5,7 +5,8 @@
 //
 // - Region photos and memory art: the full-size JPGs live in originals/regions/ (outside public/, never deployed);
 //   public/regions/ gets copies at most 1000 px on the long side (they show at 400–600 px). A JPG newly added to
-//   public/regions/ is moved into originals/ the first time the script runs, so just drop new pictures in public/.
+//   public/regions/, or put over an old one at full size, is moved into originals/ the first time the script runs, so
+//   just drop new pictures in public/.
 //   Names stay the same, so the content JSON does not change.
 // - Bà's old photo on the desk: a small copy of the opening's s06 picture instead of the full-screen one.
 // - Blur placeholder for the desk photo, shown while it loads (src/lib/placeholders.json).
@@ -26,14 +27,17 @@ const THUMBS = [{ from: "opening/s06.webp", to: "page/desk-photo.webp", width: 4
 const PLACEHOLDERS = ["page/Desk.webp"];
 
 /**
- * What to do with the region photos, given the paths (relative to public/ and originals/) on each side.
- * adopt: published photos with no original yet; build: every published photo; orphans: originals no longer on the site.
+ * What to do with the region photos, given the paths (relative to public/ and originals/) on each side and the
+ * published ones still larger than LONG_EDGE (a picture someone just put in, maybe over an old one).
+ * adopt: published photos that become their own original; build: every published photo; orphans: originals no longer
+ * on the site.
  */
-export function plan({ published, originals }) {
+export function plan({ published, originals, fullSize = [] }) {
   const have = new Set(originals);
   const shown = new Set(published);
+  const fresh = new Set(fullSize);
   return {
-    adopt: published.filter((p) => !have.has(p)),
+    adopt: published.filter((p) => !have.has(p) || fresh.has(p)),
     build: [...published],
     orphans: originals.filter((o) => !shown.has(o)),
   };
@@ -43,7 +47,13 @@ const kb = (n) => `${Math.round(n / 1024)} KB`;
 
 async function main() {
   const list = (dir) => globSync("regions/**/*.jpg", { cwd: dir }).sort();
-  const { adopt, build, orphans } = plan({ published: list(PUBLIC), originals: list(ORIGINALS) });
+  const published = list(PUBLIC);
+  const fullSize = [];
+  for (const p of published) {
+    const { width = 0, height = 0 } = await sharp(join(PUBLIC, p)).metadata();
+    if (Math.max(width, height) > LONG_EDGE) fullSize.push(p);
+  }
+  const { adopt, build, orphans } = plan({ published, originals: list(ORIGINALS), fullSize });
 
   for (const p of adopt) {
     mkdirSync(dirname(join(ORIGINALS, p)), { recursive: true });

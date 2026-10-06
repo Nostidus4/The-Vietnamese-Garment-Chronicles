@@ -5,7 +5,8 @@ import { asset } from "@/lib/base";
 export const COVER_ASPECT = 1086 / 1448;
 
 /** Bà's notebook cover with the real title set into its embroidered label. Fills its parent. */
-// Always loaded eagerly: wherever the cover shows (desk, Du Ký, the opening's last move) it is the largest thing on screen.
+// Always loaded eagerly: Chrome counts the cover as the largest picture on the desk and even as Du Ký's small corner
+// thumbnail (the desk photo behind it does not count), and the opening's last move needs it ready.
 export function BookCover({ sizes = "560px" }: { sizes?: string }) {
   return (
     <div className="absolute inset-0 [container-type:inline-size]">

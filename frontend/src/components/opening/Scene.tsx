@@ -150,7 +150,7 @@ export const Scene = forwardRef<SceneHandle, Props>(function Scene(
             alt={screen.title}
             fill
             loading="eager"
-            fetchPriority="high"
+            fetchPriority={hidden ? undefined : "high"}
             quality={88}
             sizes={IMAGE_SIZES}
             className="select-none object-cover"
