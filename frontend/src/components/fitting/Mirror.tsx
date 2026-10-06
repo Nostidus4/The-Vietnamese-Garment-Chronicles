@@ -3,6 +3,7 @@
 // The mirror in Bà's fitting room: what the reader will look like. Before any render it shows a preview (the model in
 // the reference garment, or the reader's own photo); while Gemini works a thread is sewn round the frame; after, the
 // AI picture with a slider to compare it with the "before". The Compass verdict hangs on the frame like a shop tag.
+// Under the glass: the photo chosen (change or remove it), how to take one, and where it goes (#52).
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { asset } from "@/lib/base";
@@ -18,6 +19,7 @@ export function Mirror({
   offline,
   tryon,
   onTag,
+  onPick,
   children,
 }: {
   garmentId: string;
@@ -27,6 +29,7 @@ export function Mirror({
   offline: boolean;
   tryon: TryOn;
   onTag: () => void; // the tag on the frame opens the Compass's "why"
+  onPick: () => void; // opens the file picker for the reader's photo
   children?: ReactNode; // laid over the glass: the ⛔ fork
 }) {
   const photoUrl = useObjectUrl(tryon.photo);
@@ -34,7 +37,8 @@ export function Mirror({
   const [slide, setSlide] = useState(50);
   const before =
     photoUrl ?? [asset(`/garments/${garmentId}-preview.webp`), asset(`/garments/${garmentId}.webp`)][preview] ?? null;
-  const after = tryon.image && !tryon.busy ? tryon.image : null;
+  // the server's sample is a stranger: never shown as the reader "after", the notice says why instead (#52)
+  const after = tryon.image && !tryon.busy && !tryon.isSample ? tryon.image : null;
   // with a picture on the glass, "before" is the plain model in a T-shirt (or the reader's photo), so the slider shows the change
   const plain = photoUrl ?? asset("/garments/avatar.webp");
   const tag = verdict ? STATE[verdict.state] : null;
@@ -93,6 +97,15 @@ export function Mirror({
               </div>
             </div>
           )}
+          {tryon.notice && !tryon.busy && (
+            <div className="absolute inset-x-3 bottom-3 rounded-xl bg-[#140c07]/80 px-4 py-3 text-center text-amber-50 shadow-lg backdrop-blur-sm" role="status">
+              <p className="m-0 text-sm font-semibold">{tryon.notice.title}</p>
+              <p className="m-0 mt-0.5 text-xs text-amber-100/85">{tryon.notice.hint}</p>
+              <button type="button" onClick={onPick} className="mt-2 rounded-full border border-amber-100/60 px-4 py-1 text-xs hover:bg-amber-50/10">
+                Chọn ảnh khác
+              </button>
+            </div>
+          )}
           {children}
         </div>
 
@@ -118,14 +131,34 @@ export function Mirror({
         {tryon.busy
           ? "Thường mất khoảng 10–20 giây"
           : after
-            ? tryon.isSample
-              ? "Ảnh mẫu tạo sẵn (máy chủ AI đang bận) · bấm Dựng lại để thử bằng AI"
-              : (tryon.result?.label_note ?? "Ảnh minh họa AI")
+            ? (tryon.result?.label_note ?? "Ảnh minh họa AI")
             : photoUrl
               ? "Ảnh của con · bộ đã chọn sẽ được mặc lên ảnh này"
               : "Ảnh xem trước: người mẫu mặc bộ chuẩn · bấm Mặc lên người để thử bộ con chọn"}
       </figcaption>
-      {tryon.error && <p className="m-0 mt-1 rounded bg-red-50/90 px-3 py-1 text-sm text-red-800">{tryon.error}</p>}
+      {tryon.error && (
+        <p className="m-0 mt-1 rounded bg-red-50/90 px-3 py-1 text-sm text-red-800" role="alert">
+          {tryon.error}
+        </p>
+      )}
+      <div className="mt-1.5 w-full max-w-[22rem] text-xs text-amber-50/85">
+        {tryon.photo && photoUrl ? (
+          <div className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element -- a blob: URL */}
+            <img src={photoUrl} alt="" className="h-9 w-9 shrink-0 rounded object-cover" />
+            <span className="min-w-0 flex-1 truncate">{tryon.photo.name}</span>
+            <button type="button" onClick={onPick} disabled={tryon.locked} className="shrink-0 underline disabled:opacity-50">
+              Đổi ảnh
+            </button>
+            <button type="button" onClick={tryon.removePhoto} disabled={tryon.locked} className="shrink-0 underline disabled:opacity-50">
+              Bỏ ảnh
+            </button>
+          </div>
+        ) : (
+          <p className="m-0">Mẹo chụp: thấy cả người · đứng thẳng, rõ mặt · nền đơn giản</p>
+        )}
+        <p className="m-0 mt-1 opacity-80">🔒 Ảnh chỉ gửi tới Gemini để dựng một lần, không lưu trên máy chủ.</p>
+      </div>
     </figure>
   );
 }

@@ -736,5 +736,6 @@ body {
   .look-card-meta { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.68rem; color: #6b5a49; margin-top: 0.2rem; }
   .look-card-lines { flex: 1; padding-top: 0.2rem; background-image: repeating-linear-gradient(transparent 0 25px, rgba(31,58,120,.18) 25px 26px); font-size: 1.1rem; line-height: 26px; color: #8a4b2a; }
   .look-stamp { position: absolute; right: 18px; top: 18px; width: 4.4rem; height: 4.4rem; border-radius: 999px; border: 2.5px dashed #b5452e; background: rgba(251, 246, 234, 0.75); color: #b5452e; display: grid; place-items: center; text-align: center; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.04em; line-height: 1.25; }
+  .look-stamp-light { opacity: 0.5; }
 }
 

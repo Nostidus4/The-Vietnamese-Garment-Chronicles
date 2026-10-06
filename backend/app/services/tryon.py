@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 from ..config import settings
 from ..content import store
-from ..models import Selection, TryOnResponse
+from ..models import FallbackReason, Selection, TryOnResponse
 from . import compass
 from .gemini_client import GeminiUnavailable, get_client
 
@@ -33,6 +33,17 @@ log = logging.getLogger("tryon")
 BUDGET_S = settings.image_timeout_s
 RETRY_DELAY_S = 2.0
 MIN_RETRY_S = 15.0  # a render takes ~12 s (docs/NANO_BANANA_BENCH.md); with less left a retry would only time out
+
+
+def fallback_reason(code: str) -> FallbackReason:
+    """What the reader is told when only the sample picture came back (#52)."""
+    if code == "no_image":
+        return "no_person"  # Gemini answered in words: with a photo of no one, there is nobody to dress
+    if code == "blocked":
+        return "blocked"
+    if code in ("timeout", "504"):
+        return "timeout"
+    return "busy"
 
 
 def build_prompt(sel: Selection, with_reference: bool) -> str:
@@ -99,6 +110,7 @@ def run(sel: Selection, person: tuple[bytes, str] | None, cache_key: str | None)
             return _response(result, render_sel, _cache[key], cached=True)
 
     image_b64 = None
+    reason: FallbackReason = "busy"
     if person is not None:
         ref = _reference(render_sel.garment_id)
         images = [person] + ([ref] if ref else [])
@@ -107,15 +119,16 @@ def run(sel: Selection, person: tuple[bytes, str] | None, cache_key: str | None)
             image_b64 = base64.b64encode(raw).decode()
         except GeminiUnavailable as e:
             log.warning("falling back after code=%s: %s", e.code, e)
+            reason = fallback_reason(e.code)
 
     if key and image_b64:
         _cache[key] = image_b64
         if len(_cache) > _CACHE_MAX:
             _cache.popitem(last=False)
-    return _response(result, render_sel, image_b64, cached=False)
+    return _response(result, render_sel, image_b64, cached=False, reason=reason)
 
 
-def _response(result, render_sel: Selection, image_b64: str | None, cached: bool) -> TryOnResponse:
+def _response(result, render_sel: Selection, image_b64: str | None, cached: bool, reason: FallbackReason | None = None) -> TryOnResponse:
     c = store.get()
     fallback = f"fallback/{render_sel.garment_id}.png"
     return TryOnResponse(
@@ -124,5 +137,6 @@ def _response(result, render_sel: Selection, image_b64: str | None, cached: bool
         rendered_selection=render_sel,
         image_base64=image_b64,
         fallback_url=None if image_b64 else (f"/media/{fallback}" if c.media_exists(fallback) else None),
+        fallback_reason=None if image_b64 else reason,
         cached=cached,
     )
