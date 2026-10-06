@@ -181,9 +181,19 @@ export function KeepsakeArt({
   );
 }
 
-/** The one label every AI-made picture carries (#60), the way a real photo carries its credit. */
-export function AiLabel({ className = "" }: { className?: string }) {
-  return <span className={`block font-sans text-[0.75rem] leading-tight text-stone-600 ${className}`}>Tranh minh họa (AI)</span>;
+/** Where the short label sits: on the picture itself, so the frame is no taller than before. */
+const CHIP = "absolute bottom-1 right-1 bg-white/85 px-1";
+
+/**
+ * The one label every AI-made picture carries (#60), the way a real photo carries its credit. `short` is the chip laid
+ * on a small frame's picture: a line of its own would push Bà's last line off a 1280×720 page (#78).
+ */
+export function AiLabel({ short = false, className = "" }: { short?: boolean; className?: string }) {
+  return (
+    <span className={`block font-sans text-[0.75rem] leading-tight text-stone-600 ${className}`} title={short ? "Tranh minh họa (AI)" : undefined}>
+      {short ? "Tranh AI" : "Tranh minh họa (AI)"}
+    </span>
+  );
 }
 
 /** A keepsake picture: the real image if the team has made it, otherwise a pencil placeholder. */
@@ -211,13 +221,16 @@ export function Polaroid({ frame, i, className = "w-[31%]" }: { frame: Frame; i:
       />
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#efe6d2]">
         {frame.image && !broken ? (
-          // eslint-disable-next-line @next/next/no-img-element -- content images may not exist yet; plain img lets us fall back
-          <img
-            src={asset(frame.image)}
-            alt={frame.alt}
-            className="h-full w-full object-cover sepia-[.2]"
-            onError={() => setBroken(true)}
-          />
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element -- content images may not exist yet; plain img lets us fall back */}
+            <img
+              src={asset(frame.image)}
+              alt={frame.alt}
+              className="h-full w-full object-cover sepia-[.2]"
+              onError={() => setBroken(true)}
+            />
+            <AiLabel short className={CHIP} />
+          </>
         ) : (
           <svg
             viewBox="0 0 40 30"
@@ -249,7 +262,6 @@ export function Polaroid({ frame, i, className = "w-[31%]" }: { frame: Frame; i:
       </div>
       <figcaption className="font-hand mt-0.5 text-center text-[0.75rem] leading-tight text-stone-700">
         {frame.caption}
-        {frame.image && !broken && <AiLabel />}
       </figcaption>
     </motion.figure>
   );
@@ -690,12 +702,10 @@ function GarmentPlate({ id, name }: { id: string; name: string }) {
   if (!ok) return null;
   return (
     // floated left of the name, summary and "Khi mặc": it fills the space beside them instead of adding height
-    <figure className="float-left m-0 mb-1 mr-3 w-[30%] -rotate-[1.5deg] bg-white p-1 pb-0 shadow-[0_4px_10px_rgba(60,35,10,0.25)]">
+    <figure className="relative float-left m-0 mb-1 mr-3 w-[30%] -rotate-[1.5deg] bg-white p-1 shadow-[0_4px_10px_rgba(60,35,10,0.25)]">
       {/* eslint-disable-next-line @next/next/no-img-element -- static export: plain image, sized by its frame */}
       <img src={asset(`/garments/${id}.webp`)} alt={`Ảnh mẫu ${name}`} className="block aspect-[3/4] w-full object-contain" loading="lazy" onError={() => setOk(false)} />
-      <figcaption className="py-1 text-center">
-        <AiLabel />
-      </figcaption>
+      <AiLabel short className={CHIP} />
     </figure>
   );
 }
