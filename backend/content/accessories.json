@@ -10,40 +10,62 @@
         "di-tich"
       ],
       "sources": [
-        "research-5-3"
-      ]
+        "ref-80",
+        "vnexpress-do-ky-uc-1930-1975"
+      ],
+      "verified": true
     },
     {
       "id": "khan-mo-qua",
       "name_vi": "Khăn mỏ quạ",
       "kind": "traditional-vn",
       "sources": [
-        "research-5-3"
-      ]
+        "phunuvn-khan-mo-qua",
+        "vnexpress-do-ky-uc-1930-1975",
+        "ref-68"
+      ],
+      "verified": true
     },
     {
       "id": "khan-van",
       "name_vi": "Khăn vấn",
       "kind": "traditional-vn",
-      "sources": []
+      "sources": [
+        "vietnamplus-ao-ngu-than",
+        "thanhnien-phu-kien-ao-dai-tet"
+      ],
+      "verified": true
     },
     {
       "id": "quat-giay",
       "name_vi": "Quạt giấy",
       "kind": "traditional-vn",
-      "sources": []
+      "sources": [
+        "thanhnien-phu-kien-ao-dai-tet",
+        "hanoimoi-quat-chang-son"
+      ],
+      "verified": true
     },
     {
       "id": "non-la",
       "name_vi": "Nón lá",
       "kind": "traditional-vn",
-      "sources": []
+      "sources": [
+        "ref-79",
+        "ref-72",
+        "nhandan-ao-ba-ba"
+      ],
+      "verified": true
     },
     {
       "id": "khan-ran",
       "name_vi": "Khăn rằn",
       "kind": "traditional-vn",
-      "sources": []
+      "sources": [
+        "ref-79",
+        "nhandan-ao-ba-ba"
+      ],
+      "verified": true
     },
     {
       "id": "sneakers-trang",
@@ -94,8 +116,9 @@
       "kind": "restricted",
       "description": "Mũ gắn với quan phục, phẩm hàm triều đình.",
       "sources": [
-        "research-19-1"
-      ]
+        "bvh-mu-quan-nguyen"
+      ],
+      "verified": true
     },
     {
       "id": "khan-pieu",
@@ -108,24 +131,34 @@
         "tet-chua"
       ],
       "sources": [
-        "baolaocai-pieu"
-      ]
+        "baolaocai-pieu",
+        "dantoc-thai-laichau"
+      ],
+      "verified": true
     },
     {
       "id": "guoc-moc",
       "name_vi": "Guốc mộc",
       "kind": "traditional-vn",
-      "description": "Guốc gỗ đế bằng, quai vải hoặc da; đi cùng áo dài, áo bà ba trong ngày thường và ngày hội.",
-      "sources": [],
-      "verified": false
+      "description": "Guốc đế gỗ, quai vải; đi cùng áo dài, áo bà ba, áo tứ thân.",
+      "sources": [
+        "thanhnien-guoc-moc-que",
+        "tuoitre-ao-ba-ba-2026",
+        "ref-80",
+        "vietnamplus-ao-ngu-than"
+      ],
+      "verified": true
     },
     {
       "id": "hai-vai",
       "name_vi": "Hài vải",
       "kind": "traditional-vn",
-      "description": "Giày vải mũi cong, thêu hoa, đi cùng áo ngũ thân, áo tứ thân trong dịp lễ.",
-      "sources": [],
-      "verified": false
+      "description": "Giày vải truyền thống, đi cùng áo ngũ thân, áo tứ thân trong dịp lễ.",
+      "sources": [
+        "vietnamplus-ao-ngu-than",
+        "thanhnien-cuoi-xua"
+      ],
+      "verified": true
     }
   ]
 }

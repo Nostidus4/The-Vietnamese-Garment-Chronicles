@@ -10,14 +10,16 @@
     {
       "text": "Năm 1744, Chúa Nguyễn Phúc Khoát định chế trang phục ở Đàng Trong; áo ngũ thân cài khuy thành thường phục chung.",
       "sources": [
+        "ref-12",
         "ref-03",
-        "ref-12"
+        "vietnamplus-ngu-than"
       ]
     },
     {
-      "text": "Từ năm 1826 đến 1837, vua Minh Mạng ban hành chính sách phổ biến áo ngũ thân ra cả nước.",
+      "text": "Dưới thời vua Minh Mạng, triều Nguyễn ra lệnh thống nhất y phục hai miền; áo ngũ thân cài khuy trở thành trang phục phổ biến khắp cả nước.",
       "sources": [
-        "ref-11"
+        "nhandan-ngu-than",
+        "ref-03"
       ]
     }
   ],
@@ -36,7 +38,7 @@
     {
       "part": "cổ áo",
       "level": "keep",
-      "note": "Cổ đứng kiểu Việt; đổi cổ dễ thành cổ chéo của Hán phục"
+      "note": "Cổ đứng là dấu hiệu của áo ngũ thân; tránh đổi sang cổ chéo."
     },
     {
       "part": "độ dài tay",
@@ -136,7 +138,7 @@
   "wearing_steps": [
     {
       "title": "Mặc quần",
-      "detail": "Quần dài ống rộng, thường màu trắng hoặc cùng màu áo."
+      "detail": "Quần dài hai ống rộng, thường màu trắng (xưa cũng có màu thâm)."
     },
     {
       "title": "Mặc áo",
@@ -144,11 +146,11 @@
     },
     {
       "title": "Cài khuy",
-      "detail": "Cài từ cổ đứng xuống, qua vai sang nách phải."
+      "detail": "Cài năm khuy từ cổ xuống sườn phải."
     },
     {
       "title": "Khăn",
-      "detail": "Nữ vấn khăn vấn, nam đội khăn đóng khi dự lễ."
+      "detail": "Đội khăn vấn hoặc khăn đóng khi dự lễ."
     }
   ],
   "ask_suggest": [
@@ -158,8 +160,10 @@
   ],
   "sources": [
     "ref-03",
+    "ref-04",
     "ref-12",
-    "research-6"
+    "nhandan-ngu-than",
+    "vietnamplus-ngu-than"
   ],
-  "verified": false
+  "verified": true
 }

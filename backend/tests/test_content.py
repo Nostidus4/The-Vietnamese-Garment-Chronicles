@@ -249,3 +249,46 @@ def test_one_way_of_writing(tmp_path):
     found = [e for e in rep.errors if "house way" in e and "ao-dai" in e]
     assert any("'oá'" in e for e in found)
     assert any("'\"'" in e or "'??'" in e for e in found)
+
+
+def test_a_photo_must_carry_an_open_licence(tmp_path):
+    # #60: real photos follow the project's open-licence rule; "© Tuổi Trẻ" or a home page is not enough
+    root = _copy(tmp_path)
+    p = root / "regions" / "hue.json"
+    data = json.loads(p.read_text(encoding="utf-8"))
+    photos = [f["photo"] for st in data["stops"] for f in st.get("festivals") or [] if f.get("photo")]
+    photos[0]["license"] = "© Tuổi Trẻ"
+    photos[1]["license"] = "Bản quyền thuộc tác giả"
+    p.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    _, rep = store.load(root)
+    closed = [e for e in rep.errors if "open licence" in e]
+    assert any("© Tuổi Trẻ" in e for e in closed)
+    assert any("Bản quyền thuộc tác giả" in e for e in closed)
+
+
+def test_open_licences_are_accepted():
+    for lic in ("CC0", "CC0 1.0", "CC BY 2.0", "CC BY 4.0", "CC BY-SA 3.0", "CC BY-SA 4.0", "Public domain"):
+        assert store.OPEN_LICENCE.fullmatch(lic), lic
+    for lic in ("© Tuổi Trẻ", "CC BY-NC 4.0", "CC BY-ND 4.0", "All rights reserved", ""):
+        assert not store.OPEN_LICENCE.fullmatch(lic), lic
+
+
+def test_a_source_title_dates_one_way(tmp_path):
+    # #60: "(dd/mm/yyyy)" when the day is known, "(yyyy)" when only the year is, "(không rõ năm)" otherwise
+    root = _copy(tmp_path)
+    s = root / "sources.json"
+    src = json.loads(s.read_text(encoding="utf-8"))
+    linked = [x for x in src["sources"] if x.get("url")]
+    linked[0]["title"] = "Báo A (n.d.). Bài một"
+    linked[1]["title"] = "Báo B. Bài hai"
+    linked[2]["title"] = "Báo C (2022, cập nhật 2026). Bài ba"
+    linked[3]["title"] = "Báo D (05/02/2024). Bài bốn"
+    linked[4]["title"] = "Báo E (2013). Bài năm"
+    linked[5]["title"] = "Báo F (không rõ năm). Bài sáu"
+    s.write_text(json.dumps(src, ensure_ascii=False), encoding="utf-8")
+    _, rep = store.load(root)
+    dated = " ".join(e for e in rep.errors if "date" in e)
+    for bad in linked[:3]:
+        assert f"[{bad['id']}]" in dated
+    for good in linked[3:6]:
+        assert f"[{good['id']}]" not in dated

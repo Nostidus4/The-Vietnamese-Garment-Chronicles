@@ -33,6 +33,10 @@ from .schemas import (
 )
 
 CONTENT_DIR = Path(__file__).resolve().parents[2] / "content"
+# a real photo is shown only under an open licence (#60): CC0, CC BY, CC BY-SA or public domain
+OPEN_LICENCE = re.compile(r"CC0( 1\.0)?|CC BY(-SA)? \d\.\d|Public domain")
+# a source title dates one way (#60): "Publisher (dd/mm/yyyy). Title", "(yyyy)" or "(không rõ năm)"
+SOURCE_DATE = re.compile(r"\((\d{2}/\d{2}/\d{4}|\d{4}|không rõ năm)\)\. ")
 M = TypeVar("M", bound=BaseModel)
 
 
@@ -348,6 +352,8 @@ def _check_refs(c: Content, r: Report) -> None:
 
     def scan(value, where: str, path: str = "") -> None:
         if isinstance(value, dict):
+            if "license" in value and not OPEN_LICENCE.fullmatch(value["license"] or ""):
+                r.errors.append(f"{where}: photo at {path or 'top'} needs an open licence (CC0, CC BY, CC BY-SA, Public domain), not '{value['license']}'")
             for k, v in value.items():
                 if k not in hidden:
                     scan(v, where, f"{path}.{k}" if path else k)
@@ -372,6 +378,10 @@ def _check_refs(c: Content, r: Report) -> None:
         scan(o.model_dump(), f"opening.json [{o.id}]")
     for q in c.quiz.values():
         scan(q.model_dump(), f"quiz.json [{q.id}]")
+
+    for src in c.sources.values():
+        if src.url and not SOURCE_DATE.search(src.title):
+            r.errors.append(f"sources.json [{src.id}]: date the title as 'Publisher (dd/mm/yyyy). Title', '(yyyy)' or '(không rõ năm)'")
 
     # [[shown words|term-id]] in any diary text must point to glossary.json
     for t in c.glossary.values():
