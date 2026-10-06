@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { getPhoto, type DuKyPage } from "@/lib/dukyBook";
 import type { Bootstrap } from "@/lib/types";
 import { formatDate, teoFact } from "./DuKyPageView";
+import { useDialog } from "@/lib/useDialog";
 
 const readAsDataUrl = (b: Blob) =>
   new Promise<string>((ok, fail) => {
@@ -73,12 +74,7 @@ export function ExportCard({
       }
     })();
   }, [srcs, page, onDone]);
-  useEffect(() => {
-    if (!preview) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onDone();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [preview, onDone]);
+  const box = useDialog<HTMLDivElement>(() => onDone(), !!preview);
 
   const photos = page.photos
     .map((p, i) => ({ ...p, src: srcs?.[i] ?? "" }))
@@ -95,6 +91,7 @@ export function ExportCard({
           onClick={() => onDone()}
         >
           <div
+            ref={box}
             className="flex max-h-full flex-col items-center gap-3"
             onClick={(e) => e.stopPropagation()}
           >
@@ -144,7 +141,7 @@ export function ExportCard({
         >
           <div className="flex shrink-0 items-start justify-between">
             <div>
-              <p className="m-0 text-[11px] tracking-[0.3em] text-stone-500">
+              <p className="m-0 text-[11px] tracking-[0.3em] text-stone-600">
                 {page.status === "planned" ? "SẮP ĐI" : "ĐÃ MẶC"} ·{" "}
                 {place.toUpperCase()}
               </p>
@@ -247,7 +244,7 @@ export function ExportCard({
               </span>
             </div>
           )}
-          <p className="m-0 mt-3 flex shrink-0 justify-between text-[10px] tracking-[0.2em] text-stone-500">
+          <p className="m-0 mt-3 flex shrink-0 justify-between text-[10px] tracking-[0.2em] text-stone-600">
             <span>VIỆT PHỤC DU KÝ</span>
             <span>Hiểu để mặc đúng</span>
           </p>

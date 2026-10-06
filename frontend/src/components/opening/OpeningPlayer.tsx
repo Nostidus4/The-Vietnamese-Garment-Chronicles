@@ -461,7 +461,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
                 Chỉ đọc
               </button>
             </div>
-            <p className="m-0 mt-1 text-xs text-stone-500">Nên đeo tai nghe · Giọng đọc được tạo bằng Gemini TTS</p>
+            <p className="m-0 mt-1 text-xs text-stone-600">Nên đeo tai nghe · Giọng đọc được tạo bằng Gemini TTS</p>
           </motion.div>
         )}
       </AnimatePresence>

@@ -9,6 +9,7 @@ import { createShare, deleteShare, type ShareMeta } from "@/lib/api";
 import { getPhoto, shrinkPhoto, updatePage, usePhotoUrl, type DuKyPage, type PhotoRef } from "@/lib/dukyBook";
 import { asset } from "@/lib/base";
 import { friendlyError } from "@/lib/errors";
+import { useDialog } from "@/lib/useDialog";
 
 const LABELS = ["Authentic", "Adapted", "Inspired"];
 export const shareUrl = (id: string) => `${window.location.origin}${asset("/du-ky/p/")}?id=${encodeURIComponent(id)}`;
@@ -72,9 +73,10 @@ export function ShareDialog({ page, onClose }: { page: DuKyPage; onClose: () => 
     }
   }
 
+  const box = useDialog<HTMLDivElement>(onClose);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4" role="dialog" aria-modal aria-label="Chia sẻ trang" onClick={onClose}>
-      <div className="paper w-full max-w-md rounded-lg p-5 text-sm text-stone-800 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+      <div ref={box} className="paper w-full max-w-md rounded-lg p-5 text-sm text-stone-800 shadow-2xl" onClick={(e) => e.stopPropagation()}>
         <h2 className="font-display m-0 text-xl text-[#27354f]">Link chia sẻ trang này</h2>
         {page.share ? (
           <>

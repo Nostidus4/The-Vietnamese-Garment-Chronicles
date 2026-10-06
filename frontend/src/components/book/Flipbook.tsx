@@ -425,7 +425,7 @@ export default function Flipbook({
                   >
                     <button
                       type="button"
-                      className="absolute right-3 top-2 text-lg text-stone-500"
+                      className="absolute right-3 top-2 text-lg text-stone-600"
                       onClick={() => setPreview(null)}
                       aria-label="Đóng"
                     >

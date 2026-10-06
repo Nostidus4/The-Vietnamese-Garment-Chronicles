@@ -202,6 +202,8 @@ export function DeskScene({
       {(prepared || phase === "open") && (
         <div
           className={`absolute inset-0 flex items-center justify-center ${phase === "open" ? "" : "pointer-events-none opacity-0"}`}
+          // ready behind the closed cover, but out of reach of Tab until it opens (#58)
+          inert={phase !== "open"}
           aria-hidden={phase !== "open"}
         >
           <div className="relative">
@@ -274,7 +276,12 @@ export function DeskScene({
                 className="paper --right absolute inset-0 overflow-hidden"
                 initial={{ scale: 0.95 }}
               >
-                {prepared ? <div className="flex h-full w-full flex-col p-[8%]">{underPage}</div> : null}
+                {/* a picture of the page under the cover, not something to press */}
+                {prepared ? (
+                  <div className="flex h-full w-full flex-col p-[8%]" inert>
+                    {underPage}
+                  </div>
+                ) : null}
                 <motion.div
                   className="pointer-events-none absolute inset-0"
                   style={{
@@ -294,7 +301,6 @@ export function DeskScene({
                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
                 onClick={open}
                 role="button"
-                aria-label="Mở cuốn Việt Phục Du Ký"
                 tabIndex={0}
                 onKeyDown={(e) =>
                   (e.key === "Enter" || e.key === " ") && open()
@@ -496,7 +502,6 @@ function DuKyOnDesk() {
     <a
       href={asset("/du-ky")}
       className="group absolute bottom-[6%] left-[4%] z-10 hidden w-[8vw] min-w-[86px] max-w-[132px] rotate-[8deg] transition-transform hover:-translate-y-1 hover:rotate-[5deg] lg:block"
-      aria-label="Mở Du Ký của con"
     >
       <div className="relative aspect-[3/4] shadow-[10px_16px_22px_rgba(20,8,0,0.55)]">
         <DuKyCover name={cover.name} color={cover.color} />

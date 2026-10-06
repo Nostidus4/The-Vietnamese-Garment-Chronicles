@@ -95,7 +95,7 @@ export default function DuKyNotebook() {
   }, []);
 
   if (error) return <p className="p-6 text-red-700">{error}</p>;
-  if (!data || !ready) return <p className="font-hand p-6 text-xl text-stone-500">Đang mở sổ…</p>;
+  if (!data || !ready) return <p className="font-hand p-6 text-xl text-stone-600">Đang mở sổ…</p>;
 
   const actions: Actions = { onNew: setCreating, onExport: setExporting, onShare: HAS_API ? (p) => setSharing(p.id) : undefined }; // a share link lives on the server (#48)
   const sharePage = book.pages.find((p) => p.id === sharing);
@@ -157,7 +157,7 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
   const [name, setName] = useState(book.cover.name);
   return (
     <div className="flex h-full flex-col text-[#27354f]">
-      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">SỔ NÀY CỦA</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">SỔ NÀY CỦA</p>
       <input
         value={name}
         maxLength={24}
@@ -169,9 +169,9 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
         style={{ color: "#1f3a78" }}
       />
       {/* the cover holds 24 letters: say so while typing instead of cutting the name off silently (#63) */}
-      {name.length >= 18 && <p className="m-0 text-right text-[0.75rem] text-stone-500">{name.length}/24 chữ</p>}
+      {name.length >= 18 && <p className="m-0 text-right text-[0.75rem] text-stone-600">{name.length}/24 chữ</p>}
       <div className="mt-2 flex items-center gap-2" role="radiogroup" aria-label="Màu bìa">
-        <span className="text-[0.75rem] text-stone-500">Màu bìa</span>
+        <span className="text-[0.75rem] text-stone-600">Màu bìa</span>
         {COVER_COLORS.map((c) => (
           <button
             key={c}
@@ -217,7 +217,7 @@ function LastPage({ actions, empty }: { actions: Actions; empty: boolean }) {
       <button type="button" onClick={() => actions.onNew({ status: "worn" })} className="rounded-full border border-[#27354f] px-4 py-2 text-sm text-[#27354f]">
         + Trang đã mặc
       </button>
-      <Link href="/" className="mt-2 text-xs text-stone-500 underline">
+      <Link href="/" className="mt-2 text-xs text-stone-600 underline">
         hoặc mở sổ của Bà, chọn một vùng rồi mặc thử
       </Link>
     </div>
@@ -309,7 +309,6 @@ function DeskBook({
       {/* Bà's notebook, closed in the corner: back to her book */}
       <Link href="/"
         className="group absolute bottom-[7%] left-[3%] z-10 block w-[9vw] min-w-[96px] max-w-[150px] rotate-[-9deg] transition-transform hover:-translate-y-1 hover:rotate-[-6deg]"
-        aria-label="Về sổ của Bà"
       >
         <div className="relative aspect-[1086/1448] shadow-[10px_16px_22px_rgba(20,8,0,0.55)]">
           <BookCover sizes="150px" />
@@ -351,9 +350,10 @@ function DeskBook({
               style={{ rotateY: rot }}
               whileHover={phase === "closed" && !reduced ? { y: -5 } : undefined}
               onClick={open}
-              role="button"
-              tabIndex={0}
-              aria-label="Mở Du Ký của con"
+              // a button only while closed, named by what is printed on the cover; open, it is the page under the
+              // reader's hands, with its own buttons (#58)
+              role={phase === "closed" ? "button" : undefined}
+              tabIndex={phase === "closed" ? 0 : undefined}
             >
               <motion.div className="absolute inset-0 [backface-visibility:hidden]" style={{ filter: frontLight }}>
                 <DuKyCover name={book.cover.name} color={book.cover.color} />
@@ -361,6 +361,7 @@ function DeskBook({
               <motion.div
                 className="paper --left absolute inset-0 overflow-hidden p-[7%] [backface-visibility:hidden] [transform:rotateY(180deg)]"
                 style={{ filter: backLight }}
+                inert={phase !== "open"}
               >
                 <InsideCover book={book} actions={actions} />
               </motion.div>

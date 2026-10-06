@@ -28,7 +28,7 @@ export function CompassPanel({ result, sources, garment }: { result: CompassResu
   return (
     <section className={`rounded-lg border-2 p-5 ${s.tone}`}>
       <p className="text-lg font-semibold">
-        {s.icon} {s.name} {result.label && <span className="ml-2 text-sm font-normal text-stone-500">· {result.label}</span>}
+        {s.icon} {s.name} {result.label && <span className="ml-2 text-sm font-normal text-stone-600">· {result.label}</span>}
       </p>
       {main && (
         <div className="mt-3 space-y-2">
@@ -76,7 +76,7 @@ function WhyPanel({ triggers, sources }: { triggers: Trigger[]; sources: Bootstr
   const sorted = [...triggers].sort((a, b) => RANK[b.state] - RANK[a.state]);
   return (
     <details className="mt-4 rounded-md bg-white/60 px-3 py-2 text-sm">
-      <summary className="cursor-pointer font-semibold">Vì sao? {sorted.length > 0 && <span className="font-normal text-stone-500">({sorted.length} luật)</span>}</summary>
+      <summary className="cursor-pointer font-semibold">Vì sao? {sorted.length > 0 && <span className="font-normal text-stone-600">({sorted.length} luật)</span>}</summary>
       {sorted.length === 0 ? (
         <p className="m-0 mt-2">Không có gì phải sửa: bộ này giữ đúng những phần cốt lõi của trang phục.</p>
       ) : (
@@ -92,7 +92,7 @@ function WhyPanel({ triggers, sources }: { triggers: Trigger[]; sources: Bootstr
           ))}
         </ul>
       )}
-      <p className="m-0 mt-3 border-t border-stone-300 pt-2 text-xs text-stone-500">
+      <p className="m-0 mt-3 border-t border-stone-300 pt-2 text-xs text-stone-600">
         Kết quả do bộ luật văn hóa quyết định, Gemini không tham gia phán xét. Gemini chỉ dựng ảnh minh họa.
       </p>
     </details>

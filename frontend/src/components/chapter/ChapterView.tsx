@@ -29,6 +29,7 @@ import { AboutSheet, EventPicker, type SheetTab } from "../fitting/Parts";
 import { useTryOn } from "../fitting/useTryOn";
 import { baNote, DRAWERS, LookCard, OutfitList, STAMP, WardrobePanel, WhoPicker, type CardFace, type Drawer, type Who } from "../fitting/Wardrobe";
 import { friendlyError } from "@/lib/errors";
+import { useDialog } from "@/lib/useDialog";
 
 const KEY = "vpdk-wardrobe";
 const COUNT = "vpdk-card-count";
@@ -418,11 +419,11 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           <h1 className="font-hand m-0 truncate text-[1.7rem] leading-tight text-amber-50">{garment?.name_vi ?? "Chọn một bộ áo"}</h1>
         </div>
         <div className="flex shrink-0 gap-2">
-          <button type="button" onClick={() => setSheet("story")} disabled={!garment} className="page-turn !text-[0.95rem]">
+          <button type="button" onClick={() => setSheet("story")} disabled={!garment} className="page-turn !text-[0.95rem]" aria-label="Hiểu bộ áo">
             📖 <span className="hidden sm:inline">Hiểu bộ áo</span>
           </button>
           {HAS_API && (
-            <button type="button" onClick={() => setSheet("teo")} disabled={!garment} className="page-turn !text-[0.95rem]" title="Hỏi Tèo">
+            <button type="button" onClick={() => setSheet("teo")} disabled={!garment} className="page-turn !text-[0.95rem]" title="Hỏi Tèo" aria-label="Hỏi Tèo">
               📌 <span className="hidden sm:inline">Hỏi Tèo</span>
             </button>
           )}
@@ -475,7 +476,8 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
                   type="button"
                   onClick={() => verdict && setWhy(true)}
                   className={`mirror-tag ${tag ? "" : "mirror-tag-quiet"} ${verdict?.state === "distorted" ? "mirror-tag-bad" : ""}`}
-                  aria-label="Compass: vì sao?"
+                  // no aria-label: the printed "Compass ✅ Phù hợp vì sao?" is the name, verdict included; the old label
+                  // "Compass: vì sao?" hid the verdict from a screen reader (#58)
                   initial={{ rotate: 12 }}
                   animate={{ rotate: [12, -3, 2, 6] }}
                   transition={{ duration: 0.6 }}
@@ -510,7 +512,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           <button type="button" disabled={main.off} onClick={finish} className="page-turn page-turn-main !px-7">
             {main.label}
           </button>
-          <input id="con-photo" type="file" accept="image/*" className="sr-only" onChange={(e) => tryon.setPhoto(e.target.files?.[0] ?? null)} />
+          <input id="con-photo" type="file" accept="image/*" className="sr-only" aria-label="Ảnh của con để thử đồ" onChange={(e) => tryon.setPhoto(e.target.files?.[0] ?? null)} />
         </div>
         <div className="flex items-center justify-end gap-3 text-sm text-amber-50">
           {HAS_API && garment && (
@@ -596,7 +598,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
         <Modal label="Ảnh thật" onClose={() => setReal(null)}>
           {/* eslint-disable-next-line @next/next/no-img-element -- static export */}
           <img src={asset(`/garments/${real}-preview.webp`)} alt={`Người mẫu mặc ${data.garments.find((g) => g.id === real)?.name_vi}`} className="mx-auto max-h-[70vh] rounded" />
-          <p className="m-0 mt-2 text-center text-xs text-stone-500">Ảnh mẫu tạo bằng AI: người mẫu mặc bộ chuẩn, để con hình dung ngoài đời.</p>
+          <p className="m-0 mt-2 text-center text-xs text-stone-600">Ảnh mẫu tạo bằng AI: người mẫu mặc bộ chuẩn, để con hình dung ngoài đời.</p>
         </Modal>
       )}
 
@@ -618,7 +620,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
       {hint && (
         <div role="status" className="fixed inset-x-4 bottom-28 z-40 mx-auto flex max-w-md items-start gap-3 rounded-lg bg-[#fbf6ea] px-4 py-3 text-sm text-[#27354f] shadow-lg">
           <span className="min-w-0 flex-1">{hint}</span>
-          <button type="button" aria-label="Đóng" onClick={() => setHint(null)} className="shrink-0 text-stone-500">
+          <button type="button" aria-label="Đóng" onClick={() => setHint(null)} className="shrink-0 text-stone-600">
             ✕
           </button>
         </div>
@@ -692,14 +694,10 @@ async function flyToDuKy(from: HTMLElement, png: string) {
 }
 
 function Modal({ label, onClose, children, bare = false }: { label: string; onClose: () => void; children: ReactNode; bare?: boolean }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
+  const box = useDialog<HTMLDivElement>(onClose);
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-[#140c07]/55 p-4" role="dialog" aria-modal="true" aria-label={label} onClick={onClose}>
-      <div className={`w-full max-w-lg ${bare ? "" : "paper rounded-xl p-5 shadow-2xl"}`} onClick={(e) => e.stopPropagation()}>
+      <div ref={box} className={`w-full max-w-lg ${bare ? "" : "paper rounded-xl p-5 shadow-2xl"}`} onClick={(e) => e.stopPropagation()}>
         {children}
         <button type="button" onClick={onClose} className="mx-auto mt-3 block rounded-full bg-amber-50 px-4 py-1.5 text-sm">
           Đóng
@@ -711,14 +709,10 @@ function Modal({ label, onClose, children, bare = false }: { label: string; onCl
 
 /** Side drawer (bottom sheet on phones) for "Ghim để so sánh": pinned looks side by side. */
 function CompareDrawer({ open, onClose, children }: { open: boolean; onClose: () => void; children: ReactNode }) {
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+  const box = useDialog<HTMLDivElement>(onClose, open);
+  // hidden, it is not a dialog at all: a second "Đóng" and an aria-modal box were always in the page (#58)
   return (
-    <div className={open ? "fixed inset-0 z-40" : "hidden"} role="dialog" aria-modal="true" aria-label="Ghim để so sánh">
+    <div ref={box} className={open ? "fixed inset-0 z-40" : "hidden"} role={open ? "dialog" : undefined} aria-modal={open || undefined} aria-label="Ghim để so sánh" hidden={!open}>
       <button type="button" aria-label="Đóng" onClick={onClose} className="absolute inset-0 bg-stone-900/40" />
       <div className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-xl bg-[var(--paper)] p-4 shadow-xl sm:inset-y-0 sm:left-auto sm:right-0 sm:max-h-none sm:w-[34rem] sm:rounded-none sm:rounded-l-xl">
         <div className="mb-2 flex items-center">

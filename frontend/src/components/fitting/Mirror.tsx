@@ -57,7 +57,7 @@ export function Mirror({
               onError={() => !photoUrl && setPreview((n) => n + 1)}
             />
           ) : (
-            <p className="absolute inset-0 m-0 grid place-items-center p-6 text-center text-sm text-stone-500">Chưa có ảnh xem trước cho bộ này.</p>
+            <p className="absolute inset-0 m-0 grid place-items-center p-6 text-center text-sm text-stone-600">Chưa có ảnh xem trước cho bộ này.</p>
           )}
 
           {/* the "after": the AI picture, revealed from the left by the slider */}

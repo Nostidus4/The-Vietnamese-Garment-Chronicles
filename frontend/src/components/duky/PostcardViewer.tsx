@@ -9,6 +9,7 @@ import { createPortal } from "react-dom";
 import type { Region } from "@/lib/types";
 import { plain } from "../book/Glossary";
 import { asset } from "@/lib/base";
+import { useDialog } from "@/lib/useDialog";
 
 const place = (r: Region) => r.chapters?.find((c) => c.status === "open")?.province ?? r.name;
 const CHAR_MS = 32;
@@ -46,11 +47,7 @@ export function PostcardViewer({
       clearTimeout(b);
     };
   }, [reduced]);
-  useEffect(() => {
-    const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", esc);
-    return () => window.removeEventListener("keydown", esc);
-  }, [onClose]);
+  const box = useDialog<HTMLDivElement>(onClose);
 
   if (!letter) return null;
   const text = plain(letter.text);
@@ -58,7 +55,7 @@ export function PostcardViewer({
 
   return createPortal(
     <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#140c07]/70 p-4 backdrop-blur-[2px]" role="dialog" aria-modal aria-label={`Bưu thiếp ${where}`} onClick={onClose}>
-      <div className="relative w-full max-w-[34rem] [perspective:1600px]" onClick={(e) => e.stopPropagation()}>
+      <div ref={box} className="relative w-full max-w-[34rem] [perspective:1600px]" onClick={(e) => e.stopPropagation()}>
         {/* the envelope, opening and sliding away */}
         <AnimatePresence>
           {stage !== "back" && (

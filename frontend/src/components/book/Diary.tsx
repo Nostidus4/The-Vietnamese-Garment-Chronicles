@@ -298,7 +298,7 @@ export function HoverPage({
   const j = region.journey;
   return (
     <div className="flex h-full flex-col justify-center">
-      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">
         TRANG NHẬT KÝ
       </p>
       <h2
@@ -387,7 +387,7 @@ export function ArriveDiary({
       )}
       {sheet && (
         <div className="mt-3">
-          <p className="m-0 text-[0.75rem] tracking-[0.2em] text-stone-500">
+          <p className="m-0 text-[0.75rem] tracking-[0.2em] text-stone-600">
             TỈNH, THÀNH ({sheet.provinces.length})
           </p>
           <ul className="m-0 mt-0.5 flex list-none flex-wrap gap-x-2.5 gap-y-0.5 p-0">
@@ -404,7 +404,7 @@ export function ArriveDiary({
               </li>
             ))}
           </ul>
-          <p className="m-0 mt-1 text-[0.75rem] leading-snug text-stone-500">
+          <p className="m-0 mt-1 text-[0.75rem] leading-snug text-stone-600">
             Đơn vị hành chính từ 01/07/2025
             {sheet.provinces.some((p) => p.partial)
               ? " · * một phần thuộc vùng này"
@@ -535,7 +535,7 @@ export function FestivalDiary({
             />
           ))}
       </div>
-      <div className="mx-1 flex justify-between text-[0.75rem] text-stone-500">
+      <div className="mx-1 flex justify-between text-[0.75rem] text-stone-600">
         <span>tháng 1</span>
         <span>âm lịch</span>
         <span>tháng 12</span>
@@ -631,7 +631,7 @@ export function WearDiary({
                       <span key={z.part}>
                         {i > 0 && " · "}
                         {z.part}
-                        {z.note && <span className="wear-extra text-stone-500"> ({z.note})</span>}
+                        {z.note && <span className="wear-extra text-stone-600"> ({z.note})</span>}
                       </span>
                     ))}
                   </span>
@@ -673,7 +673,7 @@ function DrawnPlate({ garment, data, pending }: { garment: Garment; data: Bootst
         className="block aspect-[1/2] w-full bg-[#fbf6ea]"
         title={`Bà vẽ ${garment.name_vi}`}
       />
-      <figcaption className="py-0.5 text-center text-[0.75rem] leading-tight text-stone-500">{pending ? "Bà vẽ lại · chờ người ở đây đọc lại" : "Bà vẽ lại"}</figcaption>
+      <figcaption className="py-0.5 text-center text-[0.75rem] leading-tight text-stone-600">{pending ? "Bà vẽ lại · chờ người ở đây đọc lại" : "Bà vẽ lại"}</figcaption>
     </figure>
   );
 }
@@ -687,7 +687,7 @@ function GarmentPlate({ id, name }: { id: string; name: string }) {
     <figure className="float-left m-0 mb-1 mr-3 w-[30%] -rotate-[1.5deg] bg-white p-1 pb-0 shadow-[0_4px_10px_rgba(60,35,10,0.25)]">
       {/* eslint-disable-next-line @next/next/no-img-element -- static export: plain image, sized by its frame */}
       <img src={asset(`/garments/${id}.webp`)} alt={`Ảnh mẫu ${name}`} className="block aspect-[3/4] w-full object-contain" loading="lazy" onError={() => setOk(false)} />
-      <figcaption className="py-0.5 text-center text-[0.75rem] leading-tight text-stone-500">ảnh mẫu · AI vẽ</figcaption>
+      <figcaption className="py-0.5 text-center text-[0.75rem] leading-tight text-stone-600">ảnh mẫu · AI vẽ</figcaption>
     </figure>
   );
 }
@@ -789,7 +789,7 @@ export function PreQuestion({ region, onDone }: { region: Region; onDone: () => 
   };
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">TRƯỚC KHI ĐỌC</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">TRƯỚC KHI ĐỌC</p>
       <p className="font-hand m-0 mt-1 text-[1.2rem] leading-snug" style={{ color: OLD }}>
         Trước khi đọc, Bà hỏi con một câu. Sai cũng chẳng sao. — Bà
       </p>
@@ -797,7 +797,7 @@ export function PreQuestion({ region, onDone }: { region: Region; onDone: () => 
       {/* what the chapter holds, so the page reads as a door, not a quiz on an empty sheet (#79) */}
       {region.journey!.stops.length > 0 && (
         <div className="mt-3 rounded-md border border-dashed border-stone-400/60 px-3 py-2">
-          <p className="m-0 text-[0.75rem] tracking-[0.2em] text-stone-500">CHƯƠNG NÀY ĐI QUA</p>
+          <p className="m-0 text-[0.75rem] tracking-[0.2em] text-stone-600">CHƯƠNG NÀY ĐI QUA</p>
           <p className="font-hand m-0 mt-0.5 text-[1rem] leading-snug" style={{ color: YOUNG }}>
             {region.journey!.stops.map((st) => st.place).join(" → ")}
           </p>
@@ -818,7 +818,7 @@ export function PreQuestion({ region, onDone }: { region: Region; onDone: () => 
             Đọc nhật ký →
           </button>
         ) : (
-          <button type="button" onClick={done} className="text-sm text-stone-500 underline">
+          <button type="button" onClick={done} className="text-sm text-stone-600 underline">
             Bỏ qua
           </button>
         )}
@@ -851,7 +851,7 @@ export function AskDiary({ region }: { region: Region }) {
             }}
           />
         ))}
-        {qs.length === 0 && <p className="text-sm text-stone-500">Câu hỏi đang được kiểm tra lại.</p>}
+        {qs.length === 0 && <p className="text-sm text-stone-600">Câu hỏi đang được kiểm tra lại.</p>}
       </div>
       {all && (
         <motion.div
@@ -927,7 +927,7 @@ export function OwnDiary({
                 {latest.photos.length > 0 ? (
                   <DuKyPhoto photo={latest.photos[latest.photos.length - 1]} className="rotate-[-2.5deg]" />
                 ) : (
-                  <p className="m-0 border-2 border-dashed border-stone-300 p-4 text-center text-[0.75rem] text-stone-500">Chưa có ảnh</p>
+                  <p className="m-0 border-2 border-dashed border-stone-300 p-4 text-center text-[0.75rem] text-stone-600">Chưa có ảnh</p>
                 )}
                 <p className="font-hand m-0 mt-2 text-center text-[0.95rem]" style={{ color: "#1f3a78" }}>
                   {latest.note ||
@@ -936,7 +936,7 @@ export function OwnDiary({
               </motion.div>
             ) : (
               <div className="flex w-[62%] flex-col items-center gap-2 border-2 border-dashed border-stone-300 p-4 text-center">
-                <p className="m-0 text-[0.75rem] text-stone-500">Chỗ dán ảnh</p>
+                <p className="m-0 text-[0.75rem] text-stone-600">Chỗ dán ảnh</p>
                 {canTry
                   ? garments.map((g) => (
                       <button
@@ -949,7 +949,7 @@ export function OwnDiary({
                       </button>
                     ))
                   : (
-                    <p className="m-0 text-[0.75rem] text-stone-500">Con mặc {garments[0]?.name_vi} đi hội rồi thì dán ảnh vào Du Ký nhé.</p>
+                    <p className="m-0 text-[0.75rem] text-stone-600">Con mặc {garments[0]?.name_vi} đi hội rồi thì dán ảnh vào Du Ký nhé.</p>
                   )}
               </div>
             )}
@@ -967,7 +967,7 @@ export function OwnDiary({
             <p className="m-0 mt-1.5 flex flex-wrap items-center gap-x-2 text-[0.75rem] text-stone-600">
               Tem của {place(region)}:
               {stamps.map((st) => (
-                <span key={st.label} className={st.got ? "font-semibold text-[#B5452E]" : "text-stone-400"}>
+                <span key={st.label} className={st.got ? "font-semibold text-[#B5452E]" : "text-stone-600"}>
                   {st.got ? "●" : "○"} {st.label}
                 </span>
               ))}
@@ -981,7 +981,7 @@ export function OwnDiary({
               Mở Du Ký của con →
             </a>
           </div>
-          <p className="m-0 mt-1 text-[0.75rem] text-stone-500">
+          <p className="m-0 mt-1 text-[0.75rem] text-stone-600">
             Du Ký chỉ lưu trên máy của con.
           </p>
           {worn && (
@@ -1040,6 +1040,8 @@ export function Bookmarks({
             className={`bookmark-tab font-hand whitespace-nowrap py-1 text-left text-amber-50 shadow-[2px_2px_5px_rgba(0,0,0,0.3)] transition-transform ${portrait ? "rounded-t-md px-2 text-[0.8rem]" : "rounded-r-md pl-2 pr-3 text-[0.85rem]"}`}
             style={{
               background: colors[i % colors.length],
+              // dark letters on the yellow bookmark: cream on #D9A43B was 2.3:1 (#58)
+              color: colors[i % colors.length] === "#D9A43B" ? "#3b2a10" : undefined,
               transform: portrait
                 ? `translateY(${on ? 0 : 4}px)`
                 : `translateX(${on ? 0 : -6}px)`,

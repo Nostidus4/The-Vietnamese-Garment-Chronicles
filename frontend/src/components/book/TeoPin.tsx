@@ -4,10 +4,11 @@
 // a click on the pin opens Tèo's sticky notes in the middle of the screen, like one of Bà's letters.
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { cited } from "@/lib/sources";
 import type { Bootstrap } from "@/lib/types";
+import { useDialog } from "@/lib/useDialog";
 
 export type TeoNoteView = {
   title?: string;
@@ -75,12 +76,7 @@ function PinSvg() {
 /** Tèo's notes in the middle of the screen: a stack of sticky notes pinned to a sheet, closed by Esc or a click outside. */
 export function TeoModal({ open, onClose, notes, data, heading = "Tèo tra lại" }: { open: boolean; onClose: () => void; notes: TeoNoteView[]; data: Pick<Bootstrap, "sources">; heading?: string }) {
   const reduced = !!useReducedMotion();
-  useEffect(() => {
-    if (!open) return;
-    const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", esc);
-    return () => window.removeEventListener("keydown", esc);
-  }, [open, onClose]);
+  const box = useDialog<HTMLDivElement>(onClose, open);
   if (typeof document === "undefined") return null;
   return createPortal(
     <AnimatePresence>
@@ -98,6 +94,7 @@ export function TeoModal({ open, onClose, notes, data, heading = "Tèo tra lại
           exit={{ opacity: 0 }}
         >
           <motion.div
+            ref={box}
             className="relative w-full max-w-[26rem]"
             onClick={(e) => e.stopPropagation()}
             initial={reduced ? { opacity: 0 } : { scale: 0.4, rotate: -14, y: 120, opacity: 0 }}

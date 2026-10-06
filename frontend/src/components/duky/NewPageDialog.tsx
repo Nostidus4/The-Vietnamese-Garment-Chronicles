@@ -6,6 +6,7 @@ import { useState } from "react";
 import { addPage, addPhoto, ensureMigrated, newPage, type DuKyPage } from "@/lib/dukyBook";
 import { track } from "@/lib/track";
 import type { Bootstrap } from "@/lib/types";
+import { useDialog } from "@/lib/useDialog";
 
 export type NewPreset = { status: "planned" | "worn"; region?: string };
 
@@ -34,6 +35,11 @@ export function NewPageDialog({
   const [note, setNote] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
+  // Esc or a click outside with something already written asks first, instead of losing it (#58)
+  const [asking, setAsking] = useState(false);
+  const dirty = !!(date || place.trim() || note.trim() || file);
+  const requestClose = () => (dirty ? setAsking(true) : onClose());
+  const box = useDialog<HTMLFormElement>(requestClose);
 
   const pickRegion = (id: string) => {
     setRegion(id);
@@ -64,8 +70,9 @@ export function NewPageDialog({
 
   const field = "mt-0.5 w-full rounded border border-stone-300 bg-white/70 px-2 py-1.5 text-sm";
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4" role="dialog" aria-modal aria-label="Trang mới" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4" role="dialog" aria-modal aria-label="Trang mới" onClick={requestClose}>
       <form
+        ref={box}
         className="paper max-h-[92vh] w-full max-w-md overflow-y-auto rounded-lg p-5 text-stone-800 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
         onSubmit={(e) => {
@@ -137,12 +144,23 @@ export function NewPageDialog({
               {/* the browser's own "Choose File / No file chosen" is English: a button of ours instead (#63) */}
               <span className="mt-1 flex items-center gap-2">
                 <span className="cursor-pointer rounded-full border border-[#27354f] px-3 py-1 text-xs text-[#27354f] hover:bg-[#27354f]/10">📷 Chọn ảnh</span>
-                <span className="min-w-0 truncate text-xs text-stone-500">{file ? file.name : "chưa chọn ảnh nào"}</span>
+                <span className="min-w-0 truncate text-xs text-stone-600">{file ? file.name : "chưa chọn ảnh nào"}</span>
               </span>
               <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="sr-only" />
             </label>
           )}
         </div>
+        {asking && (
+          <div role="alert" className="mt-4 flex flex-wrap items-center gap-2 rounded-md bg-[#f7e4c8] px-3 py-2 text-sm">
+            <span className="min-w-0 flex-1">Bỏ trang đang viết dở?</span>
+            <button type="button" onClick={onClose} className="rounded-full bg-[#B5452E] px-3 py-1 text-amber-50">
+              Bỏ
+            </button>
+            <button type="button" data-autofocus onClick={() => setAsking(false)} className="rounded-full border border-stone-500 px-3 py-1">
+              Viết tiếp
+            </button>
+          </div>
+        )}
         <div className="mt-5 flex justify-end gap-3">
           <button type="button" onClick={onClose} className="px-3 py-1.5 text-sm underline">
             Thôi

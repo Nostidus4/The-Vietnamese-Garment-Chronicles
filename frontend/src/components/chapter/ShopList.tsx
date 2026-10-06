@@ -51,7 +51,7 @@ export function ShopList({ garmentId, garmentName }: { garmentId: string; garmen
                 ) : (
                   s.name
                 )}
-                <span className="ml-2 font-normal text-stone-500">· {s.city}</span>
+                <span className="ml-2 font-normal text-stone-600">· {s.city}</span>
               </p>
               <div className="mt-1 flex flex-wrap gap-1.5 text-xs">
                 {s.services.map((x) => (
@@ -60,14 +60,14 @@ export function ShopList({ garmentId, garmentName }: { garmentId: string; garmen
                   </span>
                 ))}
                 <span className={`rounded-full px-2 ${AUTH[s.authenticity]?.tone ?? AUTH.unknown.tone}`}>{AUTH[s.authenticity]?.text ?? s.authenticity}</span>
-                {!s.verified && <span className="rounded-full bg-stone-100 px-2 text-stone-500">Chưa kiểm tra tận nơi</span>}
+                {!s.verified && <span className="rounded-full bg-stone-100 px-2 text-stone-600">Chưa kiểm tra tận nơi</span>}
               </div>
               {s.address && <p className="m-0 mt-1 text-xs text-stone-600">{s.address}</p>}
             </li>
           ))}
         </ul>
       )}
-      <p className="m-0 mt-3 text-xs text-stone-500">Danh bạ không có quảng cáo. Nhãn mức độ truyền thống do nhóm đánh giá; tiệm chưa kiểm tra được ghi rõ.</p>
+      <p className="m-0 mt-3 text-xs text-stone-600">Danh bạ không có quảng cáo. Nhãn mức độ truyền thống do nhóm đánh giá; tiệm chưa kiểm tra được ghi rõ.</p>
     </section>
   );
 }

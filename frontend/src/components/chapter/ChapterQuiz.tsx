@@ -84,7 +84,7 @@ export function ChapterQuiz({ regionId, phase }: { regionId: string; phase: "pre
       <button type="button" onClick={() => setOpen((o) => !o)} className="flex w-full items-center justify-between text-left">
         <span className="font-semibold">
           {phase === "pre" ? "Khởi động: Việt hay không?" : "Giờ thử lại nhé: Việt hay không?"}
-          <span className="ml-2 text-sm font-normal text-stone-500">
+          <span className="ml-2 text-sm font-normal text-stone-600">
             {done}/{shown.length} câu{done === shown.length ? ` · đúng ${correct}` : ""}
           </span>
         </span>
@@ -133,7 +133,7 @@ export function ChapterQuiz({ regionId, phase }: { regionId: string; phase: "pre
                   })}
                 </div>
                 {r && (
-                  <p className="m-0 mt-2 text-sm text-stone-700">
+                  <p role="status" className="m-0 mt-2 text-sm text-stone-700">
                     <b className={r.correct ? "text-emerald-700" : "text-amber-800"}>{r.correct ? "Đúng rồi!" : `Chưa trúng, đây là ${r.answer_name}.`}</b> {r.explanation}
                   </p>
                 )}
