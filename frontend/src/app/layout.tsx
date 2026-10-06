@@ -5,9 +5,11 @@ import { StampToast } from "@/components/StampToast";
 import { ServerWake } from "@/components/ServerWake";
 import "./globals.css";
 
-// two typefaces only: Be Vietnam Pro for everything printed, Patrick Hand for what Bà, Tí and Tèo write by hand
-const body = Be_Vietnam_Pro({ variable: "--font-body", subsets: ["vietnamese", "latin"], weight: ["400", "600", "700"] });
-const hand = Patrick_Hand({ variable: "--font-hand", subsets: ["vietnamese", "latin"], weight: "400" });
+// two typefaces only: Be Vietnam Pro for everything printed, Patrick Hand for what Bà, Tí and Tèo write by hand.
+// Not preloaded: preloading fetched all 8 files (3 weights × 2 subsets + 2) before the logo could show, and most pages
+// use only a few of them ("preloaded but not used" warnings, #64); text shows in the fallback font until they arrive.
+const body = Be_Vietnam_Pro({ variable: "--font-body", subsets: ["vietnamese", "latin"], weight: ["400", "600", "700"], preload: false });
+const hand = Patrick_Hand({ variable: "--font-hand", subsets: ["vietnamese", "latin"], weight: "400", preload: false });
 
 const DESCRIPTION =
   "Cuốn sổ của Bà đưa bạn đi qua trang phục truyền thống từng vùng: đọc nhật ký, phối áo cùng Compass văn hóa, thử với ảnh của mình và ghi Du Ký những lần mặc.";

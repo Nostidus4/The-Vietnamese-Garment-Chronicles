@@ -1,13 +1,21 @@
 "use client";
 
 import { animate, MotionConfig } from "framer-motion";
-import { useState } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import { useBootstrap } from "@/lib/useBootstrap";
-import { DeskScene } from "../desk/DeskScene";
 import { LogoIntro } from "../opening/LogoIntro";
 import { OpeningPlayer } from "../opening/OpeningPlayer";
 
 const SEEN_KEY = "vpdk-opening-seen";
+
+// The desk and Bà's book are most of the page's code. A first visit sees the logo and the opening long before the
+// desk, so its code is fetched once the logo has gone instead of before the logo can show (Lighthouse LCP, #64).
+const loadDesk = () => import("../desk/DeskScene");
+const DeskScene = dynamic(() => loadDesk().then((m) => m.DeskScene), {
+  ssr: false,
+  loading: () => <div className="fixed inset-0 z-40 bg-[#140c07]" />,
+});
 
 type Mode = "opening" | "desk";
 
@@ -30,14 +38,25 @@ function initialState() {
 
 /** First visit: the opening story, then the book lands on Bà's table. Returning: straight to the table. */
 export default function Home() {
-  const { data, error } = useBootstrap();
   // This component only renders in the browser (see app/page.tsx), so reading window here is safe
   const [opts] = useState(initialState);
+  // A first visit fetches the book's content once the logo's light has started to pass: until then the logo has the
+  // connection to itself, and it waits at least 2.7 s for the content anyway (Lighthouse LCP on phones, #64)
+  const [fetchContent, setFetchContent] = useState(opts.mode !== "opening");
+  useEffect(() => {
+    if (fetchContent) return;
+    const t = setTimeout(() => setFetchContent(true), 1600);
+    return () => clearTimeout(t);
+  }, [fetchContent]);
+  const { data, error } = useBootstrap(fetchContent);
   const [mode, setMode] = useState<Mode>(opts.mode);
   const [landing, setLanding] = useState<"flash" | "soft">("soft");
   const [flashEl, setFlashEl] = useState<HTMLDivElement | null>(null);
   // the logo opens every telling of the story; it holds the story until it starts to dissolve
   const [logo, setLogo] = useState<"on" | "leaving" | "off">(opts.mode === "opening" ? "on" : "off");
+  useEffect(() => {
+    if (logo === "off") void loadDesk();
+  }, [logo]);
 
   function finishOpening() {
     try {

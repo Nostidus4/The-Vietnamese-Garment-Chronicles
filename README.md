@@ -60,6 +60,7 @@ File `.env` ở thư mục gốc được Docker Compose tự động đọc và
 | `NEXT_PUBLIC_API_URL` | `http://localhost:8000` | URL API mà trình duyệt truy cập; được nhúng lúc build frontend |
 | `NEXT_PUBLIC_SUPABASE_URL` | URL dự án Supabase | URL Supabase cho frontend; được nhúng lúc build |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key của dự án | Khóa công khai Supabase cho frontend; được nhúng lúc build |
+| `NEXT_PUBLIC_AMBIENT` | để trống | `1` để hiện nút nhạc nền (cần file `frontend/public/audio/ambient.mp3`, xem "Nhạc nền"); được nhúng lúc build |
 | `CORS_ORIGINS` | `http://localhost:3000` | Danh sách origin, phân cách bằng dấu phẩy |
 | `ADMIN_TOKEN` | rỗng | Bật endpoint `POST /admin/reload` |
 | `TRYON_PER_MINUTE` | `6` | Giới hạn số lần thử đồ mỗi phút |
@@ -191,7 +192,7 @@ Các bước:
 
 1. Trong `backend/content/regions.json`, đổi tỉnh đó trong `chapters` của miền thành `"status": "open"` và thêm `title`. Mỗi miền hiện chỉ mở được một chương.
 2. Tạo `backend/content/regions/<id-miền>.json` theo mẫu `hue.json`: `chapter` (câu ca dao hoặc thơ, dòng của Bà), 4–7 `stops`, `wear` (trang phục), `check` (Bà hỏi con), `own`, `letter` (bưu thiếp cuối chương).
-3. **Ảnh thật** chỉ lấy ảnh có giấy phép cho phép dùng lại (Wikimedia Commons: CC BY, CC BY-SA, Public domain), lưu ở `frontend/public/regions/<miền>/photos/`, ghi đủ tác giả và giấy phép. **Tranh ký ức** tạo bằng AI theo `ART_PROMPTS.md`, lưu ở `frontend/public/regions/<miền>/`.
+3. **Ảnh thật** chỉ lấy ảnh có giấy phép cho phép dùng lại (Wikimedia Commons: CC BY, CC BY-SA, Public domain), lưu ở `frontend/public/regions/<miền>/photos/`, ghi đủ tác giả và giấy phép. **Tranh ký ức** tạo bằng AI theo `ART_PROMPTS.md`, lưu ở `frontend/public/regions/<miền>/`. Thêm ảnh xong thì chạy `npm run images` trong `frontend/`: script chuyển ảnh gốc sang `frontend/originals/` (không deploy) và để lại trong `public/` bản cạnh dài tối đa 1000px, giữ nguyên tên file (#64). `npm test` báo lỗi nếu còn ảnh chưa thu nhỏ.
 4. **Từ khó** trong lời Bà thì đánh dấu `[[chữ hiển thị|id-thuật-ngữ]]` và thêm vào `backend/content/glossary.json`. Người đọc bấm vào sẽ hiện ghi chú của Tèo. Mỗi trang tối đa 2–3 từ.
 5. Chạy `python -m scripts.check_content` (không được có lỗi), rồi mở `/?draft=1` để xem cả những ghi chú chưa kiểm chứng.
 
@@ -199,7 +200,7 @@ Ghi chú của Tèo và thuật ngữ chỉ hiện trên trang thật khi `verif
 
 ## Nhạc nền
 
-- Đặt file ở `frontend/public/audio/ambient.mp3`. Có file thì nút **🔊 Nhạc** hiện trên thanh menu; không có thì nút ẩn.
+- Đặt file ở `frontend/public/audio/ambient.mp3` và build/chạy với `NEXT_PUBLIC_AMBIENT=1` (ví dụ ghi vào `frontend/.env.local`). Có cờ thì nút **🔊 Nhạc** hiện trên thanh menu; không có cờ thì nút ẩn và trang không tải file nhạc (trước đây trang dò file và bị 404 ở mọi trang, #64).
 - Nhạc phát sau cú bấm đầu tiên, lặp lại, tự nhỏ lại khi giọng đọc của phần mở đầu đang nói.
 - Chuẩn bị file (âm lượng nền, làm mờ đầu cuối để lặp êm, bỏ ảnh bìa):
   ```bash

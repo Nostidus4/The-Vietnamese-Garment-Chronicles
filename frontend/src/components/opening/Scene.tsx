@@ -32,11 +32,12 @@ interface Props {
   compact: boolean; // narrow / portrait layout
   debug: boolean;
   hidden?: boolean; // mounted but invisible (waiting for its entrance)
+  defer?: boolean; // the logo is still on screen: don't download the artwork yet (#64)
   viewport: { w: number; h: number };
 }
 
 export const Scene = forwardRef<SceneHandle, Props>(function Scene(
-  { screen, shown, beatTimes, enteredAt, instant, reduced, compact, debug, hidden, viewport },
+  { screen, shown, beatTimes, enteredAt, instant, reduced, compact, debug, hidden, defer, viewport },
   ref,
 ) {
   const layerRef = useRef<HTMLDivElement>(null);
@@ -145,17 +146,20 @@ export const Scene = forwardRef<SceneHandle, Props>(function Scene(
             ["--bw" as string]: `${box.bw}px`,
           }}
         >
-          <Image
-            src={asset(screen.image)}
-            alt={screen.title}
-            fill
-            priority
-            quality={88}
-            sizes={IMAGE_SIZES}
-            className="select-none object-cover"
-            draggable={false}
-            onLoad={() => setLoaded(true)}
-          />
+          {!defer && (
+            <Image
+              src={asset(screen.image)}
+              alt={screen.title}
+              fill
+              loading="eager"
+              fetchPriority={hidden ? undefined : "high"}
+              quality={88}
+              sizes={IMAGE_SIZES}
+              className="select-none object-cover"
+              draggable={false}
+              onLoad={() => setLoaded(true)}
+            />
+          )}
           {screen.mood === "memory" && <div className="memory-grade pointer-events-none absolute inset-0" />}
           <EffectsLayer effects={effects} reduced={reduced} />
           {imageBlocks.map((bl) => (

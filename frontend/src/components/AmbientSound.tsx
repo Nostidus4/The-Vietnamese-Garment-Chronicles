@@ -1,7 +1,8 @@
 "use client";
 
 // Background music for the whole site, with a mute button in the top bar.
-// - The file is frontend/public/audio/ambient.mp3 (looped); without it the button stays hidden.
+// - The file is frontend/public/audio/ambient.mp3 (looped). It is not committed (licence, see README "Nhạc nền"), so the
+//   button only exists in a build made with NEXT_PUBLIC_AMBIENT=1; probing for the file put a 404 on every page (#64).
 // - Browsers block sound until the first click or key press, so the music starts then, fading in.
 // - The choice (on / off) is remembered on this device. While the opening's voice-over speaks, the music ducks.
 
@@ -9,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { asset } from "@/lib/base";
 
 const SRC = asset("/audio/ambient.mp3");
+const ENABLED = process.env.NEXT_PUBLIC_AMBIENT === "1";
 const KEY = "vpdk-bgm";
 const VOLUME = 0.22;
 const DUCKED = 0.06;
@@ -26,7 +28,6 @@ function fade(el: HTMLAudioElement, to: number, ms = 800) {
 
 export function AmbientSound() {
   const audio = useRef<HTMLAudioElement | null>(null);
-  const [available, setAvailable] = useState(false);
   const [on, setOn] = useState(() => {
     try {
       return typeof window === "undefined" || localStorage.getItem(KEY) !== "off";
@@ -36,20 +37,9 @@ export function AmbientSound() {
   });
   const voice = useRef(false);
 
-  // is there a music file at all?
-  useEffect(() => {
-    let alive = true;
-    fetch(SRC, { method: "HEAD" })
-      .then((r) => alive && r.ok && setAvailable(true))
-      .catch(() => {});
-    return () => {
-      alive = false;
-    };
-  }, []);
-
   // start on the first gesture (autoplay rules), then follow the on / off choice
   useEffect(() => {
-    if (!available) return;
+    if (!ENABLED) return;
     audio.current ??= Object.assign(new Audio(SRC), { loop: true, volume: 0 });
     const el = audio.current;
     const play = () => {
@@ -68,7 +58,7 @@ export function AmbientSound() {
       window.removeEventListener("pointerdown", play);
       window.removeEventListener("keydown", play);
     };
-  }, [available, on]);
+  }, [on]);
 
   // the opening's narrator speaks: lower the music, then bring it back
   useEffect(() => {
@@ -80,7 +70,7 @@ export function AmbientSound() {
     return () => window.removeEventListener("vpdk-voice", onVoice);
   }, [on]);
 
-  if (!available) return null;
+  if (!ENABLED) return null;
   return (
     <button
       type="button"

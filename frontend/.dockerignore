@@ -4,3 +4,5 @@
 node_modules
 npm-debug.log*
 *.tsbuildinfo
+# full-size pictures only the image script reads (scripts/optimize-images.mjs)
+originals
