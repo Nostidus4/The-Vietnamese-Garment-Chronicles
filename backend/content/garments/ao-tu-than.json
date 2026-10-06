@@ -145,6 +145,11 @@
       "detail": "Vấn khăn mỏ quạ, đi hội thì đội thêm nón quai thao."
     }
   ],
+  "ask_suggest": [
+    "Áo tứ thân khác áo ngũ thân chỗ nào?",
+    "Áo tứ thân thường đi cùng những gì?",
+    "Phần nào của áo tứ thân phải giữ?"
+  ],
   "sources": [
     "research-5-3",
     "ref-01"

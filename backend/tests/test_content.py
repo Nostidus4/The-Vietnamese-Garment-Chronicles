@@ -9,6 +9,12 @@ def test_real_content_has_no_errors():
     assert rep.errors == []
 
 
+def test_every_garment_has_ask_chips():
+    # Hỏi Tèo's suggestion chips live with the garment, so probe_ask can check each one is answered (#51)
+    c, _ = store.load()
+    assert all(2 <= len(g.ask_suggest) <= 4 for g in c.garments.values())
+
+
 def _copy(tmp_path):
     dst = tmp_path / "content"
     shutil.copytree(store.CONTENT_DIR, dst)

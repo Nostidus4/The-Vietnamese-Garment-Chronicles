@@ -146,6 +146,11 @@
       "detail": "Vuốt thẳng tà trước và tà sau, đường xẻ nằm đúng hai bên hông."
     }
   ],
+  "ask_suggest": [
+    "Áo dài hiện đại ra đời thế nào?",
+    "Mặc áo dài với sneakers được không?",
+    "Phần nào của áo dài được đổi?"
+  ],
   "sources": [
     "ref-04",
     "ref-08",

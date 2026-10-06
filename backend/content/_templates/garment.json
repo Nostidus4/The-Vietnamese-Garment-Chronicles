@@ -28,6 +28,7 @@
   "wearing_steps": [
     {"title": "Bước 1", "detail": "Mô tả ngắn", "image": null}
   ],
+  "ask_suggest": ["Câu hỏi mà facts, zones hoặc occasions ở trên trả lời được?"],
   "sources": ["ref-16"],
   "verified": false
 }

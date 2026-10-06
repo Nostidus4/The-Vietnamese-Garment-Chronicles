@@ -79,9 +79,10 @@ def test_ask_drops_invented_sources(client, fake_gemini):
     assert r["grounded"] is True
 
 
-def test_ask_without_gemini_refuses(client):
+def test_ask_without_gemini_says_busy_not_unknown(client):
+    # a 402/429 from Gemini is not "no source": the reader should ask again later (#51)
     r = client.post("/ask", json={"garment_id": "ao-ngu-than", "question": "Có từ khi nào?"}).json()
-    assert r["grounded"] is False
+    assert r == {"answer": ask_service.REFUSALS["unavailable"], "sources": [], "grounded": False, "reason": "unavailable"}
 
 
 def test_quiz_hides_answers_and_checks(client):
@@ -150,7 +151,7 @@ def test_ask_wrong_shapes_refuse_without_500(client, scripted, out):
     scripted(out)
     r = client.post("/ask", json={"garment_id": "ao-ngu-than", "question": "Có từ khi nào?"})
     assert r.status_code == 200
-    assert r.json() == {"answer": ask_service.NO_SOURCE, "sources": [], "grounded": False}
+    assert r.json() == {"answer": ask_service.REFUSALS["no_source"], "sources": [], "grounded": False, "reason": "no_source"}
 
 
 def test_ask_keeps_real_sources_and_refuses_when_none_left(client, scripted):
@@ -163,9 +164,30 @@ def test_ask_keeps_real_sources_and_refuses_when_none_left(client, scripted):
 
 
 def test_ask_refusal_is_never_grounded(client, scripted):
-    scripted({"answer": ask_service.NO_SOURCE, "sources": ["ref-03"]})
+    scripted({"answer": "Thời tiết mai đẹp.", "sources": ["ref-03"], "refuse": "off_topic"})
     r = client.post("/ask", json={"garment_id": "ao-ngu-than", "question": "Thời tiết mai?"}).json()
-    assert r == {"answer": ask_service.NO_SOURCE, "sources": [], "grounded": False}
+    assert r == {"answer": ask_service.REFUSALS["off_topic"], "sources": [], "grounded": False, "reason": "off_topic"}
+
+
+@pytest.mark.parametrize("reason", ["off_topic", "no_source", "unsafe"])
+def test_ask_says_why_it_refuses(client, scripted, reason):
+    scripted({"refuse": reason})
+    r = client.post("/ask", json={"garment_id": "ao-dai", "question": "Câu gì đó"}).json()
+    assert r == {"answer": ask_service.REFUSALS[reason], "sources": [], "grounded": False, "reason": reason}
+
+
+def test_ask_refusals_speak_as_teo():
+    # Tí and Tèo say "tớ" and call the reader "bạn" (content/_templates/README.md, #59)
+    assert all("tớ" in t.lower() and "mình" not in t.lower() for t in ask_service.REFUSALS.values())
+
+
+def test_ask_answers_from_compass_rules_and_accessories(client, scripted, content):
+    # "Mặc áo dài với sneakers được không?": Compass knows (a modern accessory is a flexible change), so Tèo can too
+    flexible = content.rules["flexible"]
+    fake = scripted({"answer": "Được, sneakers là phụ kiện hiện đại.", "sources": [flexible.sources[0]]})
+    r = client.post("/ask", json={"garment_id": "ao-dai", "question": "Mặc áo dài với sneakers được không?"}).json()
+    assert r["grounded"] is True and r["sources"] == [flexible.sources[0]] and r["reason"] is None
+    assert "sneakers-trang" in fake.prompts[0] and flexible.why in fake.prompts[0]
 
 
 def test_ask_can_compare_two_garments(client, scripted, content):

@@ -53,10 +53,14 @@ class AskRequest(BaseModel):
     question: str = Field(min_length=2, max_length=300)
 
 
+AskRefusal = Literal["off_topic", "no_source", "unsafe", "unavailable"]
+
+
 class AskResponse(BaseModel):
     answer: str
     sources: list[str]
     grounded: bool
+    reason: AskRefusal | None = Field(None, description="Why Tèo did not answer; none when grounded")
 
 
 class QuizAnswerRequest(BaseModel):

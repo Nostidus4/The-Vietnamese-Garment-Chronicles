@@ -76,6 +76,11 @@
   "reference_image": null,
   "hot_weather_tip": null,
   "wearing_steps": [],
+  "ask_suggest": [
+    "Màu trên thổ cẩm Ê Đê có ý nghĩa gì?",
+    "Hoa văn thổ cẩm Ê Đê lấy cảm hứng từ đâu?",
+    "Dệt một tấm thổ cẩm mất bao lâu?"
+  ],
   "sources": [
     "nhandan-tho-cam-ede",
     "bvh-tho-cam-ede"

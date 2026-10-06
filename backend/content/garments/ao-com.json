@@ -96,6 +96,11 @@
   "reference_image": null,
   "hot_weather_tip": null,
   "wearing_steps": [],
+  "ask_suggest": [
+    "Vì sao hàng cúc áo cóm là số lẻ?",
+    "Khăn piêu có ý nghĩa gì?",
+    "Áo cóm Thái Đen và Thái Trắng khác nhau chỗ nào?"
+  ],
   "sources": [
     "heritage-thai",
     "baolaocai-pieu"

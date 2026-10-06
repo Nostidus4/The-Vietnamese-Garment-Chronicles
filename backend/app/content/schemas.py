@@ -114,6 +114,9 @@ class Garment(Strict):
     reference_image: str | None = Field(None, description="Path under content/media, e.g. ref/ao-dai.png")
     hot_weather_tip: str | None = None
     wearing_steps: list[WearingStep] = []
+    ask_suggest: list[str] = Field(
+        default_factory=list, description="Hỏi Tèo's suggestion chips: only questions the data answers (checked by scripts/probe_ask.py)"
+    )
     sources: list[Id] = []
     verified: bool = False
 
