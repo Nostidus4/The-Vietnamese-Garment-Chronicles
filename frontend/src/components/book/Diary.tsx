@@ -181,12 +181,12 @@ export function KeepsakeArt({
   );
 }
 
-/** A keepsake picture: the real image if the team has made it, otherwise a pencil placeholder. */
 /** The one label every AI-made picture carries (#60), the way a real photo carries its credit. */
 export function AiLabel({ className = "" }: { className?: string }) {
   return <span className={`block font-sans text-[0.75rem] leading-tight text-stone-600 ${className}`}>Tranh minh họa (AI)</span>;
 }
 
+/** A keepsake picture: the real image if the team has made it, otherwise a pencil placeholder. */
 export function Polaroid({ frame, i, className = "w-[31%]" }: { frame: Frame; i: number; className?: string }) {
   const reduced = !!useReducedMotion();
   const [broken, setBroken] = useState(false);

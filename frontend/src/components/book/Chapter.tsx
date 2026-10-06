@@ -11,7 +11,7 @@ import { markStamp, unmarkStamp, useStamps } from "@/lib/stamps";
 import type { Bootstrap, Festival, Photo, Region, Stop, TimeOfDay } from "@/lib/types";
 import { WeatherNote } from "../chapter/WeatherNote";
 import { PostcardViewer } from "../duky/PostcardViewer";
-import { DateLine, DRAFT, Entry, KeepsakeArt, Margin, OLD, Pencil, place, Polaroid, TeoNotes, YOUNG } from "./Diary";
+import { AiLabel, DateLine, DRAFT, Entry, KeepsakeArt, Margin, OLD, Pencil, place, Polaroid, TeoNotes, YOUNG } from "./Diary";
 import { GameBody, HOW_TO } from "./Games";
 import { TeoPin } from "./TeoPin";
 import { RichText } from "./Glossary";
@@ -738,8 +738,11 @@ export function EnvelopeLetter({ region }: { region: Region }) {
           >
             <div className="relative aspect-[3/2] w-[86%] rotate-[1.5deg] overflow-hidden bg-white p-1.5 shadow-[0_10px_22px_rgba(60,35,10,0.3)]">
               {imgOk ? (
-                // eslint-disable-next-line @next/next/no-img-element -- postcard art may not exist yet
-                <img src={asset(letter.image!)} alt={`Bưu thiếp ${chapterPlace}`} className="h-full w-full object-cover" onError={() => setImgOk(false)} />
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- postcard art may not exist yet */}
+                  <img src={asset(letter.image!)} alt={`Bưu thiếp ${chapterPlace}`} className="h-full w-full object-cover" onError={() => setImgOk(false)} />
+                  <AiLabel className="absolute bottom-2 right-2 bg-white/85 px-1" />
+                </>
               ) : (
                 <div
                   className="flex h-full w-full items-end justify-center"
