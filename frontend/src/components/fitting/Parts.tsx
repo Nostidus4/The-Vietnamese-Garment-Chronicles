@@ -4,21 +4,23 @@
 // the quiz and the shops wait until the reader wants them.
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { HAS_API } from "@/lib/api";
 import type { Bootstrap, Garment } from "@/lib/types";
 import { AskTeo } from "../chapter/AskTeo";
 import { ChapterQuiz } from "../chapter/ChapterQuiz";
 import { ShopList } from "../chapter/ShopList";
 import { StoryCard } from "../chapter/StoryCard";
+import { useDialog } from "@/lib/useDialog";
 
 /* ---------- "Con sắp đi đâu?" ---------- */
 
 export function EventPicker({ data, onPick }: { data: Bootstrap; onPick: (occasion: string | null) => void }) {
+  const box = useDialog<HTMLDivElement>(() => onPick(null)); // Esc = "Chưa biết, cho con xem hết"
   return (
     <motion.div className="fixed inset-0 z-50 grid place-items-center bg-[#140c07]/70 p-4 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-label="Con sắp đi đâu?" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <motion.div className="paper w-full max-w-md rounded-xl p-6 shadow-2xl" initial={{ y: 30, scale: 0.96 }} animate={{ y: 0, scale: 1 }}>
-        <p className="m-0 text-[0.75rem] uppercase tracking-[0.25em] text-stone-500">Phòng thử đồ của Bà</p>
+      <motion.div ref={box} className="paper w-full max-w-md rounded-xl p-6 shadow-2xl" initial={{ y: 30, scale: 0.96 }} animate={{ y: 0, scale: 1 }}>
+        <p className="m-0 text-[0.75rem] uppercase tracking-[0.25em] text-stone-600">Phòng thử đồ của Bà</p>
         <p className="font-hand m-0 mt-1 text-[1.6rem] leading-tight text-[#8a4b2a]">Con sắp đi đâu? Bà lấy áo cho hợp.</p>
         <div className="mt-4 grid gap-2">
           {data.occasions.map((o) => (
@@ -63,12 +65,7 @@ export function AboutSheet({
   data: Bootstrap;
   regionId: string;
 }) {
-  useEffect(() => {
-    if (!tab) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [tab, onClose]);
+  const box = useDialog<HTMLElement>(onClose, !!tab);
   const body: Record<SheetTab, ReactNode> = {
     story: <StoryCard garment={garment} sources={data.sources} />,
     teo: <AskTeo key={garment.id} garment={garment} data={data} />,
@@ -82,6 +79,7 @@ export function AboutSheet({
         <motion.div key="sheet" className="fixed inset-0 z-40" role="dialog" aria-modal="true" aria-label="Hiểu bộ áo" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <button type="button" aria-label="Đóng" onClick={onClose} className="absolute inset-0 bg-[#140c07]/50" />
           <motion.aside
+            ref={box}
             className="absolute inset-x-0 bottom-0 max-h-[88vh] overflow-y-auto rounded-t-2xl bg-[var(--paper)] p-4 shadow-2xl sm:inset-y-0 sm:left-auto sm:right-0 sm:max-h-none sm:w-[32rem] sm:rounded-none sm:rounded-l-2xl"
             initial={{ x: 40, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}

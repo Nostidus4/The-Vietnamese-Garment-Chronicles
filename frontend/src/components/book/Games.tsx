@@ -187,7 +187,7 @@ function DongHo({ game, onWin }: Props) {
           >
             <span className="h-4 w-4 shrink-0 rounded-sm border border-black/20" style={{ background: color(i) }} />
             {layers[i].label}
-            {on(i) && <span className="ml-auto text-[0.75rem] text-stone-500">#{printed.indexOf(i) + 1}</span>}
+            {on(i) && <span className="ml-auto text-[0.75rem] text-stone-600">#{printed.indexOf(i) + 1}</span>}
           </button>
         ))}
       </div>
@@ -219,7 +219,7 @@ function QuanHo({ game, onWin }: Props) {
   };
   return (
     <div>
-      <div className="flex items-center gap-1.5 text-[0.75rem] tracking-[0.2em] text-stone-500">
+      <div className="flex items-center gap-1.5 text-[0.75rem] tracking-[0.2em] text-stone-600">
         {game.rounds.map((_, i) => (
           <span key={i} className={`h-1.5 w-6 rounded-full ${i < round || (i === round && right) ? "bg-[#5E7F4A]" : i === round ? "bg-[#D9A43B]" : "bg-stone-300"}`} />
         ))}
@@ -331,7 +331,7 @@ function NguThan({ game, onWin }: Props) {
             </button>
           ))}
       </div>
-      <p className="m-0 mt-1 text-[0.75rem] text-stone-500">
+      <p className="m-0 mt-1 text-[0.75rem] text-stone-600">
         Đã ghép {placed.length}/{game.rounds.length} thân · chọn mảnh rồi bấm vào chỗ trên áo
       </p>
       {note && <Hint tone={note.good ? "good" : "bad"}>{note.text}</Hint>}
@@ -387,7 +387,7 @@ function CayBeo({ game, onWin }: Props) {
           );
         })}
       </div>
-      <p className="m-0 mt-2 text-[0.75rem] text-stone-500">Chọn một tấm biển, rồi bấm vào chiếc ghe:</p>
+      <p className="m-0 mt-2 text-[0.75rem] text-stone-600">Chọn một tấm biển, rồi bấm vào chiếc ghe:</p>
       <div className="mt-1 flex flex-wrap gap-1">
         {signs
           .filter((s) => !placed.includes(s))
@@ -493,7 +493,7 @@ function KhuyBac({ game, onWin }: Props) {
           );
         })}
       </svg>
-      <p className="m-0 mt-1 text-center text-[0.75rem] text-stone-500">
+      <p className="m-0 mt-1 text-center text-[0.75rem] text-stone-600">
         Đã cài {done}/{n} đôi · bấm vào đôi khuy tiếp theo
       </p>
       {miss && <Hint tone="bad">Cài từ trên cổ xuống con ạ, đừng bỏ sót đôi nào.</Hint>}
@@ -574,7 +574,7 @@ function Xoe({ game, onWin }: Props) {
       <button type="button" data-hint onClick={tap} className="mt-2 rounded-full bg-[#27354f] px-5 py-2 text-sm text-amber-50 active:scale-95">
         {running ? "Bước!" : "Bắt đầu nghe trống"}
       </button>
-      <p className="m-0 mt-1 text-[0.75rem] text-stone-500">
+      <p className="m-0 mt-1 text-[0.75rem] text-stone-600">
         {hits}/{need} bước đúng nhịp · phím cách cũng được
       </p>
       {msg && running && <Hint tone={msg === "Đúng nhịp!" ? "good" : "bad"}>{msg}</Hint>}
@@ -662,7 +662,7 @@ function CongChieng({ game, onWin }: Props) {
           Nghe nghệ nhân đánh
         </button>
       )}
-      <p className="m-0 mt-2 text-[0.75rem] text-stone-500">
+      <p className="m-0 mt-2 text-[0.75rem] text-stone-600">
         {state === "listen" ? "Nghe…" : state === "play" ? `Đến lượt con: ${pos}/${seq.length}` : `Đánh đúng chuỗi ${target} tiếng`}
       </p>
       {msg && <Hint tone={msg.startsWith("Đúng") ? "good" : "bad"}>{msg}</Hint>}

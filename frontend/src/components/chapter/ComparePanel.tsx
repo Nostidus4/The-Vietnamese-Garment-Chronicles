@@ -52,7 +52,7 @@ export function ComparePanel({ current, data, onUse }: { current: Selection; dat
     <section className="paper rounded-lg p-5">
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="m-0 font-semibold">So sánh các look</h3>
-        <span className="text-sm text-stone-500">
+        <span className="text-sm text-stone-600">
           {pinned.length}/{MAX} look đã ghim
         </span>
         <button
@@ -76,7 +76,7 @@ export function ComparePanel({ current, data, onUse }: { current: Selection; dat
             const [garment, occasion, colors, acc] = describe(data, s);
             return (
               <div key={key(s)} className={`rounded-md border-2 bg-white/60 p-3 text-sm ${st?.tone ?? "border-stone-300"}`}>
-                <p className="m-0 text-xs font-semibold uppercase tracking-wider text-stone-500">Look {i + 1}</p>
+                <p className="m-0 text-xs font-semibold uppercase tracking-wider text-stone-600">Look {i + 1}</p>
                 <p className="m-0 mt-1 font-semibold">{garment}</p>
                 <p className="m-0 text-xs text-stone-600">{occasion}</p>
                 <p className="m-0 text-xs text-stone-600">{colors}</p>
@@ -85,7 +85,7 @@ export function ComparePanel({ current, data, onUse }: { current: Selection; dat
                   <>
                     <p className="m-0 mt-2 font-semibold">
                       {st.icon} {st.name}
-                      {r.label && <span className="ml-1 text-xs font-normal text-stone-500">· {r.label}</span>}
+                      {r.label && <span className="ml-1 text-xs font-normal text-stone-600">· {r.label}</span>}
                     </p>
                     {r.triggers[0] && <p className="m-0 mt-1 text-xs text-stone-700">{r.triggers[0].teo}</p>}
                   </>
@@ -94,7 +94,7 @@ export function ComparePanel({ current, data, onUse }: { current: Selection; dat
                   <button type="button" onClick={() => onUse(s)} className="underline">
                     Phối tiếp look này
                   </button>
-                  <button type="button" onClick={() => setPinned((p) => p.filter((_, j) => j !== i))} className="text-stone-500 underline">
+                  <button type="button" onClick={() => setPinned((p) => p.filter((_, j) => j !== i))} className="text-stone-600 underline">
                     Bỏ ghim
                   </button>
                 </div>

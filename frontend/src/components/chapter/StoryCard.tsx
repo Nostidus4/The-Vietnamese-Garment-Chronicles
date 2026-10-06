@@ -16,14 +16,14 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
   return (
     <section className="paper rounded-lg p-5">
       <h2 className="font-hand text-3xl">{garment.name_vi}</h2>
-      <p className="mb-3 text-sm text-stone-500">{garment.period}</p>
+      <p className="mb-3 text-sm text-stone-600">{garment.period}</p>
       <p className="mb-3 leading-relaxed">{garment.summary}</p>
       <ul className="mb-2 list-disc space-y-1 pl-5">
         {garment.facts.map((f) => (
           <li key={f.text} className="leading-relaxed">
             {f.text}{" "}
             {cited({ sources }, f.sources).map((src) => (
-              <sup key={src.id} className="text-stone-500">
+              <sup key={src.id} className="text-stone-600">
                 {notes.indexOf(src.id) + 1}
               </sup>
             ))}
@@ -57,7 +57,7 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
           );
         })}
       </div>
-      <p className="m-0 mt-1 text-[11px] text-stone-500">Giữ phần đỏ, cân nhắc phần vàng, còn phần xanh cứ phối theo cách của bạn.</p>
+      <p className="m-0 mt-1 text-[11px] text-stone-600">Giữ phần đỏ, cân nhắc phần vàng, còn phần xanh cứ phối theo cách của bạn.</p>
 
       {/* F6 how to wear it, step by step (hidden until the team has written the steps) */}
       {garment.wearing_steps.length > 0 && (
@@ -76,7 +76,7 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
           </ol>
         </details>
       )}
-      <details className="mt-3 text-xs text-stone-500">
+      <details className="mt-3 text-xs text-stone-600">
         <summary className="cursor-pointer">Nguồn ({notes.length})</summary>
         <ol className="mt-1 list-decimal space-y-1 pl-5">
           {notes.map((id) => (
@@ -90,7 +90,7 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
           ))}
         </ol>
       </details>
-      {!garment.verified && <p className="mt-2 text-xs text-stone-500">Tèo còn đang đối chiếu thêm nguồn cho vài chi tiết của bộ áo này.</p>}
+      {!garment.verified && <p className="mt-2 text-xs text-stone-600">Tèo còn đang đối chiếu thêm nguồn cho vài chi tiết của bộ áo này.</p>}
     </section>
   );
 }

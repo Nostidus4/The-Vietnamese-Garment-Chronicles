@@ -118,7 +118,7 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
       {session ? (
         <>
           <p className="m-0">Đang lưu cho {session.user.email}</p>
-          <p className="m-0 text-stone-500">
+          <p className="m-0 text-stone-600">
             {savedAt ? `Lần lưu lên mây gần nhất: ${new Date(savedAt).toLocaleString("vi-VN", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "numeric" })}` : "Chưa lưu lên mây lần nào."}
           </p>
           <div className="mt-1.5 flex flex-wrap gap-1.5">

@@ -11,7 +11,7 @@ import { OLD, PENCIL, YOUNG } from "./Diary";
 export function LetterPage() {
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">GỬI CON</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">GỬI CON</p>
       <div className="font-hand mt-2 space-y-2 text-[1.12rem] leading-[1.42]" style={{ color: YOUNG }}>
         <p className="m-0">Con của Bà,</p>
         <p className="m-0">
@@ -27,7 +27,7 @@ export function LetterPage() {
       </div>
 
       <div className="mt-auto border-t border-dashed border-stone-400/60 pt-2">
-        <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">CÁCH ĐỌC SỔ</p>
+        <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">CÁCH ĐỌC SỔ</p>
         {/* each line is an icon and one run of text: loose text nodes in a flex row wrap word by word (#56) */}
         <ul className="m-0 mt-1 grid list-none grid-cols-1 gap-1 p-0 text-[0.75rem] leading-snug text-stone-700">
           <li className="flex items-start gap-2">
@@ -75,7 +75,7 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
   const got = data.regions.reduce((n, r) => n + stampsOf(r.id), 0);
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">MỤC LỤC</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">MỤC LỤC</p>
       <p className="font-hand m-0 text-[1.2rem] leading-snug" style={{ color: YOUNG }}>
         Những nơi Bà đã đi
       </p>
@@ -91,14 +91,14 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
                 onClick={() => onRegion(r.id)}
                 className="group flex w-full items-baseline gap-2 rounded px-1 py-1 text-left hover:bg-amber-50/60"
               >
-                <span className="font-display w-4 shrink-0 text-[0.8rem] text-stone-400">{i + 1}</span>
+                <span className="font-display w-4 shrink-0 text-[0.8rem] text-stone-600">{i + 1}</span>
                 <span className="min-w-0 flex-1">
-                  <span className={`font-display block text-[1rem] ${readable ? "text-[#27354f]" : "text-stone-400"}`}>{r.name}</span>
+                  <span className={`font-display block text-[1rem] ${readable ? "text-[#27354f]" : "text-stone-600"}`}>{r.name}</span>
                   <span className="font-hand block truncate text-[0.85rem]" style={{ color: readable ? OLD : PENCIL }}>
                     {open.length ? open.map((c) => `${c.province}: ${c.title ?? ""}`).join(" · ") : "chờ người ở đó cùng viết"}
                   </span>
                 </span>
-                <span className="shrink-0 text-right text-[0.75rem] leading-tight text-stone-500">
+                <span className="shrink-0 text-right text-[0.75rem] leading-tight text-stone-600">
                   {/* what there is to read first, then what is still to be written (#61) */}
                   {open.length} chương{r.chapters.length > open.length ? ` · ${r.chapters.length - open.length} chờ viết` : ""}
                   {readable && (
@@ -172,7 +172,7 @@ export function StartPage({
     [arrived.includes(id), understood.includes(id), pagesOf(book, id).some((p) => p.photos.some((ph) => ph.kind === "real"))].filter(Boolean).length;
   return (
     <div className="start-page flex h-full flex-col">
-      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">BẮT ĐẦU HÀNH TRÌNH</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">BẮT ĐẦU HÀNH TRÌNH</p>
       <p className="font-hand m-0 mt-1 text-[1.12rem] leading-snug" style={{ color: YOUNG }}>
         Muốn viết tiếp một câu chuyện, trước hết phải hiểu câu chuyện đã có.
       </p>
@@ -225,7 +225,7 @@ export function StartPage({
         </div>
       ) : shown.length > 0 && (
         <div className="start-fests mt-3 h-[5.4rem] shrink-0 overflow-hidden rounded-md border border-dashed border-stone-400/60 bg-white/35 px-3 py-2">
-          <p className="m-0 text-[0.75rem] tracking-[0.28em] text-stone-500">{now.length ? "THÁNG NÀY TRONG SỔ CỦA BÀ" : "SẮP TỚI TRONG SỔ CỦA BÀ"}</p>
+          <p className="m-0 text-[0.75rem] tracking-[0.28em] text-stone-600">{now.length ? "THÁNG NÀY TRONG SỔ CỦA BÀ" : "SẮP TỚI TRONG SỔ CỦA BÀ"}</p>
           <ul className="m-0 mt-1 list-none space-y-0.5 p-0">
             {shown.map((f) => (
               <li key={f.id}>

@@ -545,6 +545,12 @@ body {
   .film-grain, .glow-ring, .light-shaft, .dust-mote, .thread-spark, .orbit, .bookmark-tassel, .next-hint, .cover-sheen, .desk-light::after { animation: none !important; }
 }
 
+/* a focus ring that shows on cream paper and on dark wood alike (#58) */
+:focus-visible {
+  outline: 3px solid #d9480f;
+  outline-offset: 2px;
+}
+
 .site-nav a {
   color: #f3ead7;
   background: rgba(20, 12, 7, 0.35);

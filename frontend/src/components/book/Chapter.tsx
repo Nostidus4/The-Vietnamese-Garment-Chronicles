@@ -61,7 +61,7 @@ export function RegionIntro({
   const drafts = region.chapters.filter((c) => c.status === "draft");
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">{region.status === "open" || open.length ? "MIỀN" : "VÙNG ĐANG CHỜ"}</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">{region.status === "open" || open.length ? "MIỀN" : "VÙNG ĐANG CHỜ"}</p>
       <h2 className="font-display m-0 text-[1.9rem] leading-tight" style={{ color: YOUNG }}>
         {region.name}
       </h2>
@@ -72,12 +72,12 @@ export function RegionIntro({
               {l}
             </span>
           ))}
-          {intro.verse_by && <span className="mt-0.5 block text-[0.75rem] not-italic text-stone-500">— {intro.verse_by}</span>}
+          {intro.verse_by && <span className="mt-0.5 block text-[0.75rem] not-italic text-stone-600">— {intro.verse_by}</span>}
         </blockquote>
       )}
       {intro && <Margin text={intro.line} />}
 
-      <p className="m-0 mt-4 text-[0.75rem] tracking-[0.3em] text-stone-500">CÁC CHƯƠNG</p>
+      <p className="m-0 mt-4 text-[0.75rem] tracking-[0.3em] text-stone-600">CÁC CHƯƠNG</p>
       {drafts.map((c) =>
         DRAFT ? (
           <button
@@ -156,10 +156,10 @@ export function ChapterTitle({
   useEffect(() => markStamp("arrived", region.id), [region.id]);
   return (
     <div className="short-page flex h-full flex-col">
-      <button type="button" onClick={onBack} className="self-start text-[0.75rem] text-stone-500 hover:underline">
+      <button type="button" onClick={onBack} className="self-start text-[0.75rem] text-stone-600 hover:underline">
         ‹ {region.name}
       </button>
-      <p className="m-0 mt-1 text-[0.75rem] tracking-[0.3em] text-stone-500">CHƯƠNG · {ch.province.toUpperCase()}</p>
+      <p className="m-0 mt-1 text-[0.75rem] tracking-[0.3em] text-stone-600">CHƯƠNG · {ch.province.toUpperCase()}</p>
       <h2 className="font-display m-0 text-[1.65rem] leading-tight" style={{ color: YOUNG }}>
         {ch.title}
       </h2>
@@ -169,7 +169,7 @@ export function ChapterTitle({
             {l}
           </span>
         ))}
-        <span className="mt-0.5 block text-[0.75rem] not-italic text-stone-500">— {ch.verse_by}</span>
+        <span className="mt-0.5 block text-[0.75rem] not-italic text-stone-600">— {ch.verse_by}</span>
       </blockquote>
       <Margin text={ch.line} />
       {j.community_review && (
@@ -204,7 +204,7 @@ function ChapterContents({ region }: { region: Region }) {
   const played = games.filter((s) => won.includes(`${region.id}:${s.id}`)).length;
   return (
     <div className="mt-1 rounded-md bg-white/35 px-3 py-2">
-      <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-500">TRONG CHƯƠNG NÀY</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-600">TRONG CHƯƠNG NÀY</p>
       <ul className="m-0 mt-1 grid list-none grid-cols-2 gap-x-3 gap-y-0.5 p-0 text-[0.76rem] text-stone-700">
         <li>🗺 {j.stops.length} điểm dừng</li>
         <li>🎲 {played}/{games.length} trò chơi</li>
@@ -307,7 +307,7 @@ export function StopDiary({ stop, index, data, chapterPlace, regionId }: { stop:
       <div className={`hour-${stop.time} pointer-events-none absolute -inset-[14%]`} aria-hidden />
       <div className="relative flex h-full flex-col">
         <div className="flex items-start justify-between gap-2">
-          <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-500">
+          <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-600">
             ĐIỂM {index + 1} · {stop.place.toUpperCase()} · {HOUR[stop.time]}
           </p>
           {stop.stamp && <StopStamp label={stop.stamp} regionId={regionId} stopId={stop.id} />}
@@ -473,7 +473,7 @@ function PasteSlot({ regionId, place, className = "" }: { regionId: string; plac
 export function StopPaste({ stop, regionId }: { stop: Stop; regionId: string }) {
   return (
     <div className="flex h-full flex-col justify-center">
-      <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-500">HÔM NAY · {stop.place.toUpperCase()}</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-600">HÔM NAY · {stop.place.toUpperCase()}</p>
       <p className="font-hand m-0 mt-1 text-[1.12rem] leading-snug" style={{ color: TODAY_INK }}>
         Tí chưa đi lại chỗ này. Trang này để dành cho con.
       </p>
@@ -487,7 +487,7 @@ export function StopToday({ stop, regionId }: { stop: Stop; regionId: string }) 
   const items = stop.items.filter((it) => !it.community_review || DRAFT);
   return (
     <div className="short-page flex h-full flex-col">
-      <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-500">HÔM NAY · TÍ ĐI LẠI {stop.place.toUpperCase()}</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-600">HÔM NAY · TÍ ĐI LẠI {stop.place.toUpperCase()}</p>
       {t.photo && (
         <div className="short-shrink mt-2 w-[88%] self-center">
           <TodayPhoto photo={t.photo} />
@@ -543,7 +543,7 @@ export function StopGame({ stop, regionId, data }: { stop: Stop; regionId: strin
   if (view === "today" && stop.today)
     return (
       <div className="flex h-full flex-col">
-        <button type="button" onClick={() => setView("game")} className="self-start text-[0.75rem] text-stone-500 hover:underline">
+        <button type="button" onClick={() => setView("game")} className="self-start text-[0.75rem] text-stone-600 hover:underline">
           ‹ {game.title}
         </button>
         <div className="min-h-0 flex-1">
@@ -553,7 +553,7 @@ export function StopGame({ stop, regionId, data }: { stop: Stop; regionId: strin
     );
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-500">TRÒ CHƠI · {stop.place.toUpperCase()}</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-600">TRÒ CHƠI · {stop.place.toUpperCase()}</p>
       <div className="flex items-start gap-2">
         <p className="font-display m-0 flex-1 text-[1.15rem] leading-tight" style={{ color: YOUNG }}>
           {game.title}
@@ -628,7 +628,7 @@ export function FestivalBoard({ stop, chapterPlace }: { stop: Stop; chapterPlace
   const left = fests.length - seen.length;
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-500">LỄ HỘI QUANH NĂM Ở {chapterPlace.toUpperCase()}</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-600">LỄ HỘI QUANH NĂM Ở {chapterPlace.toUpperCase()}</p>
       <p className="font-hand m-0 mt-0.5 text-[0.92rem]" style={{ color: OLD }}>
         {now ? `Nếu con đến ${chapterPlace} tháng này: ${now.name}!` : `Tháng này chưa có hội lớn. Gần nhất là ${next?.name ?? fests[0].name}.`}
       </p>
@@ -678,7 +678,7 @@ export function FestivalBoard({ stop, chapterPlace }: { stop: Stop; chapterPlace
               <TodayPhoto photo={sel.photo} tilt={-1.2} />
             </div>
           )}
-          <p className="m-0 mt-2 text-[0.75rem] text-stone-500">
+          <p className="m-0 mt-2 text-[0.75rem] text-stone-600">
             {sel.time} · {sel.place}
           </p>
           <p className="font-hand m-0 text-[0.95rem] leading-snug" style={{ color: YOUNG }}>
@@ -783,14 +783,14 @@ export function ChapterEnd({ region }: { region: Region }) {
   const waiting = region.chapters.filter((c) => c.status === "waiting").slice(0, 6);
   return (
     <div className="flex h-full flex-col justify-center">
-      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">HẾT CHƯƠNG</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">HẾT CHƯƠNG</p>
       <h2 className="font-display m-0 text-[1.5rem] leading-tight" style={{ color: YOUNG }}>
         {ch.province}: {ch.title}
       </h2>
       <p className="font-hand m-0 mt-3 text-[1.05rem] leading-snug" style={{ color: OLD }}>
         {region.name} còn nhiều nơi Bà chưa kịp đi. Những chương ấy đang chờ người ở đó viết tiếp. — Bà
       </p>
-      <p className="m-0 mt-2 text-[0.78rem] text-stone-500">
+      <p className="m-0 mt-2 text-[0.78rem] text-stone-600">
         {waiting.map((c) => c.province).join(" · ")}
         {region.chapters.length - 1 > waiting.length ? " …" : ""}
       </p>

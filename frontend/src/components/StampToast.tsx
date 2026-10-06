@@ -54,7 +54,7 @@ export function StampToast() {
           </motion.span>
           <span>
             <b>Tem mới:</b> {w.label === "ĐÃ ĐẾN" ? "đã đến" : "đã hiểu"} {place}.
-            <span className="block text-xs text-stone-500">Đã dán vào Tủ tem trong Du Ký của con.</span>
+            <span className="block text-xs text-stone-600">Đã dán vào Tủ tem trong Du Ký của con.</span>
           </span>
         </motion.div>
       )}

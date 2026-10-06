@@ -44,7 +44,7 @@ export function SharedView({ id }: { id: string }) {
       <main className="desk grid min-h-screen place-items-center px-4 py-8">
         {/* the paper the page will be on, while it loads */}
         <div className="paper w-full max-w-md animate-pulse rounded-md p-6 shadow-[0_10px_24px_rgba(20,8,0,0.4)]" aria-busy="true">
-          <p className="font-hand m-0 text-center text-xl text-stone-500">Đang mở trang Du Ký…</p>
+          <p className="font-hand m-0 text-center text-xl text-stone-600">Đang mở trang Du Ký…</p>
           <div className="mx-auto mt-4 aspect-[3/4] w-2/3 rounded bg-stone-300/50" />
           <div className="mt-4 h-3 w-3/4 rounded bg-stone-300/50" />
           <div className="mt-2 h-3 w-1/2 rounded bg-stone-300/50" />
@@ -66,7 +66,7 @@ export function SharedView({ id }: { id: string }) {
         </p>
       </header>
       <article className="paper mx-auto max-w-md rounded-md p-6 text-[#27354f] shadow-[0_10px_24px_rgba(20,8,0,0.4)]">
-        <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">
+        <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">
           TRANG DU KÝ · {m.status === "planned" ? "SẮP ĐI" : "ĐÃ MẶC"} · {place.toUpperCase()}
         </p>
         <h1 className="font-hand m-0 mt-1 text-3xl font-normal">{occasion}</h1>

@@ -73,7 +73,7 @@ export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap })
         ))}
       </div>
       {error && <p className="m-0 mt-2 text-sm text-[#B5452E]">{error}</p>}
-      <ul className="m-0 mt-3 list-none space-y-3 p-0">
+      <ul className="m-0 mt-3 list-none space-y-3 p-0" aria-live="polite">
         {history.map((a, i) => (
           <li key={`${a.q}-${i}`} className="rounded bg-white/55 p-3 text-sm">
             <p className="m-0 text-xs font-semibold opacity-70">Bạn: {a.q}</p>

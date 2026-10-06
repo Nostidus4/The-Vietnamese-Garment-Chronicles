@@ -174,7 +174,7 @@ export function DuKyPageView({
     <div className="flex h-full flex-col" style={{ color: INK }}>
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1">
-          <p className="m-0 flex items-center gap-2 text-[0.75rem] tracking-[0.25em] text-stone-500">
+          <p className="m-0 flex items-center gap-2 text-[0.75rem] tracking-[0.25em] text-stone-600">
             {page.status === "planned" ? "SẮP ĐI" : "ĐÃ MẶC"}
             <button type="button" onClick={() => setEditing((v) => !v)} className="tracking-normal text-[#8a4b2a] underline" aria-expanded={editing}>
               {editing ? "xong" : "✎ sửa"}
@@ -222,7 +222,7 @@ export function DuKyPageView({
           ))}
         </div>
       ) : (
-        <p className="m-0 mt-2 rounded border-2 border-dashed border-stone-300 p-3 text-center text-[0.75rem] text-stone-500">Chưa có ảnh</p>
+        <p className="m-0 mt-2 rounded border-2 border-dashed border-stone-300 p-3 text-center text-[0.75rem] text-stone-600">Chưa có ảnh</p>
       )}
 
       {page.status === "planned" && <Preparation page={page} data={data} />}
@@ -280,7 +280,7 @@ export function DuKyPageView({
             <a href={asset(`/chapter/${page.region_id}/?garment=${page.garment_id}`)} className={ACT}>
               Mặc lại look
             </a>
-            <button type="button" onClick={() => setAsking(true)} className="ml-auto rounded-full px-2.5 py-1 leading-tight text-stone-500 hover:bg-white/60">
+            <button type="button" onClick={() => setAsking(true)} className="ml-auto rounded-full px-2.5 py-1 leading-tight text-stone-600 hover:bg-white/60">
               Xóa trang
             </button>
           </>

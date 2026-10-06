@@ -5,7 +5,7 @@
 // ChapterView; everything here only shows and reports.
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { HAS_API } from "@/lib/api";
 import { asset } from "@/lib/base";
 import type { Bootstrap, CompassResult, CompassState, Garment, WardrobeItem, WardrobeSlot } from "@/lib/types";
@@ -13,6 +13,7 @@ import type { PieceState } from "@/lib/wardrobe";
 import { pickOption, pickedOption, zoneControl } from "@/lib/zones";
 import { ArtThumb, DRAWN } from "./PaperDoll";
 import type { Selection } from "@/lib/types";
+import { useDialog } from "@/lib/useDialog";
 
 export type Who = "nu" | "nam" | "con";
 
@@ -27,10 +28,11 @@ const WHO: { id: Who; name: string; note: string; soon?: boolean }[] = [
 
 export function WhoPicker({ value, onPick, onClose }: { value: Who | null; onPick: (w: Who) => void; onClose?: () => void }) {
   const reduced = !!useReducedMotion();
+  const box = useDialog<HTMLDivElement>(onClose); // no Esc on the first visit: there is nothing to go back to
   return (
     <motion.div className="fixed inset-0 z-50 grid place-items-center bg-[#140c07]/70 p-4 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-label="Ai mặc?" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <motion.div className="paper w-full max-w-lg rounded-xl p-6 text-center shadow-2xl" initial={reduced ? false : { y: 30, scale: 0.96 }} animate={{ y: 0, scale: 1 }}>
-        <p className="m-0 text-[0.75rem] uppercase tracking-[0.28em] text-stone-500">Tủ áo của Bà</p>
+      <motion.div ref={box} className="paper w-full max-w-lg rounded-xl p-6 text-center shadow-2xl" initial={reduced ? false : { y: 30, scale: 0.96 }} animate={{ y: 0, scale: 1 }}>
+        <p className="m-0 text-[0.75rem] uppercase tracking-[0.28em] text-stone-600">Tủ áo của Bà</p>
         <p className="font-hand m-0 mt-1 text-[1.6rem] leading-tight text-[#8a4b2a]">Hôm nay ai mặc đây con?</p>
         <div className="mt-5 flex justify-center gap-3" role="radiogroup" aria-label="Người mặc">
           {WHO.map((w) => (
@@ -45,7 +47,7 @@ export function WhoPicker({ value, onPick, onClose }: { value: Who | null; onPic
             >
               <WhoFigure who={w.id} />
               <span className="block text-[0.95rem] font-semibold">{w.name}</span>
-              <span className="block text-[0.75rem] text-stone-500">{w.note}</span>
+              <span className="block text-[0.75rem] text-stone-600">{w.note}</span>
             </button>
           ))}
         </div>
@@ -152,7 +154,7 @@ export function WardrobePanel({
                     <button
                       type="button"
                       aria-pressed={st === "worn"}
-                      aria-label={`${name}${st === "worn" ? ", đang mặc" : st === "bad" ? ", gây sai lệch" : st === "lock" ? ", chưa mở" : st === "off" ? `, ${noteOf(it)}` : ""}`}
+                      // no aria-label: the name and the note printed on the piece are its name (#58)
                       aria-disabled={st === "off" || st === "lock"}
                       onClick={() => onToggle(it)}
                       className={`w-item w-item-${st}`}
@@ -161,7 +163,7 @@ export function WardrobePanel({
                       <span className="w-hanger" aria-hidden />
                       <ItemPicture item={it} />
                       <span className="block text-[0.75rem] font-semibold leading-tight">{name}</span>
-                      <span className="block text-[0.75rem] leading-tight text-stone-500">{noteOf(it)}</span>
+                      <span className="block text-[0.75rem] leading-tight text-stone-600">{noteOf(it)}</span>
                     </button>
                     {it.garment && (
                       <button type="button" onClick={() => onLookReal(it.garment!)} className="mt-0.5 block w-full text-center text-[0.75rem] text-[#27354f] underline">
@@ -175,7 +177,7 @@ export function WardrobePanel({
           )}
         </motion.div>
       </AnimatePresence>
-      <p className="m-0 px-3 pb-2 text-[0.75rem] text-stone-500">Dịp: {data.occasions.find((o) => o.id === occasion)?.name}</p>
+      <p className="m-0 px-3 pb-2 text-[0.75rem] text-stone-600">Dịp: {data.occasions.find((o) => o.id === occasion)?.name}</p>
     </section>
   );
 }
@@ -201,7 +203,7 @@ function StyleDrawer({ data, garment, selection, onSelection }: { data: Bootstra
   return (
     <div className="space-y-4 p-1">
       <div>
-        <p className="m-0 mb-1.5 text-sm font-semibold text-[#27354f]">Màu vải <span className="font-normal text-stone-500">· tối đa 2: vải chính, rồi phần phối</span></p>
+        <p className="m-0 mb-1.5 text-sm font-semibold text-[#27354f]">Màu vải <span className="font-normal text-stone-600">· tối đa 2: vải chính, rồi phần phối</span></p>
         <div className="flex flex-wrap gap-2.5">
           {garment.colors.map((c) => {
             const i = selection.colors.indexOf(c);
@@ -235,7 +237,7 @@ function StyleDrawer({ data, garment, selection, onSelection }: { data: Bootstra
           );
         })}
       {garment.zones.some((z) => zoneControl(z) === "locked") && (
-        <p className="m-0 text-[0.75rem] text-stone-500">🔒 Giữ nguyên: {garment.zones.filter((z) => zoneControl(z) === "locked").map((z) => z.part).join(" · ")}</p>
+        <p className="m-0 text-[0.75rem] text-stone-600">🔒 Giữ nguyên: {garment.zones.filter((z) => zoneControl(z) === "locked").map((z) => z.part).join(" · ")}</p>
       )}
     </div>
   );
@@ -340,15 +342,11 @@ export function LookCard({
   const reduced = !!useReducedMotion();
   const [back, setBack] = useState(false);
   const [cardEl, setCardEl] = useState<HTMLDivElement | null>(null);
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
+  const box = useDialog<HTMLDivElement>(onClose);
   const stamp = STAMP[face.state];
   return (
     <motion.div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-[#140c07]/60 p-4 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-label="Thẻ Việt phục của con" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-      <div className="flex flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
+      <div ref={box} className="flex flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
         <motion.div
           ref={setCardEl}
           className="look-card-wrap"

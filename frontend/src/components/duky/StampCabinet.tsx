@@ -53,7 +53,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
   const allStamps = readable.length > 0 && readable.every((r) => arrived.includes(r.id) && understood.includes(r.id) && worn.has(r.id));
   return (
     <div className="flex h-full flex-col">
-      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">TỦ TEM</p>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">TỦ TEM</p>
       <p className="font-hand m-0 text-[1.15rem] leading-snug text-[#27354f]">
         Đọc sổ của Bà để hiểu, viết sổ của mình để mặc.
       </p>
@@ -73,7 +73,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
           const place = r.name.split("/")[0].trim();
           if (r.status === "locked" && !r.chapters.some((c) => c.status === "open"))
             return (
-              <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-1 text-stone-400">
+              <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-1 text-stone-600">
                 <span className="font-display w-[5.5rem] shrink-0 text-[0.8rem] leading-tight">{place}</span>
                 <span className="font-hand text-[0.9rem]">chờ cộng đồng cùng viết</span>
               </li>
@@ -83,7 +83,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
               <a href={asset(`/?region=${r.id}&page=own`)} className="font-display w-[5.5rem] shrink-0 text-[0.8rem] leading-tight text-[#27354f] hover:underline">
                 {place}
                 {stopsTotal(r) > 0 && (
-                  <span className="block font-sans text-[0.75rem] text-stone-500">
+                  <span className="block font-sans text-[0.75rem] text-stone-600">
                     tem điểm {stopsGot(r)}/{stopsTotal(r)}
                   </span>
                 )}
@@ -121,7 +121,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
             ✉ Lá thư cuối của Bà
           </button>
         ) : (
-          <span className="font-hand text-[0.85rem] text-stone-400">đủ bưu thiếp sẽ mở lá thư cuối</span>
+          <span className="font-hand text-[0.85rem] text-stone-600">đủ bưu thiếp sẽ mở lá thư cuối</span>
         )}
       </div>
       {reading && <PostcardViewer region={reading} onClose={() => setReading(null)} />}
