@@ -1,6 +1,6 @@
 "use client";
 
-import { animate } from "framer-motion";
+import { animate, MotionConfig } from "framer-motion";
 import { useState } from "react";
 import { useBootstrap } from "@/lib/useBootstrap";
 import { DeskScene } from "../desk/DeskScene";
@@ -53,12 +53,14 @@ export default function Home() {
   if (error) return <p className="p-8 text-red-700">{error}</p>;
 
   return (
-    <>
+    // with "reduce motion" on, every slide, zoom and turn of the opening and the desk becomes a plain fade: framer
+    // keeps opacity and drops transforms (#96); the hand-made checks of `reduced` further down stay as they are
+    <MotionConfig reducedMotion="user">
       {!data && logo === "off" && <div className="fixed inset-0 z-40 bg-[#140c07]" />}
       {logo !== "off" && <LogoIntro ready={!!data} onLeave={() => setLogo("leaving")} onDone={() => setLogo("off")} />}
       {mode === "opening" && data && data.opening.length > 0 && <OpeningPlayer screens={data.opening} flashEl={flashEl} onFinish={finishOpening} pace={opts.pace} debug={opts.debug} noClick={opts.noClick} startId={opts.start} hold={logo === "on"} sound={opts.sound} />}
       {(mode === "desk" || data?.opening.length === 0) && data && <DeskScene data={data} landing={landing} />}
       <div ref={setFlashEl} className="flash-layer pointer-events-none fixed inset-0 z-50 opacity-0" aria-hidden />
-    </>
+    </MotionConfig>
   );
 }
