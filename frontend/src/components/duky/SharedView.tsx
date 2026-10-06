@@ -58,6 +58,13 @@ export function SharedView({ id }: { id: string }) {
   const place = data.regions.find((r) => r.id === m.region_id)?.name.split("/")[0].trim() ?? "";
   return (
     <main className="desk min-h-screen px-4 py-8">
+      {/* who sent this, for someone who has never opened the app (#54) */}
+      <header className="mx-auto mb-4 max-w-md text-center text-amber-50">
+        <p className="font-hand m-0 text-2xl">Việt Phục Du Ký</p>
+        <p className="m-0 mt-1 text-sm text-amber-50/85">
+          Một người bạn chia sẻ với bạn một lần họ mặc Việt phục, ghi trong cuốn sổ đưa người trẻ đi qua trang phục truyền thống từng vùng.
+        </p>
+      </header>
       <article className="paper mx-auto max-w-md rounded-md p-6 text-[#27354f] shadow-[0_10px_24px_rgba(20,8,0,0.4)]">
         <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-500">
           TRANG DU KÝ · {m.status === "planned" ? "SẮP ĐI" : "ĐÃ MẶC"} · {place.toUpperCase()}
@@ -71,7 +78,11 @@ export function SharedView({ id }: { id: string }) {
           {page.photo_urls.map((u, i) => (
             <figure key={u} className="relative m-0 bg-white p-2 pb-3 shadow-[0_6px_14px_rgba(60,35,10,0.3)]">
               {/* eslint-disable-next-line @next/next/no-img-element -- a photo the reader shared */}
-              <img src={u.startsWith("/") ? `${API_URL}${u}` : u} alt="" className="aspect-[3/4] w-full object-cover" />
+              <img
+                src={u.startsWith("/") ? `${API_URL}${u}` : u}
+                alt={m.photo_kinds[i] === "real" ? `Ảnh mặc ${g?.name_vi ?? "Việt phục"} thật` : `Ảnh ${g?.name_vi ?? "Việt phục"} ${m.photo_kinds[i] === "card" ? "trên thẻ búp bê giấy" : "minh họa AI"}`}
+                className="aspect-[3/4] w-full object-cover"
+              />
               {m.photo_kinds[i] === "card" ? (
                 <span className="absolute bottom-3 left-3 rounded bg-[#8a4b2a]/85 px-2 py-0.5 text-xs font-semibold text-white">Thẻ búp bê giấy</span>
               ) : m.photo_kinds[i] === "ai" ? (
@@ -89,7 +100,7 @@ export function SharedView({ id }: { id: string }) {
         {m.note && <p className="font-hand m-0 mt-4 text-2xl leading-snug text-[#1f3a78]">{m.note}</p>}
         {g?.summary && <p className="mt-4 text-sm leading-relaxed text-stone-700">{g.summary}</p>}
         <Link href="/" className="mt-6 inline-block rounded-full bg-[#27354f] px-5 py-2 text-sm text-amber-50">
-          Mở sổ của Bà và viết Du Ký của bạn →
+          Tự mình thử: đọc, phối áo và ghi Du Ký →
         </Link>
       </article>
     </main>

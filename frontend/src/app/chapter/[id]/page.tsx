@@ -15,6 +15,15 @@ export function generateStaticParams() {
   return ids.map((id) => ({ id }));
 }
 
+/** "Tủ áo của Bà · Huế": a tab per room instead of the same title everywhere (#54). */
+export async function generateMetadata({ params }: PageProps<"/chapter/[id]">) {
+  const { id } = await params;
+  const file = path.join(process.cwd(), "..", "backend", "content", "regions.json");
+  const region = fs.existsSync(file) ? (JSON.parse(fs.readFileSync(file, "utf8")).regions as { id: string; name: string }[]).find((r) => r.id === id) : undefined;
+  const place = region?.name.split("/")[0].trim();
+  return { title: place ? `Tủ áo của Bà · ${place}` : "Tủ áo của Bà" };
+}
+
 export default async function ChapterPage({ params }: PageProps<"/chapter/[id]">) {
   const { id } = await params;
   return (

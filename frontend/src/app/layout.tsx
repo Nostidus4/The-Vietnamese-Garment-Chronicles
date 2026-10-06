@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Be_Vietnam_Pro, Patrick_Hand } from "next/font/google";
 import Link from "next/link";
 import { AmbientSound } from "@/components/AmbientSound";
@@ -11,10 +11,32 @@ import { asset } from "@/lib/base";
 const body = Be_Vietnam_Pro({ variable: "--font-body", subsets: ["vietnamese", "latin"], weight: ["400", "600", "700"] });
 const hand = Patrick_Hand({ variable: "--font-hand", subsets: ["vietnamese", "latin"], weight: "400" });
 
+const DESCRIPTION =
+  "Cuốn sổ của Bà đưa bạn đi qua trang phục truyền thống từng vùng: đọc nhật ký, phối áo cùng Compass văn hóa, thử với ảnh của mình và ghi Du Ký những lần mặc.";
+
+// what a link shows when it is pasted into Zalo, Messenger or Facebook (#54); the icons and the share picture are
+// the files icon.png, apple-icon.png, opengraph-image.jpg and twitter-image.jpg in this folder
 export const metadata: Metadata = {
-  title: "Việt Phục Du Ký",
-  description: "Hiểu để mặc đúng – Sáng tạo để mặc theo cách của mình.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_ORIGIN ?? "https://nostidus4.github.io"),
+  title: { default: "Việt Phục Du Ký", template: "%s · Việt Phục Du Ký" },
+  description: DESCRIPTION,
+  applicationName: "Việt Phục Du Ký",
+  openGraph: {
+    type: "website",
+    locale: "vi_VN",
+    siteName: "Việt Phục Du Ký",
+    title: "Việt Phục Du Ký – Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình",
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Việt Phục Du Ký",
+    description: DESCRIPTION,
+  },
 };
+
+// the colour of the browser bar on phones, and the page under the iPhone's home bar (safe-area insets)
+export const viewport: Viewport = { themeColor: "#3b2615", viewportFit: "cover" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
