@@ -4,26 +4,29 @@
   "name_vi": "Áo dài hiện đại",
   "name_en": "Modern ao dai",
   "group": "cach-tan",
-  "period": "Thế kỷ XX: áo Le Mur (Cát Tường) đầu thập niên 1930, áo Lê Phổ, dáng ôm Sài Gòn thập niên 1950",
-  "summary": "Biểu tượng quen thuộc nhất của Việt Nam, và cũng là kết quả của một lần cách tân từ áo ngũ thân.",
+  "period": "Thế kỷ XX: áo Le Mur (Cát Tường) đầu thập niên 1930, áo Lê Phổ, áo chít eo thập niên 1950, tay raglan Sài Gòn thập niên 1960",
+  "summary": "Biểu tượng quen thuộc nhất của Việt Nam, hình thành qua nhiều lần cách tân từ áo ngũ thân.",
   "facts": [
     {
       "text": "Kiểu áo dài tân thời do họa sĩ Cát Tường (Le Mur) giới thiệu đầu thập niên 1930, tiếp đó là cải tiến của Lê Phổ.",
       "sources": [
-        "ref-04"
+        "ref-04",
+        "ref-03"
       ]
     },
     {
-      "text": "Thợ may Sài Gòn làm áo ôm dáng, tay raglan trong thập niên 1950 – dạng phổ biến hiện nay.",
+      "text": "Thập niên 1950, áo dài chít eo, ôm sát thân; đến thập niên 1960, nhà may Dung ở Dakao (Sài Gòn) đưa ra kiểu tay raglan (giác lăng) – nền tảng của dáng áo dài phổ biến hiện nay.",
       "sources": [
-        "ref-66"
+        "ref-04",
+        "tapchicongthuong-ao-dai"
       ]
     },
     {
-      "text": "“Tri thức may và mặc áo dài Huế” là Di sản văn hóa phi vật thể quốc gia (2024).",
+      "text": "“Tri thức may, mặc áo dài Huế” là Di sản văn hóa phi vật thể quốc gia (2024).",
       "sources": [
         "ref-08",
-        "ref-11"
+        "ref-11",
+        "ref-12"
       ]
     }
   ],
@@ -59,8 +62,7 @@
           "prompt": "boat neck: a wide, shallow neckline with no standing collar",
           "sources": [
             "ref-03",
-            "ref-04",
-            "ref-66"
+            "ref-04"
           ]
         }
       ]
@@ -135,11 +137,11 @@
   "wearing_steps": [
     {
       "title": "Mặc quần",
-      "detail": "Quần dài, thường trắng hoặc cùng màu áo."
+      "detail": "Quần dài ống rộng vừa phải, phổ biến nhất là màu trắng."
     },
     {
       "title": "Mặc áo",
-      "detail": "Cài khuy hoặc kéo khóa bên sườn phải cho áo ôm vừa người."
+      "detail": "Mặc áo, cài kín cho áo ôm vừa người."
     },
     {
       "title": "Chỉnh hai tà",
@@ -152,9 +154,11 @@
     "Phần nào của áo dài được đổi?"
   ],
   "sources": [
+    "ref-03",
     "ref-04",
     "ref-08",
-    "research-6"
+    "ref-11",
+    "tapchicongthuong-ao-dai"
   ],
-  "verified": false
+  "verified": true
 }

@@ -31,15 +31,19 @@
       "id": "rua",
       "term": "rứa",
       "text": "Tiếng Huế, nghĩa là “thế”, “vậy”. “Rứa thôi” là “thế thôi”.",
-      "sources": [],
-      "verified": false
+      "sources": [
+        "hueuni-phuong-ngu-hue"
+      ],
+      "verified": true
     },
     {
       "id": "hoa-dang",
       "term": "Hoa đăng",
-      "text": "Đèn hình hoa sen, thắp nến rồi thả trôi trên sông, gửi theo một lời cầu an.",
-      "sources": [],
-      "verified": false
+      "text": "Đèn giấy thắp nến bên trong, thả trôi trên sông, gửi theo một lời cầu an.",
+      "sources": [
+        "vnexpress-hoa-dang-song-huong"
+      ],
+      "verified": true
     },
     {
       "id": "bai-choi",
@@ -82,11 +86,12 @@
     {
       "id": "giay-do",
       "term": "Giấy dó",
-      "text": "Giấy làm từ vỏ cây dó, dai và bền; làng Đông Hồ phủ thêm bột vỏ điệp lên để in tranh.",
+      "text": "Giấy làm từ vỏ cây dó, xốp và dai; làng Đông Hồ quét thêm lớp hồ trộn bột vỏ điệp lên để in tranh.",
       "sources": [
-        "tuoitre-in-dong-ho"
+        "vietnamplus-tranh-dong-ho",
+        "tapchicongthuong-dong-ho"
       ],
-      "verified": false
+      "verified": true
     },
     {
       "id": "giay-diep",

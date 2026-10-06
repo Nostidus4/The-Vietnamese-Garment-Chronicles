@@ -5,12 +5,13 @@
   "name_en": "Ba ba shirt",
   "group": "dan-gian",
   "period": "Trang phục dân gian Nam Bộ",
-  "summary": "Trang phục đời thường miền sông nước, nhẹ và thoáng, hợp khí hậu nóng.",
+  "summary": "Trang phục đời thường miền sông nước, nhẹ, mau khô, hợp khí hậu nóng ẩm.",
   "facts": [
     {
-      "text": "Nhẹ, thoáng, hợp khí hậu nóng của Nam Bộ.",
+      "text": "Vải mỏng, nhẹ, thấm mồ hôi và mau khô, hợp khí hậu nóng ẩm quanh năm của Nam Bộ.",
       "sources": [
-        "research-5-3"
+        "tcgdnt-ao-ba-ba",
+        "voh-ao-ba-ba"
       ]
     }
   ],
@@ -76,8 +77,7 @@
     "tui-tote",
     "kinh-mat",
     "obi",
-    "guoc-moc",
-    "hai-vai"
+    "guoc-moc"
   ],
   "must_keep": [
     "short tunic with side slits",
@@ -92,7 +92,7 @@
   "wearing_steps": [
     {
       "title": "Mặc quần",
-      "detail": "Quần dài ống rộng cho dễ ngồi, dễ lội nước."
+      "detail": "Quần dài trơn, thường màu đen hoặc trắng."
     },
     {
       "title": "Mặc áo",
@@ -100,7 +100,7 @@
     },
     {
       "title": "Khăn rằn",
-      "detail": "Quàng cổ hoặc trùm đầu khi ra nắng, đội thêm nón lá."
+      "detail": "Quấn khăn rằn trên đầu hoặc cột ngang hông; đội thêm nón lá khi ra nắng."
     }
   ],
   "ask_suggest": [
@@ -109,8 +109,9 @@
     "Áo bà ba hợp mặc dịp nào?"
   ],
   "sources": [
-    "research-5-3",
-    "ref-01"
+    "tcgdnt-ao-ba-ba",
+    "ref-79",
+    "voh-ao-ba-ba"
   ],
-  "verified": false
+  "verified": true
 }

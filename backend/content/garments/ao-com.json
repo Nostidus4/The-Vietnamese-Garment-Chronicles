@@ -10,19 +10,23 @@
     {
       "text": "Áo cóm là áo ngắn, may ôm người, gấu áo vừa chạm cạp váy.",
       "sources": [
-        "heritage-thai"
+        "heritage-thai",
+        "vov4-ao-com",
+        "dantoc-thai-laichau"
       ]
     },
     {
-      "text": "Phía trước áo có một hàng cúc bạc hình bướm; người Thái quan niệm số cúc phải là số lẻ, tượng trưng cho sự sống và sinh sôi.",
+      "text": "Phía trước áo có hàng cúc bạc hình bướm, mỗi cúc gồm hai nửa đực – cái cài vào nhau; người Thái quan niệm số cúc phải là số lẻ, tượng trưng cho sự sống và sinh sôi.",
       "sources": [
-        "heritage-thai"
+        "heritage-thai",
+        "vov4-ao-com"
       ]
     },
     {
       "text": "Áo cóm của phụ nữ Thái Đen có cổ tròn đứng, của phụ nữ Thái Trắng có cổ chữ V.",
       "sources": [
-        "heritage-thai"
+        "heritage-thai",
+        "vov4-ao-com"
       ]
     },
     {
@@ -34,13 +38,15 @@
     {
       "text": "Khăn piêu dệt từ sợi bông, thêu hoa văn ở hai đầu khăn; cô gái Thái tự dệt, thêu piêu tặng người yêu như lời ước hẹn.",
       "sources": [
-        "baolaocai-pieu"
+        "baolaocai-pieu",
+        "dantoc-thai-laichau"
       ]
     },
     {
       "text": "Phụ nữ Thái Đen đã có chồng búi tóc lên đỉnh đầu, gọi là tằng cẩu.",
       "sources": [
-        "heritage-thai"
+        "heritage-thai",
+        "nhandan-dan-toc-thai"
       ]
     }
   ],
@@ -86,11 +92,11 @@
   ],
   "must_keep": [
     "short fitted blouse ending at the skirt waistband",
-    "a single row of silver butterfly-shaped buttons down the front",
+    "paired silver butterfly-shaped buttons down the front opening",
     "long tube skirt of indigo-dyed cotton"
   ],
   "must_avoid": [
-    "Chinese mandarin collar or frog buttons",
+    "Chinese frog (knotted) buttons or qipao styling",
     "Thai (Thailand) court dress"
   ],
   "reference_image": null,
@@ -103,7 +109,10 @@
   ],
   "sources": [
     "heritage-thai",
-    "baolaocai-pieu"
+    "baolaocai-pieu",
+    "vov4-ao-com",
+    "dantoc-thai-laichau",
+    "nhandan-dan-toc-thai"
   ],
   "verified": true
 }

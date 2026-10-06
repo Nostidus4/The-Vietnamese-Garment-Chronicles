@@ -12,7 +12,7 @@
     {"id": "q-hanbok", "image": "quiz/q-hanbok.jpg", "answer": "hanbok",
      "explanation": "Hanbok: áo jeogori ngắn, cổ chéo, thắt nơ goreum trước ngực, váy chima xòe tách rời.", "sources": ["ref-61"], "verified": false},
     {"id": "q-hanfu", "image": "quiz/q-hanfu.jpg", "answer": "hanfu",
-     "explanation": "Hanfu kiểu áo quần (aoqun): áo cổ chéo vạt phải đè trái, váy mã diện mặt trước phẳng, hai bên xếp ly.", "sources": ["ref-57"], "verified": false},
+     "explanation": "Hanfu kiểu áo quần (aoqun): áo cổ chéo vạt trái đè phải, váy mã diện mặt trước phẳng, hai bên xếp ly.", "sources": ["ref-57", "wiki-hanfu"], "verified": false},
     {"id": "q-kimono", "image": "quiz/q-kimono.jpg", "answer": "kimono",
      "explanation": "Kimono: thân áo thẳng hình chữ T, tay áo rộng vuông, vạt trái đè phải, thắt obi bản to.", "sources": ["ref-55"], "verified": false}
   ]
