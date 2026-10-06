@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { compareLooks } from "@/lib/api";
 import type { Bootstrap, CompassResult, CompassState, Selection } from "@/lib/types";
 import { zoneChanges } from "@/lib/zones";
+import { labelVi } from "@/lib/text";
 
 const STATE: Record<CompassState, { icon: string; name: string; tone: string }> = {
   fit: { icon: "✅", name: "Phù hợp", tone: "border-emerald-400" },
@@ -51,9 +52,9 @@ export function ComparePanel({ current, data, onUse }: { current: Selection; dat
   return (
     <section className="paper rounded-lg p-5">
       <div className="flex flex-wrap items-center gap-2">
-        <h3 className="m-0 font-semibold">So sánh các look</h3>
+        <h3 className="m-0 font-semibold">So sánh các bộ phối</h3>
         <span className="text-sm text-stone-600">
-          {pinned.length}/{MAX} look đã ghim
+          {pinned.length}/{MAX} bộ đã ghim
         </span>
         <button
           type="button"
@@ -61,11 +62,11 @@ export function ComparePanel({ current, data, onUse }: { current: Selection; dat
           onClick={() => setPinned((p) => [...p, current])}
           className="ml-auto rounded-full border border-stone-700 px-3 py-1 text-sm hover:bg-stone-800 hover:text-amber-50 disabled:opacity-40"
         >
-          {already ? "Look này đã ghim" : pinned.length >= MAX ? "Đã đủ 3 look" : "📌 Ghim look đang phối"}
+          {already ? "Bộ này đã ghim" : pinned.length >= MAX ? "Đã đủ 3 bộ" : "📌 Ghim bộ đang phối"}
         </button>
       </div>
       {pinned.length < 2 && (
-        <p className="m-0 mt-2 text-sm text-stone-600">Ghim ít nhất 2 look (đổi màu, dịp hay phụ kiện giữa các lần ghim) để Compass chấm cạnh nhau.</p>
+        <p className="m-0 mt-2 text-sm text-stone-600">Ghim ít nhất 2 bộ (đổi màu, dịp hay phụ kiện giữa các lần ghim) để Compass chấm cạnh nhau.</p>
       )}
       {error && <p className="m-0 mt-2 text-sm text-[#B5452E]">{error}</p>}
       {pinned.length > 0 && (
@@ -76,7 +77,7 @@ export function ComparePanel({ current, data, onUse }: { current: Selection; dat
             const [garment, occasion, colors, acc] = describe(data, s);
             return (
               <div key={key(s)} className={`rounded-md border-2 bg-white/60 p-3 text-sm ${st?.tone ?? "border-stone-300"}`}>
-                <p className="m-0 text-xs font-semibold uppercase tracking-wider text-stone-600">Look {i + 1}</p>
+                <p className="m-0 text-xs font-semibold uppercase tracking-wider text-stone-600">Bộ {i + 1}</p>
                 <p className="m-0 mt-1 font-semibold">{garment}</p>
                 <p className="m-0 text-xs text-stone-600">{occasion}</p>
                 <p className="m-0 text-xs text-stone-600">{colors}</p>
@@ -85,14 +86,14 @@ export function ComparePanel({ current, data, onUse }: { current: Selection; dat
                   <>
                     <p className="m-0 mt-2 font-semibold">
                       {st.icon} {st.name}
-                      {r.label && <span className="ml-1 text-xs font-normal text-stone-600">· {r.label}</span>}
+                      {r.label && <span className="ml-1 text-xs font-normal text-stone-600">· {labelVi(r.label)}</span>}
                     </p>
                     {r.triggers[0] && <p className="m-0 mt-1 text-xs text-stone-700">{r.triggers[0].teo}</p>}
                   </>
                 )}
                 <div className="mt-2 flex gap-3 text-xs">
                   <button type="button" onClick={() => onUse(s)} className="underline">
-                    Phối tiếp look này
+                    Phối tiếp bộ này
                   </button>
                   <button type="button" onClick={() => setPinned((p) => p.filter((_, j) => j !== i))} className="text-stone-600 underline">
                     Bỏ ghim

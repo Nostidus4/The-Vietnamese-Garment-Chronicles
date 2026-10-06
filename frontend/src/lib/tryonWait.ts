@@ -30,7 +30,7 @@ export const retryLabel = (left: number) => (left > 0 ? `Thử lại sau ${left}
 
 /** Stop waiting on a shared promise (e.g. serverReady) when the viewer cancels, without cancelling it for others. */
 export function untilAborted<T>(p: Promise<T>, signal: AbortSignal): Promise<T> {
-  const aborted = () => new DOMException("Đã huỷ", "AbortError");
+  const aborted = () => new DOMException("Đã hủy", "AbortError");
   if (signal.aborted) return Promise.reject(aborted());
   return new Promise<T>((resolve, reject) => {
     const onAbort = () => reject(aborted());

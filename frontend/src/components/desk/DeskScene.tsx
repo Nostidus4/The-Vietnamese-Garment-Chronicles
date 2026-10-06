@@ -380,7 +380,7 @@ export function DeskScene({
                     repeatType: "mirror",
                   }}
                 >
-                  Chạm để mở sách
+                  Bấm để mở sách
                 </motion.p>
               )}
             </AnimatePresence>

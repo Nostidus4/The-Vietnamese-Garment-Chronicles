@@ -369,7 +369,7 @@ function DeskBook({
           </div>
           {phase === "closed" && (
             <p className="font-hand absolute -bottom-14 left-0 right-0 text-center text-xl text-[#F3EAD7]/85">
-              {book.pages.length ? `${book.pages.length} lần mặc · chạm để mở` : "Chạm để mở sổ của con"}
+              {book.pages.length ? `${book.pages.length} lần mặc · bấm để mở` : "Bấm để mở sổ của con"}
             </p>
           )}
         </motion.div>

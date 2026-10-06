@@ -230,3 +230,16 @@ def test_team_notes_never_reach_the_reader(tmp_path):
     assert any("rules.json" in e and "why" in e for e in shown)
     assert any("sources.json" in e and "title" in e for e in shown)
     assert not any("note" in e.split("at ")[-1] for e in shown)
+
+
+def test_one_way_of_writing(tmp_path):
+    # #59: the tone on the main vowel (họa, not hoạ), no "??", curly quotes in shown text
+    root = _copy(tmp_path)
+    p = root / "garments" / "ao-dai.json"
+    data = json.loads(p.read_text(encoding="utf-8"))
+    data["summary"] = 'Áo dài, "biểu tượng" văn hoá??'
+    p.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    _, rep = store.load(root)
+    found = [e for e in rep.errors if "house way" in e and "ao-dai" in e]
+    assert any("'oá'" in e for e in found)
+    assert any("'\"'" in e or "'??'" in e for e in found)

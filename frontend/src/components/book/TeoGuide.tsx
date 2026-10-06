@@ -12,7 +12,7 @@ const KEY = "vpdk-guide";
 const TIPS = [
   { id: "next", target: '[data-guide="next"]', text: "Bấm nút vàng này để đi tiếp. Kéo góc trang, hay dùng phím ← →, cũng lật được." },
   { id: "pin", target: ".teo-pin", text: "Thấy ghim đỏ là có ghi chú của tớ. Bấm vào để đọc thêm nhé." },
-  { id: "tabs", target: '[data-guide="tabs"]', text: "Mấy dải màu này là mục lục nhanh của chương: bấm để nhảy tới phần con muốn." },
+  { id: "tabs", target: '[data-guide="tabs"]', text: "Mấy dải màu này là mục lục nhanh của chương: bấm để nhảy tới phần bạn muốn." },
 ] as const;
 type Tip = (typeof TIPS)[number];
 
@@ -115,7 +115,7 @@ export function TeoGuide() {
               }
             />
           )}
-          <b className="font-hand block text-[1.05rem] text-[#8a4b2a]">Tèo chỉ con</b>
+          <b className="font-hand block text-[1.05rem] text-[#8a4b2a]">Tèo chỉ bạn</b>
           {tip.tip.text}
           <span className="mt-2 flex items-center justify-between">
             <span className="text-[0.75rem] opacity-70">

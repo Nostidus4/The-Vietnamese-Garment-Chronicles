@@ -15,7 +15,7 @@
     {
       "type": "restricted",
       "state": "distorted",
-      "ti": "Món này nhìn rất 'quyền lực', nhưng không dành cho thời trang đâu.",
+      "ti": "Món này nhìn rất “quyền lực”, nhưng không dành cho thời trang đâu.",
       "teo": "Đây là món gắn với quy chế hoặc nghi lễ. Dùng làm phụ kiện thời trang có thể làm sai ý nghĩa gốc.",
       "why": "Món này gắn với quy chế hoặc nghi lễ xưa, không phải phụ kiện thời trang. Dùng tùy tiện là làm sai ý nghĩa gốc.",
       "sources": [
@@ -25,7 +25,7 @@
       "internal_ref": "Research Mục 19.1 và 19.2, tiêu chí 4: tôn trọng yếu tố thiêng và quy chế lễ nghi.",
       "by": {
         "accessory": {
-          "ti": "{name} nhìn rất 'quyền lực', nhưng không dành cho thời trang đâu.",
+          "ti": "{name} nhìn rất “quyền lực”, nhưng không dành cho thời trang đâu.",
           "teo": "{name} gắn với quy chế hoặc nghi lễ xưa. Đội, đeo cho đẹp thì dễ làm sai ý nghĩa gốc của nó.",
           "why": "{name} gắn với quy chế hoặc nghi lễ xưa, không phải phụ kiện thời trang. Dùng tùy tiện là làm sai ý nghĩa gốc."
         }
@@ -52,18 +52,18 @@
     {
       "type": "caution",
       "state": "review",
-      "ti": "Chỗ này đổi được, nhưng đổi nhiều quá thì nên gọi là 'lấy cảm hứng' nhé.",
-      "teo": "Phần này linh hoạt có giới hạn. Nếu đổi xa, hãy gắn nhãn Inspired để người xem hiểu đúng.",
-      "why": "Phần này đổi được nhưng có giới hạn. Đổi xa khỏi dáng gốc thì nên gắn nhãn 'lấy cảm hứng' để người xem hiểu đúng.",
+      "ti": "Chỗ này đổi được, nhưng đổi nhiều quá thì nên gọi là “lấy cảm hứng” nhé.",
+      "teo": "Phần này linh hoạt có giới hạn. Nếu đổi xa, hãy ghi là “lấy cảm hứng” để người xem hiểu đúng.",
+      "why": "Phần này đổi được nhưng có giới hạn. Đổi xa khỏi dáng gốc thì nên gắn nhãn “lấy cảm hứng” để người xem hiểu đúng.",
       "sources": [
         "research-19-1"
       ],
       "internal_ref": "Research Mục 19.1: độ dài, độ rộng tay linh hoạt ở nhóm Adapted, không ở Authentic.",
       "by": {
         "zone": {
-          "ti": "{zone} kiểu “{option}” đổi được, nhưng đổi xa quá thì nên gọi là 'lấy cảm hứng' nhé.",
+          "ti": "{zone} kiểu “{option}” đổi được, nhưng đổi xa quá thì nên gọi là “lấy cảm hứng” nhé.",
           "teo": "{zone} là phần linh hoạt có giới hạn. Chọn “{option}” thì nên ghi rõ là bản cách tân để người xem hiểu đúng.",
-          "why": "{zone} đổi được nhưng có giới hạn. Đổi sang “{option}” là đã đi xa dáng gốc, nên gắn nhãn 'lấy cảm hứng' để người xem hiểu đúng."
+          "why": "{zone} đổi được nhưng có giới hạn. Đổi sang “{option}” là đã đi xa dáng gốc, nên gắn nhãn “lấy cảm hứng” để người xem hiểu đúng."
         }
       }
     },
@@ -93,7 +93,7 @@
     {
       "type": "flexible",
       "state": "adapted",
-      "ti": "Phối hiện đại quá xịn! Đây là cách tân có chủ đích.",
+      "ti": "Phối hiện đại mà vẫn giữ dáng áo, đẹp lắm! Đây là cách tân có chủ đích.",
       "teo": "Bạn đang đổi phần linh hoạt (màu, chất liệu, phụ kiện hiện đại) và vẫn giữ dáng áo. Chuyên gia ủng hộ cách này.",
       "why": "Màu vải, chất liệu và phụ kiện hiện đại là phần linh hoạt. Giữ đúng dáng áo thì cách tân như vậy được nhiều người làm nghề ủng hộ.",
       "sources": [
@@ -102,7 +102,7 @@
       "internal_ref": "Research Mục 19: họa sĩ Trịnh Quang Vũ và NTK Vũ Việt Hà ủng hộ phối hiện đại nếu giữ đúng dáng áo.",
       "by": {
         "accessory": {
-          "ti": "Thêm {name} cho hợp phố xá, quá xịn! Đây là cách tân có chủ đích.",
+          "ti": "Thêm {name} cho hợp phố xá, đẹp lắm! Đây là cách tân có chủ đích.",
           "teo": "{name} là phụ kiện hiện đại. Đeo kèm mà vẫn giữ dáng áo thì vẫn là bộ áo cũ, chỉ trẻ trung hơn.",
           "why": "Phụ kiện hiện đại là phần linh hoạt. Giữ đúng dáng áo thì phối thêm {name} là cách tân được nhiều người làm nghề ủng hộ."
         },
@@ -112,7 +112,7 @@
           "why": "Màu vải là phần linh hoạt. Giữ đúng dáng áo thì đổi sang màu {name} là cách tân được nhiều người làm nghề ủng hộ."
         },
         "zone": {
-          "ti": "{zone} kiểu “{option}”, vẫn giữ dáng áo, xịn đó! Đây là cách tân có chủ đích.",
+          "ti": "{zone} kiểu “{option}” mà vẫn giữ dáng áo, đẹp đó! Đây là cách tân có chủ đích.",
           "teo": "{zone} là phần được đổi tự do. Dáng áo vẫn giữ nên bộ áo vẫn là bộ áo cũ.",
           "why": "{zone} là phần linh hoạt của bộ áo. Đổi sang “{option}” mà vẫn giữ dáng áo là cách tân được nhiều người làm nghề ủng hộ."
         }

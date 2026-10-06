@@ -10,6 +10,7 @@ import { cited } from "@/lib/sources";
 import { track } from "@/lib/track";
 import type { Bootstrap, Shop } from "@/lib/types";
 import { asset } from "@/lib/base";
+import { labelVi } from "@/lib/text";
 
 const INK = "#27354f";
 const ACT = "rounded-full border border-stone-400/80 bg-white/40 px-2.5 py-1 leading-tight hover:bg-white/80";
@@ -187,7 +188,7 @@ export function DuKyPageView({
           <p className="m-0 text-[0.75rem] text-stone-600">
             {g?.name_vi ?? page.garment_id}
             {page.date ? ` · ${formatDate(page.date)}` : ""}
-            {page.compass_label ? ` · ${VERDICT[page.compass_label] ?? ""} ${page.compass_label}` : ""}
+            {page.compass_label ? ` · ${VERDICT[page.compass_label] ?? ""} ${labelVi(page.compass_label)}` : ""}
           </p>
         </div>
         <RegionStamp page={page} place={place} />
@@ -278,7 +279,7 @@ export function DuKyPageView({
               </button>
             )}
             <a href={asset(`/chapter/${page.region_id}/?garment=${page.garment_id}`)} className={ACT}>
-              Mặc lại look
+              Mặc lại bộ này
             </a>
             <button type="button" onClick={() => setAsking(true)} className="ml-auto rounded-full px-2.5 py-1 leading-tight text-stone-600 hover:bg-white/60">
               Xóa trang

@@ -57,7 +57,7 @@ export function TeoPin({
           {!badge && unesco ? " · UNESCO" : ""}
         </span>
       </button>
-      <TeoModal open={open} onClose={() => setOpen(false)} notes={notes} data={data} heading={badge ? "Tèo chỉ con" : undefined} />
+      <TeoModal open={open} onClose={() => setOpen(false)} notes={notes} data={data} heading={badge ? "Tèo chỉ bạn" : undefined} />
     </>
   );
 }

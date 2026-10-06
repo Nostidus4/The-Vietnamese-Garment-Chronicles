@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { API_URL, getShare, HAS_API, type SharedPage } from "@/lib/api";
 import { useBootstrap } from "@/lib/useBootstrap";
+import { labelVi } from "@/lib/text";
 
 const MONTH = (m: string) => {
   const [y, mm] = m.split("-");
@@ -72,7 +73,7 @@ export function SharedView({ id }: { id: string }) {
         <h1 className="font-hand m-0 mt-1 text-3xl font-normal">{occasion}</h1>
         <p className="m-0 text-sm text-stone-600">
           {g?.name_vi} · {MONTH(m.month)}
-          {m.compass_label ? ` · ${m.compass_label}` : ""}
+          {m.compass_label ? ` · ${labelVi(m.compass_label)}` : ""}
         </p>
         <div className={`mt-4 grid gap-3 ${page.photo_urls.length > 1 ? "grid-cols-2" : "px-10"}`}>
           {page.photo_urls.map((u, i) => (

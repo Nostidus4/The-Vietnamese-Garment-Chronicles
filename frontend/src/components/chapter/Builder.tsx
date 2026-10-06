@@ -3,6 +3,7 @@
 import type { Bootstrap, Garment, Selection, Vibe } from "@/lib/types";
 import { pickOption, pickedOption, zoneControl } from "@/lib/zones";
 import { STATE } from "./CompassPanel";
+import { lowerFirst } from "@/lib/text";
 
 export type BuilderPart = "occasion" | "style" | "zones" | "accessories";
 
@@ -102,7 +103,7 @@ export function Builder({
                   {how === "options" && hint && (
                     <span className="text-stone-600">
                       {" "}
-                      · đổi là {hint.icon} {hint.name.toLowerCase()}
+                      · đổi là {hint.icon} {lowerFirst(hint.name)}
                     </span>
                   )}
                 </p>

@@ -1,5 +1,6 @@
 import { cited, sourceOf } from "@/lib/sources";
 import type { Bootstrap, CompassResult, CompassState, Garment, Trigger } from "@/lib/types";
+import { labelVi } from "@/lib/text";
 
 export const STATE: Record<CompassState, { icon: string; name: string; tone: string }> = {
   fit: { icon: "✅", name: "Phù hợp", tone: "border-emerald-400 bg-emerald-50" },
@@ -28,7 +29,7 @@ export function CompassPanel({ result, sources, garment }: { result: CompassResu
   return (
     <section className={`rounded-lg border-2 p-5 ${s.tone}`}>
       <p className="text-lg font-semibold">
-        {s.icon} {s.name} {result.label && <span className="ml-2 text-sm font-normal text-stone-600">· {result.label}</span>}
+        {s.icon} {s.name} {result.label && <span className="ml-2 text-sm font-normal text-stone-600">· {labelVi(result.label)}</span>}
       </p>
       {main && (
         <div className="mt-3 space-y-2">

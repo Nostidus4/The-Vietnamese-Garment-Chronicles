@@ -30,6 +30,7 @@ import { useTryOn } from "../fitting/useTryOn";
 import { baNote, DRAWERS, LookCard, OutfitList, STAMP, WardrobePanel, WhoPicker, type CardFace, type Drawer, type Who } from "../fitting/Wardrobe";
 import { friendlyError } from "@/lib/errors";
 import { useDialog } from "@/lib/useDialog";
+import { lowerFirst } from "@/lib/text";
 
 const KEY = "vpdk-wardrobe";
 const COUNT = "vpdk-card-count";
@@ -192,7 +193,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     if (st === "lock") return who === "nam" ? "chưa có dáng nam" : "chưa vẽ";
     if (st === "worn") return "đang mặc";
     if (st === "bad") return "gây sai lệch";
-    if (st === "off") return garment ? `không đi với ${garment.name_vi.toLowerCase()}` : "chọn bộ áo trước";
+    if (st === "off") return garment ? `không đi với ${lowerFirst(garment.name_vi)}` : "chọn bộ áo trước";
     if (it.garment) {
       if (st === "dim") return "chưa hợp dịp này";
       const g = data.garments.find((x) => x.id === it.garment)!;
@@ -567,7 +568,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
       </AnimatePresence>
 
       {fork && verdict && selection && (
-        <Modal label="Cách sửa look ⛔" onClose={() => setFork(false)}>
+        <Modal label="Cách sửa bộ phối ⛔" onClose={() => setFork(false)}>
           <Fork data={data} selection={selection} verdict={verdict} />
           <div className="mt-3 flex flex-wrap gap-2">
             <button type="button" onClick={wearAlternative} className="rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
@@ -667,7 +668,7 @@ function colorsOf(data: Bootstrap, g: Garment | null, picked: string[]): [string
   return [hex(ids[0]) ?? "#7ec8e3", hex(ids[1]) ?? "#fafafa"];
 }
 
-/** The saved card shrinks and flies into the "Du Ký của tôi" link; the link bounces when it lands. */
+/** The saved card shrinks and flies into the "Du Ký của con" link; the link bounces when it lands. */
 async function flyToDuKy(from: HTMLElement, png: string) {
   // GitHub Pages builds with trailingSlash, so the link ends in "/du-ky/" there
   const target = document.querySelector<HTMLElement>('.site-nav a[href$="/du-ky"], .site-nav a[href$="/du-ky/"]');
