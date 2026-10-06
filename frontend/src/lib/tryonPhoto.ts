@@ -19,18 +19,21 @@ export async function checkPhoto(file: File, decode: (f: File) => Promise<unknow
   return null;
 }
 
-export type SampleNotice = { title: string; hint: string };
+/** `newPhoto`: whether another photo could help, i.e. whether the mirror offers "Chọn ảnh khác". */
+export type SampleNotice = { title: string; hint: string; newPhoto: boolean };
 
 /** What the mirror says instead of a card when the server sent only its sample picture. */
 export function sampleNotice(reason: FallbackReason | null | undefined): SampleNotice {
   switch (reason) {
     case "no_person":
-      return { title: "Không thấy người nào trong ảnh này.", hint: "Con chọn ảnh chụp cả người, đứng thẳng, rõ mặt nhé." };
+      return { title: "Không thấy người nào trong ảnh này.", hint: "Con chọn ảnh chụp cả người, đứng thẳng, rõ mặt nhé.", newPhoto: true };
     case "timeout":
-      return { title: "AI dựng lâu quá nên đã dừng lại.", hint: "Con bấm “Dựng ảnh của con” để thử lại, hoặc chọn ảnh khác." };
+      return { title: "AI dựng lâu quá nên đã dừng lại.", hint: "Con bấm “Dựng ảnh của con” để thử lại, hoặc chọn ảnh khác.", newPhoto: true };
     case "blocked":
-      return { title: "AI không dựng ảnh này.", hint: "Con thử một ảnh khác nhé." };
+      return { title: "AI không dựng ảnh này.", hint: "Con thử một ảnh khác nhé.", newPhoto: true }
+    case "unavailable":
+      return { title: "Thử đồ bằng AI tạm thời chưa dùng được.", hint: "Trong lúc chờ, con mặc thử trên búp bê Nữ hoặc Nam nhé.", newPhoto: false };
     default:
-      return { title: "Máy chủ AI đang bận nên chưa dựng được ảnh.", hint: "Con bấm “Dựng ảnh của con” để thử lại sau ít phút, hoặc chọn ảnh khác." };
+      return { title: "Máy chủ AI đang bận nên chưa dựng được ảnh.", hint: "Con bấm “Dựng ảnh của con” để thử lại sau ít phút, hoặc chọn ảnh khác.", newPhoto: true };
   }
 }

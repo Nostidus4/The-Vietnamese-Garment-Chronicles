@@ -43,6 +43,8 @@ def fallback_reason(code: str) -> FallbackReason:
         return "blocked"
     if code in ("timeout", "504"):
         return "timeout"
+    if code in ("402", "no_key"):
+        return "unavailable"  # no key, or prepaid credits used up: a retry in a few minutes won't help
     return "busy"
 
 
@@ -110,7 +112,7 @@ def run(sel: Selection, person: tuple[bytes, str] | None, cache_key: str | None)
             return _response(result, render_sel, _cache[key], cached=True)
 
     image_b64 = None
-    reason: FallbackReason = "busy"
+    reason: FallbackReason = "unavailable"  # nobody to dress: no photo and no avatar picture on the server
     if person is not None:
         ref = _reference(render_sel.garment_id)
         images = [person] + ([ref] if ref else [])

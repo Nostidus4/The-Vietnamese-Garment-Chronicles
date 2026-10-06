@@ -101,9 +101,11 @@ export function Mirror({
             <div className="absolute inset-x-3 bottom-3 rounded-xl bg-[#140c07]/80 px-4 py-3 text-center text-amber-50 shadow-lg backdrop-blur-sm" role="status">
               <p className="m-0 text-sm font-semibold">{tryon.notice.title}</p>
               <p className="m-0 mt-0.5 text-xs text-amber-100/85">{tryon.notice.hint}</p>
-              <button type="button" onClick={onPick} className="mt-2 rounded-full border border-amber-100/60 px-4 py-1 text-xs hover:bg-amber-50/10">
-                Chọn ảnh khác
-              </button>
+              {tryon.notice.newPhoto && (
+                <button type="button" onClick={onPick} className="mt-2 rounded-full border border-amber-100/60 px-4 py-1 text-xs hover:bg-amber-50/10">
+                  Chọn ảnh khác
+                </button>
+              )}
             </div>
           )}
           {children}
@@ -131,7 +133,7 @@ export function Mirror({
         {tryon.busy
           ? "Thường mất khoảng 10–20 giây"
           : after
-            ? (tryon.result?.label_note ?? "Ảnh minh họa AI")
+            ? (tryon.result?.label_note ?? "Tranh minh họa (AI)")
             : photoUrl
               ? "Ảnh của con · bộ đã chọn sẽ được mặc lên ảnh này"
               : "Ảnh xem trước: người mẫu mặc bộ chuẩn · bấm Mặc lên người để thử bộ con chọn"}

@@ -41,7 +41,8 @@ def test_a_fresh_render_has_no_fallback_reason():
         ("504", "timeout"),
         ("503", "busy"),
         ("429", "busy"),
-        ("no_key", "busy"),
+        ("402", "unavailable"),  # prepaid credits used up: trying again in a few minutes won't help
+        ("no_key", "unavailable"),
         ("400", "busy"),
     ],
 )
@@ -51,6 +52,11 @@ def test_the_sample_says_why(code, reason):
     assert r.image_base64 is None
     assert r.fallback_url == "/media/fallback/ao-dai.png"
     assert r.fallback_reason == reason
+
+
+def test_no_photo_and_no_avatar_is_not_called_busy():
+    gemini_client.set_client(Once(b"\x89PNG never"))
+    assert tryon.run(SEL, None, None).fallback_reason == "unavailable"
 
 
 def _client_answering(resp) -> gemini_client.GeminiClient:

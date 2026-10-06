@@ -76,7 +76,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   const [why, setWhy] = useState(false);
   const [sheet, setSheet] = useState<SheetTab | null>(null);
   const [comparing, setComparing] = useState(false);
-  const [real, setReal] = useState<string | null>(null); // "Xem ảnh mẫu" of a garment
+  const [preview, setPreview] = useState<string | null>(null); // "Xem ảnh mẫu" of a garment: an AI picture, labelled so (#60)
   const [toast, setToast] = useState(false);
   const [hint, setHint] = useState<string | null>(null); // why a piece cannot be worn, after a tap on it
   useEffect(() => {
@@ -452,7 +452,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           occasion={current.occasion}
           open={drawer}
           onOpen={setDrawer}
-          onLookReal={setReal}
+          onLookPreview={setPreview}
         />
 
         <div className="fitting-stage">
@@ -613,10 +613,10 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
         </Modal>
       )}
 
-      {real && (
-        <Modal label="Ảnh mẫu" onClose={() => setReal(null)}>
+      {preview && (
+        <Modal label="Ảnh mẫu (AI)" onClose={() => setPreview(null)}>
           {/* eslint-disable-next-line @next/next/no-img-element -- static export */}
-          <img src={asset(`/garments/${real}-preview.webp`)} alt={`Người mẫu mặc ${data.garments.find((g) => g.id === real)?.name_vi}`} className="mx-auto max-h-[70vh] rounded" />
+          <img src={asset(`/garments/${preview}-preview.webp`)} alt={`Người mẫu mặc ${data.garments.find((g) => g.id === preview)?.name_vi}`} className="mx-auto max-h-[70vh] rounded" />
           <p className="m-0 mt-2 text-center text-xs text-stone-600">Ảnh mẫu tạo bằng AI: người mẫu mặc bộ chuẩn, để con hình dung ngoài đời.</p>
         </Modal>
       )}
