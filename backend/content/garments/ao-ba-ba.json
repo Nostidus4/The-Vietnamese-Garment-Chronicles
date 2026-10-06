@@ -103,6 +103,11 @@
       "detail": "Quàng cổ hoặc trùm đầu khi ra nắng, đội thêm nón lá."
     }
   ],
+  "ask_suggest": [
+    "Vì sao áo bà ba hợp khí hậu Nam Bộ?",
+    "Áo bà ba mặc với gì?",
+    "Phần nào của áo bà ba được đổi?"
+  ],
   "sources": [
     "research-5-3",
     "ref-01"

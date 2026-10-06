@@ -70,6 +70,7 @@ export interface Garment {
   hot_weather_tip: string | null;
   reference_image: string | null; // under content/media; the site shows its copy at /garments/<id>.webp
   wearing_steps: { title: string; detail: string; image: string | null }[];
+  ask_suggest: string[]; // Hỏi Tèo's chips: questions the data answers
   sources: string[];
   verified: boolean;
 }

@@ -11,7 +11,7 @@ Next.js ──HTTP──▶ FastAPI
                    │   ├─ compass.py    luật văn hóa → 4 trạng thái (nguồn sự thật duy nhất)
                    │   ├─ harmony.py    F2 gợi ý phối màu (không đổi trạng thái)
                    │   ├─ tryon.py      Compass → prompt từ dữ liệu → Nano Banana → fallback
-                   │   ├─ ask.py        F8 Hỏi Tèo: chỉ trả lời từ dữ liệu, lọc nguồn bịa
+                   │   ├─ ask.py        F8 Hỏi Tèo: chỉ trả lời từ dữ liệu (trang phục, phụ kiện, luật Compass), lọc nguồn bịa, nói lý do khi từ chối
                    │   ├─ weather.py    F4 Open-Meteo, cache 30 phút
                    │   └─ gemini_client.py  mọi lệnh gọi Gemini (dễ mock khi test)
                    └─ content/store.py  đọc + kiểm tra toàn bộ content/ khi khởi động
@@ -51,7 +51,7 @@ Tài liệu tương tác: chạy server rồi mở `http://localhost:8000/docs`.
 | POST | `/compass` | Chấm một look → `state`, `label`, `triggers`, `harmony_notes`, `alternative` |
 | POST | `/compass/compare` | F1: so sánh 2–3 look |
 | POST | `/tryon` | multipart: `selection` (JSON), `photo` (tùy chọn) hoặc `avatar_id` |
-| POST | `/ask` | F8 Hỏi Tèo `{garment_id, question}` |
+| POST | `/ask` | F8 Hỏi Tèo `{garment_id, question}` → `{answer, sources, grounded, reason}`; `reason` khi từ chối: `off_topic` / `no_source` / `unsafe` / `unavailable` (Gemini lỗi, hết quota) |
 | GET | `/quiz?count=5` | F5: câu hỏi (không kèm đáp án) |
 | POST | `/quiz/answer` | F5: chấm `{id, answer}` |
 | GET | `/shops?city=&garment_id=&service=` | F7: danh bạ, tiệm đã kiểm chứng lên trước |
@@ -142,5 +142,5 @@ pytest -q
 
 - `test_compass.py`: đủ 4 trạng thái, ghi đè lời thoại, thay thế phụ kiện, selection không hợp lệ → lỗi.
 - `test_content.py`: dữ liệu thật không lỗi; gõ sai tên trường, id không tồn tại, tên file ≠ id, JSON hỏng đều bị bắt.
-- `test_api.py`: mọi endpoint; try-on ⛔ dựng phương án thay thế, từ chối file không phải ảnh, giới hạn tốc độ; Hỏi Tèo bỏ nguồn bịa; quiz không lộ đáp án. Gemini được giả lập, test không tốn quota.
+- `test_api.py`: mọi endpoint; try-on ⛔ dựng phương án thay thế, từ chối file không phải ảnh, giới hạn tốc độ; Hỏi Tèo bỏ nguồn bịa, nói đúng lý do từ chối, đọc được luật Compass; quiz không lộ đáp án. Gemini được giả lập, test không tốn quota.
 - `test_tryon_reliability.py`: retry Gemini (thành công lần 2, chỉ một lần, hết ngân sách thì thôi, lỗi không phải 429/5xx không retry), 429 có `Retry-After` đọc được qua CORS, giới hạn theo `X-Forwarded-For` với đúng cờ trong `Dockerfile`. Đồng hồ được giả lập nên không phải chờ thật.

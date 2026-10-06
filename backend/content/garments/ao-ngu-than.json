@@ -151,6 +151,11 @@
       "detail": "Nữ vấn khăn vấn, nam đội khăn đóng khi dự lễ."
     }
   ],
+  "ask_suggest": [
+    "Áo ngũ thân có từ khi nào?",
+    "Áo ngũ thân khác áo dài chỗ nào?",
+    "Phần nào của áo ngũ thân phải giữ?"
+  ],
   "sources": [
     "ref-03",
     "ref-12",

@@ -11,6 +11,11 @@ from ..models import LABELS, SEVERITY, CompassResult, Selection, Trigger
 from .harmony import harmony_notes
 
 
+# Which rule speaks for an accessory of a kind, and for a change to a zone of a level (Hỏi Tèo reads these too)
+ACCESSORY_RULE = {"traditional-foreign": "fusion", "restricted": "restricted", "modern": "flexible"}
+ZONE_RULE = {"keep": "core", "caution": "caution", "free": "flexible"}
+
+
 class SelectionError(ValueError):
     """The selection refers to something this garment does not offer (HTTP 422)."""
 
@@ -80,7 +85,7 @@ def _collect(sel: Selection, g: Garment) -> list[Trigger]:
 
     for acc_id in sel.accessories:
         a = c.accessories[acc_id]
-        kind_rule = {"traditional-foreign": "fusion", "restricted": "restricted", "modern": "flexible"}.get(a.kind)
+        kind_rule = ACCESSORY_RULE.get(a.kind)
         if kind_rule:
             out.append(_trigger(kind_rule, acc_id, a.name_vi, "accessory", a.message))
         if a.occasions and sel.occasion_id not in a.occasions:
@@ -96,7 +101,7 @@ def _collect(sel: Selection, g: Garment) -> list[Trigger]:
 
     levels = {z.part: z.level for z in g.zones}
     for zone, option in changes(sel, g):
-        rule_type = {"keep": "core", "caution": "caution", "free": "flexible"}[levels[zone]]
+        rule_type = ZONE_RULE[levels[zone]]
         out.append(_trigger(rule_type, zone, f"{zone}: {option.label}", "zone", blanks={"zone": zone, "option": option.label}))
 
     if sel.occasion_id not in g.occasions:
