@@ -4,11 +4,12 @@
 // then it dissolves back into the page and the story rises from that same page (OpeningPlayer's paper).
 
 import { motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { asset } from "@/lib/base";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+/** The logo at 560 px wide (scripts/optimize-images.mjs). */
+export const LOGO_SMALL = "/page/logo-mark-560.webp";
 
 export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave: () => void; onDone: () => void }) {
   const reduced = !!useReducedMotion();
@@ -64,16 +65,17 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
         transition={{ duration: leaving ? 0.9 : 1.2, ease: EASE, delay: leaving ? 0 : 0.25 }}
       >
         {/* logo-mark.webp: Logo.png with its cream background made transparent, so it sits on the page with no frame.
-            Unoptimized on purpose: the light's mask below and the logo above the first question use the same file, so
-            the browser downloads it once */}
-        <Image
-          src={asset("/page/logo-mark.webp")}
+            It is the largest thing on a first visit's screen (Lighthouse LCP, #64): phones get the 560 px copy, which
+            the light's mask below and the logo above the first question also use, so a phone downloads one file */}
+        {/* eslint-disable-next-line @next/next/no-img-element -- a hand-made srcSet: the static site has no image server */}
+        <img
+          src={asset(LOGO_SMALL)}
+          srcSet={`${asset(LOGO_SMALL)} 560w, ${asset("/page/logo-mark.webp")} 1118w`}
+          sizes="min(72vw, 520px)"
           alt=""
           width={1118}
           height={802}
-          loading="eager"
           fetchPriority="high"
-          unoptimized
           className="h-auto w-full"
           onLoad={() => setShown(true)}
         />
@@ -86,8 +88,8 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
               background: "linear-gradient(105deg, transparent 35%, rgba(255,220,140,0.85) 50%, transparent 65%)",
               backgroundSize: "300% 100%",
               // the light only touches the drawing itself, never the empty page around it
-              maskImage: `url(${asset("/page/logo-mark.webp")})`,
-              WebkitMaskImage: `url(${asset("/page/logo-mark.webp")})`,
+              maskImage: `url(${asset(LOGO_SMALL)})`,
+              WebkitMaskImage: `url(${asset(LOGO_SMALL)})`,
               maskSize: "100% 100%",
               WebkitMaskSize: "100% 100%",
             }}

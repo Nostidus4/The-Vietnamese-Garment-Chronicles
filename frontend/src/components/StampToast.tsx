@@ -12,9 +12,10 @@ const WORD = { arrived: { label: "ĐÃ ĐẾN", color: "#B5452E" }, understood: 
 type Got = { kind: keyof typeof WORD; id: string; at: number };
 
 export function StampToast() {
-  const { data } = useBootstrap();
   const reduced = !!useReducedMotion();
   const [got, setGot] = useState<Got | null>(null);
+  // the content only names the place, so it is not fetched until a stamp arrives (by then the page has it, #64)
+  const { data } = useBootstrap(!!got);
   useEffect(() => {
     const on = (e: Event) => {
       const d = (e as CustomEvent<{ kind: keyof typeof WORD; id: string }>).detail;

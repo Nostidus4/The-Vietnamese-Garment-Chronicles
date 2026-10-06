@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { OpeningScreen } from "@/lib/types";
 import { BookCover } from "../book/BookCover";
+import { LOGO_SMALL } from "./LogoIntro";
 import { IMAGE_SIZES, Scene, type SceneHandle } from "./Scene";
 import { crossfade, runTransition, type Overlays } from "./transitions";
 import { asset } from "@/lib/base";
@@ -36,7 +37,8 @@ type Phase = "intro" | "play" | "transition";
 
 export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick = false, startId = null, hold = false, sound: soundParam = null }: Props) {
   const reduced = !!useReducedMotion();
-  const [viewport, setViewport] = useState({ w: 1440, h: 810 });
+  // measured before the first paint: a guessed size made the first picture jump once it was measured (CLS, #64)
+  const [viewport, setViewport] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }));
   const [idx, setIdx] = useState(() => Math.max(0, screens.findIndex((s) => s.id === startId)));
   const [incoming, setIncoming] = useState<number | null>(null);
   const [shown, setShown] = useState(0);
@@ -169,8 +171,10 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     [screen, pace, speak],
   );
 
-  // First screen: wait for its artwork, the logo to start leaving and the viewer's sound choice, then rise out of a blank cream page
+  // First screen: wait for its artwork, the logo to start leaving and the viewer's sound choice, then rise out of a blank cream page.
+  // The artwork only starts downloading once the logo leaves (see `defer`), so the wait counts from then.
   useEffect(() => {
+    if (hold) return;
     let alive = true;
     const first = scenes.current[screens[idx].id];
     Promise.race([first?.ready, new Promise((r) => setTimeout(r, 4000))]).then(() => alive && setArtReady(true));
@@ -178,7 +182,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
       alive = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [hold]);
   useEffect(() => {
     if (!artReady || hold || sound === null || phase !== "intro") return;
     let alive = true;
@@ -392,13 +396,14 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
           compact={compact}
           debug={debug}
           hidden={i === incoming}
+          defer={hold}
           viewport={viewport}
         />
       ))}
 
       {/* preload the next screens with the same sizes so the browser reuses the optimised files */}
       <div className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0" aria-hidden>
-        {preload.map((i) => (
+        {!hold && preload.map((i) => (
           <Image key={screens[i].id} src={asset(screens[i].image)} alt="" width={1672} height={941} sizes={IMAGE_SIZES} quality={88} />
         ))}
       </div>
@@ -429,7 +434,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
         <div className="relative" style={{ height: "min(78vh, 62vw)", aspectRatio: "1086 / 1448" }}>
           <div ref={(el) => void (ov.current.cover = el!)} className="absolute inset-0 origin-left [transform-style:preserve-3d]">
             <div className="absolute inset-0 [backface-visibility:hidden]">
-              <BookCover sizes="62vw" />
+              {!hold && <BookCover sizes="62vw" />}
             </div>
             <div className="paper absolute inset-0 rounded-l-md [backface-visibility:hidden] [transform:rotateY(180deg)]" />
           </div>
@@ -449,7 +454,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
           >
             {/* the calligraphy logo the viewer has just seen, not the name again in bold type (#81) */}
             <h1 className="m-0 w-[min(15rem,60vw)]">
-              <Image src={asset("/page/logo-mark.webp")} alt="Việt Phục Du Ký" width={1118} height={802} loading="eager" unoptimized className="h-auto w-full" />
+              <Image src={asset(LOGO_SMALL)} alt="Việt Phục Du Ký" width={560} height={402} loading="eager" unoptimized className="h-auto w-full" />
             </h1>
             <p className="font-hand m-0 -mt-2 text-lg text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
             <p className="font-hand m-0 text-xl text-stone-600">Con muốn nghe kể, hay tự đọc?</p>

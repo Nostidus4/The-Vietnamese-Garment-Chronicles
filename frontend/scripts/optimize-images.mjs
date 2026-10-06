@@ -9,6 +9,7 @@
 //   just drop new pictures in public/.
 //   Names stay the same, so the content JSON does not change.
 // - Bà's old photo on the desk: a small copy of the opening's s06 picture instead of the full-screen one.
+// - The logo for phones (and for the light passing over it): 560 px wide instead of 1118 px.
 // - Blur placeholder for the desk photo, shown while it loads (src/lib/placeholders.json).
 
 import { copyFileSync, globSync, mkdirSync, renameSync, statSync, writeFileSync } from "node:fs";
@@ -23,7 +24,10 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = join(ROOT, "public");
 const ORIGINALS = join(ROOT, "originals");
 
-const THUMBS = [{ from: "opening/s06.webp", to: "page/desk-photo.webp", width: 400 }];
+const THUMBS = [
+  { from: "opening/s06.webp", to: "page/desk-photo.webp", width: 400, quality: 75 },
+  { from: "page/logo-mark.webp", to: "page/logo-mark-560.webp", width: 560, quality: 88 },
+];
 const PLACEHOLDERS = ["page/Desk.webp"];
 
 /**
@@ -81,7 +85,7 @@ async function main() {
   for (const o of orphans) console.warn(`original no longer used on the site (delete it if so): originals/${o}`);
 
   for (const t of THUMBS) {
-    await sharp(join(PUBLIC, t.from)).resize(t.width).webp({ quality: 75 }).toFile(join(PUBLIC, t.to));
+    await sharp(join(PUBLIC, t.from)).resize(t.width).webp({ quality: t.quality, effort: 6 }).toFile(join(PUBLIC, t.to));
     console.log(`thumb: ${t.to} (${kb(statSync(join(PUBLIC, t.to)).size)})`);
   }
 

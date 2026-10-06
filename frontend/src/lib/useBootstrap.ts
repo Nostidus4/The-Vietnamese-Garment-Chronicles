@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { getBootstrap } from "./api";
 import type { Bootstrap } from "./types";
 
-export function useBootstrap() {
+/** The book's content (one request, shared by every caller). `start = false` holds the request back until it turns true. */
+export function useBootstrap(start = true) {
   const [data, setData] = useState<Bootstrap | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!start) return;
     let alive = true;
     getBootstrap()
       .then((d) => alive && setData(d))
@@ -16,7 +18,7 @@ export function useBootstrap() {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [start]);
 
   return { data, error };
 }
