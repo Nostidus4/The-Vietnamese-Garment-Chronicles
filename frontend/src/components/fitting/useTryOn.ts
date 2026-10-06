@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState } from "react";
 import { API_URL, RateLimited, serverReady, tryOn } from "@/lib/api";
 import { track } from "@/lib/track";
+import { checkPhoto, sampleNotice } from "@/lib/tryonPhoto";
 import { retryLabel, secondsLeft, untilAborted, waitLabel, type WaitStage } from "@/lib/tryonWait";
 import type { Selection, TryOnResult } from "@/lib/types";
 import { friendlyError } from "@/lib/errors";
@@ -38,8 +39,10 @@ export function useTryOn() {
     : result?.fallback_url
       ? `${API_URL}${result.fallback_url}` // e.g. /media/fallback/ao-dai.png
       : null;
-  // no fresh render, only the pre-made fallback: it must never pass as an AI image of this look
+  // no fresh render, only the pre-made fallback: it must never pass as an AI image of this look, nor become a card (#52)
   const isSample = !!result && !result.image_base64 && !!result.fallback_url;
+  // why there is no render, whether or not the garment has a sample picture (ao-com and tho-cam-e-de have none)
+  const notice = result && !result.image_base64 ? sampleNotice(result.fallback_reason) : null;
   const stageLabel = wait ? waitLabel(wait.stage, now - wait.since) : null;
 
   async function run(selection: Selection) {
@@ -67,9 +70,25 @@ export function useTryOn() {
     }
   }
 
+  /** A new photo, checked before anything is sent; a refused one leaves the photo already chosen in place. */
+  async function choosePhoto(file: File) {
+    const problem = await checkPhoto(file, async (f) => (await createImageBitmap(f)).close());
+    if (problem) return setError(problem);
+    setPhoto(file);
+    reset(); // the old picture was of the old photo
+  }
+  function reset() {
+    setResult(null);
+    setError(null);
+  }
+
   return {
     photo,
-    setPhoto,
+    choosePhoto,
+    removePhoto: () => {
+      setPhoto(null);
+      reset();
+    },
     busy,
     locked,
     countdown,
@@ -77,13 +96,11 @@ export function useTryOn() {
     result,
     image,
     isSample,
+    notice,
     error,
     run,
     cancel: () => abort.current?.abort(),
     /** a new look: the old picture no longer shows it */
-    clear: () => {
-      setResult(null);
-        setError(null);
-    },
+    clear: reset,
   };
 }

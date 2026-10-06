@@ -27,7 +27,7 @@ import { Mirror } from "../fitting/Mirror";
 import { DRAWN, PaperDoll, type Dress } from "../fitting/PaperDoll";
 import { AboutSheet, EventPicker, type SheetTab } from "../fitting/Parts";
 import { useTryOn } from "../fitting/useTryOn";
-import { baNote, DRAWERS, LookCard, OutfitList, STAMP, WardrobePanel, WhoPicker, type CardFace, type Drawer, type Who } from "../fitting/Wardrobe";
+import { AI_LABEL, baNote, DRAWERS, LookCard, OutfitList, STAMP, WardrobePanel, WhoPicker, type CardFace, type Drawer, type Who } from "../fitting/Wardrobe";
 import { friendlyError } from "@/lib/errors";
 import { useDialog } from "@/lib/useDialog";
 import { lowerFirst } from "@/lib/text";
@@ -38,6 +38,9 @@ const COUNT = "vpdk-card-count";
 const LABEL: Record<CompassState, string | null> = { fit: "Authentic", adapted: "Adapted", review: "Inspired", distorted: null };
 /** The look a card is made from, fixed when "Xong rồi" / "Dựng ảnh" is pressed, so the card always matches its picture. */
 type Snap = { selection: Selection; look: Look; verdict: CompassResult };
+
+/** A traditional piece Tèo has not found a firm source for yet ("Tèo đang kiểm tra"). */
+const checking = (a: Bootstrap["accessories"][string] | undefined) => a?.verified === false && a.kind === "traditional-vn";
 
 function remembered(): { who: Who | null; look: Look | null } {
   try {
@@ -73,7 +76,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   const [why, setWhy] = useState(false);
   const [sheet, setSheet] = useState<SheetTab | null>(null);
   const [comparing, setComparing] = useState(false);
-  const [real, setReal] = useState<string | null>(null); // "Xem ảnh thật" of a garment
+  const [real, setReal] = useState<string | null>(null); // "Xem ảnh mẫu" of a garment
   const [toast, setToast] = useState(false);
   const [hint, setHint] = useState<string | null>(null); // why a piece cannot be worn, after a tap on it
   useEffect(() => {
@@ -270,12 +273,14 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
       // private mode: every card is number 1
     }
     // the try-on may have rendered the Compass's alternative: the card carries the verdict of what is in the picture
-    const state = isAI && tryon.result?.rendered_alternative ? (tryon.result.compass.alternative_state ?? snap.verdict.state) : snap.verdict.state;
+    const alt = isAI && tryon.result?.rendered_alternative ? tryon.result : null;
+    const state = alt ? (alt.compass.alternative_state ?? snap.verdict.state) : snap.verdict.state;
+    const shown = alt?.rendered_selection ?? snap.selection;
     setCard({
       snap,
       image,
       isAI,
-      sample: isAI && tryon.isSample,
+      checking: data.garments.find((x) => x.id === shown.garment_id)?.verified === false || shown.accessories.some((a) => checking(data.accessories[a])),
       state,
       number: n,
       title: `${g.name_vi} · ${data.occasions.find((o) => o.id === snap.selection.occasion_id)?.name.split("/")[0].trim()}`,
@@ -298,16 +303,18 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     if (verdict.state === "distorted") return setFork(true);
     const snap: Snap = { selection, look: current, verdict };
     if (who === "con") {
-      if (!tryon.photo) return document.getElementById("con-photo")?.click();
+      if (!tryon.photo) return pickPhoto();
       setSent(snap);
       await tryon.run(selection);
       return;
     }
     if (doll.current) openCard(dollImage(doll.current), false, snap);
   }
-  // the reader's own photo came back from the try-on: its card drops, made from the look that was sent
+  const pickPhoto = () => document.getElementById("con-photo")?.click();
+  // the reader's own photo came back from the try-on: its card drops, made from the look that was sent. The server's
+  // sample is not the reader: no card, no stamp, nothing to save; the mirror says why (#52)
   const [shownFor, setShownFor] = useState<string | null>(null);
-  if (who === "con" && sent && tryon.image && !tryon.busy && tryon.result && shownFor !== tryon.image) {
+  if (who === "con" && sent && tryon.image && !tryon.isSample && !tryon.busy && tryon.result && shownFor !== tryon.image) {
     setShownFor(tryon.image);
     openCard(tryon.image, true, sent);
   }
@@ -315,7 +322,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   /** The card as one picture: frame, title, place and date, the Compass stamp. */
   function cardPng(c: NonNullable<typeof card>) {
     const stamp = STAMP[c.state];
-    return cardPicture({ art: c.image, title: c.title, meta: `${c.place} · ${c.date}`, number: c.number, stamp: stamp.word, icon: stamp.icon, aiLabel: c.isAI ? (c.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI") : null });
+    return cardPicture({ art: c.image, title: c.title, meta: `${c.place} · ${c.date}`, number: c.number, stamp: stamp.word, icon: stamp.icon, light: c.checking, aiLabel: c.isAI ? AI_LABEL : null });
   }
 
   /** "Tải thẻ": the framed card, not the bare doll (#62). */
@@ -342,7 +349,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
       const png = await cardPng(card);
       await ensureMigrated(data.garments);
       const page = addPage(newPage({ region_id: g.region, garment_id: g.id, occasion_id: sel.occasion_id, look: sel, compass_label: LABEL[card.state], compass_state: card.state }));
-      await addPhoto(page.id, await dataUrlToBlob(png), card.isAI ? "ai" : "card", card.sample);
+      await addPhoto(page.id, await dataUrlToBlob(png), card.isAI ? "ai" : "card");
       try {
         localStorage.setItem(COUNT, String(card.number));
       } catch {
@@ -459,7 +466,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
             👤 {who === "con" ? "Con" : who === "nam" ? "Nam" : "Nữ"} ▾
           </button>
           {who === "con" && garment ? (
-            <Mirror key={garment.id} garmentId={garment.id} garmentName={garment.name_vi} verdict={verdict} scoring={false} offline={!compass} tryon={tryon} onTag={() => verdict && setWhy(true)} />
+            <Mirror key={garment.id} garmentId={garment.id} garmentName={garment.name_vi} verdict={verdict} scoring={false} offline={!compass} tryon={tryon} onTag={() => verdict && setWhy(true)} onPick={pickPhoto} />
           ) : (
             <figure className="m-0 flex flex-col items-center">
               <div className="mirror-frame dress-form">
@@ -513,7 +520,18 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           <button type="button" disabled={main.off} onClick={finish} className="page-turn page-turn-main !px-7">
             {main.label}
           </button>
-          <input id="con-photo" type="file" accept="image/*" className="sr-only" aria-label="Ảnh của con để thử đồ" onChange={(e) => tryon.setPhoto(e.target.files?.[0] ?? null)} />
+          <input
+            id="con-photo"
+            type="file"
+            accept="image/*"
+            className="sr-only"
+            aria-label="Ảnh của con để thử đồ"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              e.target.value = ""; // so picking the same file again (after "Bỏ ảnh") still counts
+              if (f) void tryon.choosePhoto(f);
+            }}
+          />
         </div>
         <div className="flex items-center justify-end gap-3 text-sm text-amber-50">
           {HAS_API && garment && (
@@ -596,7 +614,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
       )}
 
       {real && (
-        <Modal label="Ảnh thật" onClose={() => setReal(null)}>
+        <Modal label="Ảnh mẫu" onClose={() => setReal(null)}>
           {/* eslint-disable-next-line @next/next/no-img-element -- static export */}
           <img src={asset(`/garments/${real}-preview.webp`)} alt={`Người mẫu mặc ${data.garments.find((g) => g.id === real)?.name_vi}`} className="mx-auto max-h-[70vh] rounded" />
           <p className="m-0 mt-2 text-center text-xs text-stone-600">Ảnh mẫu tạo bằng AI: người mẫu mặc bộ chuẩn, để con hình dung ngoài đời.</p>

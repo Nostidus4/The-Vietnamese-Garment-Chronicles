@@ -36,7 +36,7 @@ function fontOf(className: string, fallback: string) {
   return f || fallback;
 }
 
-export async function cardPicture(o: { art: string; title: string; meta: string; number: number; stamp: string; icon: string; aiLabel: string | null }): Promise<string> {
+export async function cardPicture(o: { art: string; title: string; meta: string; number: number; stamp: string; icon: string; light?: boolean; aiLabel: string | null }): Promise<string> {
   const canvas = document.createElement("canvas");
   canvas.width = W;
   canvas.height = H;
@@ -73,9 +73,10 @@ export async function cardPicture(o: { art: string; title: string; meta: string;
     ctx.fillText(o.aiLabel, ax + 26, ay + ah - 24);
   }
 
-  // the Compass stamp, red and a little crooked
+  // the Compass stamp, red and a little crooked; pressed lighter while Tèo still checks a piece
   if (o.stamp) {
     ctx.save();
+    if (o.light) ctx.globalAlpha = 0.5;
     ctx.translate(W - 150, 170);
     ctx.rotate(-0.21);
     ctx.strokeStyle = "#b5452e";

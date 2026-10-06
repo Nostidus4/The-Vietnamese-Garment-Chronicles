@@ -168,7 +168,7 @@ export function WardrobePanel({
                     </button>
                     {it.garment && (
                       <button type="button" onClick={() => onLookReal(it.garment!)} className="mt-0.5 block w-full text-center text-[0.75rem] text-[#27354f] underline">
-                        Xem ảnh thật
+                        Xem ảnh mẫu
                       </button>
                     )}
                   </motion.li>
@@ -308,6 +308,8 @@ export const STAMP: Record<CompassState, { word: string; icon: string }> = {
   review: { word: "INSPIRED", icon: "⚠️" },
   distorted: { word: "", icon: "⛔" },
 };
+/** The stamp judges the look picked, not the picture: an AI render can still get a detail wrong (#52). */
+export const AI_LABEL = "Ảnh AI vẽ · có thể sai chi tiết";
 
 export type CardFace = {
   image: string;
@@ -319,7 +321,7 @@ export type CardFace = {
   note: string[];
   items: string[];
   isAI: boolean;
-  sample: boolean;
+  checking: boolean; // a piece Tèo is still checking (verified: false): the stamp is pressed lighter
   fact: { text: string; source: string } | null; // one sourced line of Tèo's for the back (#62)
 };
 
@@ -362,11 +364,11 @@ export function LookCard({
                 {/* eslint-disable-next-line @next/next/no-img-element -- a data/blob URL made in the browser */}
                 <img src={face.image} alt="" className="h-full w-full object-contain" />
                 {face.isAI && (
-                  <span className="absolute bottom-1.5 left-1.5 rounded bg-black/65 px-1.5 py-0.5 text-[0.75rem] font-semibold text-white">{face.sample ? "Ảnh mẫu tạo sẵn" : "Ảnh minh họa AI"}</span>
+                  <span className="absolute bottom-1.5 left-1.5 rounded bg-black/65 px-1.5 py-0.5 text-[0.75rem] font-semibold text-white">{AI_LABEL}</span>
                 )}
               </span>
               <motion.span
-                className="look-stamp"
+                className={`look-stamp ${face.checking ? "look-stamp-light" : ""}`}
                 initial={reduced ? false : { scale: 1.5, opacity: 0, rotate: -30 }}
                 animate={{ scale: 1, opacity: 1, rotate: -12 }}
                 transition={{ delay: reduced ? 0 : 0.55, type: "spring", stiffness: 380, damping: 14 }}
@@ -407,7 +409,9 @@ export function LookCard({
             </button>
           </motion.div>
         </motion.div>
-        <p className="m-0 text-xs text-amber-50/80">Bấm vào thẻ để lật</p>
+        <p className="m-0 text-center text-xs text-amber-50/80">
+          {face.checking ? "Dấu nhạt: Tèo còn đang kiểm tra nguồn cho vài món · " : ""}Bấm vào thẻ để lật
+        </p>
         {error && <p className="m-0 rounded bg-red-50/95 px-3 py-1 text-sm text-red-800" role="alert">{error}</p>}
         <div className="flex flex-wrap justify-center gap-2">
           <button type="button" disabled={saving !== "idle"} onClick={() => cardEl && onSave(cardEl)} className="page-turn page-turn-main">

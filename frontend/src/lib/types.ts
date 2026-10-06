@@ -310,12 +310,16 @@ export interface WardrobeItem {
   layers: Record<string, string>;
 }
 
+/** Why the try-on sent only its sample picture (backend tryon.fallback_reason, #52). */
+export type FallbackReason = "no_person" | "busy" | "timeout" | "blocked";
+
 export interface TryOnResult {
   compass: CompassResult;
   rendered_alternative: boolean;
   rendered_selection: Selection;
   image_base64: string | null;
   fallback_url: string | null;
+  fallback_reason?: FallbackReason | null; // absent from a server older than #52
   cached: boolean;
   label_note: string;
 }

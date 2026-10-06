@@ -9,6 +9,10 @@ from ..config import settings
 log = logging.getLogger("gemini")
 
 
+# a reply stopped for these reasons was refused, not lost: retrying or blaming the server would be wrong
+_BLOCKED = {"SAFETY", "IMAGE_SAFETY", "PROHIBITED_CONTENT", "BLOCKLIST", "SPII", "RECITATION"}
+
+
 class GeminiUnavailable(Exception):
     def __init__(self, message: str, code: str = "unknown"):
         super().__init__(message)
@@ -26,6 +30,15 @@ def _error_code(e: Exception) -> str:
     if code:
         return str(code)
     return "timeout" if "timeout" in type(e).__name__.lower() or "timed out" in str(e).lower() else type(e).__name__
+
+
+def _parts(candidate) -> list:
+    return (candidate.content.parts or []) if candidate and candidate.content else []
+
+
+def _stop_reason(candidate) -> str:
+    reason = getattr(candidate, "finish_reason", None)
+    return str(getattr(reason, "name", reason) or "")
 
 
 class GeminiClient:
@@ -56,15 +69,20 @@ class GeminiClient:
         start = time.perf_counter()
         try:
             resp = self._client.models.generate_content(model=settings.image_model, contents=parts, config=config)
-            for part in resp.candidates[0].content.parts:
-                if part.inline_data and part.inline_data.data:
-                    log.info("image ok %.1fs", time.perf_counter() - start)
-                    return part.inline_data.data
-        except Exception as e:  # quota, safety block, network, timeout
+        except Exception as e:  # quota, network, timeout
             code = _error_code(e)
             log.warning("image failed %.1fs code=%s: %s", time.perf_counter() - start, code, e)
             raise GeminiUnavailable(str(e), code=code) from e
-        log.warning("image failed %.1fs code=no_image", time.perf_counter() - start)
+        candidate = resp.candidates[0] if resp.candidates else None
+        for part in _parts(candidate):
+            if part.inline_data and part.inline_data.data:
+                log.info("image ok %.1fs", time.perf_counter() - start)
+                return part.inline_data.data
+        if (resp.prompt_feedback and resp.prompt_feedback.block_reason) or _stop_reason(candidate) in _BLOCKED:
+            log.warning("image failed %.1fs code=blocked", time.perf_counter() - start)
+            raise GeminiUnavailable("Image refused", code="blocked")
+        # words instead of a picture, e.g. "I can't find a person in this image"
+        log.warning("image failed %.1fs code=no_image: %s", time.perf_counter() - start, (resp.text or "")[:200] if candidate else "")
         raise GeminiUnavailable("No image in response", code="no_image")
 
     def generate_json(self, prompt: str) -> dict:
