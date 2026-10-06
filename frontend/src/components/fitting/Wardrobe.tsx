@@ -14,6 +14,7 @@ import { pickOption, pickedOption, zoneControl } from "@/lib/zones";
 import { ArtThumb, DRAWN } from "./PaperDoll";
 import type { Selection } from "@/lib/types";
 import { useDialog } from "@/lib/useDialog";
+import { lowerFirst } from "@/lib/text";
 
 export type Who = "nu" | "nam" | "con";
 
@@ -431,10 +432,10 @@ export function LookCard({
 
 /** Bà's lines on the back of the card, from what the reader picked (no AI: the words are put together here). */
 export function baNote(data: Bootstrap, garment: Garment, sel: Selection, verdict: CompassResult | null): string[] {
-  const color = sel.colors[0] ? data.colors[sel.colors[0]]?.name.toLowerCase() : null;
-  const acc = sel.accessories.map((a) => data.accessories[a]?.name_vi.toLowerCase()).filter(Boolean);
+  const color = sel.colors[0] ? lowerFirst(data.colors[sel.colors[0]]?.name ?? "") || null : null;
+  const acc = sel.accessories.map((a) => lowerFirst(data.accessories[a]?.name_vi ?? "")).filter(Boolean);
   const kept = garment.zones.filter((z) => z.level === "keep").map((z) => z.part);
-  const lines = [`Con mặc ${garment.name_vi.toLowerCase()}${color ? ` màu ${color}` : ""}${acc.length ? `, ${acc.join(", ")}` : ""}.`];
+  const lines = [`Con mặc ${lowerFirst(garment.name_vi)}${color ? ` màu ${color}` : ""}${acc.length ? `, ${acc.join(", ")}` : ""}.`];
   if (kept.length) lines.push(`Phần ${kept.join(", ")} con giữ nguyên, đúng như Bà dặn.`);
   if (verdict?.state === "adapted") lines.push("Có chỗ con đổi cho hợp ngày nay, mà vẫn ra áo của mình.");
   if (verdict?.state === "review") lines.push("Có món Bà thấy chưa hợp dịp lắm, lần sau con xem lại nhé.");

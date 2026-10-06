@@ -5,7 +5,7 @@
   "name_en": "Four-panel dress",
   "group": "dan-gian",
   "period": "Trang phục dân gian đồng bằng Bắc Bộ",
-  "summary": "Trang phục đời thường của phụ nữ Bắc Bộ, hợp nhất để đưa vào đời sống hôm nay.",
+  "summary": "Trang phục đời thường của phụ nữ Bắc Bộ xưa, rất hợp để mặc lại trong đời sống hôm nay.",
   "facts": [
     {
       "text": "Thường đi cùng yếm, nón quai thao và khăn mỏ quạ.",
@@ -74,7 +74,7 @@
         },
         {
           "id": "vai-nai-soi",
-          "label": "Vải nái, sồi",
+          "label": "Vải nái hoặc sồi",
           "prompt": "the outer dress is plain, matte homespun fabric (vai nai, soi), everyday working wear",
           "sources": [
             "ref-04"
@@ -82,7 +82,7 @@
         },
         {
           "id": "the-lua",
-          "label": "The, lụa tơ tằm",
+          "label": "The hoặc lụa tơ tằm",
           "prompt": "the outer dress is thin, slightly sheer silk gauze (the) over silk, festival wear",
           "sources": [
             "ref-68",

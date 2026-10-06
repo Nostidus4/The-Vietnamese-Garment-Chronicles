@@ -340,7 +340,11 @@ def _check_refs(c: Content, r: Report) -> None:
 
     # team notes must never reach the reader (#50): research references, vetting status, TODOs in shown text
     internal = re.compile(r"Research (Mục|Report)|cần thẩm định|\bTODO\b|chờ cộng đồng góp ý", re.I)
-    hidden = {"note", "internal_ref", "_help", "prompt", "url", "image", "sources", "id"}
+    hidden = {"note", "internal_ref", "_help", "prompt", "url", "image", "sources", "id", "delivery", "scene", "voice"}
+    # one way of writing (#59): the tone on the main vowel (họa, hòa, thủy, not hoạ, hoà, thuỷ), no "??", and curly
+    # quotes “…” in Vietnamese text, not "…" or '…'
+    old_tone = re.compile(r"(?<![qQ])(o[àáảãạ]|o[èéẻẽẹ]|u[ỳýỷỹỵ])(?!\w)")
+    straight = re.compile(r"\?\?|\"|(?<!\w)'[^']{2,}'(?!\w)")
 
     def scan(value, where: str, path: str = "") -> None:
         if isinstance(value, dict):
@@ -350,8 +354,12 @@ def _check_refs(c: Content, r: Report) -> None:
         elif isinstance(value, list):
             for i, v in enumerate(value):
                 scan(v, where, f"{path}[{i}]")
-        elif isinstance(value, str) and internal.search(value):
-            r.errors.append(f"{where}: team note shown to readers at {path or 'text'}: '{value[:60]}…'")
+        elif isinstance(value, str):
+            if internal.search(value):
+                r.errors.append(f"{where}: team note shown to readers at {path or 'text'}: '{value[:60]}…'")
+            for m in (old_tone.search(value), straight.search(value)):
+                if m:
+                    r.errors.append(f"{where}: write '{m.group(0)}' the house way at {path or 'text'}: '{value[max(0, m.start() - 20):m.end() + 20]}'")
 
     for kind, pool in (("rules.json", c.rules), ("accessories.json", c.accessories), ("sources.json", c.sources), ("glossary.json", c.glossary)):
         for k, v in pool.items():
@@ -360,6 +368,10 @@ def _check_refs(c: Content, r: Report) -> None:
         scan(g.model_dump(), f"garments/{g.id}.json")
     for reg in c.regions.values():
         scan(reg.model_dump(), f"regions [{reg.id}]")
+    for o in c.opening:
+        scan(o.model_dump(), f"opening.json [{o.id}]")
+    for q in c.quiz.values():
+        scan(q.model_dump(), f"quiz.json [{q.id}]")
 
     # [[shown words|term-id]] in any diary text must point to glossary.json
     for t in c.glossary.values():

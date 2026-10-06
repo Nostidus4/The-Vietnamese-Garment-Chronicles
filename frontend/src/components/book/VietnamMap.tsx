@@ -21,7 +21,7 @@ import {
 export const CHAPTERS = [
   { id: "tay-bac", label: "Tây Bắc", tint: "#C9DAE6" }, // mist on the mountains, indigo of áo cóm
   { id: "bac-bo", label: "Bắc Bộ", tint: "#EFCDB6" }, // soft red of hội xuân
-  { id: "hue", label: "Miền Trung", tint: "#DCCFE4" }, // tím Huế
+  { id: "hue", label: "Trung Bộ", tint: "#DCCFE4" }, // tím Huế; "Bộ" like Bắc Bộ and Nam Bộ (#59)
   { id: "tay-nguyen", label: "Tây Nguyên", tint: "#EBCF93" }, // highland sun on red earth and coffee
   { id: "nam-bo", label: "Nam Bộ", tint: "#D6E3BD" }, // rice-field green
 ];

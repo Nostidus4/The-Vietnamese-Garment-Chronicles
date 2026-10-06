@@ -56,7 +56,7 @@ export function useTryOn() {
       setResult(r);
       track("tryon", { garment_id: r.rendered_selection.garment_id, alternative: r.rendered_alternative, sample: !r.image_base64 && !!r.fallback_url });
     } catch (e) {
-      if (ctl.signal.aborted) return; // the viewer pressed Huỷ (or left the page)
+      if (ctl.signal.aborted) return; // the viewer pressed Hủy (or left the page)
       if (e instanceof RateLimited) setRetryAt(Date.now() + e.retryAfterS * 1000);
       setError(friendlyError(e, "Chưa dựng được ảnh, con thử lại nhé."));
     } finally {

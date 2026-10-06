@@ -7,7 +7,7 @@ const ZONE_STYLE = {
   caution: "bg-amber-100 text-amber-800 border-amber-300",
   free: "bg-emerald-100 text-emerald-800 border-emerald-300",
 };
-const ZONE_LABEL = { keep: "Nên giữ", caution: "Cân nhắc", free: "Tự do đổi" };
+const ZONE_LABEL = { keep: "Giữ", caution: "Cân nhắc", free: "Được đổi" }; // the same words as the Mặc page (#59)
 const ZONE_ICON = { keep: "🔒", caution: "⚖️", free: "🎨" };
 
 export function StoryCard({ garment, sources }: { garment: Garment; sources: Bootstrap["sources"] }) {
@@ -57,7 +57,7 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
           );
         })}
       </div>
-      <p className="m-0 mt-1 text-[11px] text-stone-600">Giữ phần đỏ, cân nhắc phần vàng, còn phần xanh cứ phối theo cách của bạn.</p>
+      <p className="m-0 mt-1 text-[11px] text-stone-600">Giữ phần đỏ, cân nhắc phần vàng, còn phần xanh cứ phối theo cách của con.</p>
 
       {/* F6 how to wear it, step by step (hidden until the team has written the steps) */}
       {garment.wearing_steps.length > 0 && (

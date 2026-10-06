@@ -1,5 +1,5 @@
 {
-  "hover_line": "“Tôi chỉ đi ngang qua những con đèo này. Tôi muốn nghe người ở đây kể hơn.”",
+  "hover_line": "“Tôi chưa lên Tây Bắc, chỉ nghe chị Mai kể về những con đèo. Tôi muốn nghe người ở đây kể hơn.”",
   "chapter": {
     "province": "Sơn La",
     "title": "Tiếng khèn bên suối",
@@ -101,7 +101,7 @@
       "game": {
         "kind": "khuy-bac",
         "title": "Cài hàng khuy bạc",
-        "intro": "Con gái chị Mai đưa Tí chiếc áo cóm, bảo cài giúp. Con cài từng chiếc cúc bạc từ trên cổ xuống, không được bỏ sót chiếc nào. Đếm thử xem có mấy chiếc nhé.",
+        "intro": "Con gái chị Mai đưa con chiếc áo cóm, bảo cài giúp. Con cài từng chiếc cúc bạc từ trên cổ xuống, không được bỏ sót chiếc nào. Đếm thử xem có mấy chiếc nhé.",
         "rounds": [
           {
             "label": "Cúc bạc thứ 1",
@@ -351,7 +351,7 @@
     }
   ],
   "letter": {
-    "text": "Cháu chào bà. Mẹ cháu vẫn giữ tấm ảnh hai người ở xưởng may. Lá thư bà gửi, cháu đọc cho mẹ nghe bên bếp lửa. Khi nào bà lên, bản cháu vẫn đợi.",
+    "text": "Cháu chào bà. Mẹ cháu vẫn giữ tấm ảnh hai người ở xưởng may. Lá thư bà viết năm ấy, bạn Tí đã mang lên, cháu đọc cho mẹ nghe bên bếp lửa. Khi nào bà lên, bản cháu vẫn đợi.",
     "image": "/regions/tay-bac/t09-buu-thiep.jpg"
   },
   "wear": [
@@ -359,7 +359,7 @@
       "garment": "ao-com",
       "date": "Lời chị Mai kể, chép lại",
       "keepsake": "fabric",
-      "entry": "Chị Mai may cho mình chiếc [[áo cóm|ao-com]] đầu tiên năm mười lăm tuổi. Chị kể áo phải ôm người, ngắn vừa chạm cạp váy, hàng cúc bạc cài từ cổ xuống. Váy ống nhuộm chàm, thắt lưng xanh buộc ngang. Chiếc [[khăn piêu|khan-pieu]] chị thêu hai đầu, thêu mãi cả mùa đông mới xong, rồi đem tặng người chị thương.",
+      "entry": "Chị Mai kể: năm mười lăm tuổi, mẹ chị may cho chị chiếc [[áo cóm|ao-com]] đầu tiên. Chị kể áo phải ôm người, ngắn vừa chạm cạp váy, hàng cúc bạc cài từ cổ xuống. Váy ống nhuộm chàm, thắt lưng xanh buộc ngang. Chiếc [[khăn piêu|khan-pieu]] chị thêu hai đầu, thêu mãi cả mùa đông mới xong, rồi đem tặng người chị thương.",
       "margin": "Chiếc khăn chị Mai thêu tặng Bà, Bà vẫn gấp trong rương. Con giữ hàng cúc bạc và dáng áo ôm, đừng đổi hoa văn khăn nếu chưa hỏi người Thái nhé.",
       "ti": "Khăn piêu là lời hẹn ước. Mình mà được tặng một chiếc chắc cũng đỏ mặt.",
       "teo": [

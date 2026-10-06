@@ -88,7 +88,7 @@ export function Mirror({
                 <p className="font-hand m-0 text-[1.35rem]">Bà đang may lên người con…</p>
                 <p className="m-0 mt-0.5 text-xs text-amber-100/80">{tryon.stageLabel}</p>
                 <button type="button" onClick={tryon.cancel} className="mt-2 rounded-full border border-amber-100/60 px-4 py-1 text-xs hover:bg-amber-50/10">
-                  Huỷ
+                  Hủy
                 </button>
               </div>
             </div>
@@ -120,7 +120,7 @@ export function Mirror({
           : after
             ? tryon.isSample
               ? "Ảnh mẫu tạo sẵn (máy chủ AI đang bận) · bấm Dựng lại để thử bằng AI"
-              : (tryon.result?.label_note ?? "Ảnh minh hoạ AI")
+              : (tryon.result?.label_note ?? "Ảnh minh họa AI")
             : photoUrl
               ? "Ảnh của con · bộ đã chọn sẽ được mặc lên ảnh này"
               : "Ảnh xem trước: người mẫu mặc bộ chuẩn · bấm Mặc lên người để thử bộ con chọn"}

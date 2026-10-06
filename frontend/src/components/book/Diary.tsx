@@ -554,7 +554,7 @@ export function FestivalDiary({
 
 const LEVEL: Record<string, string> = {
   keep: "Giữ",
-  caution: "Cẩn thận",
+  caution: "Cân nhắc",
   free: "Được đổi",
 };
 

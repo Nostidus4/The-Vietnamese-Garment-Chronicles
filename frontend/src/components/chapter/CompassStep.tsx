@@ -13,7 +13,7 @@ export function Fork({ data, selection, verdict }: { data: Bootstrap; selection:
   const after = verdict.alternative_state;
   return (
     <div className="space-y-2 rounded-lg border-2 border-red-300 bg-red-50/60 p-4 text-sm">
-      <p className="m-0 font-semibold">⛔ Look này sẽ không được dựng. Nếu để Tèo dựng phương án thay thế, Tèo sẽ:</p>
+      <p className="m-0 font-semibold">⛔ Bộ phối này sẽ không được dựng. Nếu để Tèo dựng phương án thay thế, Tèo sẽ:</p>
       <ul className="m-0 list-disc pl-5">
         {(changes.length ? changes : ["Bỏ chi tiết gây sai lệch"]).map((c) => (
           <li key={c}>{c}</li>

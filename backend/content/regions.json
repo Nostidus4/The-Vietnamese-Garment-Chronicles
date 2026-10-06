@@ -78,14 +78,14 @@
     },
     {
       "id": "hue",
-      "name": "Miền Trung",
+      "name": "Trung Bộ",
       "status": "open",
       "garments": [
         "ao-ngu-than",
         "ao-dai"
       ],
       "map_note": {
-        "title": "Miền Trung",
+        "title": "Trung Bộ",
         "lines": [
           "Dải đất hẹp giữa núi và biển.",
           "Chương đầu tiên: Huế, mùa mưa năm Bà hai mươi tuổi.",

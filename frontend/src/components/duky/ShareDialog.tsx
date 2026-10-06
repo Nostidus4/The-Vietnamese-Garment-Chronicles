@@ -115,7 +115,7 @@ export function ShareDialog({ page, onClose }: { page: DuKyPage; onClose: () => 
             {hasReal && (
               <label className="mt-3 flex items-start gap-2 rounded bg-[#B5452E]/10 p-2 text-xs">
                 <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} className="mt-0.5" />
-                <span>Tôi hiểu ảnh thật của mình sẽ công khai cho bất kỳ ai có link, cho tới khi tôi gỡ.</span>
+                <span>Con hiểu ảnh thật của mình sẽ công khai cho bất kỳ ai có link, cho tới khi con gỡ.</span>
               </label>
             )}
             {error && <p className="mt-2 text-xs text-red-700">{error}</p>}

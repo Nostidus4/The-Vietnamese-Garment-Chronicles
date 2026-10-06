@@ -77,7 +77,7 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
     <div className="flex h-full flex-col">
       <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">MỤC LỤC</p>
       <p className="font-hand m-0 text-[1.2rem] leading-snug" style={{ color: YOUNG }}>
-        Những nơi Bà đã đi
+        Những nơi Bà đã đi và đã nghe kể
       </p>
       <ol className="m-0 mt-3 flex list-none flex-col gap-1 p-0">
         {data.regions.map((r, i) => {

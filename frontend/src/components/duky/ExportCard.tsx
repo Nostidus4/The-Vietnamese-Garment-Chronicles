@@ -12,6 +12,7 @@ import { getPhoto, type DuKyPage } from "@/lib/dukyBook";
 import type { Bootstrap } from "@/lib/types";
 import { formatDate, teoFact } from "./DuKyPageView";
 import { useDialog } from "@/lib/useDialog";
+import { labelVi, lowerFirst } from "@/lib/text";
 
 const readAsDataUrl = (b: Blob) =>
   new Promise<string>((ok, fail) => {
@@ -152,7 +153,7 @@ export function ExportCard({
               <p className="m-0 text-[13px] text-stone-600">
                 {g?.name_vi}
                 {page.date ? ` · ${formatDate(page.date)}` : ""}
-                {page.compass_label ? ` · ${page.compass_label}` : ""}
+                {page.compass_label ? ` · ${labelVi(page.compass_label)}` : ""}
               </p>
             </div>
             <div
@@ -226,7 +227,7 @@ export function ExportCard({
               </p>
               <p className="font-hand m-0 -mt-4 text-[30px] leading-snug text-[#1f3a78]">
                 {page.note ||
-                  `Con sắp mặc ${g?.name_vi.toLowerCase() ?? "Việt phục"} ${occasion ? `đi ${occasion.toLowerCase()}` : ""}.`}
+                  `Con sắp mặc ${g ? lowerFirst(g.name_vi) : "Việt phục"} ${occasion ? `đi ${lowerFirst(occasion)}` : ""}.`}
               </p>
             </div>
           ) : (

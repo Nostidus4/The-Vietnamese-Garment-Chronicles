@@ -15,7 +15,7 @@
       ]
     },
     {
-      "text": "Vua Minh Mạng (1826–1837) phổ biến áo ngũ thân ra cả nước.",
+      "text": "Từ năm 1826 đến 1837, vua Minh Mạng ban hành chính sách phổ biến áo ngũ thân ra cả nước.",
       "sources": [
         "ref-11"
       ]
@@ -80,7 +80,7 @@
         },
         {
           "id": "the-sa",
-          "label": "The, sa",
+          "label": "The hoặc sa",
           "prompt": "the tunic is thin, lightly sheer silk gauze (the, sa)",
           "sources": [
             "ref-04",
