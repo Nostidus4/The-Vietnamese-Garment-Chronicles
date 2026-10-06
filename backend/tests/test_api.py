@@ -151,7 +151,7 @@ def test_ask_wrong_shapes_refuse_without_500(client, scripted, out):
     scripted(out)
     r = client.post("/ask", json={"garment_id": "ao-ngu-than", "question": "Có từ khi nào?"})
     assert r.status_code == 200
-    assert r.json() == {"answer": ask_service.REFUSALS["no_source"], "sources": [], "grounded": False, "reason": "no_source"}
+    assert r.json() == {"answer": ask_service.REFUSALS["unavailable"], "sources": [], "grounded": False, "reason": "unavailable"}
 
 
 def test_ask_keeps_real_sources_and_refuses_when_none_left(client, scripted):
@@ -178,7 +178,32 @@ def test_ask_says_why_it_refuses(client, scripted, reason):
 
 def test_ask_refusals_speak_as_teo():
     # Tí and Tèo say "tớ" and call the reader "bạn" (content/_templates/README.md, #59)
-    assert all("tớ" in t.lower() and "mình" not in t.lower() for t in ask_service.REFUSALS.values())
+    assert all("tớ" in t.lower() and "bạn" in t.lower() for t in ask_service.REFUSALS.values())
+
+
+def test_ask_refusal_points_to_the_chips():
+    # the chips are probed, so pointing there never sends the reader to another refusal (#51)
+    assert "gợi ý" in ask_service.REFUSALS["no_source"]
+
+
+def test_ask_wrong_shape_is_a_model_failure_not_missing_data(client, scripted):
+    scripted({"answer": 42})
+    assert client.post("/ask", json={"garment_id": "ao-dai", "question": "Có từ khi nào?"}).json()["reason"] == "unavailable"
+
+
+def test_ask_does_not_ground_on_an_unverified_source(client, scripted, content):
+    # the reader would see an empty "Nguồn:", since the site never cites a source the team has not vetted
+    unverified = next(s.id for s in content.sources.values() if s.verified is False)
+    scripted({"answer": "Nhẹ, thoáng.", "sources": [unverified]})
+    r = client.post("/ask", json={"garment_id": "ao-ba-ba", "question": "Vì sao áo bà ba mát?"}).json()
+    assert r["grounded"] is False and r["reason"] == "no_source"
+
+
+def test_ask_gives_occasion_names(client, scripted, content):
+    fake = scripted({"refuse": "no_source"})
+    client.post("/ask", json={"garment_id": "ao-ba-ba", "question": "Mặc dịp nào?"})
+    g = content.garments["ao-ba-ba"]
+    assert content.occasions[g.occasions[0]].name in fake.prompts[0]
 
 
 def test_ask_answers_from_compass_rules_and_accessories(client, scripted, content):
@@ -191,10 +216,10 @@ def test_ask_answers_from_compass_rules_and_accessories(client, scripted, conten
 
 
 def test_ask_can_compare_two_garments(client, scripted, content):
-    tu, ngu = content.garments["ao-tu-than"], content.garments["ao-ngu-than"]
-    fake = scripted({"answer": "Tứ thân 4 vạt, ngũ thân 5 vạt.", "sources": [tu.sources[0], ngu.sources[0]]})
+    tu, ngu = (next(s for s in content.garments[g].sources if content.sources[s].verified) for g in ("ao-tu-than", "ao-ngu-than"))
+    fake = scripted({"answer": "Tứ thân 4 vạt, ngũ thân 5 vạt.", "sources": [tu, ngu]})
     r = client.post("/ask", json={"garment_id": "ao-tu-than", "question": "Tứ thân khác ngũ thân chỗ nào?"}).json()
-    assert r["grounded"] is True and set(r["sources"]) == {tu.sources[0], ngu.sources[0]}
+    assert r["grounded"] is True and set(r["sources"]) == {tu, ngu}
     prompt = fake.prompts[0]
     assert "ao-ngu-than" in prompt and prompt.index('"id": "ao-tu-than"') < prompt.index('"id": "ao-ngu-than"')
 

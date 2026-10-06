@@ -4,12 +4,12 @@
 // Styled as Tèo's yellow sticky note, the same voice that carries the facts in Bà's diary.
 
 import { useState } from "react";
-import { askTeo, type AskRefusal } from "@/lib/api";
+import { askTeo, type AskResponse } from "@/lib/api";
 import { cited, plainAnswer } from "@/lib/sources";
 import type { Bootstrap, Garment } from "@/lib/types";
 import { friendlyError } from "@/lib/errors";
 
-type Answer = { q: string; answer: string; sources: string[]; grounded: boolean; reason: AskRefusal | null };
+type Answer = AskResponse & { q: string };
 
 export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap }) {
   const [q, setQ] = useState("");
@@ -79,26 +79,22 @@ export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap })
             <p className={`m-0 mt-1 text-stone-800 ${a.grounded ? "" : "italic"}`}>
               <b className="text-[#1f3a78]">Tèo:</b> {plainAnswer(a.answer)}
             </p>
-            {a.grounded ? (
+            {a.grounded && cited(data, a.sources).length > 0 && (
               <p className="m-0 mt-1 text-xs">
                 Nguồn:{" "}
-                {cited(data, a.sources).map((s, n) => {
-                  return (
-                    <span key={s.id}>
-                      {n > 0 && " · "}
-                      {s.url ? (
-                        <a href={s.url} target="_blank" rel="noreferrer" className="underline">
-                          {s.title}
-                        </a>
-                      ) : (
-                        s.title
-                      )}
-                    </span>
-                  );
-                })}
+                {cited(data, a.sources).map((s, n) => (
+                  <span key={s.id}>
+                    {n > 0 && " · "}
+                    {s.url ? (
+                      <a href={s.url} target="_blank" rel="noreferrer" className="underline">
+                        {s.title}
+                      </a>
+                    ) : (
+                      s.title
+                    )}
+                  </span>
+                ))}
               </p>
-            ) : (
-              a.reason === "no_source" && <p className="m-0 mt-1 text-xs opacity-70">Không có nguồn đáng tin nên Tèo không đoán.</p>
             )}
           </li>
         ))}

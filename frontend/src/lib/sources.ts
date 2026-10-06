@@ -7,12 +7,12 @@ export function cited(data: Pick<Bootstrap, "sources">, ids: string[]): SourceRe
   return ids.map((id) => data.sources[id]).filter((s): s is SourceRef => !!s && s.verified !== false);
 }
 
-/** Tèo's answer without the reference codes the model sometimes copies ("[ref-03, ref-12]", "(research-6)", "(keep)"):
+/** Tèo's answer without the codes the model sometimes copies ("[ref-03, ref-12]", "(research-6)", "(keep)", "(flexible)"):
  * the sources are listed under the answer. */
 export function plainAnswer(text: string): string {
   return text
     .replace(/\s*[[(]\s*(?:ref|research)-[\w-]+(?:\s*,\s*(?:ref|research)-[\w-]+)*\s*[\])]/g, "")
-    .replace(/\s*\((?:keep|caution|free)\)/gi, "")
+    .replace(/\s*\((?:keep|caution|free|core|flexible|fusion|restricted|occasion)\)/gi, "")
     .replace(/\s+([.,!?])/g, "$1");
 }
 
