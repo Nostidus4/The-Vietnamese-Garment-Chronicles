@@ -47,8 +47,8 @@ export const compareLooks = (selections: Selection[]) => post<CompassResult[]>("
 
 /** Why Tèo did not answer: "unavailable" means Gemini could not be reached, not that the data has nothing. */
 export type AskRefusal = "off_topic" | "no_source" | "unsafe" | "unavailable";
-export const askTeo = (garment_id: string, question: string) =>
-  post<{ answer: string; sources: string[]; grounded: boolean; reason: AskRefusal | null }>("/ask", { garment_id, question });
+export type AskResponse = { answer: string; sources: string[]; grounded: boolean; reason: AskRefusal | null };
+export const askTeo = (garment_id: string, question: string) => post<AskResponse>("/ask", { garment_id, question });
 
 /** The try-on limiter said no; `retryAfterS` comes from its Retry-After header. */
 export class RateLimited extends Error {

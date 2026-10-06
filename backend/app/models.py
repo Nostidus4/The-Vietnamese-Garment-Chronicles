@@ -53,7 +53,9 @@ class AskRequest(BaseModel):
     question: str = Field(min_length=2, max_length=300)
 
 
-AskRefusal = Literal["off_topic", "no_source", "unsafe", "unavailable"]
+# Why Tèo did not answer: Gemini picks one of the first three; "unavailable" is ours (Gemini unreachable or out of shape)
+ModelRefusal = Literal["off_topic", "no_source", "unsafe"]
+AskRefusal = ModelRefusal | Literal["unavailable"]
 
 
 class AskResponse(BaseModel):

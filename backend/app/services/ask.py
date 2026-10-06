@@ -1,20 +1,19 @@
 """F8 Hỏi Tèo: Gemini answers only from the garment data cards, Compass rules and accessories, and must cite source ids."""
 
 import json
-from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, ValidationError
 
 from ..content import store
-from ..models import AskRefusal, AskResponse
+from ..models import AskRefusal, AskResponse, ModelRefusal
 from .compass import ACCESSORY_RULE, ZONE_RULE
 from .gemini_client import GeminiUnavailable, get_client
 
 # Tèo says "tớ" and calls the reader "bạn" (content/_templates/README.md); each refusal tells the reader what to do next
 REFUSALS: dict[AskRefusal, str] = {
-    "no_source": "Câu này tớ chưa có nguồn đáng tin nên không đoán đâu. Bạn thử hỏi áo có từ khi nào, mặc dịp nào, phần nào phải giữ nhé.",
+    "no_source": "Câu này tớ chưa có nguồn đáng tin nên không đoán đâu. Bạn thử một câu gợi ý bên dưới nhé.",
     "off_topic": "Câu này ngoài chuyện trang phục rồi, tớ chỉ kể về Việt phục thôi. Bạn hỏi tớ về bộ áo đang xem nhé.",
-    "unsafe": "Tớ chỉ trả lời về Việt phục, từ dữ liệu có nguồn, nên yêu cầu này tớ không làm được.",
+    "unsafe": "Tớ chỉ trả lời về Việt phục, từ dữ liệu có nguồn, nên yêu cầu này tớ không làm được. Bạn thử một câu gợi ý bên dưới nhé.",
     "unavailable": "Tớ đang bận tra sổ một chút, bạn hỏi lại sau ít phút nhé.",
 }
 
@@ -41,14 +40,18 @@ class _Answer(BaseModel):
     model_config = ConfigDict(strict=True)
     answer: str = ""
     sources: list[str] = []
-    refuse: Literal["off_topic", "no_source", "unsafe"] | None = None
+    refuse: ModelRefusal | None = None
 
 
 def _refuse(reason: AskRefusal) -> AskResponse:
     return AskResponse(answer=REFUSALS[reason], sources=[], grounded=False, reason=reason)
 
 
-def _data(garment_id: str) -> dict[str, str]:
+def _json(v: object) -> str:
+    return json.dumps(v, ensure_ascii=False)
+
+
+def _prompt_blocks(garment_id: str) -> dict[str, str]:
     """The prompt's three data blocks as JSON: every garment (the one being viewed first and marked), accessories, rules."""
     c = store.get()
     g = c.garments[garment_id]
@@ -56,6 +59,7 @@ def _data(garment_id: str) -> dict[str, str]:
     for x in [g, *(o for o in c.garments.values() if o.id != g.id)]:
         card = x.model_dump(include={"id", "name_vi", "period", "summary", "facts", "occasions", "zones", "sources"})
         card["source_titles"] = {s: c.sources[s].title for s in x.sources if s in c.sources}
+        card["occasion_names"] = {o: c.occasions[o].name for o in x.occasions if o in c.occasions}
         if x.id == g.id:
             card["dang_xem"] = True
         garments.append(card)
@@ -68,24 +72,25 @@ def _data(garment_id: str) -> dict[str, str]:
         for a in c.accessories.values()
     ]
     rules = [r.model_dump(include={"type", "state", "teo", "why", "sources"}) for r in c.rules.values()]
-    dump = lambda v: json.dumps(v, ensure_ascii=False)  # noqa: E731
-    return {"garments": dump(garments), "accessories": dump(accessories), "rules": dump(rules)}
+    return {"garments": _json(garments), "accessories": _json(accessories), "rules": _json(rules)}
 
 
 def _allowed_sources() -> set[str]:
+    """Ids an answer may stand on: cited somewhere in the data, and vetted (the site never shows an unverified source)."""
     c = store.get()
-    return {
+    cited = {
         *(s for x in c.garments.values() for s in [*x.sources, *(s for f in x.facts for s in f.sources)]),
         *(s for a in c.accessories.values() for s in a.sources),
         *(s for r in c.rules.values() for s in r.sources),
     }
+    return {s for s in cited if s in c.sources and c.sources[s].verified}
 
 
 def ask(garment_id: str, question: str) -> AskResponse:
     if garment_id not in store.get().garments:
         return _refuse("no_source")
     zone_rule = ", ".join(f"{level} → {rule}" for level, rule in ZONE_RULE.items())
-    prompt = SYSTEM.format(zone_rule=zone_rule, question=question, **_data(garment_id))
+    prompt = SYSTEM.format(zone_rule=zone_rule, question=question, **_prompt_blocks(garment_id))
     try:
         raw = get_client().generate_json(prompt)
     except GeminiUnavailable:
@@ -93,7 +98,7 @@ def ask(garment_id: str, question: str) -> AskResponse:
     try:
         out = _Answer.model_validate(raw)
     except ValidationError:
-        return _refuse("no_source")  # wrong shape from the model: refuse politely, never a 500
+        return _refuse("unavailable")  # wrong shape from the model: a model failure, not missing data; never a 500
     if out.refuse:
         return _refuse(out.refuse)
 
@@ -101,7 +106,8 @@ def ask(garment_id: str, question: str) -> AskResponse:
     if not answer:
         return _refuse("no_source")
     # Drop any source id Gemini invented; answer only while at least one real source remains
-    sources = list(dict.fromkeys(s for s in out.sources if s in _allowed_sources()))
+    allowed = _allowed_sources()
+    sources = list(dict.fromkeys(s for s in out.sources if s in allowed))
     if not sources:
         return _refuse("no_source")
     return AskResponse(answer=answer, sources=sources, grounded=True)

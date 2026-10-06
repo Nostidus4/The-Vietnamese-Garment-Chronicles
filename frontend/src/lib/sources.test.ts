@@ -8,6 +8,10 @@ describe("what the reader sees of the sources (#50)", () => {
     );
     expect(plainAnswer("Áo tứ thân đi cùng yếm, nón quai thao (research-5-3).")).toBe("Áo tứ thân đi cùng yếm, nón quai thao.");
     expect(plainAnswer("Số thân áo (keep) và cổ áo (caution) nên giữ.")).toBe("Số thân áo và cổ áo nên giữ.");
+    // Tèo now also reads Compass rules (#51): their type names must not leak either
+    expect(plainAnswer("Sneakers là phụ kiện hiện đại (flexible), còn đổi số thân (core) thì không.")).toBe(
+      "Sneakers là phụ kiện hiện đại, còn đổi số thân thì không.",
+    );
   });
   it("never cites a source the team has not vetted, nor an unknown id", () => {
     const sources = {

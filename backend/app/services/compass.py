@@ -6,14 +6,14 @@ when the team adds data.
 """
 
 from ..content import store
-from ..content.schemas import KEEP_OPTION, Garment, Message, ZoneOption
+from ..content.schemas import KEEP_OPTION, AccessoryKind, Garment, Message, RuleType, ZoneLevel, ZoneOption
 from ..models import LABELS, SEVERITY, CompassResult, Selection, Trigger
 from .harmony import harmony_notes
 
 
 # Which rule speaks for an accessory of a kind, and for a change to a zone of a level (Hỏi Tèo reads these too)
-ACCESSORY_RULE = {"traditional-foreign": "fusion", "restricted": "restricted", "modern": "flexible"}
-ZONE_RULE = {"keep": "core", "caution": "caution", "free": "flexible"}
+ACCESSORY_RULE: dict[AccessoryKind, RuleType] = {"traditional-foreign": "fusion", "restricted": "restricted", "modern": "flexible"}
+ZONE_RULE: dict[ZoneLevel, RuleType] = {"keep": "core", "caution": "caution", "free": "flexible"}
 
 
 class SelectionError(ValueError):
