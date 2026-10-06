@@ -49,6 +49,8 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
   // ---- voice-over: asked once on the blank page (that click also unlocks audio in the browser) ----
   const [sound, setSound] = useState<boolean | null>(soundParam);
   const [speaking, setSpeaking] = useState(false);
+  const [paused, setPaused] = useState(false); // ⏸: the story waits on its line until the reader goes on (#55)
+  const firstChoice = useRef<HTMLButtonElement>(null);
   const audio = useRef<HTMLAudioElement | null>(null);
   const [artReady, setArtReady] = useState(false);
   const choose = (on: boolean) => {
@@ -246,6 +248,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
   useEffect(() => {
     if (phase !== "play") return;
     if (timer.current) clearTimeout(timer.current);
+    if (paused) return;
     const next = screen.beats[shown];
     // the next line is further along the take on air: show it exactly when the voice gets there
     const cue = next && !next.wait_click ? cueIn(screen.id, shown) : null;
@@ -259,8 +262,11 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     const afterVoice = sound && shown > 0 && !!screen.beats[shown - 1]?.voice; // the reading already gave the pause
     // the story plays by itself: after a voiced line a short breath, after a silent one long enough to read it.
     // A click, a key or a swipe still moves on at once.
-    const lastText = shown > 0 ? (screen.beats[shown - 1]?.text ?? "") : "";
-    const readMs = Math.min(4000, Math.max(1100, 700 + lastText.length * 42));
+    // the time to type the line (S06 "Chúng còn để nhớ." types at 115 ms a letter), then to read it at about
+    // 58 ms a letter: it used to move on at 42 ms a letter, before the closing lines had finished (#55)
+    const last = shown > 0 ? screen.beats[shown - 1] : undefined;
+    const lastText = last?.text ?? "";
+    const readMs = Math.min(9000, lastText.length * (last?.type_ms ?? 0) + Math.max(1400, 900 + lastText.length * 58));
     if (!next) {
       const auto = screen.auto_exit_ms ?? (demo ? (afterVoice ? 700 : 1500) : afterVoice ? 900 : readMs);
       timer.current = setTimeout(() => goNext(), auto * (screen.auto_exit_ms ? pace : 1));
@@ -271,7 +277,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     return () => {
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [phase, shown, screen, pace, demo, reduced, showBeat, goNext, speaking, sound, cueIn]);
+  }, [phase, shown, screen, pace, demo, reduced, showBeat, goNext, speaking, sound, cueIn, paused]);
 
   const advance = useCallback(() => {
     // ignore double-clicks: one press = one step
@@ -279,6 +285,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     if (now - lastAdvance.current < 320) return;
     lastAdvance.current = now;
     if (phase !== "play" || busy.current) return;
+    setPaused(false); // going on by hand is also the way out of a pause
     const next = screen.beats[shown];
     // a line is still typing → finish it
     setInstant((v) => v + 1);
@@ -302,8 +309,17 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     transitionTo("finish");
   }, [transitionTo, hush]);
 
+  const keys = useRef({ playing: false, togglePause: () => {} });
+  useEffect(() => {
+    keys.current = { playing: phase !== "intro" && sound !== null, togglePause: () => setPaused((v) => !v) };
+  });
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      // a focused button or link does its own job with Enter and Space (the first choice, "Bỏ qua", the sound);
+      // while the first question is on screen nothing else listens, and Esc does not skip the story unasked (#55)
+      if ((e.key === "Enter" || e.key === " ") && e.target instanceof HTMLElement && e.target.closest("button, a, input")) return;
+      if (!keys.current.playing) return;
+      if (e.key === "p" || e.key === "P") return keys.current.togglePause();
       if ([" ", "Enter", "ArrowRight", "ArrowDown", "PageDown"].includes(e.key)) {
         e.preventDefault();
         advance();
@@ -337,6 +353,13 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
       window.removeEventListener("touchend", onTouchEnd);
     };
   }, [advance, back, skip]);
+
+  // the first choice takes the focus once it has faded in: autoFocus fired while it was still hidden (#55)
+  useEffect(() => {
+    if (sound !== null) return;
+    const t = setTimeout(() => firstChoice.current?.focus(), 500);
+    return () => clearTimeout(t);
+  }, [sound, phase]);
 
   // Expose the state for automated walkthrough tests (read-only, harmless in production)
   useEffect(() => {
@@ -431,7 +454,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
             <p className="font-hand m-0 -mt-2 text-lg text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
             <p className="font-hand m-0 text-xl text-stone-600">Con muốn nghe kể, hay tự đọc?</p>
             <div className="mt-2 flex flex-wrap justify-center gap-3">
-              <button type="button" autoFocus onClick={() => choose(true)} className="rounded-full bg-[#2F4A6D] px-6 py-3 text-amber-50 shadow hover:bg-[#243a57]">
+              <button type="button" ref={firstChoice} onClick={() => choose(true)} className="rounded-full bg-[#2F4A6D] px-6 py-3 text-amber-50 shadow hover:bg-[#243a57]">
                 🔊 Nghe kể chuyện
               </button>
               <button type="button" onClick={() => choose(false)} className="rounded-full border border-stone-500 px-6 py-3 text-stone-700 hover:bg-stone-800 hover:text-amber-50">
@@ -457,7 +480,22 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
           aria-label={sound ? "Tắt giọng đọc" : "Bật giọng đọc"}
           title={sound ? "Tắt giọng đọc" : "Bật giọng đọc"}
         >
-          {sound ? "🔊" : "🔈"}
+          {sound ? "🔊" : "🔇"}
+        </button>
+      )}
+      {sound !== null && phase === "play" && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setPaused((v) => !v);
+          }}
+          className="skip-btn absolute left-[4.6rem] top-4 z-10"
+          aria-label={paused ? "Đọc tiếp" : "Tạm dừng"}
+          aria-pressed={paused}
+          title={paused ? "Đọc tiếp (P)" : "Tạm dừng (P)"}
+        >
+          {paused ? "▶" : "⏸"}
         </button>
       )}
       <ThreadProgress value={doneBeats / totalBeats} hidden={screen.hide_progress} />

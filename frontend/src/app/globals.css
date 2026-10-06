@@ -115,6 +115,17 @@ body {
   .bubble-v2.tail-down-left::after { left: 16%; bottom: -0.6em; transform: rotate(45deg) skew(8deg, 8deg); }
   .bubble-v2.tail-up::after { left: 20%; top: -0.6em; transform: rotate(225deg); }
 
+  /* a soft cream wash under Bà's hand-written lines: on the pale yellow of S06 the glow alone was not enough (#55) */
+  .hand-note:not(.hand-note--light) { isolation: isolate; }
+  .hand-note:not(.hand-note--light)::before {
+    content: "";
+    position: absolute;
+    inset: -18% -5%;
+    z-index: -1;
+    border-radius: 999px;
+    background: radial-gradient(ellipse at center, rgba(251, 246, 234, 0.85) 0%, rgba(251, 246, 234, 0.6) 55%, transparent 78%);
+    filter: blur(4px);
+  }
   .hand-note {
     font-family: var(--font-hand), cursive;
     font-size: clamp(18px, calc(var(--bw, 1600px) * 0.0165), 30px);
@@ -134,7 +145,8 @@ body {
     position: absolute;
     inset: -40% -8%;
     z-index: -1;
-    background: radial-gradient(ellipse at center, rgba(40, 20, 4, 0.55) 0%, rgba(40, 20, 4, 0.28) 45%, transparent 72%);
+    /* darker behind the closing lines of S10: the cream letters sat on a bright yellow sky, under 4.5:1 (#55) */
+    background: radial-gradient(ellipse at center, rgba(40, 20, 4, 0.78) 0%, rgba(40, 20, 4, 0.55) 48%, transparent 76%);
     filter: blur(6px);
   }
   .finale {
@@ -146,7 +158,7 @@ body {
   }
   .finale--large {
     font-size: clamp(28px, 4.2vw, 68px);
-    color: #ffe9b0;
+    color: #fff3d6;
     text-shadow: 0 0 30px rgba(255, 190, 80, 0.55), 0 3px 22px rgba(70, 35, 0, 0.8);
   }
 
@@ -154,7 +166,9 @@ body {
      Opening – chrome
      ================================================================ */
   .skip-btn {
-    font-size: 13px;
+    min-height: 44px;
+    min-width: 44px;
+    font-size: 15px;
     letter-spacing: 0.08em;
     color: rgba(251, 246, 234, 0.9);
     background: rgba(20, 12, 7, 0.35);
