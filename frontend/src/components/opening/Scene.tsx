@@ -149,7 +149,8 @@ export const Scene = forwardRef<SceneHandle, Props>(function Scene(
             src={asset(screen.image)}
             alt={screen.title}
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             quality={88}
             sizes={IMAGE_SIZES}
             className="select-none object-cover"

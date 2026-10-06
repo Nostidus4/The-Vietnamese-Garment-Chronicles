@@ -19,6 +19,7 @@ import { BookSizeControl } from "./BookSizeControl";
 import { useDuKy } from "@/lib/dukyBook";
 import { DuKyCover } from "../duky/DuKyCover";
 import { asset } from "@/lib/base";
+import { placeholder } from "@/lib/placeholders";
 
 type Landing = "flash" | "soft";
 type Phase = "landing" | "closed" | "opening" | "open" | "closing";
@@ -184,7 +185,8 @@ export function DeskScene({
         src={asset("/page/Desk.webp")}
         alt=""
         fill
-        priority
+        loading="eager"
+        placeholder={placeholder("/page/Desk.webp")}
         quality={88}
         sizes="100vw"
         className="desk-bg object-cover"
@@ -318,7 +320,7 @@ export function DeskScene({
                       boxShadow: "0 22px 44px rgba(20,8,0,0.5)",
                     }}
                   />
-                  <BookCover priority sizes={`${size.w}px`} />
+                  <BookCover sizes={`${size.w}px`} />
                   {phase === "closed" && !reduced && (
                     <span className="cover-sheen" />
                   )}
@@ -447,13 +449,16 @@ function DeskProps() {
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden>
       <div className="desk-photo absolute left-[3%] top-[42%] hidden w-[12vw] min-w-[130px] max-w-[190px] rotate-[-7deg] md:block">
+        {/* a small copy of the opening's s06 picture (scripts/optimize-images.mjs), toned like the photo while it loads.
+            Eager: on a wide screen Chrome counts it as the page's largest picture; on a phone (hidden) it costs 18 KB */}
         <Image
-          src={asset("/opening/s06.webp")}
+          src={asset("/page/desk-photo.webp")}
           alt=""
-          width={420}
-          height={236}
-          sizes="14vw"
-          className="block h-auto w-full sepia-[.55]"
+          width={400}
+          height={225}
+          loading="eager"
+          unoptimized
+          className="block h-auto w-full bg-[#b39c78] sepia-[.55]"
         />
       </div>
     </div>

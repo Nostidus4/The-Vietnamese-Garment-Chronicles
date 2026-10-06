@@ -63,14 +63,17 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
         }
         transition={{ duration: leaving ? 0.9 : 1.2, ease: EASE, delay: leaving ? 0 : 0.25 }}
       >
-        {/* logo-mark.webp: Logo.png with its cream background made transparent, so it sits on the page with no frame */}
+        {/* logo-mark.webp: Logo.png with its cream background made transparent, so it sits on the page with no frame.
+            Unoptimized on purpose: the light's mask below and the logo above the first question use the same file, so
+            the browser downloads it once */}
         <Image
           src={asset("/page/logo-mark.webp")}
           alt=""
           width={1118}
           height={802}
-          priority
-          sizes="(max-width: 720px) 78vw, 560px"
+          loading="eager"
+          fetchPriority="high"
+          unoptimized
           className="h-auto w-full"
           onLoad={() => setShown(true)}
         />
