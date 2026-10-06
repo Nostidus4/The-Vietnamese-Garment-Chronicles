@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { Effect } from "@/lib/types";
 
 // All sizes use --bw (box width in px, set on the image box) so effects scale with the artwork.
@@ -154,25 +154,7 @@ function EffectView({ e, reduced }: { e: TimedEffect; reduced: boolean }) {
         </motion.svg>
       );
     case "label":
-      return (
-        <motion.div
-          className="font-display pointer-events-none absolute whitespace-nowrap rounded-[3px] px-[0.9em] py-[0.3em] text-[#2F4A6D] shadow-md"
-          style={{
-            left: `${e.x}%`,
-            top: `${e.y}%`,
-            fontSize: bw(1.35),
-            background: "#FBF3DF",
-            border: "1.5px solid #2B2118",
-            x: "-50%",
-          }}
-          initial={{ opacity: 0, y: -12, rotate: e.rotate - 6 }}
-          animate={{ opacity: 1, y: 0, rotate: e.rotate }}
-          transition={{ type: "spring", stiffness: 260, damping: 18 }}
-        >
-          <span className="absolute -top-[0.45em] left-1/2 h-[0.9em] w-[2.6em] -translate-x-1/2 rotate-[-3deg] bg-[#E8D9B5]/80" />
-          {e.text}
-        </motion.div>
-      );
+      return <Label e={e} />;
     default:
       return null;
   }
@@ -291,5 +273,46 @@ function Bookmark({ x, y, rotate, reduced }: { x: number; y: number; rotate: num
         <span className="bookmark-tassel" />
       </motion.div>
     </div>
+  );
+}
+
+/**
+ * A paper label taped on the scene, placed in the artwork's own coordinates. On an upright phone the artwork is wider
+ * than the screen and "Ngày hội Sắc Việt" (S01) fell half off the left edge (#95): it is pushed back inside the screen.
+ */
+function Label({ e }: { e: TimedEffect }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => {
+      el.style.marginLeft = "0px";
+      const r = el.getBoundingClientRect();
+      const pad = 8;
+      el.style.marginLeft = `${r.left < pad ? pad - r.left : r.right > window.innerWidth - pad ? window.innerWidth - pad - r.right : 0}px`;
+    };
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, []);
+  return (
+    <motion.div
+      ref={ref}
+      className="font-display pointer-events-none absolute whitespace-nowrap rounded-[3px] px-[0.9em] py-[0.3em] text-[#2F4A6D] shadow-md"
+      style={{
+        left: `${e.x}%`,
+        top: `${e.y}%`,
+        fontSize: bw(1.35),
+        background: "#FBF3DF",
+        border: "1.5px solid #2B2118",
+        x: "-50%",
+      }}
+      initial={{ opacity: 0, y: -12, rotate: e.rotate - 6 }}
+      animate={{ opacity: 1, y: 0, rotate: e.rotate }}
+      transition={{ type: "spring", stiffness: 260, damping: 18 }}
+    >
+      <span className="absolute -top-[0.45em] left-1/2 h-[0.9em] w-[2.6em] -translate-x-1/2 rotate-[-3deg] bg-[#E8D9B5]/80" />
+      {e.text}
+    </motion.div>
   );
 }
