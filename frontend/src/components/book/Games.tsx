@@ -447,6 +447,165 @@ function NguThan({ game, onWin }: Props) {
   );
 }
 
+/* ---------- 2c · Bữa cơm ra mắt: a seat at the tray, then a cup falls ---------- */
+
+// where the family sits around the tray (left %, top %), and the dishes on it; Bà sits at the bottom
+const SEATS = [
+  { x: 50, y: 7 },
+  { x: 8, y: 50 },
+  { x: 92, y: 50 },
+];
+const DISHES = [
+  { x: 36, y: 36, c: "#9a5a2a" },
+  { x: 64, y: 36, c: "#d0724a" },
+  { x: 36, y: 62, c: "#6f8f4a" },
+  { x: 64, y: 62, c: "#c9a24a" },
+];
+
+/**
+ * Bà's first meal with his mother, played at the tray instead of answered as a quiz (#108 follow-up): invite the
+ * family to eat, eldest first; taste each dish a little; then the cup slips. The rounds give the words: round 0 the
+ * people in the order they are invited, round 1 the dishes, round 2 the choice when the cup falls.
+ */
+function MamCom({ game, onWin }: Props) {
+  const reduced = !!useReducedMotion();
+  const [moi, tasting, cup] = game.rounds;
+  const [step, setStep] = useState(0); // 0 invite · 1 taste · 2 the cup · 3 done
+  const [invited, setInvited] = useState(0); // how many, in order
+  const [tasted, setTasted] = useState<number[]>([]);
+  const [fell, setFell] = useState(false);
+  const [picked, setPicked] = useState<number | null>(null);
+  const [note, setNote] = useState<{ text: string; tone: "good" | "bad" | "neutral" } | null>(null);
+  const order = useMemo(() => shuffle(cup.choices.map((_, i) => i), 5), [cup.choices]);
+
+  // the cup slips a moment after the last dish, by itself: the reader only chooses what Bà does next
+  useEffect(() => {
+    if (step !== 2 || fell) return;
+    const t = setTimeout(() => {
+      setFell(true);
+      setNote(null); // the praise for the dishes makes room for what happens next
+    }, reduced ? 0 : 900);
+    return () => clearTimeout(t);
+  }, [step, fell, reduced]);
+
+  const invite = (k: number) => {
+    if (step !== 0 || k < invited) return;
+    if (k !== invited) return setNote({ tone: "bad", text: "Mời người lớn nhất trước con ạ." });
+    const n = invited + 1;
+    setInvited(n);
+    if (n === moi.choices.length) {
+      setNote({ tone: "good", text: moi.explain ?? "" });
+      setStep(1);
+    } else setNote({ tone: "neutral", text: `“Mời ${moi.choices[k].split(" ")[0].toLowerCase()} ăn cơm.”` }); // "Mẹ anh" → "Mời mẹ…"
+  };
+  const taste = (k: number) => {
+    if (step !== 1) return;
+    if (tasted.includes(k)) return setNote({ tone: "bad", text: "Mỗi món một chút thôi, để phần cả nhà con ạ." });
+    const n = [...tasted, k];
+    setTasted(n);
+    if (n.length === tasting.choices.length) {
+      setNote({ tone: "good", text: `${tasting.item ?? ""} ${tasting.explain ?? ""}`.trim() });
+      setStep(2);
+    } else setNote({ tone: "neutral", text: `Bà nếm một chút ${tasting.choices[k].toLowerCase()}.` });
+  };
+  const react = (k: number) => {
+    setPicked(k);
+    if (k !== cup.answer) return setNote({ tone: "bad", text: "Bà mà làm vậy thì cả nhà buồn lắm. Con thử cách khác nhé." });
+    setNote({ tone: "good", text: cup.explain ?? "" });
+    setStep(3);
+    setTimeout(onWin, 2200);
+  };
+
+  const phase = [moi.label, tasting.label, cup.label];
+  return (
+    <div>
+      <ol className="m-0 mb-1.5 flex list-none flex-wrap justify-center gap-1 p-0 text-[0.7rem]">
+        {phase.map((name, k) => (
+          <li key={k} className={`rounded-full px-2 py-0.5 ${k < step ? "bg-[#5E7F4A] text-amber-50" : k === step ? "bg-[#27354f] text-amber-50" : "border border-stone-400 text-stone-600"}`}>
+            {k + 1} · {name} {k < step ? "✓" : ""}
+          </li>
+        ))}
+      </ol>
+      <p className="font-hand m-0 mb-1 text-center text-[0.95rem] leading-snug" style={{ color: YOUNG }}>
+        {[moi, tasting, cup, cup][step].prompt}
+      </p>
+
+      {/* the tray seen from above, the family around it */}
+      <div className={`relative mx-auto mt-4 aspect-square transition-[width] ${step >= 2 ? "w-[min(11rem,52%)]" : "w-[min(15rem,70%)]"}`}>
+        <div className="absolute inset-[16%] rounded-full border-4 border-[#5b3a22] bg-[radial-gradient(circle_at_40%_35%,#b07a45,#7a4a26)] shadow-[0_6px_14px_rgba(40,20,0,0.35)]" aria-hidden />
+        {/* the rice pot in the middle */}
+        <div className="absolute left-1/2 top-1/2 h-[13%] w-[13%] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#3b2615] bg-[#f3ead7]" aria-hidden />
+        {tasting.choices.map((d, k) => (
+          <motion.button
+            key={d}
+            type="button"
+            data-hint={step === 1 || undefined}
+            disabled={step !== 1}
+            onClick={() => taste(k)}
+            aria-label={`${d}${tasted.includes(k) ? ", đã nếm" : ""}`}
+            title={d}
+            className="absolute grid h-[17%] w-[17%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-[#2F4A6D] bg-[#f6efe0] disabled:cursor-default"
+            style={{ left: `${DISHES[k].x}%`, top: `${DISHES[k].y}%` }}
+            animate={tasted.includes(k) && !reduced ? { scale: [1, 0.9, 1] } : undefined}
+          >
+            <span className="h-[62%] w-[62%] rounded-full" style={{ background: DISHES[k].c, opacity: tasted.includes(k) ? 0.55 : 1 }} aria-hidden />
+          </motion.button>
+        ))}
+        {moi.choices.map((who, k) => (
+          <button
+            key={who}
+            type="button"
+            data-hint={(step === 0 && k === 0) || undefined}
+            disabled={step !== 0 || k < invited}
+            onClick={() => invite(k)}
+            className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center disabled:cursor-default"
+            style={{ left: `${SEATS[k].x}%`, top: `${SEATS[k].y}%` }}
+          >
+            <span className={`grid h-8 w-8 place-items-center rounded-full border-2 text-[0.95rem] ${k < invited ? "border-[#5E7F4A] bg-[#e7efdc]" : "border-[#8a4b2a] bg-[#f6efe0]"}`} aria-hidden>
+              {k === 0 ? "👵" : k === 1 ? "👨" : "👧"}
+            </span>
+            <span className="mt-0.5 whitespace-nowrap rounded bg-white/75 px-1 text-[0.68rem] leading-tight text-[#27354f]">
+              {who}
+              {k < invited ? " ✓" : ""}
+            </span>
+          </button>
+        ))}
+        {/* Bà's seat and her cup */}
+        <div className="absolute bottom-[1%] left-1/2 flex -translate-x-1/2 flex-col items-center" aria-hidden>
+          <motion.span
+            className="block h-4 w-6 rounded-b-full border-2 border-[#2F4A6D] bg-[#f6efe0]"
+            animate={fell && step < 3 && !reduced ? { y: 14, rotate: 70, opacity: 0.8 } : { y: 0, rotate: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 12 }}
+          />
+          <span className="mt-0.5 rounded bg-white/75 px-1 text-[0.68rem] text-[#27354f]">Bà</span>
+        </div>
+      </div>
+
+      <p className="m-0 mt-1 text-center text-[0.75rem] text-stone-600">
+        {step === 0 && `Bấm mời từng người · đã mời ${invited}/${moi.choices.length}`}
+        {step === 1 && `Bấm vào từng đĩa để nếm · đã nếm ${tasted.length}/${tasting.choices.length}`}
+        {step >= 2 && (fell ? "Bà làm gì đây?" : "…")}
+      </p>
+      {step >= 2 && fell && (
+        <div className="mt-1 flex flex-col gap-0.5">
+          {order.map((k) => (
+            <button
+              key={k}
+              type="button"
+              disabled={step === 3}
+              onClick={() => react(k)}
+              className={`rounded border px-2 py-0.5 text-left text-[0.78rem] leading-snug ${picked === k ? (k === cup.answer ? "border-[#5E7F4A] bg-[#e7efdc]" : "border-[#B5452E] bg-[#f7e0d8]") : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
+            >
+              {cup.choices[k]}
+            </button>
+          ))}
+        </div>
+      )}
+      {note && <Hint tone={note.tone}>{note.text}</Hint>}
+    </div>
+  );
+}
+
 /* ---------- 3 · Cây bẹo: pick a sign, then the boat whose pole shows what it sells ---------- */
 
 function CayBeo({ game, onWin }: Props) {
@@ -851,6 +1010,7 @@ const KINDS: Record<Game["kind"], (p: Props) => React.ReactElement> = {
   "dong-ho": DongHo,
   "quan-ho": QuanHo,
   "ngu-than": NguThan,
+  "mam-com": MamCom,
   "cay-beo": CayBeo,
   "xep-do": XepDo,
   "khuy-bac": KhuyBac,
@@ -875,6 +1035,11 @@ export const HOW_TO: Record<Game["kind"], string[]> = {
     "Áo ghép từ trong ra như khi mặc: hai thân sau trước, rồi thân con, rồi hai thân trước khép lại.",
     "Kéo một mảnh ở dưới lên đúng chỗ trên áo, hoặc bấm chọn mảnh rồi bấm vào chỗ viền nét đứt.",
     "Ghép đủ năm thân thì hàng khuy bên phải hiện ra.",
+  ],
+  "mam-com": [
+    "Mời cơm: bấm vào từng người quanh mâm, người lớn nhất trước.",
+    "Nếm mỗi món: bấm vào từng đĩa một lần, món nào cũng một chút.",
+    "Khi chén rơi, chọn điều Bà nên làm.",
   ],
   "cay-beo": [
     "Nhìn đồ treo trên đầu mỗi cây sào của từng chiếc ghe.",
