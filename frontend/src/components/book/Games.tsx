@@ -9,6 +9,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Game } from "@/lib/types";
 import { YOUNG } from "./Diary";
+import { drawOrder, PANELS, PLACE, placesAt } from "@/lib/nguThan";
 
 type Props = { game: Game; onWin: () => void };
 
@@ -263,14 +264,6 @@ function QuanHo({ game, onWin }: Props) {
 
 /* ---------- 2b · Áo ngũ thân: put the five panels where they belong ---------- */
 
-// where each panel sits on the drawn robe (front view; the two back panels peek out behind)
-const PANELS: Record<string, { d: string; z: number }> = {
-  "back-left": { d: "M30 16 L50 12 L50 92 L22 92 Z", z: 0 },
-  "back-right": { d: "M50 12 L70 16 L78 92 L50 92 Z", z: 0 },
-  inner: { d: "M50 20 L64 24 L66 90 L50 90 Z", z: 1 },
-  "front-left": { d: "M34 18 L50 14 L50 30 L46 90 L26 90 Z", z: 2 },
-  "front-right": { d: "M50 14 L66 18 L74 90 L42 90 L46 30 Z", z: 3 },
-};
 const PANEL_FILL: Record<string, string> = { "back-left": "#1d3a5c", "back-right": "#1d3a5c", inner: "#a7b8cc", "front-left": "#2F4A6D", "front-right": "#34557d" };
 
 function NguThan({ game, onWin }: Props) {
@@ -278,10 +271,11 @@ function NguThan({ game, onWin }: Props) {
   const [placed, setPlaced] = useState<number[]>([]);
   const [sel, setSel] = useState<number | null>(null);
   const [note, setNote] = useState<{ text: string; good: boolean } | null>(null);
-  const drop = (slot: string) => {
+  // `under`: every place the click landed in (the panels overlap), or the one place picked with the keyboard
+  const drop = (under: string[]) => {
     if (sel === null) return setNote({ text: "Chọn một mảnh thân áo ở dưới trước đã.", good: false });
     const r = game.rounds[sel];
-    if (r.item !== slot) return setNote({ text: `Mảnh “${r.label}” không nằm ở đó đâu con.`, good: false });
+    if (!under.includes(r.item ?? "")) return setNote({ text: `Mảnh “${r.label}” không nằm ở đó đâu con.`, good: false });
     const next = [...placed, sel];
     setPlaced(next);
     setSel(null);
@@ -296,23 +290,34 @@ function NguThan({ game, onWin }: Props) {
         {/* sleeves and the standing collar are always there, the panels are what we place */}
         <path d="M34 18 L8 40 L14 48 L30 34 Z M66 18 L92 40 L86 48 L70 34 Z" fill={all ? "#2F4A6D" : "#d9ceb6"} stroke="#8a7a5c" strokeWidth=".5" />
         <path d="M42 10 Q50 7 58 10 L58 15 Q50 12 42 15 Z" fill={all ? "#1d3a5c" : "#d9ceb6"} stroke="#8a7a5c" strokeWidth=".5" />
-        {Object.entries(PANELS)
-          .sort((a, b) => a[1].z - b[1].z)
-          .map(([slot, p]) => (
-            <path
-              key={slot}
-              d={p.d}
-              onClick={() => drop(slot)}
-              className="cursor-pointer"
-              fill={filled(slot) ? PANEL_FILL[slot] : "rgba(255,255,255,0.35)"}
-              stroke={filled(slot) ? "#10263f" : "#8a7a5c"}
-              strokeWidth=".6"
-              strokeDasharray={filled(slot) ? undefined : "2 1.5"}
-              opacity={slot === "inner" && filled("front-right") ? 0.35 : 1}
-              role="button"
-              aria-label={`Chỗ ${slot}`}
-            />
-          ))}
+        {drawOrder(filled).map((slot) => (
+          <path
+            key={slot}
+            d={PANELS[slot].d}
+            onClick={(e) => {
+              // the click in the robe's own 100×100 box
+              const svg = e.currentTarget.ownerSVGElement;
+              const m = svg?.getScreenCTM()?.inverse();
+              if (!svg || !m) return drop([slot]);
+              const at = new DOMPoint(e.clientX, e.clientY).matrixTransform(m);
+              drop([slot, ...placesAt(at.x, at.y)]);
+            }}
+            onKeyDown={(e) => {
+              if (e.key !== "Enter" && e.key !== " ") return;
+              e.preventDefault();
+              drop([slot]);
+            }}
+            tabIndex={filled(slot) ? -1 : 0}
+            className="cursor-pointer focus:outline-none focus-visible:stroke-[#b4462f]"
+            fill={filled(slot) ? PANEL_FILL[slot] : "rgba(255,255,255,0.35)"}
+            stroke={filled(slot) ? "#10263f" : "#8a7a5c"}
+            strokeWidth=".6"
+            strokeDasharray={filled(slot) ? undefined : "2 1.5"}
+            role="button"
+            aria-label={filled(slot) ? `${PLACE[slot]}, đã ghép` : PLACE[slot]}
+            aria-disabled={filled(slot) || undefined}
+          />
+        ))}
         {/* the buttons along the right, once the front is closed */}
         {all && [34, 44, 54, 64, 74].map((y) => <circle key={y} cx={y < 40 ? 58 : 62 + (y - 44) * 0.12} cy={y} r="1.4" fill="#e8d9a8" />)}
       </svg>
