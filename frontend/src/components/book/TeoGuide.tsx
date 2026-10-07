@@ -5,16 +5,21 @@
 // overlay: the reader can ignore it and keep reading, and pressing the thing it points at also puts it away.
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const KEY = "vpdk-guide";
 const TIPS = [
   { id: "next", target: '[data-guide="next"]', text: "Bấm nút vàng này để đi tiếp. Kéo góc trang, hay dùng phím ← →, cũng lật được." },
+  // on a touch screen there are no arrow keys to speak of (#115)
+  { id: "next", target: '[data-guide="next"]', text: "Bấm nút vàng này để đi tiếp. Vuốt trang cũng lật được.", touch: true },
   { id: "pin", target: ".teo-pin", text: "Thấy ghim đỏ là có ghi chú của tớ. Bấm vào để đọc thêm nhé." },
   { id: "tabs", target: '[data-guide="tabs"]', text: "Mấy dải màu này là mục lục nhanh của chương: bấm để nhảy tới phần bạn muốn." },
 ] as const;
-type Tip = (typeof TIPS)[number];
+type Tip = { id: string; target: string; text: string; touch?: boolean };
+const touch = () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
+/** The tips for this screen: the touch wording of "next" on a phone or a tablet, the keyboard one elsewhere. */
+const tips = (): Tip[] => (TIPS as readonly Tip[]).filter((t) => (t.id === "next" ? !!t.touch === touch() : true));
 
 function seen(): string[] {
   try {
@@ -47,15 +52,28 @@ function visible(sel: string): HTMLElement | null {
 export function TeoGuide() {
   const reduced = !!useReducedMotion();
   const [tip, setTip] = useState<{ tip: Tip; rect: DOMRect } | null>(null);
+  const [h, setH] = useState(H); // the note's real height, once drawn: the estimate put it over the buttons below (#115)
+  const note = useRef<HTMLDivElement>(null);
+  const shownOn = useRef<HTMLElement | null>(null); // the "next" button the first tip was shown beside
 
   // look for the next tip whose target is on screen; nothing shows while one of Tèo's notes or a dialog is open
   useEffect(() => {
     const t = setInterval(() => {
       if (document.querySelector("[data-anchored], [role=dialog]")) return setTip(null);
       const done = seen();
-      const next = TIPS.find((x) => !done.includes(x.id) && visible(x.target));
+      const next = tips().find((x) => !done.includes(x.id) && visible(x.target));
       if (!next) return setTip(null);
       const el = visible(next.target)!;
+      // the reader turned the page some other way (a drag, a tab, a swipe): they know how, the note stops following
+      // them from page to page (#115)
+      if (next.id === "next") {
+        if (shownOn.current && shownOn.current !== el) {
+          remember("next");
+          shownOn.current = null;
+          return setTip(null);
+        }
+        shownOn.current = el;
+      }
       setTip((cur) => (cur?.tip.id === next.id && sameRect(cur.rect, el.getBoundingClientRect()) ? cur : { tip: next, rect: el.getBoundingClientRect() }));
     }, 600);
     return () => clearInterval(t);
@@ -86,14 +104,24 @@ export function TeoGuide() {
     };
   }, [tip]);
 
+  // measure the note as drawn; a different height moves it to the side that hides the least for that height
+  useEffect(() => {
+    const el = note.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setH((cur) => (Math.abs(cur - el.offsetHeight) > 4 ? el.offsetHeight : cur)));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [tip?.tip.id]);
+
   if (typeof document === "undefined") return null;
-  const place = tip && bubble(tip.rect);
+  const place = tip && bubble(tip.rect, h);
   const side = place?.side === "above" || place?.side === "below";
   return createPortal(
     <AnimatePresence>
       {tip && place && (
         <motion.div
           key={tip.tip.id}
+          ref={note}
           role="note"
           aria-live="polite"
           className="pointer-events-auto fixed z-[70] bg-[#fbe99a] px-4 pb-3 pt-3 text-[0.9rem] leading-snug text-[#1f3a78] shadow-[3px_8px_18px_rgba(40,25,0,0.4)]"
@@ -119,7 +147,7 @@ export function TeoGuide() {
           {tip.tip.text}
           <span className="mt-2 flex items-center justify-between">
             <span className="text-[0.75rem] opacity-70">
-              {TIPS.indexOf(tip.tip) + 1}/{TIPS.length}
+              {tips().findIndex((t) => t.id === tip.tip.id) + 1}/{tips().length}
             </span>
             <button
               type="button"
@@ -146,15 +174,16 @@ function sameRect(a: DOMRect, b: DOMRect) {
 type Side = "above" | "below" | "right" | "left" | "dock";
 const OFFSET: Record<Side, { x?: number; y?: number }> = { above: { y: 8 }, below: { y: -8 }, right: { x: -8 }, left: { x: 8 }, dock: { y: 8 } };
 const W = 250;
-const H = 150; // about the note's height: title, three lines of text, the footer
+const H = 150; // about the note's height before it is drawn: title, three lines of text, the footer
 const TEXT = "p, li, h1, h2, h3, a, button, label, img, figure, text, [role=tab]";
+const CONTROL = "a, button, [role=tab], input, select"; // covering one of these is worse than covering words
 
 /**
  * Where the note goes: on the side of the target that hides the least of the page (#56). On a short screen the
  * space above the "next" button is the table of contents, and above the chapter tabs the tabs themselves, so each
  * side is scored by how much text it would cover, and the target itself counts ten times.
  */
-function bubble(r: DOMRect) {
+function bubble(r: DOMRect, H: number) {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
   // a phone has no free side: the note lies across the top or the bottom of the screen, whichever hides less (#57)
@@ -168,16 +197,22 @@ function bubble(r: DOMRect) {
     ? [
         { side: "dock", x: 8, y: 8 },
         { side: "dock", x: 8, y: vh - H - 8 },
+        // just above the button it points at: at the top it covered the site's links and the letter's heading (#115)
+        { side: "dock", x: 8, y: r.top - 12 - H },
       ]
     : [
         { side: "above", x: clampX(cx - w / 2), y: r.top - 12 - H },
         { side: "below", x: clampX(cx - w / 2), y: r.bottom + 12 },
         { side: "right", x: r.right + 12, y: clampY(cy - H / 2) },
         { side: "left", x: r.left - 12 - w, y: clampY(cy - H / 2) },
+        // out on the table, by the screen's edge, level with the target: under the book's last row of buttons every
+        // side of the "next" button covered another button (#115)
+        { side: "right", x: vw - w - 8, y: clampY(r.bottom - H) },
+        { side: "left", x: 8, y: clampY(r.bottom - H) },
       ];
   const texts = [...document.querySelectorAll<Element>(TEXT)]
     .filter((el) => !el.closest("[role=note]"))
-    .map((el) => el.getBoundingClientRect())
+    .map((el) => Object.assign(el.getBoundingClientRect(), { weight: el.matches(CONTROL) ? 5 : 1 }))
     .filter((b) => b.width > 0 && b.height > 0);
   const overlap = (a: { x: number; y: number }, b: { left: number; top: number; right: number; bottom: number }) =>
     Math.max(0, Math.min(a.x + w, b.right) - Math.max(a.x, b.left)) * Math.max(0, Math.min(a.y + H, b.bottom) - Math.max(a.y, b.top));
@@ -185,7 +220,7 @@ function bubble(r: DOMRect) {
   let bestScore = Infinity;
   for (const s of spots) {
     if (s.x < 8 || s.y < 8 || s.x + w > vw - 8 || s.y + H > vh - 8) continue; // off the screen
-    const score = overlap(s, r) * 10 + texts.reduce((n, b) => n + overlap(s, b), 0);
+    const score = overlap(s, r) * 10 + texts.reduce((n, b) => n + overlap(s, b) * b.weight, 0);
     if (score < bestScore) [best, bestScore] = [s, score];
   }
   if (!best) return null;

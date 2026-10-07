@@ -32,19 +32,21 @@ export function LetterPage() {
         <ul className="m-0 mt-1 grid list-none grid-cols-1 gap-1 p-0 text-[0.75rem] leading-snug text-stone-700">
           <li className="flex items-start gap-2">
             <span className="mt-[0.3em] h-2.5 w-2.5 shrink-0 rounded-full bg-[#B5452E]" aria-hidden />
-            <span>Chấm đỏ trên bản đồ: nơi Bà đã đến.</span>
+            {/* the dots show once a region is opened on the map, not on the whole country: say so (#115) */}
+            <span>Chấm đỏ trên bản đồ một miền: chỗ Bà dừng chân. Bấm vào miền nào trên bản đồ là thấy.</span>
           </li>
           <li className="flex items-start gap-2">
             <span className="font-hand shrink-0 text-[0.95rem] leading-none" style={{ color: YOUNG }}>
               Aa
             </span>
-            <span>
-              Mực xanh: Bà năm hai mươi tuổi.{" "}
-              <span className="font-hand text-[0.95rem] leading-none" style={{ color: OLD }}>
-                Aa
-              </span>{" "}
-              Mực nâu: Bà bây giờ.
+            <span>Mực xanh: Bà năm hai mươi tuổi.</span>
+          </li>
+          {/* one ink, one line: the two shared a line and read as one (#115) */}
+          <li className="flex items-start gap-2">
+            <span className="font-hand shrink-0 text-[0.95rem] leading-none" style={{ color: OLD }}>
+              Aa
             </span>
+            <span>Mực nâu: Bà bây giờ.</span>
           </li>
           <li className="flex items-start gap-2">
             <span className="mt-[0.2em] h-3 w-4 shrink-0 rotate-[-4deg] bg-[#fbe99a] shadow" aria-hidden />
@@ -73,6 +75,8 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
       .length;
   const total = data.regions.filter((r) => r.status === "open" || r.chapters.some((c) => c.status === "open")).length * 3;
   const got = data.regions.reduce((n, r) => n + stampsOf(r.id), 0);
+  // the suggested chapter, by its own title: the reason to start there (#115)
+  const first = data.regions.flatMap((r) => r.chapters).find((c) => c.status === "open" && c.province === suggest && c.title);
   return (
     <div className="flex h-full flex-col">
       <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">MỤC LỤC</p>
@@ -122,8 +126,9 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
         <button type="button" data-guide="next" onClick={onStart} className="page-turn page-turn-main font-display !text-[1rem]">
           Bắt đầu hành trình: {suggest} →
         </button>
+        {/* why Huế: the one main way in says where it leads and why there (#115) */}
         <p className="font-hand m-0 text-[0.95rem]" style={{ color: OLD }}>
-          {got ? `Con đã sưu tầm ${got}/${total} con tem.` : "Hoặc bấm một miền ở trên, hay lật trang để mở bản đồ."} — Bà
+          {got ? `Con đã sưu tầm ${got}/${total} con tem.` : first ? `Chương đầu là “${first.title}” ở ${suggest}, con theo Bà từ đó nhé. Miền khác, con bấm ở trên.` : "Hoặc bấm một miền ở trên, hay lật trang để mở bản đồ."} — Bà
         </p>
       </div>
     </div>
@@ -204,9 +209,10 @@ export function StartPage({
                   </span>
                   <span className="block truncate text-[0.75rem] text-stone-600">{r.map_note.lines[0]}</span>
                 </span>
-                <span className="flex shrink-0 gap-0.5" aria-label={`${n}/3 tem`}>
+                {/* the three stamps of the region, said as stamps: three faint dots read as "locked" (#115) */}
+                <span className="flex shrink-0 items-center gap-1" title="Tem Đến · Hiểu · Mặc của miền này" aria-label={`${n}/3 tem`}>
                   {[0, 1, 2].map((k) => (
-                    <span key={k} className={`h-1.5 w-1.5 rounded-full ${k < n ? "bg-[#B5452E]" : "bg-stone-300"}`} />
+                    <span key={k} className={`h-2 w-2 rounded-full border ${k < n ? "border-[#B5452E] bg-[#B5452E]" : "border-stone-500 bg-transparent"}`} aria-hidden />
                   ))}
                 </span>
               </button>
@@ -229,8 +235,9 @@ export function StartPage({
           <ul className="m-0 mt-1 list-none space-y-0.5 p-0">
             {shown.map((f) => (
               <li key={f.id}>
-                <button type="button" onClick={() => onRegion(f.region.id)} className="text-left text-[0.76rem] leading-snug text-stone-700 hover:underline">
-                  <b className="font-semibold text-[#27354f]">{f.name}</b> · {f.time} · {f.region.name}
+                {/* a link to the region, and it looks like one (#115) */}
+                <button type="button" onClick={() => onRegion(f.region.id)} className="text-left text-[0.76rem] leading-snug text-stone-700 underline decoration-dotted underline-offset-2 hover:decoration-solid">
+                  <b className="font-semibold text-[#27354f]">{f.name}</b> · {f.time} · {f.region.name} <span aria-hidden>›</span>
                 </button>
               </li>
             ))}

@@ -29,7 +29,11 @@ export function BookSizeControl() {
   });
 
   return (
+    // says what it sizes: "− 90% +" alone read as the browser's zoom (#115)
     <div className="book-size fixed left-4 top-4 z-30 hidden items-center gap-1 rounded-full px-2 py-1 text-sm md:flex" role="group" aria-label="Cỡ cuốn sổ">
+      <span className="mr-0.5 pl-1 text-[0.8rem] opacity-85" aria-hidden>
+        📕 Cỡ sổ
+      </span>
       <button type="button" onClick={() => setScale((s) => s - SCALE_STEP)} disabled={scale <= SCALE_MIN} aria-label="Thu nhỏ sổ" title="Thu nhỏ (Ctrl/Cmd −)">
         −
       </button>

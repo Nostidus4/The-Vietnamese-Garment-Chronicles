@@ -197,8 +197,7 @@ export function DeskScene({
         aria-hidden
       />
       {!reduced && <SunDust />}
-      <DeskProps />
-      <DuKyOnDesk />
+      <DuKyOnDesk open={phase === "open"} />
       {phase === "closed" && <WhatsInside onRead={open} />}
 
       {/* the real flipbook, mounted as soon as the cover starts moving so it is fully laid out before the hand-over */}
@@ -445,24 +444,20 @@ function SettlingBits() {
   );
 }
 
-/** The table photo already holds the sewing things; we only tuck Bà's old photo into the sunlight. */
-function DeskProps() {
+/**
+ * Bà's old photo, tucked under the card while the book is closed (#115): in the card's column, so the two never
+ * overlap, gone when the book opens (its pages reach the photo's corner of the table) and on a screen too low for
+ * both. A way back to the opening it comes from.
+ */
+function DeskPhoto() {
   return (
-    <div className="pointer-events-none absolute inset-0" aria-hidden>
-      <div className="desk-photo absolute left-[3%] top-[42%] hidden w-[12vw] min-w-[130px] max-w-[190px] rotate-[-7deg] md:block">
-        {/* a small copy of the opening's s06 picture (scripts/optimize-images.mjs), toned like the photo while it loads.
-            Eager: on a wide screen Chrome counts it as the page's largest picture; on a phone (hidden) it costs 18 KB */}
-        <Image
-          src={asset("/page/desk-photo.webp")}
-          alt=""
-          width={400}
-          height={225}
-          loading="eager"
-          unoptimized
-          className="block h-auto w-full bg-[#b39c78] sepia-[.55]"
-        />
-      </div>
-    </div>
+    <a href={asset("/?opening=1")} className="desk-photo group relative mt-6 block w-[11.5rem] rotate-[-6deg] transition-transform hover:rotate-[-3deg] [@media(max-height:799px)]:hidden" title="Xem lại mở đầu">
+      {/* a small copy of the opening's s06 picture (scripts/optimize-images.mjs), toned like the photo while it loads.
+          Eager: on a wide screen Chrome counts it as the page's largest picture */}
+      <Image src={asset("/page/desk-photo.webp")} alt="" width={400} height={225} loading="eager" unoptimized className="block h-auto w-full bg-[#b39c78] sepia-[.55]" />
+      {/* written in the polaroid's wide bottom margin */}
+      <span className="font-hand absolute inset-x-0 bottom-1 text-center text-[0.95rem] leading-tight text-[#5b3a22]">Bà với con, ngày xưa</span>
+    </a>
   );
 }
 
@@ -471,25 +466,32 @@ function DeskProps() {
  * can say what the app does without reading the whole opening, and reach the fitting room in one tap.
  */
 function WhatsInside({ onRead }: { onRead: () => void }) {
-  const entry = "flex items-center gap-2 rounded-md px-2 py-1.5 text-left text-[0.92rem] text-[#27354f] hover:bg-[#27354f]/10";
+  // each way in looks like something to press: a frame and an arrow, not a line of text that lights up on hover (#115)
+  const entry = "flex items-center gap-2 rounded-md border border-[#27354f]/25 bg-white/40 px-2 py-1.5 text-left text-[0.92rem] text-[#27354f] hover:border-[#27354f]/60 hover:bg-[#27354f]/10";
+  const arrow = <span className="ml-auto pl-1 text-[#8a4b2a]" aria-hidden>›</span>;
   return (
     <>
-      <nav aria-label="Trong sổ có gì" className="paper absolute left-4 top-16 z-20 hidden w-[15.5rem] rotate-[-1.2deg] rounded-md p-3 shadow-[0_10px_24px_rgba(20,8,0,0.45)] md:block">
-        <p className="font-hand m-0 text-[1.05rem] leading-snug text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
-        <div className="mt-2 flex flex-col">
-          <button type="button" onClick={onRead} className={entry}>
-            <span aria-hidden>📖</span> Đọc nhật ký của Bà theo vùng
-          </button>
-          <a href={asset("/chapter/hue?entry=event")} className={entry}>
-            <span aria-hidden>👗</span> Vào thẳng phòng thử đồ
-          </a>
-          <a href={asset("/du-ky")} className={entry}>
-            <span aria-hidden>📓</span> Ghi Du Ký những lần con mặc
-          </a>
-        </div>
-        <p className="m-0 mt-1.5 px-2 text-[0.75rem] leading-snug text-stone-600">Phối áo cùng Bà, Compass nói bộ nào đúng và vì sao.</p>
-      </nav>
-      <nav aria-label="Trong sổ có gì" className="absolute inset-x-0 bottom-3 z-20 flex justify-center gap-2 px-3 md:hidden">
+      {/* a column on the left of the table: the card, then Bà's photo under it. From 1024px: on an iPad held upright the
+          card sat on the book's corner, the buttons at the bottom are enough there (#115) */}
+      <div className="absolute left-4 top-16 z-20 hidden lg:block">
+        <nav aria-label="Trong sổ có gì" className="paper w-[15.5rem] rotate-[-1.2deg] rounded-md p-3 shadow-[0_10px_24px_rgba(20,8,0,0.45)]">
+          <p className="font-hand m-0 text-[1.05rem] leading-snug text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
+          <div className="mt-2 flex flex-col gap-1.5">
+            <button type="button" onClick={onRead} className={entry}>
+              <span aria-hidden>📖</span> Đọc nhật ký của Bà theo vùng{arrow}
+            </button>
+            <a href={asset("/chapter/hue?entry=event")} className={entry}>
+              <span aria-hidden>👗</span> Vào thẳng phòng thử đồ{arrow}
+            </a>
+            <a href={asset("/du-ky")} className={entry}>
+              <span aria-hidden>📓</span> Ghi Du Ký những lần con mặc{arrow}
+            </a>
+          </div>
+          <p className="m-0 mt-1.5 px-2 text-[0.75rem] leading-snug text-stone-600">Phối áo cùng Bà, Compass nói bộ nào đúng và vì sao.</p>
+        </nav>
+        <DeskPhoto />
+      </div>
+      <nav aria-label="Trong sổ có gì" className="absolute inset-x-0 bottom-3 z-20 flex justify-center gap-2 px-3 lg:hidden">
         <a href={asset("/chapter/hue?entry=event")} className="page-turn !text-[0.95rem]">
           👗 Phòng thử đồ
         </a>
@@ -501,18 +503,22 @@ function WhatsInside({ onRead }: { onRead: () => void }) {
   );
 }
 
-/** The reader's own notebook lies on the table too, in the colour they chose: a way to /du-ky. */
-function DuKyOnDesk() {
+/**
+ * The reader's own notebook lies on the table too, in the colour they chose: a way to /du-ky. Below 1280px an open
+ * book's pages reach its corner (an iPad held sideways), so it leaves while Bà's book is open (#115).
+ */
+function DuKyOnDesk({ open }: { open: boolean }) {
   const { cover, pages } = useDuKy();
   return (
     <a
       href={asset("/du-ky")}
-      className="group absolute bottom-[6%] left-[4%] z-10 hidden w-[8vw] min-w-[86px] max-w-[132px] rotate-[8deg] transition-transform hover:-translate-y-1 hover:rotate-[5deg] lg:block"
+      className={`group absolute bottom-[6%] left-[4%] z-10 hidden w-[8vw] min-w-[86px] max-w-[132px] rotate-[8deg] transition-transform hover:-translate-y-1 hover:rotate-[5deg] ${open ? "xl:block" : "lg:block"}`}
     >
       <div className="relative aspect-[3/4] shadow-[10px_16px_22px_rgba(20,8,0,0.55)]">
         <DuKyCover name={cover.name} color={cover.color} />
       </div>
-      <span className="font-hand mt-2 block text-center text-[#F3EAD7]/85 group-hover:text-[#F3EAD7]">
+      {/* on a dark pill: the slanted hand on the flowered cloth was easy to miss (#115) */}
+      <span className="font-hand mx-auto mt-2 block w-max rounded-full bg-[#140c07]/75 px-3 py-0.5 shadow-[0_2px_6px_rgba(0,0,0,0.4)] text-center text-[1.05rem] text-[#F3EAD7] group-hover:bg-[#140c07]/80">
         Du Ký của con{pages.length ? ` · ${pages.length}` : ""}
       </span>
     </a>
