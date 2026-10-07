@@ -29,13 +29,14 @@ const WHO: { id: Who; name: string; note: string; soon?: boolean }[] = [
 
 export function WhoPicker({ value, onPick, onClose }: { value: Who | null; onPick: (w: Who) => void; onClose?: () => void }) {
   const reduced = !!useReducedMotion();
-  const box = useDialog<HTMLDivElement>(onClose); // no Esc on the first visit: there is nothing to go back to
+  // Esc keeps who was wearing; on the first visit there is no one yet, so it takes the first choice, Nữ (#109)
+  const box = useDialog<HTMLDivElement>(onClose ?? (() => onPick("nu")));
   return (
     <motion.div className="fixed inset-0 z-50 grid place-items-center bg-[#140c07]/70 p-4 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-label="Ai mặc?" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <motion.div ref={box} className="paper w-full max-w-lg rounded-xl p-6 text-center shadow-2xl" initial={reduced ? false : { y: 30, scale: 0.96 }} animate={{ y: 0, scale: 1 }}>
+      <motion.div ref={box} className="paper w-full max-w-lg rounded-xl px-4 py-6 text-center shadow-2xl sm:px-6" initial={reduced ? false : { y: 30, scale: 0.96 }} animate={{ y: 0, scale: 1 }}>
         <p className="m-0 text-[0.75rem] uppercase tracking-[0.28em] text-stone-600">Tủ áo của Bà</p>
         <p className="font-hand m-0 mt-1 text-[1.6rem] leading-tight text-[#8a4b2a]">Hôm nay ai mặc đây con?</p>
-        <div className="mt-5 flex justify-center gap-3" role="radiogroup" aria-label="Người mặc">
+        <div className="mx-auto mt-5 grid max-w-[21rem] grid-cols-3 gap-2 sm:gap-3" role="radiogroup" aria-label="Người mặc">
           {WHO.map((w) => (
             <button
               key={w.id}
@@ -43,6 +44,7 @@ export function WhoPicker({ value, onPick, onClose }: { value: Who | null; onPic
               role="radio"
               aria-checked={value === w.id}
               disabled={w.soon}
+              aria-describedby={w.soon ? "who-soon" : undefined}
               onClick={() => onPick(w.id)}
               className={`who-card ${value === w.id ? "who-card-on" : ""}`}
             >
@@ -53,7 +55,7 @@ export function WhoPicker({ value, onPick, onClose }: { value: Who | null; onPic
           ))}
         </div>
         {!HAS_API && (
-          <p className="font-hand m-0 mt-4 text-[1.05rem] leading-snug text-stone-600">
+          <p id="who-soon" className="font-hand m-0 mt-4 text-[1.05rem] leading-snug text-stone-700">
             Bản đọc thử chưa có phòng chụp, con ạ. Con mặc cho búp bê giấy trước, mở bản đầy đủ thì thử được với ảnh của con.
           </p>
         )}

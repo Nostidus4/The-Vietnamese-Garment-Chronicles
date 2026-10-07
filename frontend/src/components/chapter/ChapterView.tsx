@@ -181,6 +181,8 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   }, []);
 
   function pickWho(w: Who) {
+    // the first time, nothing opened the dialog to go back to: the focus goes to the open drawer of the wardrobe (#109)
+    if (!who) requestAnimationFrame(() => document.querySelector<HTMLElement>('.wardrobe [role="tab"][aria-selected="true"]')?.focus({ preventScroll: true }));
     setWho(w);
     setAskWho(false);
     // the boy cannot keep on what is drawn only for the girl (#77)

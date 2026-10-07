@@ -718,13 +718,17 @@ body {
   @media (max-width: 1023px) { .fitting-grid > .fitting-stage { order: -1; } .wardrobe-body { max-height: 46vh; } }
   .mirror-tag-bad { border-color: #b5452e; color: #b5452e; }
   .who-switch { position: relative; z-index: 6; margin-bottom: -0.4rem; border-radius: 999px; background: rgba(251, 246, 234, 0.92); padding: 0.1rem 0.8rem; font-size: 0.78rem; color: #27354f; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); }
-  .who-card { width: 6.4rem; border-radius: 0.7rem; border: 2px solid transparent; background: #fbf6ea; padding: 0.6rem 0.4rem; color: #27354f; transition: transform 160ms ease, border-color 160ms ease; }
+  .who-card { min-width: 0; border-radius: 0.7rem; border: 2px solid transparent; background: #fbf6ea; padding: 0.6rem 0.4rem; color: #27354f; transition: transform 160ms ease, border-color 160ms ease; }
   .who-card:hover:not(:disabled) { transform: translateY(-3px); }
-  .who-card:disabled { opacity: 0.5; cursor: not-allowed; }
+  /* "Con · bản đầy đủ": not for this build, but still readable (#109) */
+  .who-card:disabled { cursor: not-allowed; border: 2px dashed #b9a98a; background: #f1ead9; color: #57534e; }
+  .who-card:disabled svg, .who-card:disabled > span:first-child { opacity: 0.55; }
   .who-card-on { border-color: #e3b04b; box-shadow: 0 0 0 3px rgba(227, 176, 75, 0.35); transform: translateY(-3px); }
 
   /* the wardrobe: dark wood with brass, the drawers' tabs like the book's bookmarks, the pieces on paper */
-  .wardrobe { position: relative; min-width: 0; display: flex; flex-direction: column; border-radius: 0.9rem 0.9rem 0.5rem 0.5rem; background: linear-gradient(#5b3a22, #3b2615); border: 2px solid #c9a35a; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); overflow: hidden; perspective: 1200px; }
+  .wardrobe { position: relative; min-width: 0; display: flex; flex-direction: column; border-radius: 0.9rem 0.9rem 0.5rem 0.5rem; background: linear-gradient(#5b3a22, #3b2615); border: 2px solid #c9a35a; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); overflow: hidden; overflow: clip; perspective: 1200px; }
+  /* clip, not just hide: the doors turn out past the frame, and a hidden overflow could still be scrolled sideways by
+     a focus, cutting the first letters of every tab and name (#109) */
   .wardrobe-doors { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
   .wardrobe-doors::before, .wardrobe-doors::after { content: ""; position: absolute; top: 0; bottom: 0; width: 50%; background: linear-gradient(90deg, #4a2f1b, #5b3a22 40%, #3b2615); border: 2px solid #c9a35a; animation: door-open 0.7s cubic-bezier(.2,.8,.2,1) 0.15s forwards; }
   .wardrobe-doors::before { left: 0; transform-origin: left center; }
@@ -733,10 +737,10 @@ body {
   @keyframes door-open-r { to { transform: rotateY(100deg); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .wardrobe-doors { display: none; } }
   .wardrobe-tabs { display: flex; flex-wrap: wrap; gap: 0.2rem; padding: 0.55rem 0.55rem 0; }
-  /* phones: the drawers on one row that scrolls sideways, each tab tall enough for a thumb (#57) */
+  /* phones: each tab tall enough for a thumb (#57), the drawers on two full rows instead of a strip that scrolls and
+     cuts the names at its edges (#109) */
   @media (max-width: 760px) {
-    .wardrobe-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
-    .wardrobe-tab { flex-shrink: 0; min-height: 44px; }
+    .wardrobe-tab { flex: 1 1 auto; min-height: 44px; }
   }
   .wardrobe-tab { border-radius: 0.5rem 0.5rem 0 0; padding: 0.3rem 0.65rem; font-size: 0.78rem; color: #f3ead7; background: rgba(243, 234, 215, 0.12); }
   .wardrobe-tab:hover { background: rgba(243, 234, 215, 0.22); }
