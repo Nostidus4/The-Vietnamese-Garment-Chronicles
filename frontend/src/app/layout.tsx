@@ -38,9 +38,17 @@ export const metadata: Metadata = {
 // the colour of the browser bar on phones, and the page under the iPhone's home bar (safe-area insets)
 export const viewport: Viewport = { themeColor: "#3b2615", viewportFit: "cover" };
 
+// Runs while the HTML is parsed, before the first paint: a returning visitor goes straight to the desk (Home), so the
+// home page's static shell stays dark for them instead of showing the logo of an opening that will not play (#110).
+// A link to a page of the book (?region=…) skips the opening too, on any visit (Home's initialState, #111).
+const SEEN_SCRIPT = `try{var q=new URLSearchParams(location.search);if((q.has("region")||localStorage.getItem("vpdk-opening-seen")==="1")&&q.get("opening")!=="1")document.documentElement.dataset.seen="1"}catch(e){}`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="vi" className={`${body.variable} ${hand.variable} h-full antialiased`}>
+    <html lang="vi" className={`${body.variable} ${hand.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SEEN_SCRIPT }} />
+      </head>
       <body className="min-h-full">
         <SiteNav />
         <div className="h-10" />

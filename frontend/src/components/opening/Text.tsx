@@ -84,8 +84,9 @@ export function BlockView({ block, instant, compact, visible }: { block: Block; 
   let x = b.x;
   let y = b.y;
   if (visible && (b.kind === "narration" || b.kind === "speech")) {
-    x = Math.min(Math.max(x, visible.x0 + 1.2), visible.x1 - b.w - 1.2);
-    y = Math.min(Math.max(y, visible.y0 + 2), visible.y1 - 11);
+    // `visible` already keeps the safe margin from the edges and the buttons (Scene)
+    x = Math.min(Math.max(x, visible.x0), visible.x1 - b.w);
+    y = Math.min(Math.max(y, visible.y0), visible.y1 - 11);
   }
   const pos = compact ? {} : { left: `${x}%`, top: `${y}%`, width: `${b.w}%` };
 

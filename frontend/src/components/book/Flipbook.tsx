@@ -32,6 +32,7 @@ import { CHAPTERS, VietnamMap } from "./VietnamMap";
 import { TeoGuide } from "./TeoGuide";
 import { ThreadNav, type Step } from "./ThreadNav";
 import { useStamps } from "@/lib/stamps";
+import { asset } from "@/lib/base";
 
 // Page layout: 0 Bà's letter · 1 table of contents · 2 map · 3 right of the map (welcome / region / chapter title)
 // · 4… the chapter. page-flip keeps the DOM nodes it was given, so the page count is fixed at the longest chapter.
@@ -46,12 +47,12 @@ const memo = { focus: null as string | null, reading: false, page: 0 };
 // the furthest stop reached in each trip chapter, for the route on its title page
 const reachedOf: Record<string, number> = {};
 
-export type Resume = { region: string; page: "own" | "wear" } | null;
+export type Resume = { region: string; page: "own" | "wear" | "read" } | null;
 
 type Built = { tabs: Tab[]; steps: Step[]; pages: { node: ReactNode; still?: boolean }[] };
 
 /** The pages of a region's chapter, from page FIRST on. Trip chapters: each stop is a spread (Bà | Hôm nay). */
-function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) => void }): Built {
+function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string, from: NonNullable<Resume>["page"]) => void }): Built {
   const j = region.journey!;
   const tabs: Tab[] = [];
   const steps: Step[] = []; // the knots on Bà's thread under the book (trip chapters)
@@ -91,7 +92,7 @@ function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) =
     tabs.push({ label: "Mặc", page: at() });
     steps.push({ label: "Cách mặc", page: at(), kind: "wear" });
   }
-  j.wear.forEach((_, i) => pages.push({ node: <WearDiary region={region} index={i} data={data} onTry={h.tryOn} /> }));
+  j.wear.forEach((_, i) => pages.push({ node: <WearDiary region={region} index={i} data={data} onTry={(g) => h.tryOn(g, "wear")} /> }));
   if (j.check && (region.status === "open" || hasChapter(region))) {
     tabs.push({ label: "Bà hỏi", page: at() });
     steps.push({ label: "Bà hỏi con", page: at(), kind: "ask" });
@@ -99,7 +100,7 @@ function buildChapter(region: Region, data: Bootstrap, h: { tryOn: (g: string) =
   }
   tabs.push({ label: region.status === "open" || hasChapter(region) ? "Trang của con" : "Trang để trống", page: at() });
   steps.push({ label: "Trang của con", page: at(), kind: "own" });
-  pages.push({ node: <OwnDiary key={region.id} region={region} data={data} onTry={h.tryOn} />, still: true });
+  pages.push({ node: <OwnDiary key={region.id} region={region} data={data} onTry={(g) => h.tryOn(g, "own")} />, still: true });
   if (j.letter) {
     if (at() % 2) pages.push({ node: <BlankPage /> }); // the envelope and "Hết chương" face each other as one spread
     tabs.push({ label: "Phong thư", page: at() });
@@ -160,7 +161,13 @@ export default function Flipbook({
   const j = region?.journey ?? null;
   const trip = !!j?.stops.length;
 
-  const tryOn = (garment: string) => region && router.push(`/chapter/${region.id}?garment=${garment}`);
+  // the book's entry in the history becomes this page of the region first, so the browser's Back from the try-on
+  // reopens the book here like "‹ Về trang Mặc" does, instead of on the closed book (#111)
+  const tryOn = (garment: string, from: NonNullable<Resume>["page"]) => {
+    if (!region) return;
+    window.history.replaceState(window.history.state, "", asset(`/?region=${region.id}&page=${from}`));
+    router.push(`/chapter/${region.id}?garment=${garment}`);
+  };
   const built: Built =
     region && j && reading ? buildChapter(region, data, { tryOn }) : { tabs: [], steps: [], pages: [] };
   const { tabs, steps, pages: content } = built;
@@ -263,7 +270,8 @@ export default function Flipbook({
   useEffect(() => {
     if (!resume || resumed.current || !j || !reading) return;
     resumed.current = true;
-    const tab = tabs.find((t) => t.label === (resume.page === "own" ? "Trang của con" : "Mặc"));
+    // "read" (from a fitting room still closed, #112): the chapter's first page
+    const tab = resume.page === "read" ? tabs[0] : tabs.find((t) => t.label === (resume.page === "own" ? "Trang của con" : "Mặc"));
     if (tab) setTimeout(() => jump(portrait ? tab.page : tab.page - (tab.page % 2)), 1200);
   });
 

@@ -26,6 +26,7 @@ import { RichText } from "./Glossary";
 import { TeoPin } from "./TeoPin";
 import { FOCUS } from "./vietnam-geo";
 import { asset } from "@/lib/base";
+import { choiceOrder } from "@/lib/quiz";
 import { DRAWN, PaperDoll } from "../fitting/PaperDoll";
 
 export const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
@@ -617,10 +618,14 @@ export function WearDiary({
             Mặc thử →
           </button>
         ) : (
-          // try-on stays closed until the community has reviewed this garment
-          <span className="ml-auto max-w-[45%] text-right text-[0.75rem] leading-snug text-stone-600 [text-wrap:balance]">
-            Thử đồ AI: chờ người ở đây đọc lại
-          </span>
+          // try-on stays closed until the community has reviewed this garment; the closed room says why (#112)
+          <button
+            type="button"
+            onClick={() => onTry(page.garment)}
+            className="ml-auto max-w-[45%] text-right text-[0.75rem] leading-snug text-stone-600 underline [text-wrap:balance] hover:text-stone-800"
+          >
+            Tủ áo còn khép, chờ người ở đây đọc lại ›
+          </button>
         )}
       </div>
       {g && (
@@ -712,17 +717,6 @@ function GarmentPlate({ id, name }: { id: string; name: string }) {
 
 /* ---------- 4½ · Bà hỏi con (#23) ---------- */
 
-/** The choices in a stable shuffled order (the content keeps the right answer first). */
-function shuffled(q: CheckQuestion) {
-  const order = q.choices.map((_, i) => i);
-  const seed = [...q.id].reduce((a, c) => a + c.charCodeAt(0), 0);
-  for (let i = order.length - 1; i > 0; i--) {
-    const k = (seed * (i + 7)) % (i + 1);
-    [order[i], order[k]] = [order[k], order[i]];
-  }
-  return order;
-}
-
 /** One question of Bà: pick, see right or wrong and why. Unverified questions show only while drafting. */
 export function Question({
   q,
@@ -743,7 +737,7 @@ export function Question({
         {q.q}
       </p>
       <div className="mt-1 flex flex-col gap-1">
-        {shuffled(q).map((i) => {
+        {choiceOrder(q.id, q.choices.length).map((i) => {
           const right = i === q.answer;
           const tone = !answered
             ? "border-stone-300 hover:bg-amber-50"
