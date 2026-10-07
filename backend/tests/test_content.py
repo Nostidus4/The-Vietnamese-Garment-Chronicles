@@ -292,3 +292,17 @@ def test_a_source_title_dates_one_way(tmp_path):
         assert f"[{bad['id']}]" in dated
     for good in linked[3:6]:
         assert f"[{good['id']}]" not in dated
+
+
+def test_hue_meal_game_walks_its_lists_but_still_needs_its_answer(tmp_path):
+    # Bữa cơm ra mắt: who to invite and the dishes are lists to go through, the falling cup has one right choice
+    g = next(st.game for st in store.load()[0].regions["hue"].journey.stops if st.id == "bua-com")
+    assert g.kind == "mam-com" and g.rounds[0].answer is None and g.rounds[2].answer == 0
+    root = _copy(tmp_path)
+    p = root / "regions" / "hue.json"
+    data = json.loads(p.read_text())
+    next(st for st in data["stops"] if st["id"] == "bua-com")["game"]["rounds"][2]["answer"] = None
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    _, rep = store.load(root)
+    assert any("[bua-com] game round 2: answer has no matching choice" in e for e in rep.errors)
+    assert not any("[bua-com] game round 0" in e or "[bua-com] game round 1" in e for e in rep.errors)

@@ -276,7 +276,7 @@ class HatReveal(Strict):
     hidden: str | None = Field(None, description="The hidden silhouette layer, under frontend/public")
 
 
-GameKind = Literal["dong-ho", "quan-ho", "ngu-than", "cay-beo", "xep-do", "khuy-bac", "xoe", "cong-chieng", "det"]
+GameKind = Literal["dong-ho", "quan-ho", "ngu-than", "mam-com", "cay-beo", "xep-do", "khuy-bac", "xoe", "cong-chieng", "det"]
 
 
 class GameRound(Strict):
