@@ -39,8 +39,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#3b2615", viewportFit: "cover" };
 
 // Runs while the HTML is parsed, before the first paint: a returning visitor goes straight to the desk (Home), so the
-// home page's static shell stays dark for them instead of showing the logo of an opening that will not play (#110)
-const SEEN_SCRIPT = `try{if(localStorage.getItem("vpdk-opening-seen")==="1"&&new URLSearchParams(location.search).get("opening")!=="1")document.documentElement.dataset.seen="1"}catch(e){}`;
+// home page's static shell stays dark for them instead of showing the logo of an opening that will not play (#110).
+// A link to a page of the book (?region=…) skips the opening too, on any visit (Home's initialState, #111).
+const SEEN_SCRIPT = `try{var q=new URLSearchParams(location.search);if((q.has("region")||localStorage.getItem("vpdk-opening-seen")==="1")&&q.get("opening")!=="1")document.documentElement.dataset.seen="1"}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
