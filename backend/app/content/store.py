@@ -383,7 +383,10 @@ def _check_refs(c: Content, r: Report) -> None:
         scan(q.model_dump(), f"quiz.json [{q.id}]")
 
     for src in c.sources.values():
-        if src.url and not SOURCE_DATE.search(src.title):
+        # a reader must be able to open what we cite; the team's own report is not a source (#113)
+        if not src.url:
+            r.errors.append(f"sources.json [{src.id}]: needs a public link a reader can open")
+        elif not SOURCE_DATE.search(src.title):
             r.errors.append(f"sources.json [{src.id}]: date the title as 'Publisher (dd/mm/yyyy). Title', '(yyyy)' or '(không rõ năm)'")
 
     # [[shown words|term-id]] in any diary text must point to glossary.json

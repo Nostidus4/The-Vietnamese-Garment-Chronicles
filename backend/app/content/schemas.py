@@ -21,7 +21,7 @@ class Source(Strict):
     id: Id = Field(pattern=r"^[a-z0-9-]+$")
     title: str = Field(description="Shown to readers (Tèo's notes, Compass, Du Ký, exports): plain words, no team notes")
     url: str | None = None
-    note: str | None = Field(None, description="For the team only, never shown")
+    note: str | None = Field(None, exclude=True, description="For the team only, never sent")
     verified: bool = Field(True, description="False while the team still has to vet it: the app then does not cite it")
 
 
@@ -39,7 +39,7 @@ class Message(Strict):
     ti: str
     teo: str
     why: str = Field(description="Shown under 'Vì sao?': a sentence a reader understands on its own")
-    internal_ref: str | None = Field(None, description="Where the team's research says so (e.g. Research Mục 19.2); never shown")
+    internal_ref: str | None = Field(None, exclude=True, description="Where the team's research says so (e.g. Research Mục 19.2); never sent")
 
 
 AccessoryKind = Literal["traditional-vn", "modern", "traditional-foreign", "restricted"]
@@ -98,6 +98,7 @@ GarmentGroup = Literal["lich-su", "cung-dinh", "dan-gian", "dan-toc", "phuc-dung
 class Garment(Strict):
     id: Id = Field(pattern=ID_PATTERN)
     region: Id
+    origin: str | None = Field(None, description="Shown instead of the region's name when the garment belongs to no single region, e.g. 'Cả nước'")
     name_vi: str
     name_en: str
     group: GarmentGroup
@@ -190,14 +191,19 @@ class LifeItem(Strict):
     community_review: bool = Field(False, description="About a community that must review it first; hidden until then")
 
 
-class Photo(Strict):
-    """A real photo for Tí's "Hôm nay" page. Never AI-made, always credited (e.g. Wikimedia Commons, CC licence)."""
+class Credit(Strict):
+    """Who took a real photo and under which open licence (e.g. Wikimedia Commons)."""
 
-    image: str = Field(description="Path under frontend/public, e.g. /regions/hue/photos/ga-hue.jpg")
-    alt: str
     credit: str = Field(description="Author as the licence asks to name them")
     license: str = Field(description="e.g. CC BY 4.0, CC BY-SA 2.0, Public domain")
     source_url: str
+
+
+class Photo(Credit):
+    """A real photo for Tí's "Hôm nay" page. Never AI-made, always credited."""
+
+    image: str = Field(description="Path under frontend/public, e.g. /regions/hue/photos/ga-hue.jpg")
+    alt: str
 
 
 class Festival(Strict):
@@ -433,7 +439,7 @@ class Rule(Strict):
     ti: str
     teo: str
     why: str = Field(description="Shown under 'Vì sao?': a sentence a reader understands on its own")
-    internal_ref: str | None = Field(None, description="Where the team's research says so (e.g. Research Mục 19.2); never shown")
+    internal_ref: str | None = Field(None, exclude=True, description="Where the team's research says so (e.g. Research Mục 19.2); never sent")
     sources: list[Id] = []
     by: dict[ChangeKind, Message] = Field(
         default_factory=dict,
@@ -447,6 +453,7 @@ QuizAnswer = Literal["viet", "hanfu", "hanbok", "kimono", "khac"]
 class QuizItem(Strict):
     id: Id = Field(pattern=ID_PATTERN)
     image: str
+    photo: Credit | None = Field(None, description="A real photo's credit; without one the picture is an AI illustration")
     answer: QuizAnswer
     garment_id: Id | None = None
     explanation: str
@@ -464,7 +471,7 @@ class Shop(Strict):
     services: list[Literal["rent", "tailor", "buy"]] = Field(min_length=1)
     garments: list[Id] = []
     authenticity: Literal["authentic", "adapted", "inspired", "unknown"] = "unknown"
-    note: str | None = None
+    note: str | None = Field(None, exclude=True, description="For the team only, never sent")
     verified: bool = False
     last_checked: date | None = None
 

@@ -20,7 +20,14 @@ def quiz(count: int = Query(5, ge=1, le=20)) -> dict:
     picked = random.sample(items, min(count, len(items)))
     return {
         "choices": ANSWER_NAMES,
-        "items": [{"id": q.id, "image": f"/media/{q.image}"} for q in picked],  # answers stay on the server
+        "items": [  # answers stay on the server
+            {
+                "id": q.id,
+                "image": f"/media/{q.image}",
+                "photo": q.photo.model_dump() if q.photo else None,
+            }
+            for q in picked
+        ],
     }
 
 
@@ -47,6 +54,8 @@ def shops(
 ) -> list[dict]:
     out = []
     for s in store.get().shops.values():
+        if not s.verified:  # nobody has checked it yet: not something to send a reader to (#113)
+            continue
         if city and s.city.lower() != city.lower():
             continue
         if garment_id and garment_id not in s.garments:
@@ -54,8 +63,7 @@ def shops(
         if service and service not in s.services:
             continue
         out.append(s.model_dump(mode="json"))
-    # Verified shops first
-    return sorted(out, key=lambda s: not s["verified"])
+    return out
 
 
 @router.get("/weather/{region_id}")

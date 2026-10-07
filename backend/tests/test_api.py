@@ -3,6 +3,7 @@ import json
 import pytest
 from fastapi.testclient import TestClient
 
+from app.content import store
 from app.main import app
 from app.services import ask as ask_service
 from app.services import gemini_client, ratelimit
@@ -93,8 +94,32 @@ def test_quiz_hides_answers_and_checks(client):
 
 
 def test_shops_filter(client):
+    store.get().shops["hoa-nghiem-viet-phuc"].verified = True
     assert len(client.get("/shops?city=huế&garment_id=ao-dai").json()) == 1
     assert client.get("/shops?city=Hà Nội").json() == []
+
+
+def test_unchecked_shops_and_team_notes_stay_hidden(client):
+    # #113: a shop nobody has visited yet is not listed, and the team's "Nguồn: ref-35 trong Research…" never leaves the server
+    assert client.get("/shops?city=huế").json() == []
+    store.get().shops["hoa-nghiem-viet-phuc"].verified = True
+    shops = client.get("/shops?city=huế").json()
+    assert [s["id"] for s in shops] == ["hoa-nghiem-viet-phuc"]
+    assert "note" not in shops[0]
+
+
+def test_team_notes_never_leave_the_server(client):
+    # #113: "Research Mục 19.2…" and "Tab Bối Cảnh trong Google Doc của đội" stay in the files, not in bootstrap.json
+    body = client.get("/content/bootstrap").text
+    assert "internal_ref" not in body and "Research Mục" not in body and "Google Doc" not in body
+
+
+def test_a_quiz_photo_carries_its_credit(client):
+    # #113: real photos in "Việt hay không?" name their author and licence; AI pictures say so
+    items = {i["id"]: i for i in client.get("/quiz?count=20").json()["items"]}
+    assert items["q-ao-dai"]["photo"] is None
+    photo = next(i["photo"] for i in items.values() if i["photo"])
+    assert {"credit", "license", "source_url"} <= photo.keys()
 
 
 def test_weather_locked_region_has_no_point(client):
@@ -193,7 +218,8 @@ def test_ask_wrong_shape_is_a_model_failure_not_missing_data(client, scripted):
 
 def test_ask_does_not_ground_on_an_unverified_source(client, scripted, content):
     # the reader would see an empty "Nguồn:", since the site never cites a source the team has not vetted
-    unverified = next(s.id for s in content.sources.values() if s.verified is False)
+    unverified = "ref-79"  # every real source is vetted now (#113): un-vet one for this test
+    store.get().sources[unverified].verified = False
     scripted({"answer": "Nhẹ, thoáng.", "sources": [unverified]})
     r = client.post("/ask", json={"garment_id": "ao-ba-ba", "question": "Vì sao áo bà ba mát?"}).json()
     assert r["grounded"] is False and r["reason"] == "no_source"
