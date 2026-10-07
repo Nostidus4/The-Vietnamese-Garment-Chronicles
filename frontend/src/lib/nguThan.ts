@@ -19,14 +19,35 @@ export const PLACE: Record<string, string> = {
 };
 
 /**
- * The order to draw the places in (#108): the empty ones above the filled ones, so a panel already placed never covers
- * a place still to fill (the inner panel sits almost wholly under the right front panel). Once all are filled the
- * robe is drawn in its own order, the front closed over the inside.
+ * The robe is put together from the inside out, the way it is worn (#108): the two back panels, then the inner panel
+ * (thân con), then the two front panels that close over it. Only one layer is open at a time, so a place is never
+ * hidden under a panel that is not there yet, and the order itself is the lesson: the fifth panel sits under the
+ * right front flap.
  */
-export function drawOrder(filled: (slot: string) => boolean): string[] {
-  const rank = (slot: string) => (filled(slot) ? 0 : 10) + PANELS[slot].z;
-  return Object.keys(PANELS).sort((a, b) => rank(a) - rank(b));
+export const LAYERS: string[][] = [["back-left", "back-right"], ["inner"], ["front-left", "front-right"]];
+export const LAYER_NAME = ["hai thân sau", "thân con", "hai thân trước"];
+
+export const layerOf = (slot: string) => LAYERS.findIndex((l) => l.includes(slot));
+
+/** The layer being built: the first one with a place still empty (LAYERS.length once the robe is whole). */
+export function currentLayer(placed: string[]): number {
+  const i = LAYERS.findIndex((l) => l.some((slot) => !placed.includes(slot)));
+  return i < 0 ? LAYERS.length : i;
 }
+
+export type Placing = { ok: true } | { ok: false; why: "later" | "elsewhere" };
+
+/**
+ * Putting `piece` where the reader pressed. `under` is every place under the press (several where panels overlap);
+ * a piece of a layer not open yet is "later", whatever the place.
+ */
+export function tryPlace(placed: string[], piece: string, under: string[]): Placing {
+  if (layerOf(piece) > currentLayer(placed)) return { ok: false, why: "later" };
+  return under.includes(piece) ? { ok: true } : { ok: false, why: "elsewhere" };
+}
+
+/** Back to front, the order to draw the panels in. */
+export const DRAW_ORDER = Object.keys(PANELS).sort((a, b) => PANELS[a].z - PANELS[b].z);
 
 // the corners of a "M x y L x y … Z" path
 const corners = (d: string) => [...d.matchAll(/(-?[\d.]+) (-?[\d.]+)/g)].map((m) => [+m[1], +m[2]]);
@@ -48,4 +69,11 @@ function inside(x: number, y: number, poly: number[][]) {
  */
 export function placesAt(x: number, y: number): string[] {
   return Object.keys(SHAPES).filter((slot) => inside(x, y, SHAPES[slot]));
+}
+
+/** The box around a place, for a thumbnail of the panel in the tray. */
+export function boxOf(slot: string): [number, number, number, number] {
+  const xs = SHAPES[slot].map((c) => c[0]);
+  const ys = SHAPES[slot].map((c) => c[1]);
+  return [Math.min(...xs), Math.min(...ys), Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)];
 }
