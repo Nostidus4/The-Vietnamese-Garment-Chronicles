@@ -16,7 +16,7 @@ ID = re.compile(r"^[A-Za-z0-9_-]{8,20}$")
 async def create_share(request: Request, meta: str = Form(...), photos: list[UploadFile] = File(default=[])) -> dict:
     # abuse guard only: the address is used in memory for a minute and never stored
     if not ratelimit.allow(f"share:{request.client.host if request.client else '-'}", 5):
-        raise HTTPException(429, "Bạn tạo link hơi nhanh, thử lại sau một phút nhé")
+        raise HTTPException(429, "Con tạo link hơi nhanh, thử lại sau một phút nhé")
     try:
         m = share.ShareMeta.model_validate_json(meta)
     except ValidationError as err:

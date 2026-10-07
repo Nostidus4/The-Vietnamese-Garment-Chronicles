@@ -93,7 +93,7 @@ export function ChapterQuiz({ regionId, phase }: { regionId: string; phase: "pre
       {open && (
         <div className="mt-3 space-y-4">
           <p className="m-0 text-sm text-stone-600">
-            {phase === "pre" ? "Đoán trước khi đọc chương, sai cũng không sao." : "Cùng những câu lúc đầu. Xem bạn đã khác chưa?"}
+            {phase === "pre" ? "Đoán trước khi đọc chương, sai cũng không sao." : "Cùng những câu lúc đầu. Xem con đã khác chưa?"}
           </p>
           {shown.map((it, n) => {
             const r = results[it.id];

@@ -32,7 +32,7 @@ export function SharedView({ id }: { id: string }) {
   if (!id)
     return (
       <ErrorSheet kicker="LINK BỊ THIẾU" title="Link này bị thiếu mã trang." action={into}>
-        Bạn nhờ người gửi chép lại cả đường link nhé. Trong lúc chờ, bạn có thể tự đi qua trang phục các vùng.
+        Bạn nhờ người gửi chép lại cả link nhé. Trong lúc chờ, bạn có thể tự đi qua trang phục các vùng.
       </ErrorSheet>
     );
 

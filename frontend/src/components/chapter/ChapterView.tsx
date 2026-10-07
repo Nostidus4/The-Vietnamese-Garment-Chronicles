@@ -215,7 +215,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
       return garment
         ? `Bà chưa thấy ${name} đi cùng ${garment.name_vi} trong các nguồn đã tra, nên tủ chưa cho mặc chung. Con chọn bộ áo khác thì thử được.`
         : "Con chọn một bộ áo trước nhé.";
-    if (st === "dim") return `${name} thường không mặc cho dịp này. Mặc vẫn được, Compass sẽ nói vì sao.`;
+    if (st === "dim") return `${name} thường không mặc cho dịp này. Mặc vẫn được, Tèo sẽ chấm và nói vì sao.`;
     const a = it.accessory ? data.accessories[it.accessory] : null;
     if (a && a.verified === false && a.kind === "traditional-vn") return `Tèo đang kiểm tra: Bà chưa tìm được nguồn thật chắc cho ${name}. Mặc thử vẫn được.`;
     return noteOf(it);
@@ -255,7 +255,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     }
   }
 
-  /** ⛔ "Mặc phương án thay thế": the Compass's swapped look, back on the doll. */
+  /** ⛔ "Mặc theo gợi ý của Tèo": the Compass's swapped look, back on the doll. */
   function wearAlternative() {
     if (!data || !verdict?.alternative) return;
     change(lookOf(verdict.alternative, items, data, byId));
@@ -481,14 +481,14 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
                   type="button"
                   onClick={() => verdict && setWhy(true)}
                   className={`mirror-tag ${tag ? "" : "mirror-tag-quiet"} ${verdict?.state === "distorted" ? "mirror-tag-bad" : ""}`}
-                  // no aria-label: the printed "Compass ✅ Phù hợp vì sao?" is the name, verdict included; the old label
+                  // no aria-label: the printed "Tèo chấm ✅ Phù hợp vì sao?" is the name, verdict included; the old label
                   // "Compass: vì sao?" hid the verdict from a screen reader (#58)
                   initial={{ rotate: 12 }}
                   animate={{ rotate: [12, -3, 2, 6] }}
                   transition={{ duration: 0.6 }}
                 >
                   <span className="mirror-tag-hole" aria-hidden />
-                  <span className="block text-[0.75rem] uppercase tracking-[0.18em] opacity-70">Compass</span>
+                  <span className="block text-[0.75rem] uppercase tracking-[0.18em] opacity-70">Tèo chấm</span>
                   <span className="block text-sm font-semibold leading-tight">{tag ? `${tag.icon} ${tag.name}` : garment ? "chưa chấm được" : "chưa mặc gì"}</span>
                   {tag && <span className="block text-[0.75rem] underline opacity-70">vì sao?</span>}
                 </motion.button>
@@ -588,7 +588,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           <Fork data={data} selection={selection} verdict={verdict} />
           <div className="mt-3 flex flex-wrap gap-2">
             <button type="button" onClick={wearAlternative} className="rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
-              Mặc phương án thay thế →
+              Mặc theo gợi ý của Tèo →
             </button>
             <button
               type="button"
@@ -606,7 +606,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
       )}
 
       {why && verdict && (
-        <Modal label="Compass: vì sao?" onClose={() => setWhy(false)} bare>
+        <Modal label="Tèo chấm: vì sao?" onClose={() => setWhy(false)} bare>
           <CompassPanel result={verdict} sources={data.sources} garment={garment} />
         </Modal>
       )}

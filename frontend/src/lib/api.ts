@@ -77,7 +77,7 @@ export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string; s
       return json<TryOnResult>(r);
     })
     .catch((e) => {
-      if (e instanceof DOMException && e.name === "TimeoutError") throw new Error("Máy chủ phản hồi quá lâu, bạn thử lại nhé.");
+      if (e instanceof DOMException && e.name === "TimeoutError") throw new Error("Máy chủ phản hồi quá lâu, con thử lại nhé.");
       throw e;
     });
 }

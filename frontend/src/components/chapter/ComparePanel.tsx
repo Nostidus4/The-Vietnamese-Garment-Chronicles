@@ -43,7 +43,7 @@ export function ComparePanel({ current, data, onUse }: { current: Selection; dat
         setResults(r);
         setError(null);
       })
-      .catch(() => alive && setError("Chưa so sánh được, bạn thử lại nhé."));
+      .catch(() => alive && setError("Chưa so sánh được, con thử lại nhé."));
     return () => {
       alive = false;
     };
@@ -66,7 +66,7 @@ export function ComparePanel({ current, data, onUse }: { current: Selection; dat
         </button>
       </div>
       {pinned.length < 2 && (
-        <p className="m-0 mt-2 text-sm text-stone-600">Ghim ít nhất 2 bộ (đổi màu, dịp hay phụ kiện giữa các lần ghim) để Compass chấm cạnh nhau.</p>
+        <p className="m-0 mt-2 text-sm text-stone-600">Ghim ít nhất 2 bộ (đổi màu, dịp hay phụ kiện giữa các lần ghim) để Tèo chấm cạnh nhau.</p>
       )}
       {error && <p className="m-0 mt-2 text-sm text-[#B5452E]">{error}</p>}
       {pinned.length > 0 && (

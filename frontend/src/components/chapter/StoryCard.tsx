@@ -23,8 +23,9 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
           <li key={f.text} className="leading-relaxed">
             {f.text}{" "}
             {cited({ sources }, f.sources).map((src) => (
+              // in brackets: two notes side by side read as [1][3], not as the number 13 (#114)
               <sup key={src.id} className="text-stone-600">
-                {notes.indexOf(src.id) + 1}
+                [{notes.indexOf(src.id) + 1}]
               </sup>
             ))}
           </li>

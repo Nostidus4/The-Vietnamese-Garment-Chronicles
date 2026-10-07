@@ -112,9 +112,9 @@ export function Mirror({
         </div>
 
         {/* the Compass verdict hangs on the frame like a shop tag */}
-        <button type="button" onClick={onTag} className={`mirror-tag ${tag ? "" : "mirror-tag-quiet"}`} aria-label="Compass: vì sao?">
+        <button type="button" onClick={onTag} className={`mirror-tag ${tag ? "" : "mirror-tag-quiet"}`} aria-label="Tèo chấm: vì sao?">
           <span className="mirror-tag-hole" aria-hidden />
-          <span className="block text-[0.75rem] uppercase tracking-[0.18em] opacity-70">Compass</span>
+          <span className="block text-[0.75rem] uppercase tracking-[0.18em] opacity-70">Tèo chấm</span>
           <span className="block text-sm font-semibold leading-tight">
             {offline ? "cần máy chủ" : tag ? `${tag.icon} ${tag.name}` : scoring ? "đang chấm…" : "chưa chấm được"}
           </span>

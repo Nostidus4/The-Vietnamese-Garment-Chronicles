@@ -12,7 +12,7 @@ const body = Be_Vietnam_Pro({ variable: "--font-body", subsets: ["vietnamese", "
 const hand = Patrick_Hand({ variable: "--font-hand", subsets: ["vietnamese", "latin"], weight: "400", preload: false });
 
 const DESCRIPTION =
-  "Cuốn sổ của Bà đưa bạn đi qua trang phục truyền thống từng vùng: đọc nhật ký, phối áo cùng Compass văn hóa, thử với ảnh của mình và ghi Du Ký những lần mặc.";
+  "Cuốn sổ của Bà đưa bạn đi qua trang phục truyền thống từng vùng: đọc nhật ký, phối áo để Tèo chấm, thử với ảnh của mình và ghi Du Ký những lần mặc.";
 
 // what a link shows when it is pasted into Zalo, Messenger or Facebook (#54); the icons and the share picture are
 // the files icon.png, apple-icon.png, opengraph-image.jpg and twitter-image.jpg in this folder

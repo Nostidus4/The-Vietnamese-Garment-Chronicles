@@ -125,7 +125,7 @@ export function ExportCard({
               aria-live="polite"
             >
               {saved
-                ? "Đã lưu ảnh ✓ Con đăng lên đâu cũng được, dấu AI vẫn nằm trên ảnh."
+                ? `Đã lưu ảnh ✓ Con đăng lên đâu cũng được${page.photos.some((p) => p.kind === "ai") ? ", dấu AI vẫn nằm trên ảnh" : ""}.`
                 : "Ảnh 1080×1350, vừa khung bài đăng Instagram, Zalo."}
             </p>
           </div>
@@ -241,7 +241,7 @@ export function ExportCard({
             <div className="mt-3 shrink-0 rotate-[-0.5deg] bg-[#fbe99a] px-3 py-2 text-[12px] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">
               {fact.text}
               <span className="mt-0.5 block text-[10px] opacity-80">
-                nguồn: {fact.source.title} – Tèo
+                Tèo chép từ: {fact.source.title}
               </span>
             </div>
           )}

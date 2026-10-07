@@ -2,10 +2,10 @@
 
 // Tủ tem (#24): for every region, the three stamps of the two journeys.
 //   đã đến  – opened Bà's first entry of the region        đã hiểu – answered "Bà hỏi con"
-//   đã mặc  – a real photo in the Du Ký (bold); only try-on pictures give a faded "đã thử"
+//   đã mặc  – a real photo in the Du Ký (bold); only try-on pictures give a faded "đã mặc" that asks for one (#114)
 
 import type { DuKyBook } from "@/lib/dukyBook";
-import { useStamps } from "@/lib/stamps";
+import { stampPlace, useStamps } from "@/lib/stamps";
 import { useState } from "react";
 import type { Bootstrap, Region } from "@/lib/types";
 import { FINAL_LETTER, PostcardViewer } from "./PostcardViewer";
@@ -18,19 +18,20 @@ const HOW: Record<string, string> = {
   "Đã đến": "Mở chương của vùng này trong sổ của Bà",
   "Đã hiểu": "Trả lời hết “Bà hỏi con” ở cuối chương",
   "Đã mặc": "Dán ảnh một lần con mặc thật vào Du Ký",
-  "Đã thử": "Đã có ảnh thử đồ; dán ảnh mặc thật để tem đậm lên",
 };
+const TRIED = "Đã có ảnh thử đồ; dán ảnh mặc thật để tem đậm lên";
 
 function Stamp({ label, place, look, color }: { label: string; place: string; look: Look; color: string }) {
+  const how = look === "soft" && label === "Đã mặc" ? TRIED : HOW[label];
   return (
     <div
       role="img"
-      title={look === "on" ? `${label} ${place}` : HOW[label]}
+      title={look === "on" ? `${label} ${place}` : how}
       className={`flex h-[3.6rem] w-[3.6rem] shrink-0 flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
         look === "on" ? "rotate-[-8deg]" : look === "soft" ? "rotate-[6deg] border-dashed opacity-55" : "border-dashed opacity-60"
       }`}
       style={{ borderColor: look === "off" ? "#a8a29e" : color, color: look === "off" ? "#a8a29e" : color }}
-      aria-label={`${label} ${place}${look === "on" ? "" : `: chưa có. ${HOW[label]}`}`}
+      aria-label={`${label} ${place}${look === "on" ? "" : `: chưa có. ${how}`}`}
     >
       {/* read at 100% zoom: 11–12px, not 7–9 (#117) */}
       <span className="text-[0.6875rem] font-semibold leading-tight">{label.toUpperCase()}</span>
@@ -73,6 +74,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
       <ul className="m-0 mt-1.5 flex min-h-0 flex-1 list-none flex-col justify-around gap-0.5 p-0">
         {data.regions.map((r) => {
           const place = r.name.split("/")[0].trim();
+          const stamped = stampPlace(r); // the row is the region, its stamps are named after the chapter read (Huế)
           if (r.status === "locked" && !r.chapters.some((c) => c.status === "open"))
             return (
               <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-1 text-stone-600">
@@ -83,7 +85,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
           return (
             <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-0.5">
               <div className="w-[5.5rem] shrink-0">
-                <a href={asset(`/?region=${r.id}&page=own`)} className="font-display block text-[0.85rem] leading-tight text-[#27354f] hover:underline">
+                <a href={asset(`/?region=${r.id}&page=own`)} title={stamped === place ? undefined : `${place} · chương ${stamped}`} className="font-display block text-[0.85rem] leading-tight text-[#27354f] hover:underline">
                   {place}
                   {stopsTotal(r) > 0 && (
                     // "tem điểm": the stops of Bà's road the reader has turned to (said here, the legend has no room)
@@ -105,14 +107,13 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
                 )}
               </div>
               <div className="flex flex-1 justify-around gap-1">
-                <Stamp label="Đã đến" place={place} look={arrived.includes(r.id) ? "on" : "off"} color="#B5452E" />
-                <Stamp label="Đã hiểu" place={place} look={understood.includes(r.id) ? "on" : "off"} color="#5E7F4A" />
-                <Stamp
-                  label={worn.has(r.id) ? "Đã mặc" : "Đã thử"}
-                  place={place}
-                  look={worn.has(r.id) ? "on" : tried.has(r.id) ? "soft" : "off"}
-                  color="#2F4A6D"
-                />
+                <Stamp label="Đã đến" place={stamped} look={arrived.includes(r.id) ? "on" : "off"} color="#B5452E" />
+                <Stamp label="Đã hiểu" place={stamped} look={understood.includes(r.id) ? "on" : "off"} color="#5E7F4A" />
+                {/* one name for the stamp, "ĐÃ MẶC", even before it is earned; what is missing is said under it (#114) */}
+                <div className="flex flex-col items-center">
+                  <Stamp label="Đã mặc" place={stamped} look={worn.has(r.id) ? "on" : tried.has(r.id) ? "soft" : "off"} color="#2F4A6D" />
+                  {!worn.has(r.id) && <span className="mt-0.5 max-w-[5.5rem] text-center text-[0.6875rem] leading-none text-stone-600">cần ảnh mặc thật</span>}
+                </div>
               </div>
             </li>
           );

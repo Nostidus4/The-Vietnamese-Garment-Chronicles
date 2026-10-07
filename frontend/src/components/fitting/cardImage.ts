@@ -90,7 +90,10 @@ export async function cardPicture(o: { art: string; title: string; meta: string;
     ctx.setLineDash([]);
     ctx.fillStyle = "#b5452e";
     ctx.textAlign = "center";
-    ctx.font = `700 24px ${body}`;
+    // the Vietnamese words ("LẤY CẢM HỨNG") are longer than the old English ones: shrink to stay inside the ring
+    let size = 24;
+    do ctx.font = `700 ${size--}px ${body}`;
+    while (size > 14 && ctx.measureText(o.stamp).width > 136);
     ctx.fillText(o.stamp, 0, -6);
     ctx.font = `30px ${body}`;
     ctx.fillText(o.icon, 0, 34);

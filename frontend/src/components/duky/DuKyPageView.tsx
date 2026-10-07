@@ -215,7 +215,7 @@ export function DuKyPageView({
           </label>
           <label className="col-span-2 flex flex-col gap-0.5">
             Nơi
-            <input defaultValue={page.place} maxLength={60} placeholder="Chùa, phố, nhà bạn…" onBlur={(e) => e.target.value.trim() !== page.place && updatePage(page.id, { place: e.target.value.trim() })} className="rounded border border-stone-300 bg-white/80 px-1.5 py-1" />
+            <input defaultValue={page.place} maxLength={60} placeholder="Chùa, phố, nhà bạn bè…" onBlur={(e) => e.target.value.trim() !== page.place && updatePage(page.id, { place: e.target.value.trim() })} className="rounded border border-stone-300 bg-white/80 px-1.5 py-1" />
           </label>
         </div>
       )}
@@ -256,7 +256,7 @@ export function DuKyPageView({
         <div className="mt-2 rotate-[-0.6deg] bg-[#fbe99a] px-2 py-1.5 text-[0.75rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">
           {fact.text}
           <span className="mt-0.5 block text-[0.75rem] opacity-80">
-            nguồn: {fact.source.title} – Tèo
+            Tèo chép từ: {fact.source.title}
           </span>
         </div>
       )}
