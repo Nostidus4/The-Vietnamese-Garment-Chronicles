@@ -1,6 +1,6 @@
 import { asset } from "./base";
 import { retryAfterSeconds } from "./tryonWait";
-import type { Bootstrap, CompassResult, Selection, Shop, TryOnResult } from "./types";
+import type { Bootstrap, CompassResult, QuizItem, Selection, Shop, TryOnResult } from "./types";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 /** Built without a backend (GitHub Pages with no NEXT_PUBLIC_API_URL): the book reads content bundled at build time. */
@@ -83,9 +83,7 @@ export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string; s
 }
 
 export const getQuiz = (count = 5) =>
-  call(`${API_URL}/quiz?count=${count}`).then((r) =>
-    json<{ choices: Record<string, string>; items: { id: string; image: string }[] }>(r),
-  );
+  call(`${API_URL}/quiz?count=${count}`).then((r) => json<{ choices: Record<string, string>; items: QuizItem[] }>(r));
 
 export const answerQuiz = (id: string, answer: string) =>
   post<{ correct: boolean; answer_name: string; explanation: string; sources: string[] }>("/quiz/answer", { id, answer });

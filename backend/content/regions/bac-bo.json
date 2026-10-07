@@ -47,7 +47,7 @@
           "image": "/regions/bac-bo/photos/song-cau.jpg",
           "alt": "Sông Cầu đoạn chảy qua Bắc Ninh",
           "credit": "Bacthai20",
-          "license": "CC0",
+          "license": "CC0 1.0",
           "source_url": "https://commons.wikimedia.org/wiki/File:Cau_River_TN_-_BG.jpg"
         }
       },
@@ -172,7 +172,7 @@
           "text": "Dân ca Quan họ Bắc Ninh được UNESCO ghi danh.",
           "unesco": 2009,
           "sources": [
-            "unesco-ich-vn"
+            "unesco-quan-ho"
           ],
           "verified": true
         }
@@ -355,7 +355,7 @@
         {
           "text": "Dân ca Quan họ Bắc Ninh được UNESCO ghi danh.",
           "sources": [
-            "unesco-ich-vn"
+            "unesco-quan-ho"
           ],
           "verified": true,
           "unesco": 2009
@@ -363,7 +363,7 @@
         {
           "text": "Hội Gióng ở đền Phù Đổng và đền Sóc được UNESCO ghi danh.",
           "sources": [
-            "unesco-ich-vn"
+            "unesco-giong"
           ],
           "verified": true,
           "unesco": 2010
@@ -371,7 +371,7 @@
         {
           "text": "Tín ngưỡng thờ cúng Hùng Vương ở Phú Thọ được UNESCO ghi danh.",
           "sources": [
-            "unesco-ich-vn"
+            "unesco-hung-vuong"
           ],
           "verified": true,
           "unesco": 2012
@@ -535,13 +535,14 @@
     ]
   },
   "sources": [
-    "unesco-ich-vn",
-    "unesco-whc-vn",
+    "unesco-giong",
     "ref-69",
     "ref-68",
     "ref-75",
     "ref-78",
-    "ref-80"
+    "ref-80",
+    "unesco-quan-ho",
+    "unesco-hung-vuong"
   ],
   "community_review": false
 }

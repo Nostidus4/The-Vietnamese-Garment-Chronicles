@@ -29,12 +29,12 @@
           "text": "Quần thể di tích Cố đô Huế là Di sản Thế giới.",
           "unesco": 1993,
           "sources": [
-            "unesco-whc-vn"
+            "unesco-whc-hue"
           ],
           "verified": true
         },
         {
-          "text": "Cầu Trường Tiền có sáu nhịp dầm thép, dài chừng 400 m, xây xong năm 1899 thời vua Thành Thái. “Sáu vài mười hai nhịp” là câu hát quen của người Huế.",
+          "text": "Cầu Trường Tiền dài chừng 400 m, xây xong năm 1899 thời vua Thành Thái. Câu hát “sáu vài mười hai nhịp” không sai: “vài” thường được giải thích là một đôi, sáu vài là mười hai, đếm theo nửa vòm của sáu nhịp cầu.",
           "unesco": null,
           "sources": [
             "vietnamnews-truong-tien",
@@ -114,7 +114,7 @@
         "photo": {
           "image": "/regions/hue/photos/cho-dong-ba.jpg",
           "alt": "Lối đi trong chợ Đông Ba, hai bên là sạp hàng khô",
-          "credit": "Chainwit.",
+          "credit": "Chainwit",
           "license": "CC BY 4.0",
           "source_url": "https://commons.wikimedia.org/wiki/File:Dong_Ba_Market_(Hue)_-_Ch%E1%BB%A3_%C4%90%C3%B4ng_Ba_Hu%E1%BA%BF_(July_2024)_-_img_05.jpg"
         }
@@ -136,10 +136,10 @@
       "keepsake": null,
       "teo": [
         {
-          "text": "Nhã nhạc cung đình Huế được UNESCO công nhận là Kiệt tác di sản truyền khẩu và phi vật thể.",
+          "text": "Nhã nhạc cung đình Huế được UNESCO công bố năm 2003, nay thuộc Danh sách Di sản văn hóa phi vật thể đại diện của nhân loại.",
           "unesco": 2003,
           "sources": [
-            "unesco-ich-vn"
+            "unesco-nha-nhac"
           ],
           "verified": true
         },
@@ -170,7 +170,7 @@
         "photo": {
           "image": "/regions/hue/photos/ngo-mon.jpg",
           "alt": "Ngọ Môn, cổng chính vào Hoàng thành Huế",
-          "credit": "Chainwit.",
+          "credit": "Chainwit",
           "license": "CC BY 4.0",
           "source_url": "https://commons.wikimedia.org/wiki/File:Hu%E1%BA%BF_(2024)_-_Meridian_Gate_-_Ng%E1%BB%8D_M%C3%B4n_(Ho%C3%A0ng_th%C3%A0nh_Hu%E1%BA%BF)_-_img_02.jpg"
         }
@@ -211,7 +211,7 @@
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Bốn thân lớn, mẹ chồng Bà bảo, là cha mẹ mình và cha mẹ chồng."
+            "explain": "Mẹ chồng Bà bảo, theo cách hiểu dân gian, bốn thân lớn là cha mẹ mình và cha mẹ chồng."
           },
           {
             "label": "Thân con (bên trong)",
@@ -219,15 +219,16 @@
             "prompt": null,
             "choices": [],
             "answer": null,
-            "explain": "Thân thứ năm nằm khuất dưới vạt trước: là bản thân mình, đứng giữa bốn người thân."
+            "explain": "Thân thứ năm nằm khuất dưới vạt trước. Người xưa hiểu đó là bản thân mình, đứng giữa bốn người thân."
           }
         ],
         "done": "Đủ năm thân rồi! Cổ đứng, khuy cài bên phải. Chiếc áo này về sau mẹ Ông, tức mẹ chồng Bà, trao cho Bà, con lật tới trang Mặc sẽ thấy.",
         "teo": {
-          "text": "Áo ngũ thân có bốn thân lớn tượng trưng cho tứ thân phụ mẫu và một thân con nằm trong, là người mặc; năm cúc áo là Nhân, Lễ, Nghĩa, Trí, Tín.",
+          "text": "Theo cách hiểu dân gian, bốn thân lớn của áo ngũ thân tượng trưng cho tứ thân phụ mẫu, thân con nằm trong là người mặc; năm cúc áo gửi gắm ngũ thường: Nhân, Lễ, Nghĩa, Trí, Tín.",
           "unesco": null,
           "sources": [
-            "baophapluat-ngu-than"
+            "baophapluat-ngu-than",
+            "vietnamplus-ao-ngu-than"
           ],
           "verified": true
         },
@@ -337,7 +338,7 @@
         "photo": {
           "image": "/regions/hue/photos/bun-bo.jpg",
           "alt": "Tô bún bò Huế ở chợ Đông Ba",
-          "credit": "Chainwit.",
+          "credit": "Chainwit",
           "license": "CC BY 4.0",
           "source_url": "https://commons.wikimedia.org/wiki/File:B%C3%BAn_b%C3%B2_Hu%E1%BA%BF_-_Ch%E1%BB%A3_%C4%90%C3%B4ng_Ba_(2024)_-_img_02.jpg"
         }
@@ -409,7 +410,7 @@
           "text": "Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh.",
           "unesco": 2017,
           "sources": [
-            "unesco-ich-vn"
+            "unesco-bai-choi"
           ],
           "verified": true
         },
@@ -519,7 +520,7 @@
     {
       "garment": "ao-ngu-than",
       "date": "Ngày giỗ, một năm sau",
-      "entry": "Hôm giỗ, mẹ mở rương, đưa tôi chiếc [[áo ngũ thân|ao-ngu-than]] của mẹ hồi con gái. Mẹ không nói gì. Tôi hiểu mẹ đã nhận tôi. Áo có năm thân, cổ đứng, cài khuy bên phải. Mẹ nói bốn thân lớn là cha mẹ mình và cha mẹ chồng, thân thứ năm nằm bên trong là bản thân mình. Anh mặc áo ngũ thân màu đen, đội [[khăn đóng|khan-dong]]. Tôi mặc vào, tự nhiên thấy mình đứng thẳng hơn.",
+      "entry": "Hôm giỗ, mẹ mở rương, đưa tôi chiếc [[áo ngũ thân|ao-ngu-than]] của mẹ hồi con gái. Mẹ không nói gì. Tôi hiểu mẹ đã nhận tôi. Áo có năm thân, cổ đứng, cài khuy bên phải. Mẹ nói người xưa vẫn hiểu bốn thân lớn là cha mẹ mình và cha mẹ chồng, thân thứ năm nằm bên trong là bản thân mình. Anh mặc áo ngũ thân màu đen, đội [[khăn đóng|khan-dong]]. Tôi mặc vào, tự nhiên thấy mình đứng thẳng hơn.",
       "margin": "Chiếc áo ấy giờ ở trong rương. Khi nào con mặc, Bà lấy ra.",
       "keepsake": "fabric",
       "teo": [
@@ -568,12 +569,12 @@
       "id": "hue-pre",
       "q": "Con đoán xem: nón bài thơ của Huế có gì đặc biệt?",
       "choices": [
-        "Kẹp hình, câu thơ giữa hai lớp lá, soi nắng mới thấy",
-        "Câu thơ được viết bằng mực tàu lên mặt ngoài nón",
-        "Vành nón in chữ vàng để ai cũng đọc được"
+        "Có hình, câu thơ ẩn giữa hai lớp lá",
+        "Có câu thơ viết mực tàu ở mặt ngoài",
+        "Có vành nón in chữ vàng quanh chóp"
       ],
       "answer": 0,
-      "explain": "Giữa hai lớp lá có kẹp hình hoặc câu thơ, phải soi lên nắng mới thấy.",
+      "explain": "Người làm nón kẹp hình hoặc câu thơ cắt bằng giấy vào giữa hai lớp lá; nhìn thường không thấy, phải soi nón lên nắng.",
       "sources": [
         "ref-72"
       ],
@@ -582,14 +583,14 @@
     "post": [
       {
         "id": "hue-ngu-than",
-        "q": "Áo ngũ thân có mấy thân áo?",
+        "q": "Tính cả thân con nằm trong, áo ngũ thân có mấy thân?",
         "choices": [
-          "Năm: bốn thân lớn và một thân con nằm trong",
-          "Bốn: hai thân trước và hai thân sau",
-          "Sáu: bốn thân lớn, thêm hai vạt tay áo may rời"
+          "Năm thân",
+          "Bốn thân",
+          "Sáu thân"
         ],
         "answer": 0,
-        "explain": "Bốn thân lớn là tứ thân phụ mẫu, thân con nằm trong là người mặc.",
+        "explain": "Hai thân trước, hai thân sau và một thân con nằm dưới vạt trước: năm thân, nên gọi là ngũ thân.",
         "sources": [
           "baophapluat-ngu-than",
           "ref-03"
@@ -605,22 +606,22 @@
           "Một kiểu áo dài của các cô gái Huế"
         ],
         "answer": 0,
-        "explain": "Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh năm 2017.",
+        "explain": "Bài chòi vừa là trò chơi vừa là hát diễn ngày Tết: người chơi ngồi trong chòi tre, anh hiệu hát câu thai để xướng con bài. UNESCO ghi danh Nghệ thuật Bài chòi Trung Bộ năm 2017.",
         "sources": [
-          "unesco-ich-vn"
+          "unesco-bai-choi"
         ],
         "verified": true
       },
       {
         "id": "hue-nut",
-        "q": "Năm cúc trên áo ngũ thân tượng trưng cho gì?",
+        "q": "Theo quan niệm dân gian, năm cúc trên áo ngũ thân tượng trưng cho gì?",
         "choices": [
           "Nhân, Lễ, Nghĩa, Trí, Tín",
           "Năm người con trong một gia đình",
           "Năm mùa vụ trong một năm"
         ],
         "answer": 0,
-        "explain": "Năm cúc là đạo lý làm người: Nhân, Lễ, Nghĩa, Trí, Tín.",
+        "explain": "Đây là cách hiểu được truyền lại, không phải quy định may áo: năm cúc gửi gắm ngũ thường Nhân, Lễ, Nghĩa, Trí, Tín.",
         "sources": [
           "baophapluat-ngu-than"
         ],
@@ -629,8 +630,8 @@
     ]
   },
   "sources": [
-    "unesco-ich-vn",
-    "unesco-whc-vn",
+    "unesco-nha-nhac",
+    "unesco-whc-hue",
     "ref-09",
     "ref-03",
     "ref-04",
@@ -638,6 +639,7 @@
     "ref-70",
     "ref-71",
     "ref-72",
-    "ref-76"
+    "ref-76",
+    "unesco-bai-choi"
   ]
 }

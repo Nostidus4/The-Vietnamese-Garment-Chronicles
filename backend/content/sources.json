@@ -331,49 +331,6 @@
       "url": "https://en.wikipedia.org/wiki/%C3%81o_d%C3%A0i"
     },
     {
-      "id": "research-5-3",
-      "title": "Báo cáo nghiên cứu của nhóm – bản đồ trang phục theo vùng",
-      "url": null,
-      "note": "Research Report – Mục 5.3 Regional clothing map (cần thẩm định). Tab Bối Cảnh trong Google Doc của đội",
-      "verified": false
-    },
-    {
-      "id": "research-6",
-      "title": "Báo cáo nghiên cứu của nhóm – phân tích các trang phục tiêu biểu",
-      "url": null,
-      "note": "Research Report – Mục 6 Representative Clothing Analysis. Tab Bối Cảnh trong Google Doc của đội"
-    },
-    {
-      "id": "research-7",
-      "title": "Báo cáo nghiên cứu của nhóm – dịp mặc và bối cảnh văn hóa",
-      "url": null,
-      "note": "Research Report – Mục 7 Occasion & Cultural Context. Tab Bối Cảnh trong Google Doc của đội"
-    },
-    {
-      "id": "research-19-1",
-      "title": "Báo cáo nghiên cứu của nhóm – phần nên giữ và phần đổi được của mỗi trang phục",
-      "url": null,
-      "note": "Research Report – Mục 19.1 Thành phần có thể thay đổi vs nên giữ nguyên. Tab Bối Cảnh trong Google Doc của đội"
-    },
-    {
-      "id": "research-19-2",
-      "title": "Báo cáo nghiên cứu của nhóm – ranh giới giữa cách tân và sai lệch văn hóa",
-      "url": null,
-      "note": "Research Report – Mục 19.2 Ranh giới giữa modernisation và cultural distortion. Tab Bối Cảnh trong Google Doc của đội"
-    },
-    {
-      "id": "unesco-ich-vn",
-      "title": "UNESCO (không rõ năm). Di sản văn hóa phi vật thể của Việt Nam (danh sách)",
-      "url": "https://ich.unesco.org/en/state/viet-nam-VN",
-      "note": "Mở trang để đối chiếu tên và năm ghi danh từng mục trước khi bật verified"
-    },
-    {
-      "id": "unesco-whc-vn",
-      "title": "UNESCO World Heritage Centre (không rõ năm). Việt Nam",
-      "url": "https://whc.unesco.org/en/statesparties/vn",
-      "note": "Di sản thế giới: Hạ Long, Tràng An, Huế, Hội An, Mỹ Sơn, Phong Nha – Kẻ Bàng…"
-    },
-    {
       "id": "nq-sap-xep-tinh-2025",
       "title": "Quốc hội (12/06/2025). Nghị quyết số 202/2025/QH15 về việc sắp xếp đơn vị hành chính cấp tỉnh (hiệu lực từ 12/06/2025; chính quyền các tỉnh mới hoạt động từ 01/07/2025)",
       "url": "https://vanban.chinhphu.vn/?pageid=27160&docid=213930"
@@ -707,6 +664,46 @@
       "id": "wiki-hanfu",
       "title": "Wikipedia tiếng Anh (không rõ năm). Hanfu",
       "url": "https://en.wikipedia.org/wiki/Hanfu"
+    },
+    {
+      "id": "unesco-nha-nhac",
+      "title": "UNESCO (2008). Nhã nhạc, Vietnamese court music – Representative List of the Intangible Cultural Heritage of Humanity (công bố lần đầu 2003)",
+      "url": "https://ich.unesco.org/en/RL/nha-nhac-vietnamese-court-music-00074"
+    },
+    {
+      "id": "unesco-bai-choi",
+      "title": "UNESCO (2017). The art of Bài Chòi in Central Viet Nam – Representative List of the Intangible Cultural Heritage of Humanity",
+      "url": "https://ich.unesco.org/en/RL/the-art-of-bai-choi-in-central-viet-nam-01222"
+    },
+    {
+      "id": "unesco-don-ca-tai-tu",
+      "title": "UNESCO (2013). Art of Đờn ca tài tử music and song in southern Viet Nam – Representative List of the Intangible Cultural Heritage of Humanity",
+      "url": "https://ich.unesco.org/en/RL/art-of-n-ca-tai-t-music-and-song-in-southern-viet-nam-00733"
+    },
+    {
+      "id": "unesco-ba-chua-xu",
+      "title": "UNESCO (2024). Festival of Bà Chúa Xứ Goddess at Sam Mountain – Representative List of the Intangible Cultural Heritage of Humanity",
+      "url": "https://ich.unesco.org/en/RL/festival-of-ba-chua-x-goddess-at-sam-mountain-01999"
+    },
+    {
+      "id": "unesco-giong",
+      "title": "UNESCO (2010). Gióng festival of Phù Đổng and Sóc temples – Representative List of the Intangible Cultural Heritage of Humanity",
+      "url": "https://ich.unesco.org/en/RL/giong-festival-of-phu-djong-and-soc-temples-00443"
+    },
+    {
+      "id": "unesco-hung-vuong",
+      "title": "UNESCO (2012). Worship of Hùng kings in Phú Thọ – Representative List of the Intangible Cultural Heritage of Humanity",
+      "url": "https://ich.unesco.org/en/RL/worship-of-hung-kings-in-phu-th-00735"
+    },
+    {
+      "id": "unesco-whc-hue",
+      "title": "UNESCO World Heritage Centre (1993). Complex of Huế Monuments",
+      "url": "https://whc.unesco.org/en/list/678"
+    },
+    {
+      "id": "hkgov-qipao",
+      "title": "Chính quyền Hồng Kông (22/06/2010). “Qipao” of different eras on display at Museum of History",
+      "url": "https://www.info.gov.hk/gia/general/201006/22/P201006220160_print.htm"
     }
   ]
 }

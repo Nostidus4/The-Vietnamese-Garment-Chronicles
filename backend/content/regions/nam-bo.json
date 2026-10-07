@@ -167,7 +167,7 @@
       "ti": null,
       "teo": [
         {
-          "text": "Áo bà ba dài ngang hông, ôm hờ theo người, dễ cử động khi làm lụng.",
+          "text": "Áo bà ba dài vừa qua hông, ôm hờ theo người, dễ cử động khi làm lụng.",
           "sources": [
             "ref-79"
           ],
@@ -281,7 +281,7 @@
       "place": "Trên ghe bà cụ",
       "time": "morning",
       "date": "Buổi sáng, trên chiếc ghe bán khóm",
-      "entry": "Bà cụ bán khóm mời tôi lên ghe uống trà. Thấy tôi mặc áo dài, cụ cười: “Mặc vầy lên xuồng là ướt tà đó con.” Cụ chỉ cái áo bà ba cụ đang mặc: ngắn qua hông, xẻ hai bên, không có cổ đứng, cúi xuống chèo không vướng. Cụ tháo chiếc [[khăn rằn|khan-ran]] trên cổ, quấn lên đầu tôi cho khỏi nắng."
+      "entry": "Bà cụ bán khóm mời tôi lên ghe uống trà. Thấy tôi mặc áo dài, cụ cười: “Mặc vầy lên xuồng là ướt tà đó con.” Cụ chỉ cái áo bà ba cụ đang mặc: dài vừa qua hông, xẻ hai bên, không có cổ đứng, cúi xuống chèo không vướng. Cụ tháo chiếc [[khăn rằn|khan-ran]] trên cổ, quấn lên đầu tôi cho khỏi nắng."
     },
     {
       "margin": null,
@@ -357,7 +357,7 @@
         {
           "text": "Đờn ca tài tử Nam Bộ được UNESCO ghi danh.",
           "sources": [
-            "unesco-ich-vn"
+            "unesco-don-ca-tai-tu"
           ],
           "verified": true,
           "unesco": 2013
@@ -406,7 +406,7 @@
         {
           "text": "Lễ hội Vía Bà Chúa Xứ núi Sam được UNESCO ghi danh.",
           "sources": [
-            "unesco-ich-vn"
+            "unesco-ba-chua-xu"
           ],
           "verified": true,
           "unesco": 2024
@@ -483,12 +483,12 @@
     {
       "garment": "ao-ba-ba",
       "date": "Trước ngày về, ở bến đò",
-      "entry": "Bà chủ nhà tặng tôi một chiếc áo bà ba may bằng vải mỏng, mặc vào mát rượi. Áo ngắn qua hông, xẻ hai bên, không có tà dài, tay rộng, cổ tròn, hai túi phía trước. Chị bảo: mặc thế này mới ngồi xuồng, lội ruộng được. Chị còn quàng lên cổ tôi chiếc khăn rằn, dặn che nắng, lau mồ hôi, việc gì cũng dùng được.",
+      "entry": "Bà chủ nhà tặng tôi một chiếc áo bà ba may bằng vải mỏng, mặc vào mát rượi. Áo dài vừa qua hông, xẻ hai bên, không có tà dài, tay rộng, cổ tròn, hai túi phía trước. Chị bảo: mặc thế này mới ngồi xuồng, lội ruộng được. Chị còn quàng lên cổ tôi chiếc khăn rằn, dặn che nắng, lau mồ hôi, việc gì cũng dùng được.",
       "margin": "Chiếc khăn rằn ấy Bà vẫn giữ trong hộp gỗ, cạnh áo xanh.",
       "keepsake": "fabric",
       "teo": [
         {
-          "text": "Áo bà ba dài ngang hông, ôm hờ theo người, dễ cử động khi làm lụng.",
+          "text": "Áo bà ba dài vừa qua hông, ôm hờ theo người, dễ cử động khi làm lụng.",
           "sources": [
             "ref-79"
           ],
@@ -511,7 +511,7 @@
   "check": {
     "pre": {
       "id": "nb-pre",
-      "q": "Con đoán xem: vì sao áo bà ba ngắn qua hông, không có tà dài?",
+      "q": "Con đoán xem: vì sao áo bà ba chỉ dài vừa qua hông, không có tà dài?",
       "choices": [
         "Để ngồi xuồng, lội nước không vướng",
         "Để tiết kiệm vải khi vải còn đắt",
@@ -551,7 +551,7 @@
         "answer": 0,
         "explain": "Năm 2013, vào danh sách di sản văn hóa phi vật thể đại diện của nhân loại.",
         "sources": [
-          "unesco-ich-vn"
+          "unesco-don-ca-tai-tu"
         ],
         "verified": true
       },
@@ -559,12 +559,12 @@
         "id": "nb-giu",
         "q": "Khi phối áo bà ba theo cách của con, phần nào nên giữ?",
         "choices": [
-          "Dáng áo ngắn ngang hông, xẻ hai bên",
+          "Dáng áo dài vừa qua hông, xẻ hai bên",
           "Màu đen như áo bà ba xưa",
           "Chất vải lãnh Mỹ A, không dùng vải khác"
         ],
         "answer": 0,
-        "explain": "Dáng ngắn, xẻ hông là dấu hiệu của áo bà ba; màu và chất liệu thì được đổi.",
+        "explain": "Dáng dài vừa qua hông, xẻ hai bên là dấu hiệu của áo bà ba; màu và chất liệu thì được đổi.",
         "sources": [
           "ref-79"
         ],
@@ -573,11 +573,12 @@
     ]
   },
   "sources": [
-    "unesco-ich-vn",
+    "unesco-don-ca-tai-tu",
     "ref-67",
     "ref-73",
     "ref-74",
-    "ref-79"
+    "ref-79",
+    "unesco-ba-chua-xu"
   ],
   "community_review": false
 }

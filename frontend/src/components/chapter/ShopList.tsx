@@ -1,6 +1,6 @@
 "use client";
 
-// F7 "Thuê / may ở đâu?": shops that rent, tailor or sell this garment, verified ones first, with an honest label.
+// F7 "Thuê / may ở đâu?": shops that rent, tailor or sell this garment, only the ones the team has checked (#113), with an honest label.
 
 import { useEffect, useState } from "react";
 import { getShops } from "@/lib/api";
@@ -60,14 +60,13 @@ export function ShopList({ garmentId, garmentName }: { garmentId: string; garmen
                   </span>
                 ))}
                 <span className={`rounded-full px-2 ${AUTH[s.authenticity]?.tone ?? AUTH.unknown.tone}`}>{AUTH[s.authenticity]?.text ?? s.authenticity}</span>
-                {!s.verified && <span className="rounded-full bg-stone-100 px-2 text-stone-600">Chưa kiểm tra tận nơi</span>}
               </div>
               {s.address && <p className="m-0 mt-1 text-xs text-stone-600">{s.address}</p>}
             </li>
           ))}
         </ul>
       )}
-      <p className="m-0 mt-3 text-xs text-stone-600">Danh bạ không có quảng cáo. Nhãn mức độ truyền thống do nhóm đánh giá; tiệm chưa kiểm tra được ghi rõ.</p>
+      <p className="m-0 mt-3 text-xs text-stone-600">Danh bạ không có quảng cáo. Nhãn mức độ truyền thống do nhóm đánh giá; chỉ liệt kê tiệm nhóm đã kiểm tra.</p>
     </section>
   );
 }

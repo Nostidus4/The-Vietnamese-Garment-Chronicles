@@ -45,7 +45,7 @@
       "place": "Đồi cà phê",
       "time": "noon",
       "date": "Ông kể, Bà chép: Buôn Ma Thuột, mùa khô",
-      "entry": "Hồi còn trẻ, Ông con làm việc mấy năm ở Buôn Ma Thuột. Ông kể mùa khô ở đó nắng gắt, gió thổi bụi đỏ bám đầy áo. Đồi nào cũng cà phê, đến mùa hoa thì trắng xóa, thơm cả một vùng. Ông ở nhờ nhà dài của gia đình anh Y Blăk, một người Ê Đê tốt bụng."
+      "entry": "Hồi còn trẻ, Ông con làm việc mấy năm ở Buôn Ma Thuột. Ông kể mùa khô ở đó nắng gắt, gió thổi bụi đỏ bám đầy áo. Đồi nào cũng cà phê, đến mùa hoa thì trắng xóa, thơm cả một vùng. Ông ở nhờ nhà dài của gia đình anh Y Blăk, chủ nhà, người Ê Đê, hay cười và rất quý khách."
     },
     {
       "margin": null,
@@ -287,13 +287,13 @@
         "lon": 108.04
       },
       "date": "Ông kể về lễ cúng bến nước",
-      "entry": "Ông kể cuối tháng Chạp, sau mùa thu hoạch, cả buôn làm lễ cúng bến nước. Người Ê Đê tin bến nước có thần linh, nên cúng để tạ ơn mưa thuận gió hòa. Ngày thứ hai buôn đóng cổng, không ai ra vào; ngày thứ ba mới mở. Ông được mời uống rượu cần, ngồi cạnh bếp lửa nghe già làng kể chuyện.",
+      "entry": "Ông kể thường vào cuối tháng Chạp, sau mùa thu hoạch, cả buôn làm lễ cúng bến nước. Người Ê Đê tin bến nước có thần linh, nên cúng để tạ ơn mưa thuận gió hòa. Ngày thứ hai buôn đóng cổng, không ai ra vào; ngày thứ ba mới mở. Ông được mời uống rượu cần, ngồi cạnh bếp lửa nghe già làng kể chuyện.",
       "margin": "Bây giờ Buôn Ma Thuột còn có lễ hội cà phê vào tháng 3. Con đi dịp ấy thì nhớ ghé buôn nghe chiêng nhé.",
       "ti": null,
       "keepsake": "ticket",
       "teo": [
         {
-          "text": "Lễ cúng bến nước của người Ê Đê diễn ra vào cuối tháng Chạp, kéo dài ba ngày, để tạ ơn thần linh cho mưa thuận gió hòa; thầy cúng, già làng và chủ bến nước chủ trì.",
+          "text": "Lễ cúng bến nước của người Ê Đê thường diễn ra vào cuối tháng Chạp, kéo dài ba ngày, để tạ ơn thần linh cho mưa thuận gió hòa; thầy cúng, già làng và chủ bến nước chủ trì.",
           "unesco": null,
           "sources": [
             "vnbusiness-ben-nuoc"
@@ -439,10 +439,10 @@
         "choices": [
           "Cuối tháng Chạp, sau mùa thu hoạch",
           "Giữa mùa mưa, khi nước suối dâng cao",
-          "Đầu năm Dương lịch, trước mùa gieo hạt"
+          "Khi trong buôn có người đi xa trở về"
         ],
         "answer": 0,
-        "explain": "Cuối tháng Chạp, kéo dài ba ngày, để tạ ơn mưa thuận gió hòa.",
+        "explain": "Thường vào cuối tháng Chạp, sau mùa thu hoạch, kéo dài ba ngày, để tạ ơn mưa thuận gió hòa.",
         "sources": [
           "vnbusiness-ben-nuoc"
         ],
@@ -456,7 +456,6 @@
     "nhandan-tho-cam-ede",
     "tuoitre-cau-thang",
     "unesco-gong",
-    "unesco-ich-vn",
     "vnbusiness-ben-nuoc"
   ],
   "community_review": true

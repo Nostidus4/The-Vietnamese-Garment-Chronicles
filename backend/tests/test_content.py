@@ -306,3 +306,20 @@ def test_hue_meal_game_walks_its_lists_but_still_needs_its_answer(tmp_path):
     _, rep = store.load(root)
     assert any("[bua-com] game round 2: answer has no matching choice" in e for e in rep.errors)
     assert not any("[bua-com] game round 0" in e or "[bua-com] game round 1" in e for e in rep.errors)
+
+
+def test_every_source_has_a_public_link(tmp_path):
+    # #113: a reader must be able to open what we cite; the team's own report ("research-*") is not a source
+    root = _copy(tmp_path)
+    s = root / "sources.json"
+    src = json.loads(s.read_text(encoding="utf-8"))
+    src["sources"].append({"id": "bao-cao-nhom", "title": "Nhóm (2026). Báo cáo nội bộ", "url": None})
+    s.write_text(json.dumps(src, ensure_ascii=False), encoding="utf-8")
+    _, rep = store.load(root)
+    assert any("[bao-cao-nhom]" in e and "public link" in e for e in rep.errors)
+
+
+def test_the_quiz_has_ten_questions_and_every_answer(content):
+    # #113: seven questions and no "Khác" made "Việt hay không?" too easy to guess
+    assert len(content.quiz) >= 10
+    assert {q.answer for q in content.quiz.values()} == {"viet", "hanfu", "hanbok", "kimono", "khac"}
