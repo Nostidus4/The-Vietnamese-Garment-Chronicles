@@ -320,7 +320,7 @@ export function DeskScene({
                       boxShadow: "0 22px 44px rgba(20,8,0,0.5)",
                     }}
                   />
-                  <BookCover sizes={`${size.w}px`} />
+                  <BookCover sizes={`${size.w}px`} heading />
                   {phase === "closed" && !reduced && (
                     <span className="cover-sheen" />
                   )}

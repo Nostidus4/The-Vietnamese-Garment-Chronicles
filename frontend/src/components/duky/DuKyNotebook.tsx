@@ -303,6 +303,7 @@ function DeskBook({
   const shown = phase === "open";
   return (
     <main className="desk fixed inset-0 overflow-hidden">
+      <h1 className="sr-only">Du Ký của con</h1>
       <BookSizeControl />
       <Image src={asset("/page/Desk.webp")} alt="" fill loading="eager" placeholder={placeholder("/page/Desk.webp")} quality={88} sizes="100vw" className="desk-bg object-cover" />
       <div className="desk-light pointer-events-none absolute inset-0" aria-hidden />

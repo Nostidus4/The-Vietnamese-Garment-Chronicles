@@ -9,7 +9,9 @@ import { AmbientSound } from "./AmbientSound";
 import { asset } from "@/lib/base";
 
 export function SiteNav() {
-  const shared = usePathname()?.startsWith("/du-ky/p") ?? false;
+  // only the shared page itself (/du-ky/p/?id=…): any deeper address is a 404, prebuilt with the usual links, and
+  // switching them on in the browser broke the hydration of that page (React #418, #118)
+  const shared = /^\/du-ky\/p\/?$/.test(usePathname() ?? "");
   return (
     <nav className="site-nav absolute right-4 top-3 z-30 flex gap-4 text-sm sm:fixed">
       {shared ? (
