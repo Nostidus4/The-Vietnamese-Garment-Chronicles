@@ -13,6 +13,26 @@
         "tcgdnt-ao-ba-ba",
         "voh-ao-ba-ba"
       ]
+    },
+    {
+      "text": "Tên gọi có nhiều cách giải thích. Nhà văn Sơn Nam viết áo du nhập vào Nam Bộ khoảng cuối thế kỷ 19, theo kiểu áo vải đen của người Bà-ba (người Hoa lai Mã Lai ở đảo Penang), nên gọi là áo bà ba. Cũng có ý kiến cho rằng người đi khai hoang phương Nam đã cách tân áo dài thành bộ bà ba cho hợp đời sống sông nước.",
+      "sources": [
+        "tuoitre-ao-ba-ba-2026",
+        "ref-79"
+      ]
+    },
+    {
+      "text": "Áo bà ba thuở đầu có vạt lửng, nút vải thắt bên hông; về sau mới chuyển thành hàng nút giữa thân trước, tà xẻ sâu hơn và chít eo hơn.",
+      "sources": [
+        "ref-79"
+      ]
+    },
+    {
+      "text": "Đi cùng áo bà ba là khăn rằn kẻ ô vuông, được người Khmer, Kinh, Hoa và Chăm ở Nam Bộ cùng dùng: che nắng, lau mồ hôi, choàng cổ, quấn địu con. Áo bà ba, khăn rằn và nón lá thành bộ ba quen thuộc của người phụ nữ Nam Bộ.",
+      "sources": [
+        "ref-79",
+        "nhandan-ao-ba-ba"
+      ]
     }
   ],
   "occasions": [
@@ -111,7 +131,9 @@
   "sources": [
     "tcgdnt-ao-ba-ba",
     "ref-79",
-    "voh-ao-ba-ba"
+    "voh-ao-ba-ba",
+    "tuoitre-ao-ba-ba-2026",
+    "nhandan-ao-ba-ba"
   ],
   "verified": true
 }

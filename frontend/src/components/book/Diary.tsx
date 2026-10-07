@@ -617,10 +617,14 @@ export function WearDiary({
             Mặc thử →
           </button>
         ) : (
-          // try-on stays closed until the community has reviewed this garment
-          <span className="ml-auto max-w-[45%] text-right text-[0.75rem] leading-snug text-stone-600 [text-wrap:balance]">
-            Thử đồ AI: chờ người ở đây đọc lại
-          </span>
+          // try-on stays closed until the community has reviewed this garment; the closed room says why (#112)
+          <button
+            type="button"
+            onClick={() => onTry(page.garment)}
+            className="ml-auto max-w-[45%] text-right text-[0.75rem] leading-snug text-stone-600 underline [text-wrap:balance] hover:text-stone-800"
+          >
+            Tủ áo còn khép, chờ người ở đây đọc lại ›
+          </button>
         )}
       </div>
       {g && (

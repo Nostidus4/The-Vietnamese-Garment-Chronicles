@@ -47,7 +47,7 @@ const memo = { focus: null as string | null, reading: false, page: 0 };
 // the furthest stop reached in each trip chapter, for the route on its title page
 const reachedOf: Record<string, number> = {};
 
-export type Resume = { region: string; page: "own" | "wear" } | null;
+export type Resume = { region: string; page: "own" | "wear" | "read" } | null;
 
 type Built = { tabs: Tab[]; steps: Step[]; pages: { node: ReactNode; still?: boolean }[] };
 
@@ -270,7 +270,8 @@ export default function Flipbook({
   useEffect(() => {
     if (!resume || resumed.current || !j || !reading) return;
     resumed.current = true;
-    const tab = tabs.find((t) => t.label === (resume.page === "own" ? "Trang của con" : "Mặc"));
+    // "read" (from a fitting room still closed, #112): the chapter's first page
+    const tab = resume.page === "read" ? tabs[0] : tabs.find((t) => t.label === (resume.page === "own" ? "Trang của con" : "Mặc"));
     if (tab) setTimeout(() => jump(portrait ? tab.page : tab.page - (tab.page % 2)), 1200);
   });
 
