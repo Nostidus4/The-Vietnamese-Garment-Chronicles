@@ -165,6 +165,13 @@ body {
   /* ================================================================
      Opening – chrome
      ================================================================ */
+  /* the home page before its JavaScript runs (BootShell): the logo is there at once, a returning visitor gets the
+     dark loading screen of the desk instead */
+  .boot-shell__logo { animation: boot-logo 0.45s ease-out both; }
+  @keyframes boot-logo { from { opacity: 0; } }
+  html[data-seen] .boot-shell { background: #140c07; }
+  html[data-seen] .boot-shell > * { display: none; }
+
   .skip-btn {
     min-height: 44px;
     min-width: 44px;
@@ -179,6 +186,18 @@ body {
     transition: background 0.25s, color 0.25s;
   }
   .skip-btn:hover { background: rgba(251, 246, 234, 0.9); color: var(--ink); }
+  .skip-btn--loud { background: rgba(251, 246, 234, 0.92); color: var(--ink); font-weight: 600; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35); }
+  .skip-btn--loud:hover { background: #fffaf0; }
+  .opening-count {
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: rgba(251, 246, 234, 0.95);
+    background: rgba(20, 12, 7, 0.5);
+    border-radius: 999px;
+    padding: 0.3em 0.8em;
+    backdrop-filter: blur(6px);
+    font-variant-numeric: tabular-nums;
+  }
   .next-hint {
     font-family: var(--font-body), sans-serif;
     font-size: 44px;
@@ -549,6 +568,11 @@ body {
 :focus-visible {
   outline: 3px solid #d9480f;
   outline-offset: 2px;
+}
+/* the opening's first question: the same ring on both answers, in the colour of the first one (#110) */
+.choice-btn:focus-visible {
+  outline: 2px solid #2f4a6d;
+  outline-offset: 3px;
 }
 
 .site-nav a {

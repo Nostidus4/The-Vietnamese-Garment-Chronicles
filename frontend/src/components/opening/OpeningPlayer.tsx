@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { OpeningScreen } from "@/lib/types";
 import { BookCover } from "../book/BookCover";
-import { LOGO_SMALL } from "./LogoIntro";
+import { LOGO_SMALL } from "./BootShell";
 import { IMAGE_SIZES, Scene, type SceneHandle } from "./Scene";
 import { crossfade, runTransition, type Overlays } from "./transitions";
 import { asset } from "@/lib/base";
@@ -35,6 +35,13 @@ const takeOf = (m: Manifest | undefined, n: number) => {
 
 type Phase = "intro" | "play" | "transition";
 
+// Silence the engine adds around the voice, trimmed so a judge with 2–3 minutes reaches the desk sooner (#110): a new
+// screen used to wait up to 1.3 s before its first line, and the last voiced line 0.9 s before the screen moved on.
+const FIRST_LINE_MS = 500;
+const AFTER_LAST_VOICE_MS = 400;
+/** "Bỏ qua" steps forward once the viewer has seen what the story is like. */
+const SKIP_LOUD_MS = 8000;
+
 export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick = false, startId = null, hold = false, sound: soundParam = null }: Props) {
   const reduced = !!useReducedMotion();
   // measured before the first paint: a guessed size made the first picture jump once it was measured (CLS, #64)
@@ -52,6 +59,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
   const [sound, setSound] = useState<boolean | null>(soundParam);
   const [speaking, setSpeaking] = useState(false);
   const [paused, setPaused] = useState(false); // ⏸: the story waits on its line until the reader goes on (#55)
+  const [skipLoud, setSkipLoud] = useState(false);
   const firstChoice = useRef<HTMLButtonElement>(null);
   const audio = useRef<HTMLAudioElement | null>(null);
   const [artReady, setArtReady] = useState(false);
@@ -272,11 +280,11 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
     const lastText = last?.text ?? "";
     const readMs = Math.min(9000, lastText.length * (last?.type_ms ?? 0) + Math.max(1400, 900 + lastText.length * 58));
     if (!next) {
-      const auto = screen.auto_exit_ms ?? (demo ? (afterVoice ? 700 : 1500) : afterVoice ? 900 : readMs);
+      const auto = screen.auto_exit_ms ?? (afterVoice ? AFTER_LAST_VOICE_MS : demo ? 1500 : readMs);
       timer.current = setTimeout(() => goNext(), auto * (screen.auto_exit_ms ? pace : 1));
       return;
     }
-    const delay = afterVoice ? 300 : next.wait_click && shown > 0 ? readMs : (next.wait_click ? 1400 : next.delay) * pace;
+    const delay = afterVoice ? 300 : next.wait_click && shown > 0 ? readMs : (next.wait_click ? 1400 : shown === 0 ? Math.min(next.delay, FIRST_LINE_MS) : next.delay) * pace;
     timer.current = setTimeout(() => showBeat(shown), reduced ? Math.min(delay, 400) : delay);
     return () => {
       if (timer.current) clearTimeout(timer.current);
@@ -357,6 +365,13 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
       window.removeEventListener("touchend", onTouchEnd);
     };
   }, [advance, back, skip]);
+
+  const started = phase !== "intro";
+  useEffect(() => {
+    if (!started) return;
+    const t = setTimeout(() => setSkipLoud(true), SKIP_LOUD_MS);
+    return () => clearTimeout(t);
+  }, [started]);
 
   // the first choice takes the focus once it has faded in: autoFocus fired while it was still hidden (#55)
   useEffect(() => {
@@ -453,55 +468,58 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
             onClick={(e) => e.stopPropagation()}
           >
             {/* the calligraphy logo the viewer has just seen, not the name again in bold type (#81) */}
-            <h1 className="m-0 w-[min(15rem,60vw)]">
+            <h1 className="m-0 w-[min(22rem,70vw)]">
               <Image src={asset(LOGO_SMALL)} alt="Việt Phục Du Ký" width={560} height={402} loading="eager" unoptimized className="h-auto w-full" />
             </h1>
             <p className="font-hand m-0 -mt-2 text-lg text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
             <p className="font-hand m-0 text-xl text-stone-600">Con muốn nghe kể, hay tự đọc?</p>
             <div className="mt-2 flex flex-wrap justify-center gap-3">
-              <button type="button" ref={firstChoice} onClick={() => choose(true)} className="rounded-full bg-[#2F4A6D] px-6 py-3 text-amber-50 shadow hover:bg-[#243a57]">
+              <button type="button" ref={firstChoice} onClick={() => choose(true)} className="choice-btn rounded-full bg-[#2F4A6D] px-6 py-3 text-amber-50 shadow hover:bg-[#243a57]">
                 🔊 Nghe kể chuyện
               </button>
-              <button type="button" onClick={() => choose(false)} className="rounded-full border border-stone-500 px-6 py-3 text-stone-700 hover:bg-stone-800 hover:text-amber-50">
+              <button type="button" onClick={() => choose(false)} className="choice-btn rounded-full border border-stone-500 px-6 py-3 text-stone-700 hover:bg-stone-800 hover:text-amber-50">
                 Chỉ đọc
               </button>
             </div>
-            <p className="m-0 mt-1 text-xs text-stone-600">Nên đeo tai nghe · Giọng đọc được tạo bằng Gemini TTS</p>
+            <p className="m-0 mt-1 text-sm text-stone-700">Nên đeo tai nghe · Giọng đọc được tạo bằng Gemini TTS</p>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* ---- chrome ---- */}
-      {sound !== null && phase !== "intro" && (
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (sound) hush();
-            else audio.current ??= new Audio();
-            setSound(!sound);
-          }}
-          className="skip-btn absolute left-5 top-4 z-10"
-          aria-label={sound ? "Tắt giọng đọc" : "Bật giọng đọc"}
-          title={sound ? "Tắt giọng đọc" : "Bật giọng đọc"}
-        >
-          {sound ? "🔊" : "🔇"}
-        </button>
-      )}
-      {sound !== null && phase === "play" && (
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            setPaused((v) => !v);
-          }}
-          className="skip-btn absolute left-[4.6rem] top-4 z-10"
-          aria-label={paused ? "Đọc tiếp" : "Tạm dừng"}
-          aria-pressed={paused}
-          title={paused ? "Đọc tiếp (P)" : "Tạm dừng (P)"}
-        >
-          {paused ? "▶" : "⏸"}
-        </button>
+      {/* words next to the icons: a bare 🔊 and ⏸ did not say whether they stop the voice or the whole story (#110);
+          on a phone the words stay for screen readers only */}
+      {sound !== null && started && (
+        <div className="absolute left-5 top-4 z-10 flex gap-2">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (sound) hush();
+              else audio.current ??= new Audio();
+              setSound(!sound);
+            }}
+            className="skip-btn"
+            title={sound ? "Tắt giọng đọc" : "Bật giọng đọc"}
+          >
+            <span aria-hidden>{sound ? "🔊" : "🔇"}</span>
+            <span className="max-sm:sr-only sm:ml-1.5">{sound ? "Tắt tiếng" : "Bật tiếng"}</span>
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setPaused((v) => !v);
+            }}
+            // kept in place while a screen changes, so the buttons beside it do not jump
+            className={`skip-btn ${phase === "play" ? "" : "invisible"}`}
+            aria-pressed={paused}
+            title={paused ? "Đọc tiếp (P)" : "Tạm dừng truyện (P)"}
+          >
+            <span aria-hidden>{paused ? "▶" : "⏸"}</span>
+            <span className="max-sm:sr-only sm:ml-1.5">{paused ? "Đọc tiếp" : "Tạm dừng truyện"}</span>
+          </button>
+        </div>
       )}
       <ThreadProgress value={doneBeats / totalBeats} hidden={screen.hide_progress} />
       <AnimatePresence>
@@ -519,17 +537,24 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
           </motion.div>
         )}
       </AnimatePresence>
-      {/* every screen can be skipped: the story is a welcome, never a gate */}
-      {phase !== "intro" && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            skip();
-          }}
-          className="skip-btn absolute right-5 top-4 z-10"
-        >
-          Bỏ qua ›
-        </button>
+      {/* every screen can be skipped: the story is a welcome, never a gate. Where the viewer is says how much is left,
+          and after a few seconds "Bỏ qua" turns solid, so a judge in a hurry finds the way out (#110) */}
+      {started && (
+        <div className="absolute right-5 top-4 z-10 flex items-center gap-2">
+          <span className="opening-count">
+            Cảnh {idx + 1}/{screens.length}
+          </span>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              skip();
+            }}
+            className={`skip-btn ${skipLoud ? "skip-btn--loud" : ""}`}
+          >
+            Bỏ qua ›
+          </button>
+        </div>
       )}
       <p className="sr-only" aria-live="polite">
         {screen.beats
