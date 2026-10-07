@@ -136,7 +136,15 @@ export function NewPageDialog({
           </label>
           <label className="col-span-2">
             Một dòng của con
-            <input value={note} onChange={(e) => setNote(e.target.value.slice(0, 200))} className={`${field} font-hand text-base`} />
+            {/* lines that can be read back while writing, not one line that hides the start (#117) */}
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value.slice(0, 200))}
+              maxLength={200}
+              rows={2}
+              className={`${field} font-hand max-h-[7.5em] resize-none text-base leading-snug [field-sizing:content]`}
+            />
+            {note.length >= 160 && <span className="block text-right text-[0.75rem] text-stone-600">{note.length}/200 chữ</span>}
           </label>
           {status === "worn" && (
             <label className="col-span-2">
@@ -162,7 +170,8 @@ export function NewPageDialog({
           </div>
         )}
         <div className="mt-5 flex justify-end gap-3">
-          <button type="button" onClick={onClose} className="px-3 py-1.5 text-sm underline">
+          {/* the same question as Esc and a click outside: never drop what is written without asking (#117) */}
+          <button type="button" onClick={requestClose} className="px-3 py-1.5 text-sm underline">
             Thôi
           </button>
           <button type="submit" disabled={busy || !occasion} className="rounded-full bg-[#27354f] px-5 py-1.5 text-sm text-amber-50 disabled:opacity-50">

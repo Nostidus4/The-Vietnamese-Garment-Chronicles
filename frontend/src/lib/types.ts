@@ -129,7 +129,7 @@ export interface Festival {
   photo: Photo | null;
   community_review: boolean;
 }
-export type GameKind = "dong-ho" | "quan-ho" | "ngu-than" | "cay-beo" | "xep-do" | "khuy-bac" | "xoe" | "cong-chieng" | "det";
+export type GameKind = "dong-ho" | "quan-ho" | "ngu-than" | "mam-com" | "cay-beo" | "xep-do" | "khuy-bac" | "xoe" | "cong-chieng" | "det";
 export interface GameRound {
   label: string | null;
   item: string | null;

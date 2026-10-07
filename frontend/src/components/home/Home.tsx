@@ -26,7 +26,9 @@ function initialState() {
     seen = localStorage.getItem(SEEN_KEY) === "1";
   } catch {}
   return {
-    mode: (q.get("opening") === "1" || !seen ? "opening" : "desk") as Mode,
+    // a link to a page of the book (/?region=hue&page=wear, from the try-on) opens the book there, even on a first
+    // visit: the opening would end on the closed book and lose it (#111). app/layout.tsx's SEEN_SCRIPT says the same.
+    mode: (q.get("opening") === "1" || (!seen && !q.has("region")) ? "opening" : "desk") as Mode,
     // demo = faster for the video; slow = 3× slower to study each transition
     pace: q.get("pace") === "demo" ? 0.6 : q.get("pace") === "slow" ? 3 : 1,
     debug: q.get("debug") === "1",
@@ -62,6 +64,7 @@ export default function Home() {
     try {
       localStorage.setItem(SEEN_KEY, "1");
     } catch {}
+    document.documentElement.dataset.seen = "1"; // what app/layout.tsx's script would say now (BootShell)
     setLanding("flash");
     setMode("desk");
     // T10 second half: the light clears while the camera pulls back to the desk

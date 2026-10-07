@@ -56,7 +56,8 @@ export function DeskScene({
     const q = new URLSearchParams(window.location.search);
     const region = q.get("region");
     if (!region) return null;
-    return { region, page: q.get("page") === "wear" ? "wear" : "own" };
+    const page = q.get("page");
+    return { region, page: page === "wear" || page === "read" ? page : "own" };
   });
   const bookRef = useRef<HTMLDivElement>(null);
   const underRef = useRef<HTMLDivElement>(null);
@@ -319,7 +320,7 @@ export function DeskScene({
                       boxShadow: "0 22px 44px rgba(20,8,0,0.5)",
                     }}
                   />
-                  <BookCover sizes={`${size.w}px`} />
+                  <BookCover sizes={`${size.w}px`} heading />
                   {phase === "closed" && !reduced && (
                     <span className="cover-sheen" />
                   )}

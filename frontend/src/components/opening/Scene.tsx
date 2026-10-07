@@ -10,6 +10,8 @@ import { BlockView, buildBlocks } from "./Text";
 import { asset } from "@/lib/base";
 
 export const IMAGE_SIZES = "(min-aspect-ratio: 16/9) 100vw, 178vh";
+/** Room (px) kept free around text on the artwork: the screen's edges, and the buttons along the top (44 px from 16 px). */
+const SAFE = { side: 24, top: 72, bottom: 24 };
 
 export interface SceneHandle {
   layer: HTMLDivElement | null;
@@ -113,14 +115,22 @@ export const Scene = forwardRef<SceneHandle, Props>(function Scene(
   }, [screen, shown, beatTimes, enteredAt]);
 
   const blocks = buildBlocks(screen.beats, shown, screen.id);
-  // what part of the artwork is visible with the resting camera (text is clamped into it)
-  const rest = cameraXform(box, screen.camera_start);
-  const visible = {
-    x0: ((-box.ox - rest.tx) / (rest.s * box.bw)) * 100,
-    y0: ((-box.oy - rest.ty) / (rest.s * box.bh)) * 100,
-    x1: ((box.vw - box.ox - rest.tx) / (rest.s * box.bw)) * 100,
-    y1: ((box.vh - box.oy - rest.ty) / (rest.s * box.bh)) * 100,
-  };
+  // what part of the artwork stays on screen from the resting camera to the end of the screen's slow camera move (text
+  // is clamped into it), less a safe margin: S01's narration started inside the screen and the move pushed it past
+  // the left edge and under the 🔊 / ⏸ buttons (#110)
+  const visible = [screen.camera_start, ...(screen.camera ? [screen.camera] : [])]
+    .map((cam) => {
+      const c = cameraXform(box, cam);
+      const px = (v: number) => (v / (c.s * box.bw)) * 100;
+      const py = (v: number) => (v / (c.s * box.bh)) * 100;
+      return {
+        x0: px(-box.ox - c.tx + SAFE.side),
+        y0: py(-box.oy - c.ty + SAFE.top),
+        x1: px(box.vw - box.ox - c.tx - SAFE.side),
+        y1: py(box.vh - box.oy - c.ty - SAFE.bottom),
+      };
+    })
+    .reduce((a, b) => ({ x0: Math.max(a.x0, b.x0), y0: Math.max(a.y0, b.y0), x1: Math.min(a.x1, b.x1), y1: Math.min(a.y1, b.y1) }));
   const imageBlocks = blocks.filter((b) => b.beat.space === "image" && !(compact && isDialog(b.beat.kind)));
   const screenBlocks = blocks.filter((b) => b.beat.space === "screen" && !(compact && isDialog(b.beat.kind)));
   const compactBlocks = compact ? blocks.filter((b) => isDialog(b.beat.kind)) : [];

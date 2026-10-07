@@ -36,6 +36,8 @@ const OLD_ENTRIES = "du-ky-cua-toi";
 const OLD_OWN = "vpdk-own-pages";
 const EVENT = "vpdk-duky";
 export const COVER_COLORS = ["#7a2e2e", "#2F4A6D", "#4f6b3a", "#6b4a2f", "#5b3a6b"];
+/** What a screen reader says for each cover colour (#117). */
+export const COVER_COLOR_NAMES: Record<string, string> = { "#7a2e2e": "Đỏ trầm", "#2F4A6D": "Xanh chàm", "#4f6b3a": "Xanh rêu", "#6b4a2f": "Nâu gỗ", "#5b3a6b": "Tím sẫm" };
 const EMPTY: DuKyBook = { cover: { name: "", color: COVER_COLORS[0] }, pages: [] };
 
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
@@ -65,6 +67,18 @@ async function idb<T>(mode: IDBTransactionMode, run: (s: IDBObjectStore) => IDBR
 export const putPhoto = (id: string, blob: Blob) => idb("readwrite", (s) => s.put(blob, id));
 export const getPhoto = (id: string) => idb<Blob | undefined>("readonly", (s) => s.get(id));
 export const deletePhoto = (id: string) => idb("readwrite", (s) => s.delete(id));
+const photoIds = () => idb<IDBValidKey[]>("readonly", (s) => s.getAllKeys());
+
+/**
+ * Photos no page holds any more leave this device (#117). Run once when the book opens, before anything writes: a
+ * page taken out keeps its photos for the rest of the visit, so "Hoàn tác" always brings them back, and the page and
+ * its photos can never be half removed by a tab closed in between.
+ */
+export async function sweepPhotos() {
+  const held = new Set(loadBook().pages.flatMap((p) => p.photos.map((ph) => ph.id)));
+  const ids = await photoIds();
+  await Promise.all(ids.filter((id) => !held.has(String(id))).map((id) => deletePhoto(String(id)).catch(() => {})));
+}
 
 /** An object URL for a stored photo (revoke it when done). */
 export function usePhotoUrl(id: string | undefined): string | null {
@@ -180,18 +194,15 @@ export const byWhen = (a: DuKyPage, b: DuKyPage) =>
 
 /** Fired with a TakenOut when a page leaves the book: the notebook offers to undo it for a few seconds (#63). */
 export const TAKEN_OUT = "vpdk-duky-taken-out";
-export type TakenOut = { undo: () => void; forget: () => Promise<void> };
+export type TakenOut = { undo: () => void };
 
-/** Takes a page out of the book; its photos stay on this device until `forget`, so "Hoàn tác" can put it back. */
+/** Takes a page out of the book; its photos stay on this device until the next `sweepPhotos`, so "Hoàn tác" can put it back. */
 export function takeOutPage(id: string): TakenOut | null {
   const page = loadBook().pages.find((p) => p.id === id);
   if (!page) return null;
   update((b) => ({ ...b, pages: b.pages.filter((p) => p.id !== id) }));
   const out: TakenOut = {
     undo: () => update((b) => (b.pages.some((p) => p.id === id) ? b : { ...b, pages: [...b.pages, page] })),
-    forget: async () => {
-      await Promise.all(page.photos.map((ph) => deletePhoto(ph.id).catch(() => {})));
-    },
   };
   window.dispatchEvent(new CustomEvent<TakenOut>(TAKEN_OUT, { detail: out }));
   return out;
@@ -283,7 +294,9 @@ export const LABEL_OF: Record<CompassState, string | null> = { fit: "Authentic",
 let migrating: Promise<void> | null = null;
 /** Run the one-time move once per visit, before anything reads or writes the book. */
 export function ensureMigrated(garments: { id: string; region: string }[]) {
-  migrating ??= migrateOld((id) => garments.find((g) => g.id === id)?.region).catch(() => {});
+  migrating ??= migrateOld((id) => garments.find((g) => g.id === id)?.region)
+    .then(sweepPhotos)
+    .catch(() => {});
   return migrating;
 }
 

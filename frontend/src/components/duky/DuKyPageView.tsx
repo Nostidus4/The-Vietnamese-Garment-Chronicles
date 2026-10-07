@@ -62,20 +62,24 @@ export function Photo({ photo, className = "", big = false }: { photo: PhotoRef;
  * The page's stamp says what the page is (#63): bold "ĐÃ MẶC" only with a real photo (the one the Tủ tem counts),
  * "ĐÃ THỬ" for try-on pictures, "SẮP ĐI" for a plan with nothing yet, and a dashed "ĐÃ MẶC" that says what is missing.
  */
+const NOTE_MAX = 200;
+
 function RegionStamp({ page, place }: { page: DuKyPage; place: string }) {
   const real = page.photos.some((p) => p.kind === "real");
   const label = real || page.status === "worn" ? "ĐÃ MẶC" : page.photos.length ? "ĐÃ THỬ" : "SẮP ĐI";
   const hint = real ? `Tem đã mặc ${place}, đã vào Tủ tem` : "Dán ảnh con mặc thật để tem này đậm lên và vào Tủ tem";
   return (
     <div
-      className={`pointer-events-none flex h-[3.4rem] w-[3.4rem] shrink-0 rotate-[-10deg] flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
+      role="img"
+      className={`pointer-events-none flex h-14 w-14 shrink-0 rotate-[-10deg] flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
         real ? "border-[#2F4A6D]/80 text-[#2F4A6D]" : "border-dashed border-stone-400/70 text-stone-400"
       }`}
-      aria-label={`Tem ${label.toLowerCase()} ${place}. ${hint}`}
+      aria-label={real ? hint : `Tem ${label.toLowerCase()} ${place}. ${hint}`}
       title={hint}
     >
-      <span className="text-[0.48rem] tracking-[0.16em]">{label}</span>
-      <span className="font-display px-0.5 text-[0.6rem] leading-tight">{place}</span>
+      {/* read at 100% zoom: 11–12px, not 7–9 (#117) */}
+      <span className="text-[0.6875rem] font-semibold leading-tight">{label}</span>
+      <span className="font-display px-1 text-[0.6875rem] leading-[1.1]">{place}</span>
     </div>
   );
 }
@@ -157,6 +161,7 @@ export function DuKyPageView({
   const fact = teoFact(data, page);
   const file = useRef<HTMLInputElement>(null);
   const [note, setNote] = useState(page.note);
+
   const [busy, setBusy] = useState(false);
   const [editing, setEditing] = useState(false); // date, occasion and place can be changed after the page is made (#63)
   const [asking, setAsking] = useState(false); // "Xóa trang này?" on the page itself, not the browser's confirm
@@ -181,12 +186,11 @@ export function DuKyPageView({
               {editing ? "xong" : "✎ sửa"}
             </button>
           </p>
-          <p className="font-hand m-0 text-[1.05rem] leading-tight">
+          {/* the garment is what the page is about: it leads, the occasion and the place follow (#117) */}
+          <p className="font-hand m-0 text-[1.2rem] leading-tight">{g?.name_vi ?? page.garment_id}</p>
+          <p className="m-0 text-[0.75rem] text-stone-700">
             {occasion}
             {page.place ? ` · ${page.place}` : ""}
-          </p>
-          <p className="m-0 text-[0.75rem] text-stone-600">
-            {g?.name_vi ?? page.garment_id}
             {page.date ? ` · ${formatDate(page.date)}` : ""}
             {page.compass_label ? ` · ${VERDICT[page.compass_label] ?? ""} ${labelVi(page.compass_label)}` : ""}
           </p>
@@ -217,7 +221,7 @@ export function DuKyPageView({
       )}
 
       {page.photos.length > 0 ? (
-        <div className={`mt-2 grid gap-2 ${page.photos.length === 1 ? `grid-cols-1 ${compact ? "px-[24%]" : "px-[18%]"}` : page.photos.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+        <div className={`mt-2 grid gap-2 ${page.photos.length === 1 ? `grid-cols-1 ${compact ? "px-[30%]" : "px-[18%]"}` : page.photos.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
           {page.photos.map((ph, i) => (
             <Photo key={ph.id} photo={ph} className={i % 2 ? "rotate-[2deg]" : "rotate-[-2deg]"} />
           ))}
@@ -228,16 +232,25 @@ export function DuKyPageView({
 
       {page.status === "planned" && <Preparation page={page} data={data} />}
 
+      {/* grows with what is written (field-sizing; up to four lines, two on a page of the book, then scrolls) so all of it can be read back; the count
+          shows near the end, and the exported picture keeps three lines (#117) */}
       <textarea
         value={note}
-        onChange={(e) => setNote(e.target.value.slice(0, 200))}
+        onChange={(e) => setNote(e.target.value.slice(0, NOTE_MAX))}
         onBlur={() => note !== page.note && updatePage(page.id, { note })}
         placeholder="Viết một dòng của con…"
         rows={compact ? 1 : 2}
-        className="font-hand mt-2 w-full resize-none border-0 border-b border-stone-400 bg-transparent text-[1rem] leading-snug outline-none placeholder:text-stone-400"
+        maxLength={NOTE_MAX}
+        className={`font-hand mt-2 w-full shrink-0 ${compact ? "max-h-[2.8em]" : "max-h-[5.6em]"} resize-none overflow-y-auto [field-sizing:content] border-0 border-b border-stone-400 bg-transparent text-[1rem] leading-snug outline-none placeholder:text-stone-400`}
         style={{ color: "#1f3a78" }}
         aria-label="Một dòng của con"
+        aria-describedby={note.length >= NOTE_MAX - 40 ? `count-${page.id}` : undefined}
       />
+      {note.length >= NOTE_MAX - 40 && (
+        <p id={`count-${page.id}`} className="m-0 text-right text-[0.75rem] text-stone-600">
+          {note.length}/{NOTE_MAX} chữ{note.length > 120 ? " · ảnh xuất giữ 3 dòng đầu" : ""}
+        </p>
+      )}
 
       {fact && (
         <div className="mt-2 rotate-[-0.6deg] bg-[#fbe99a] px-2 py-1.5 text-[0.75rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">

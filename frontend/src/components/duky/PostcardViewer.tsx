@@ -37,6 +37,7 @@ export function PostcardViewer({
   const [stage, setStage] = useState<"envelope" | "out" | "back">(reduced ? "back" : "envelope");
   const [front, setFront] = useState(false);
   const [imgOk, setImgOk] = useState(!!letter?.image);
+  const [all, setAll] = useState(reduced); // "Hiện hết lời": the ink at once instead of letter by letter (#117)
   const where = title ?? (region ? place(region) : "Gửi con");
 
   useEffect(() => {
@@ -48,6 +49,13 @@ export function PostcardViewer({
       clearTimeout(b);
     };
   }, [reduced]);
+  // once the ink has run to the end the button has nothing left to do
+  const chars = letter ? [...plain(letter.text)].filter((c) => !/\s/.test(c)).length : 0;
+  useEffect(() => {
+    if (stage !== "back" || all) return;
+    const t = setTimeout(() => setAll(true), 600 + chars * CHAR_MS);
+    return () => clearTimeout(t);
+  }, [stage, all, chars]);
   const box = useDialog<HTMLDivElement>(onClose);
 
   if (!letter) return null;
@@ -57,6 +65,9 @@ export function PostcardViewer({
   return createPortal(
     <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#140c07]/70 p-4 backdrop-blur-[2px]" role="dialog" aria-modal aria-label={`Bưu thiếp ${where}`} onClick={onClose}>
       <div ref={box} className="relative w-full max-w-[34rem] [perspective:1600px]" onClick={(e) => e.stopPropagation()}>
+        <button type="button" onClick={onClose} aria-label="Đóng bưu thiếp" className="absolute -right-1 -top-12 z-10 grid h-10 w-10 place-items-center rounded-full bg-amber-50/90 text-xl text-[#27354f] shadow">
+          ×
+        </button>
         {/* the envelope, opening and sliding away */}
         <AnimatePresence>
           {stage !== "back" && (
@@ -117,7 +128,7 @@ export function PostcardViewer({
                     ) : (
                       <span key={wi} className="inline-block whitespace-nowrap">
                         {[...w].map((ch, ci) => (
-                          <span key={ci} className="ink-in" style={{ animationDelay: `${reduced ? 0 : 600 + n++ * CHAR_MS}ms` }}>
+                          <span key={ci} className="ink-in" style={{ animationDelay: `${all ? 0 : 600 + n++ * CHAR_MS}ms` }}>
                             {ch}
                           </span>
                         ))}
@@ -143,6 +154,11 @@ export function PostcardViewer({
 
         {stage === "back" && (
           <div className="mt-4 flex justify-center gap-3">
+            {!all && (
+              <button type="button" onClick={() => setAll(true)} className="rounded-full border border-amber-50/60 px-4 py-1.5 text-sm text-amber-50">
+                Hiện hết lời
+              </button>
+            )}
             <button type="button" onClick={() => setFront((v) => !v)} className="rounded-full border border-amber-50/60 px-4 py-1.5 text-sm text-amber-50">
               {front ? "Xem lời Bà" : "Lật mặt ảnh"}
             </button>

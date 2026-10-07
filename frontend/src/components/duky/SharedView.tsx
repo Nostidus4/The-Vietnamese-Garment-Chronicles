@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { API_URL, getShare, HAS_API, type SharedPage } from "@/lib/api";
 import { useBootstrap } from "@/lib/useBootstrap";
 import { labelVi } from "@/lib/text";
+import { CTA, ErrorSheet } from "../ErrorSheet";
 
 const MONTH = (m: string) => {
   const [y, mm] = m.split("-");
@@ -21,28 +22,35 @@ export function SharedView({ id }: { id: string }) {
     if (id) getShare(id).then(setPage).catch(() => setMissing(true));
   }, [id]);
 
-  // a link cut short before "?id=…": not a page that was taken down (#63)
+  // a link cut short before "?id=…": not a page that was taken down (#63). The reader is usually someone who has never
+  // opened the app: one sheet, one way in (the links at the top already say "Mở Việt Phục Du Ký", #118)
+  const into = (
+    <Link href="/" className={CTA}>
+      Đi qua cuốn sổ của Bà
+    </Link>
+  );
   if (!id)
     return (
-      <main className="mx-auto max-w-md p-6 text-center">
-        <p className="font-hand text-2xl text-stone-600">Link này bị thiếu mã trang. Con nhờ người gửi chép lại cả đường link nhé.</p>
-        <Link href="/" className="mt-4 inline-block underline">Mở Việt Phục Du Ký</Link>
-      </main>
+      <ErrorSheet kicker="LINK BỊ THIẾU" title="Link này bị thiếu mã trang." action={into}>
+        Bạn nhờ người gửi chép lại cả đường link nhé. Trong lúc chờ, bạn có thể tự đi qua trang phục các vùng.
+      </ErrorSheet>
     );
 
   if (missing)
-    return (
-      <main className="mx-auto max-w-md p-6 text-center">
-        <p className="font-hand text-2xl text-stone-600">
-          {/* a build without the server cannot open any shared page: say so, not that the page is gone (#48) */}
-          {HAS_API ? "Trang này không còn nữa, hoặc người viết đã gỡ link." : "Bản đọc thử này chưa mở được link chia sẻ. Con mở link trên bản đầy đủ nhé."}
-        </p>
-        <Link href="/" className="mt-4 inline-block underline">Mở Việt Phục Du Ký</Link>
-      </main>
+    return HAS_API ? (
+      <ErrorSheet kicker="TRANG DU KÝ ĐÃ GỠ" title="Trang Du Ký này không còn nữa." action={into}>
+        Có thể người viết đã gỡ link. Bạn vẫn có thể tự đi qua trang phục các vùng.
+      </ErrorSheet>
+    ) : (
+      // a build without the server cannot open any shared page: say so, not that the page is gone (#48)
+      <ErrorSheet kicker="BẢN ĐỌC THỬ" title="Bản này chưa mở được trang chia sẻ." action={into}>
+        Trang Du Ký người khác chia sẻ được lưu trên máy chủ, mà bản đọc thử này chạy không có máy chủ. Cuốn sổ của Bà thì đọc
+        được trọn vẹn ngay ở đây.
+      </ErrorSheet>
     );
   if (!page || !data)
     return (
-      <main className="desk grid min-h-screen place-items-center px-4 py-8">
+      <main className="desk -mt-10 grid min-h-screen place-items-center px-4 pb-8 pt-18">
         {/* the paper the page will be on, while it loads */}
         <div className="paper w-full max-w-md animate-pulse rounded-md p-6 shadow-[0_10px_24px_rgba(20,8,0,0.4)]" aria-busy="true">
           <p className="font-hand m-0 text-center text-xl text-stone-600">Đang mở trang Du Ký…</p>
@@ -58,7 +66,7 @@ export function SharedView({ id }: { id: string }) {
   const occasion = data.occasions.find((o) => o.id === m.occasion_id)?.name ?? m.occasion_id;
   const place = data.regions.find((r) => r.id === m.region_id)?.name.split("/")[0].trim() ?? "";
   return (
-    <main className="desk min-h-screen px-4 py-8">
+    <main className="desk -mt-10 min-h-screen px-4 pb-8 pt-18">
       {/* who sent this, for someone who has never opened the app (#54) */}
       <header className="mx-auto mb-4 max-w-md text-center text-amber-50">
         <p className="font-hand m-0 text-2xl">Việt Phục Du Ký</p>
