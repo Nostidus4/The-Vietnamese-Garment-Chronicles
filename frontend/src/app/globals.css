@@ -680,7 +680,11 @@ body {
   @media (max-width: 760px) {
     .fitting-grid .dress-form { height: min(40svh, 360px); }
     .fitting-grid .mirror-caption { display: none; }
-    .fitting-grid .mirror-tag { right: -1.4rem; top: 2%; width: 5.8rem; padding: 0.3rem 0.4rem 0.3rem 1.2rem; }
+    /* the frame is only ~180px wide here: a tag hung on its side covered the doll's head and ran out of the room.
+       It hangs under the frame instead, on one line (#116) */
+    .fitting-grid .dress-form { margin-bottom: 1.9rem; }
+    .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: 0; right: 0; margin-inline: auto; width: max-content; max-width: calc(100vw - 2.5rem); padding: 0.25rem 0.6rem 0.25rem 1.2rem; white-space: nowrap; }
+    .fitting-grid .dress-form .mirror-tag > span:not(.mirror-tag-hole) { display: inline !important; margin-right: 0.4rem; }
   }
   .mirror-chip { position: absolute; z-index: 2; border-radius: 999px; background: rgba(20, 12, 7, 0.6); color: #f3ead7; padding: 0.05rem 0.55rem; font-size: 0.68rem; }
   .mirror-caption { margin-top: 0.35rem; max-width: 36rem; border-radius: 999px; background: rgba(20, 12, 7, 0.6); padding: 0.15rem 0.8rem; text-align: center; font-size: 0.75rem; color: #f3ead7; }
@@ -786,7 +790,12 @@ body {
   .look-card-art { position: relative; flex: 1; min-height: 0; border-radius: 4px; border: 1px solid #d8c9a8; background: radial-gradient(ellipse at 50% 30%, #fbf6ea, #ead9b6); overflow: hidden; }
   .look-card-title { display: block; margin-top: 0.4rem; font-size: 1.55rem; line-height: 1.1; color: #8a4b2a; }
   .look-card-meta { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.68rem; color: #6b5a49; margin-top: 0.2rem; }
-  .look-card-lines { flex: 1; padding-top: 0.2rem; background-image: repeating-linear-gradient(transparent 0 25px, rgba(31,58,120,.18) 25px 26px); font-size: 1.1rem; line-height: 26px; color: #8a4b2a; }
+  /* the back: as many ruled lines as Bà wrote, then the pieces worn; no page of empty lines (#116) */
+  .look-card-lines { flex: 0 0 auto; padding-top: 0.2rem; background-image: repeating-linear-gradient(transparent 0 27px, rgba(31,58,120,.18) 27px 28px); font-size: 1.2rem; line-height: 28px; color: #8a4b2a; }
+  .look-card-back > .look-card-lines { margin-top: auto; } /* with the meta's own auto margin: the words sit in the middle */
+  .look-card-items { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.7rem 0; }
+  .look-card-items-head { width: 100%; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: #6b5a49; }
+  .look-card-item { border: 1px solid #c9a35a; border-radius: 999px; background: #fbf6ea; padding: 0.1rem 0.55rem; font-size: 0.78rem; color: #27354f; }
   .look-stamp { position: absolute; right: 18px; top: 18px; width: 4.4rem; height: 4.4rem; border-radius: 999px; border: 2.5px dashed #b5452e; background: rgba(251, 246, 234, 0.75); color: #b5452e; display: grid; place-items: center; text-align: center; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.04em; line-height: 1.25; }
 }
 

@@ -98,6 +98,8 @@ export function WardrobePanel({
   noteOf,
   whyOf,
   onToggle,
+  why,
+  onWhyClose,
   garment,
   selection,
   onSelection,
@@ -112,6 +114,8 @@ export function WardrobePanel({
   noteOf: (it: WardrobeItem) => string;
   whyOf?: (it: WardrobeItem) => string; // the label in a sentence, for the tooltip
   onToggle: (it: WardrobeItem) => void;
+  why?: { id: string; text: string } | null; // why the piece just tapped cannot be worn
+  onWhyClose?: () => void;
   garment: Garment | null;
   selection: Selection | null;
   onSelection: (s: Selection) => void;
@@ -153,7 +157,7 @@ export function WardrobePanel({
                 const st = stateOf(it);
                 const name = it.garment ? data.garments.find((g) => g.id === it.garment)?.name_vi : data.accessories[it.accessory!]?.name_vi;
                 return (
-                  <motion.li key={it.id} initial={reduced ? false : { opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduced ? 0 : i * 0.03 }}>
+                  <motion.li key={it.id} className="relative" initial={reduced ? false : { opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduced ? 0 : i * 0.03 }}>
                     <button
                       type="button"
                       aria-pressed={st === "worn"}
@@ -172,6 +176,18 @@ export function WardrobePanel({
                       <button type="button" onClick={() => onLookPreview(it.garment!)} className="mt-0.5 block w-full text-center text-[0.75rem] text-[#27354f] underline">
                         Xem ảnh mẫu
                       </button>
+                    )}
+                    {/* the reason, pinned under the piece that was tapped, not at the foot of the screen (#116) */}
+                    {why?.id === it.id && (
+                      <span
+                        role="status"
+                        className={`absolute top-full z-10 mt-1 flex w-[13.5rem] max-w-[calc(300%+1.1rem)] items-start gap-2 rounded-lg bg-[#27354f] px-3 py-2 text-left text-[0.8rem] leading-snug text-amber-50 shadow-lg ${["left-0", "left-1/2 -translate-x-1/2", "right-0"][i % 3]}`}
+                      >
+                        <span className="min-w-0 flex-1">{why.text}</span>
+                        <button type="button" aria-label="Đóng" onClick={onWhyClose} className="shrink-0 text-amber-50/80">
+                          ✕
+                        </button>
+                      </span>
                     )}
                   </motion.li>
                 );
@@ -397,14 +413,25 @@ export function LookCard({
                   </span>
                 ))}
               </span>
+              {/* what was worn, piece by piece: the back holds the look instead of empty ruled lines (#116) */}
+              {face.items.length > 0 && (
+                <span className="look-card-items">
+                  <span className="look-card-items-head">Con mặc</span>
+                  {face.items.map((it) => (
+                    <span key={it} className="look-card-item">
+                      {it}
+                    </span>
+                  ))}
+                </span>
+              )}
               {face.fact && (
                 <span className="mb-2 block rotate-[-0.6deg] bg-[#fbe99a] px-2 py-1.5 text-[0.75rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">
                   {face.fact.text}
                   <span className="mt-0.5 block text-[0.75rem] opacity-80">nguồn: {face.fact.source} – Tèo</span>
                 </span>
               )}
-              <span className="look-card-meta">
-                <span className="min-w-0 truncate">{face.items.join(" · ")}</span>
+              <span className="look-card-meta mt-auto">
+                <span>Thẻ số {face.number}</span>
                 <span className="shrink-0">
                   {face.place} · {face.date}
                 </span>
@@ -437,13 +464,19 @@ export function LookCard({
   );
 }
 
+/** "số thân áo (5 thân)" → "5 thân áo": the part as it is said in a sentence. */
+const keptSaid = (part: string) => part.replace(/^số thân áo \((\d+) thân\)$/, "$1 thân áo");
+/** "a, b và c" */
+const listVi = (xs: string[]) => (xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} và ${xs.at(-1)}`);
+
 /** Bà's lines on the back of the card, from what the reader picked (no AI: the words are put together here). */
 export function baNote(data: Bootstrap, garment: Garment, sel: Selection, verdict: CompassResult | null): string[] {
   const color = sel.colors[0] ? lowerFirst(data.colors[sel.colors[0]]?.name ?? "") || null : null;
   const acc = sel.accessories.map((a) => lowerFirst(data.accessories[a]?.name_vi ?? "")).filter(Boolean);
   const kept = garment.zones.filter((z) => z.level === "keep").map((z) => z.part);
   const lines = [`Con mặc ${lowerFirst(garment.name_vi)}${color ? ` màu ${color}` : ""}${acc.length ? `, ${acc.join(", ")}` : ""}.`];
-  if (kept.length) lines.push(`Phần ${kept.join(", ")} con giữ nguyên, đúng như Bà dặn.`);
+  // "Con giữ đủ 5 thân áo và cổ áo", not the zone names pasted in a form ("Phần số thân áo (5 thân), cổ áo…", #116)
+  if (kept.length) lines.push(`Con giữ đủ ${listVi(kept.map(keptSaid))}, đúng như Bà dặn.`);
   if (verdict?.state === "adapted") lines.push("Có chỗ con đổi cho hợp ngày nay, mà vẫn ra áo của mình.");
   if (verdict?.state === "review") lines.push("Có món Bà thấy chưa hợp dịp lắm, lần sau con xem lại nhé.");
   lines.push("— Bà");
