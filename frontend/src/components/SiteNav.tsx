@@ -10,7 +10,9 @@ import { asset } from "@/lib/base";
 
 export function SiteNav() {
   const path = usePathname() ?? "";
-  const shared = path.startsWith("/du-ky/p");
+  // only the shared page itself (/du-ky/p/?id=…): any deeper address is a 404, prebuilt with the usual links, and
+  // switching them on in the browser broke the hydration of that page (React #418, #118)
+  const shared = /^\/du-ky\/p\/?$/.test(path);
   // the page the reader is on is marked for screen readers and drawn with a gold rim (#111)
   const here = (p: string) => (path === p || path === `${p}/` ? "page" : undefined);
   return (
