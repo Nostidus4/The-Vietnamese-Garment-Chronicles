@@ -8,7 +8,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
 import { ensureMigrated, pagesOf, useDuKy } from "@/lib/dukyBook";
-import { markStamp, useStamps } from "@/lib/stamps";
+import { markStamp, stampPlace as place, useStamps } from "@/lib/stamps";
 import { track } from "@/lib/track";
 import { Photo as DuKyPhoto } from "../duky/DuKyPageView";
 import type {
@@ -39,11 +39,10 @@ export const DRAFT =
   (typeof window !== "undefined" &&
     new URLSearchParams(window.location.search).get("draft") === "1");
 
-/** The place a region's stamps are named after: its open chapter (e.g. Huế), else the region. */
 /** A region with a chapter anyone can read (it may still be waiting for its community's review). */
 export const hasChapter = (r: Region) => r.chapters?.some((c) => c.status === "open") ?? false;
 
-export const place = (r: Region) => r.chapters?.find((c) => c.status === "open")?.province ?? r.name.split("/")[0].trim();
+export { place };
 
 /* ---------- the voices ---------- */
 
@@ -424,7 +423,7 @@ export function ArriveDiary({
             ))}
           </ul>
           <p className="m-0 mt-1 text-[0.75rem] leading-snug text-stone-600">
-            Đơn vị hành chính từ 01/07/2025
+            Đơn vị hành chính từ 1/7/2025
             {sheet.provinces.some((p) => p.partial)
               ? " · * một phần thuộc vùng này"
               : ""}
@@ -972,7 +971,7 @@ export function OwnDiary({
               Trang này đầy dần thế này:
             </p>
             <ol className="m-0 mt-0.5 list-none space-y-0.5 p-0">
-              <li>👗 Mặc thử trong tủ áo của Bà, Compass nói bộ nào đúng và vì sao.</li>
+              <li>👗 Mặc thử trong tủ áo của Bà, Tèo chấm bộ nào đúng và nói vì sao.</li>
               <li>📸 Đi lễ, đi hội thật, nhờ ai chụp cho một tấm.</li>
               <li>📓 Dán vào Du Ký: tem “Đã mặc” của {place(region)} sẽ đậm lên.</li>
             </ol>

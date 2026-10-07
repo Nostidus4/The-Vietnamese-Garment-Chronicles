@@ -19,7 +19,7 @@
         "lat": 16.456,
         "lon": 107.578
       },
-      "date": "Huế, một chiều mưa tháng Mười",
+      "date": "Huế, một chiều mưa tháng 10",
       "entry": "Tàu vào ga lúc trời chập choạng. Mưa không to mà cứ rả rích mãi. Anh đỡ cái túi cho tôi, bảo: “Mai anh dẫn em đi Huế một vòng, tối về ăn cơm với mẹ.” Tôi gật đầu mà tay lạnh ngắt, không biết vì mưa hay vì sợ. Đi qua cầu Trường Tiền, tôi đếm được sáu vài, mười hai nhịp. Đêm ấy nằm nghe mưa trên mái ngói, tôi tập đi tập lại câu chào mẹ anh.",
       "margin": "Con đừng cười. Hồi ấy Bà tập câu “Dạ, con chào mẹ” đến hai chục lần.",
       "ti": "Bà cũng biết run à?",
@@ -52,9 +52,9 @@
       },
       "today": {
         "title": "Ga nhỏ, màu hồng, và mưa y như Bà kể",
-        "text": "Mình cứ tưởng ga Huế màu vàng, hóa ra sơn hồng đỏ, có cái đồng hồ to ở giữa. Ga nhỏ, cũ, yên. Bước ra là thấy ngay cái chậm của Huế. Mình đến đúng tháng Mười, mưa không to nhưng không dứt, đúng từng chữ trong sổ của Bà.",
+        "text": "Mình cứ tưởng ga Huế màu vàng, hóa ra sơn hồng đỏ, có cái đồng hồ to ở giữa. Ga nhỏ, cũ, yên. Bước ra là thấy ngay cái chậm của Huế. Mình đến đúng tháng 10, mưa không to nhưng không dứt, đúng từng chữ trong sổ của Bà.",
         "tips": [
-          "Mùa mưa Huế thường từ tháng Chín đến tháng Mười hai: mang áo mưa mỏng.",
+          "Mùa mưa Huế thường từ tháng 9 đến tháng 12: mang áo mưa mỏng.",
           "Từ ga đi bộ ra cầu Trường Tiền chừng hai mươi phút, dọc bờ sông rất đẹp.",
           "Ngày mưa đừng mặc tà áo dài quá dài, kẻo ướt vạt."
         ],
@@ -222,7 +222,7 @@
             "explain": "Thân thứ năm nằm khuất dưới vạt trước: là bản thân mình, đứng giữa bốn người thân."
           }
         ],
-        "done": "Đủ năm thân rồi! Cổ đứng, khuy cài bên phải. Chiếc áo này về sau mẹ Ông trao cho Bà, con lật tới trang Mặc sẽ thấy.",
+        "done": "Đủ năm thân rồi! Cổ đứng, khuy cài bên phải. Chiếc áo này về sau mẹ Ông, tức mẹ chồng Bà, trao cho Bà, con lật tới trang Mặc sẽ thấy.",
         "teo": {
           "text": "Áo ngũ thân có bốn thân lớn tượng trưng cho tứ thân phụ mẫu và một thân con nằm trong, là người mặc; năm cúc áo là Nhân, Lễ, Nghĩa, Trí, Tín.",
           "unesco": null,
@@ -537,7 +537,7 @@
     {
       "garment": "ao-dai",
       "date": "Huế, sáng mùng Một Tết",
-      "entry": "Tôi may cho mình chiếc áo dài xanh thiên thanh, màu da trời sau mưa. Áo ôm người hơn áo ngũ thân, hai tà dài bay theo gió khi đạp xe qua cầu. Anh bảo tôi mặc áo ấy đẹp nhất. Chiếc áo này về sau tôi cất vào hộp gỗ, giữ đến tận bây giờ.",
+      "entry": "Tôi may cho mình chiếc áo dài xanh thiên thanh, màu da trời sau mưa. Áo ôm người hơn áo ngũ thân, hai tà dài bay theo gió khi đạp xe qua cầu. Tôi thêu vào vạt trong một chữ V nhỏ. Anh bảo tôi mặc áo ấy đẹp nhất. Chiếc áo này về sau tôi cất vào hộp gỗ, giữ đến tận bây giờ.",
       "margin": "Chiếc áo xanh trong hộp gỗ đó, con nhớ không?",
       "keepsake": "fabric",
       "teo": [

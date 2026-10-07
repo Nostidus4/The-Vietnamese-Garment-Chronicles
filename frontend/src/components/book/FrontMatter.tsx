@@ -104,9 +104,9 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
                 </span>
                 <span className="shrink-0 text-right text-[0.75rem] leading-tight text-stone-600">
                   {/* what there is to read first, then what is still to be written (#61) */}
-                  {open.length} chương{r.chapters.length > open.length ? ` · ${r.chapters.length - open.length} chờ viết` : ""}
+                  {open.length} chương{r.chapters.length > open.length ? ` · ${r.chapters.length - open.length} chương sắp tới` : ""}
                   {readable && (
-                    <span className="mt-0.5 flex justify-end gap-0.5" aria-label={`${n}/3 tem`}>
+                    <span className="mt-0.5 flex justify-end gap-0.5" title={`Tem Đến · Hiểu · Mặc: ${n}/3`} aria-label={`Tem Đến · Hiểu · Mặc: ${n}/3`}>
                       {[0, 1, 2].map((k) => (
                         <span key={k} className={`h-2 w-2 rounded-full border ${k < n ? "border-[#B5452E] bg-[#B5452E]" : "border-stone-400"}`} />
                       ))}
@@ -121,6 +121,10 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
           );
         })}
       </ol>
+      {/* the three dots of each row, said once (#114) */}
+      <p className="m-0 mt-1 text-right text-[0.75rem] text-stone-600">
+        <span aria-hidden>○○○</span> ba tem Đến · Hiểu · Mặc của mỗi miền
+      </p>
       {/* the one way in for a first-time reader; the list above is for coming back */}
       <div className="mt-auto flex flex-col items-start gap-2">
         <button type="button" data-guide="next" onClick={onStart} className="page-turn page-turn-main font-display !text-[1rem]">
@@ -248,7 +252,7 @@ export function StartPage({
       {/* "Bắt đầu từ Huế" is the bright button under the book; here, the shortcut for someone with an event ahead (#65) */}
       <div className="mt-auto flex flex-wrap items-center gap-2 pt-3">
         <button type="button" onClick={onEvent} className="rounded-full border border-stone-700 px-3 py-2 text-[0.85rem] hover:bg-stone-800 hover:text-amber-50">
-          👗 Sắp đi sự kiện? Vào thẳng phòng thử đồ
+          👗 Sắp đi sự kiện? Vào thẳng tủ áo của Bà
         </button>
       </div>
     </div>

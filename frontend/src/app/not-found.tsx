@@ -20,7 +20,7 @@ export default function NotFound() {
         </>
       }
     >
-      Có thể đường link bị gõ sai, hoặc trang đã được gỡ.
+      Có thể link bị gõ sai, hoặc trang đã được gỡ.
     </ErrorSheet>
   );
 }

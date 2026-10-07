@@ -112,6 +112,15 @@
       "verified": true
     },
     {
+      "id": "lien-anh-lien-chi",
+      "term": "Liền anh, liền chị",
+      "text": "Người hát quan họ: nam là liền anh, nữ là liền chị. Các liền chị làng này hát, các liền anh làng kết nghĩa đáp lại, cùng giai điệu nhưng khác lời.",
+      "sources": [
+        "unesco-quan-ho"
+      ],
+      "verified": true
+    },
+    {
       "id": "khan-ran",
       "term": "Khăn rằn",
       "text": "Khăn kẻ ô vuông của người Nam Bộ, dùng che nắng, lau mồ hôi, chít đầu.",

@@ -27,7 +27,7 @@ export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap })
       setHistory((h) => [{ q: text, ...r }, ...h].slice(0, 5));
       setQ("");
     } catch (e) {
-      setError(friendlyError(e, "Tèo chưa nghe rõ, bạn hỏi lại nhé."));
+      setError(friendlyError(e, "Tớ chưa nghe rõ, bạn hỏi lại nhé."));
     } finally {
       setBusy(false);
     }

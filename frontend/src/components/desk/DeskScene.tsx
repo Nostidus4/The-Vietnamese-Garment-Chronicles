@@ -382,7 +382,7 @@ export function DeskScene({
                     repeatType: "mirror",
                   }}
                 >
-                  Bấm để mở sách
+                  Bấm để mở sổ
                 </motion.p>
               )}
             </AnimatePresence>
@@ -478,22 +478,22 @@ function WhatsInside({ onRead }: { onRead: () => void }) {
           <p className="font-hand m-0 text-[1.05rem] leading-snug text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
           <div className="mt-2 flex flex-col gap-1.5">
             <button type="button" onClick={onRead} className={entry}>
-              <span aria-hidden>📖</span> Đọc nhật ký của Bà theo vùng{arrow}
+              <span aria-hidden>📖</span> Đọc sổ của Bà theo vùng{arrow}
             </button>
             <a href={asset("/chapter/hue?entry=event")} className={entry}>
-              <span aria-hidden>👗</span> Vào thẳng phòng thử đồ{arrow}
+              <span aria-hidden>👗</span> Vào thẳng tủ áo của Bà{arrow}
             </a>
             <a href={asset("/du-ky")} className={entry}>
               <span aria-hidden>📓</span> Ghi Du Ký những lần con mặc{arrow}
             </a>
           </div>
-          <p className="m-0 mt-1.5 px-2 text-[0.75rem] leading-snug text-stone-600">Phối áo cùng Bà, Compass nói bộ nào đúng và vì sao.</p>
+          <p className="m-0 mt-1.5 px-2 text-[0.75rem] leading-snug text-stone-600">Phối áo cùng Bà, Tèo chấm bộ nào đúng và nói vì sao.</p>
         </nav>
         <DeskPhoto />
       </div>
       <nav aria-label="Trong sổ có gì" className="absolute inset-x-0 bottom-3 z-20 flex justify-center gap-2 px-3 lg:hidden">
         <a href={asset("/chapter/hue?entry=event")} className="page-turn !text-[0.95rem]">
-          👗 Phòng thử đồ
+          👗 Tủ áo của Bà
         </a>
         <a href={asset("/du-ky")} className="page-turn !text-[0.95rem]">
           📓 Du Ký

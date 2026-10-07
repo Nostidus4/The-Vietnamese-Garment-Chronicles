@@ -91,7 +91,7 @@ export function NewPageDialog({
               onClick={() => setStatus(s)}
               className={`flex-1 rounded-full border px-3 py-1.5 text-sm ${status === s ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400"}`}
             >
-              {s === "planned" ? "Chuẩn bị đi sự kiện" : "Đã mặc rồi"}
+              {s === "planned" ? "Chuẩn bị đi sự kiện" : "Trang đã mặc"}
             </button>
           ))}
         </div>

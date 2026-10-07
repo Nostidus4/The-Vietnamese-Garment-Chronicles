@@ -321,9 +321,9 @@ export function OutfitList({
 /* ---------- the card ---------- */
 
 export const STAMP: Record<CompassState, { word: string; icon: string }> = {
-  fit: { word: "AUTHENTIC", icon: "✅" },
-  adapted: { word: "ADAPTED", icon: "✨" },
-  review: { word: "INSPIRED", icon: "⚠️" },
+  fit: { word: "ĐÚNG CHUẨN", icon: "✅" },
+  adapted: { word: "CÁCH TÂN", icon: "✨" },
+  review: { word: "LẤY CẢM HỨNG", icon: "⚠️" },
   distorted: { word: "", icon: "⛔" },
 };
 /** The stamp judges the look picked, not the picture: an AI render can still get a detail wrong (#52). */
@@ -427,7 +427,7 @@ export function LookCard({
               {face.fact && (
                 <span className="mb-2 block rotate-[-0.6deg] bg-[#fbe99a] px-2 py-1.5 text-[0.75rem] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">
                   {face.fact.text}
-                  <span className="mt-0.5 block text-[0.75rem] opacity-80">nguồn: {face.fact.source} – Tèo</span>
+                  <span className="mt-0.5 block text-[0.75rem] opacity-80">Tèo chép từ: {face.fact.source}</span>
                 </span>
               )}
               <span className="look-card-meta mt-auto">

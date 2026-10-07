@@ -703,7 +703,7 @@ body {
     .fitting-bar .page-turn { min-height: 44px; min-width: 44px; }
     .fitting { padding-bottom: 8.5rem; }
   }
-  /* in the room a button that cannot be pressed yet still says why ("Compass đang chấm…", "cần máy chủ") */
+  /* in the room a button that cannot be pressed yet still says why ("đang chấm…", "cần máy chủ") */
   .fitting-bar .page-turn:disabled { display: inline-block; opacity: 0.6; cursor: not-allowed; animation: none; }
 
   /* a region still being written with its community (#112): the mirror with a curtain drawn over the doll, Bà's note beside it */

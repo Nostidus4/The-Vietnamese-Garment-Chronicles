@@ -5,7 +5,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { NEW_STAMP } from "@/lib/stamps";
+import { NEW_STAMP, stampPlace } from "@/lib/stamps";
 import { useBootstrap } from "@/lib/useBootstrap";
 
 const WORD = { arrived: { label: "ĐÃ ĐẾN", color: "#B5452E" }, understood: { label: "ĐÃ HIỂU", color: "#5E7F4A" } } as const;
@@ -29,7 +29,8 @@ export function StampToast() {
     const t = setTimeout(() => setGot(null), 3800);
     return () => clearTimeout(t);
   }, [got]);
-  const place = got && data?.regions.find((r) => r.id === got.id)?.name.split("/")[0].trim();
+  const region = got && data?.regions.find((r) => r.id === got.id);
+  const place = region && stampPlace(region);
   const w = got && WORD[got.kind];
   return (
     <AnimatePresence>

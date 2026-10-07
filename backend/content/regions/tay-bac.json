@@ -12,7 +12,7 @@
   "stops": [
     {
       "margin": "Năm sau rồi năm sau nữa, Bà chưa đi được lần nào. Con đi thay Bà nhé.",
-      "ti": "Bà tên Vân à? Giờ mình mới biết!",
+      "ti": "Bà tên Vân à? Thì ra chữ V thêu trong vạt áo xanh là thế!",
       "teo": [],
       "keepsake": "leaf",
       "point": {
@@ -30,7 +30,7 @@
         "title": "Mình mang lá thư của Bà lên Sơn La",
         "text": "Đi xe đêm, sáng ra đã thấy đèo và sương đúng như thư chị Mai tả. Lúc mặt trời lên, ruộng bậc thang hiện ra từng tầng một. Mình nắm chặt lá thư của Bà trong túi áo, đi tìm nhà con gái chị Mai.",
         "tips": [
-          "Mùa lúa chín thường vào khoảng tháng 9–10.",
+          "Mùa lúa chín thường vào khoảng tháng 9 đến tháng 10.",
           "Đường đèo nhiều sương: đi xe khách có kinh nghiệm, đừng tự lái ban đêm."
         ],
         "photo": {
@@ -321,7 +321,7 @@
       ]
     },
     {
-      "margin": "Tí mang lá thư này lên rồi. Bà cảm ơn con.",
+      "margin": "Con mang lá thư này lên rồi. Bà cảm ơn con.",
       "ti": "Con gái chị Mai đọc to lá thư bên bếp lửa. Mẹ chị ngồi nghe, rồi khóc.",
       "teo": [],
       "keepsake": "stamp",

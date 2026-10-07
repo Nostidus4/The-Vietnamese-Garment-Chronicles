@@ -18,7 +18,7 @@
         {"kind": "narration", "style": "box", "text": "Năm nay, mỗi đội sẽ lựa chọn một vùng văn hóa Việt Nam…", "voice": "co-giao", "delivery": "Bright and enthusiastic, announcing a new school project to the whole class.", "x": 6, "y": 6, "w": 29, "delay": 1300},
         {"kind": "narration", "style": "box", "text": "Tìm hiểu một loại trang phục truyền thống…", "voice": "co-giao", "delivery": "Continuing the announcement, clear and encouraging, a small pause at the ellipsis.", "join": true, "delay": 1000},
         {"kind": "narration", "style": "box", "text": "Và đề xuất cách để người trẻ có thể mặc nó hôm nay.", "voice": "co-giao", "delivery": "Warm and inspiring, finishing the announcement with a smile.", "join": true, "delay": 1000},
-        {"kind": "speech", "speaker": "Tí", "text": "Áo dài thôi. Quá dễ!", "voice": "ti", "delivery": "Instantly, cocky and overconfident, a little show-off, quick.", "x": 55, "y": 17, "w": 21, "tail": "down-right", "wait_click": true}
+        {"kind": "speech", "speaker": "Tí · nhân vật chính", "text": "Áo dài thôi. Quá dễ!", "voice": "ti", "delivery": "Instantly, cocky and overconfident, a little show-off, quick.", "x": 55, "y": 17, "w": 21, "tail": "down-right", "wait_click": true}
       ],
       "exit": {"type": "zoom-through", "ms": 1100, "x": 76, "y": 66, "s": 1.2, "to_x": 72, "to_y": 58, "to_s": 1.07},
       "sfx": ["classroom"]
@@ -30,7 +30,7 @@
       "image": "/opening/s02.webp",
       "focal": {"x": 66, "y": 50},
       "beats": [
-        {"kind": "speech", "speaker": "Tèo", "text": "Tại sao lại là áo dài?", "voice": "teo", "delivery": "Calm and curious, a genuine question, slightly amused.", "x": 72, "y": 26, "w": 24, "tail": "down-right", "delay": 500},
+        {"kind": "speech", "speaker": "Tèo · bạn cùng bàn của Tí", "text": "Tại sao lại là áo dài?", "voice": "teo", "delivery": "Calm and curious, a genuine question, slightly amused.", "x": 72, "y": 26, "w": 24, "tail": "down-right", "delay": 500},
         {"kind": "speech", "speaker": "Tí", "text": "Vì… đẹp?", "voice": "ti", "delivery": "Caught off guard: hesitate at the ellipsis, then say \"đẹp\" as an unsure guess.", "x": 21, "y": 37, "w": 16, "tail": "down-right", "wait_click": true},
         {"kind": "speech", "speaker": "Tèo", "text": "Còn gì nữa?", "voice": "teo", "delivery": "Gently pushing further, patient, curious.", "x": 77, "y": 34.5, "w": 17, "tail": "down-right", "delay": 900},
         {"kind": "speech", "speaker": "Tí", "text": "…rất Việt Nam?", "voice": "ti", "delivery": "Unsure and trailing, almost to himself, questioning intonation.", "x": 20, "y": 46, "w": 19, "tail": "down-right", "wait_click": true,
@@ -50,11 +50,11 @@
         {"kind": "narration", "style": "box", "text": "Chỉ sau một lúc, hàng loạt cái tên xuất hiện…", "voice": "narrator", "delivery": "Rising wonder, as a flood of new names appears on a screen.", "x": 62, "y": 79, "w": 34, "delay": 500},
         {"kind": "narration", "style": "box", "text": "Áo tứ thân.", "voice": "narrator", "delivery": "Say only the name, clearly, like reading a label; slight wonder.", "join": true, "delay": 1000,
          "effects": [{"type": "glow", "x": 23, "y": 24, "r": 9, "strength": 0.55, "ms": 500}]},
-        {"kind": "narration", "style": "box", "text": " Áo ngũ thân.", "voice": "narrator", "delivery": "Say only the name, clearly, a beat faster.", "say": "Áo ngũ thân.", "inline": true, "delay": 650,
+        {"kind": "narration", "style": "box", "text": "Áo ngũ thân.", "voice": "narrator", "delivery": "Say only the name, clearly, a beat faster.", "inline": true, "delay": 650,
          "effects": [{"type": "glow", "x": 70, "y": 25, "r": 9, "strength": 0.55, "ms": 500}]},
-        {"kind": "narration", "style": "box", "text": " Nhật Bình.", "voice": "narrator", "delivery": "Say only the name, clearly, a beat faster.", "say": "Nhật Bình.", "inline": true, "delay": 650,
+        {"kind": "narration", "style": "box", "text": "Nhật Bình.", "voice": "narrator", "delivery": "Say only the name, clearly, a beat faster.", "inline": true, "delay": 650,
          "effects": [{"type": "glow", "x": 15, "y": 55, "r": 9, "strength": 0.55, "ms": 500}]},
-        {"kind": "narration", "style": "box", "text": " Áo bà ba…", "voice": "narrator", "delivery": "Say only the name, trailing off as the list keeps going.", "say": "Áo bà ba…", "inline": true, "delay": 650,
+        {"kind": "narration", "style": "box", "text": "Áo bà ba…", "voice": "narrator", "delivery": "Say only the name, trailing off as the list keeps going.", "inline": true, "delay": 650,
          "effects": [{"type": "glow", "x": 88, "y": 47, "r": 9, "strength": 0.55, "ms": 500}]},
         {"kind": "speech", "speaker": "Tèo", "text": "Bộ này của vùng nào?", "voice": "teo", "delivery": "Pointing at the screen, curious and a little teasing.", "x": 52, "y": 31, "w": 24, "tail": "down", "wait_click": true,
          "effects": [{"type": "spotlight", "x": 57, "y": 55, "r": 16, "strength": 0.25, "ms": 600}]},

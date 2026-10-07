@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import type { Beat } from "@/lib/types";
 
 /** A text block on screen: one narration box / speech bubble built from one or more beats. */
@@ -96,8 +96,12 @@ export function BlockView({ block, instant, compact, visible }: { block: Block; 
 
   const content = block.lines.map((l) => (
     <p key={l.key} className="m-0">
-      {l.parts.map((p) => (
-        <Typed key={p.key} text={p.text} typeMs={p.typeMs} instant={instant} />
+      {/* parts on one line ("Áo tứ thân. Áo ngũ thân.") are words apart; the space is here, not typed into the data */}
+      {l.parts.map((p, i) => (
+        <Fragment key={p.key}>
+          {i > 0 && " "}
+          <Typed text={p.text} typeMs={p.typeMs} instant={instant} />
+        </Fragment>
       ))}
     </p>
   ));
