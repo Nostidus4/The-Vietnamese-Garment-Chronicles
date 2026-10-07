@@ -92,7 +92,7 @@ body {
   .bubble-v2__speaker {
     display: block;
     font-family: var(--font-body), sans-serif;
-    font-size: 0.5em;
+    font-size: max(12px, 0.5em);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #8a6a4a;
@@ -454,8 +454,9 @@ body {
   .hour-afternoon { background-image: linear-gradient(200deg, rgba(235, 150, 90, 0.22), transparent 60%); }
   .hour-evening { background-image: linear-gradient(180deg, rgba(80, 100, 140, 0.2), transparent 60%); }
   .hour-night { background-image: linear-gradient(180deg, rgba(30, 40, 80, 0.2), rgba(255, 200, 120, 0.08) 70%, transparent); }
-  /* phones: one small page at a time, so a long diary or "Hôm nay" page scrolls instead of being cut */
-  @media (max-width: 759px) {
+  /* phones: one small page at a time, so a long diary or "Hôm nay" page scrolls instead of being cut; held sideways
+     the two pages are short too, and Bà's letter lost its last lines (#119) */
+  @media (max-width: 759px), (max-height: 500px) {
     .book-open .paper > div { overflow-y: auto; overscroll-behavior: contain; }
     .book-open .paper > div > .h-full { height: auto; min-height: 100%; }
   }
@@ -519,17 +520,17 @@ body {
   .thread { display: flex; flex-direction: column; align-items: center; padding: 0.3rem 0.8rem 0.25rem; border-radius: 999px; background: rgba(20, 12, 7, 0.42); backdrop-filter: blur(3px); }
   .thread-line { display: block; width: clamp(0.5rem, 1.5vw, 1.9rem); height: 2px; background: repeating-linear-gradient(90deg, rgba(243, 234, 215, 0.45) 0 4px, transparent 4px 7px); }
   .thread-line-done { background: #c0392b; }
-  .thread-knot { display: grid; place-items: center; width: 1.45rem; height: 1.45rem; border-radius: 999px; font-size: 0.7rem; line-height: 1; color: #f3ead7; border: 1.5px solid rgba(243, 234, 215, 0.6); background: transparent; transition: transform 160ms ease, background 160ms ease; }
+  .thread-knot { display: grid; place-items: center; width: 1.45rem; height: 1.45rem; border-radius: 999px; font-size: 0.75rem; line-height: 1; color: #f3ead7; border: 1.5px solid rgba(243, 234, 215, 0.6); background: transparent; transition: transform 160ms ease, background 160ms ease; }
   .thread-knot:hover { transform: scale(1.15); }
   .thread-knot:focus-visible { outline: 2px solid #e3b04b; outline-offset: 2px; }
-  .thread-knot-small { width: 1.15rem; height: 1.15rem; font-size: 0.62rem; }
+  .thread-knot-small { width: 1.15rem; height: 1.15rem; font-size: 0.75rem; }
   .thread-knot-done { background: #c0392b; border-color: #c0392b; }
   .thread-knot-here { background: #e3b04b; border-color: #f3d58e; color: #2b2118; transform: scale(1.18); box-shadow: 0 0 0 3px rgba(227, 176, 75, 0.3); }
   /* phones: the knots shrink to beads, only the one being read keeps its number */
   .thread-compact { padding-inline: 0.55rem; }
   .thread-compact .thread-line { width: 0.4rem; }
   .thread-compact .thread-knot { width: 0.78rem; height: 0.78rem; font-size: 0; border-width: 1.5px; }
-  .thread-compact .thread-knot-here { width: 1.2rem; height: 1.2rem; font-size: 0.6rem; transform: none; }
+  .thread-compact .thread-knot-here { width: 1.35rem; height: 1.35rem; font-size: 0.75rem; transform: none; }
   .thread-caption { margin: 0.15rem 0 0; font-family: var(--font-hand), cursive; font-size: 0.85rem; color: #f3ead7; white-space: nowrap; }
   @media (prefers-reduced-motion: reduce) { .page-turn-main { animation: none; } }
   .cover-sheen {
@@ -597,8 +598,9 @@ body {
 /* "Xem lại mở đầu": a lesser button, smaller words in a thin pale rim (still well over 4.5:1) */
 .site-nav a.site-nav-minor { border-color: rgba(243, 234, 215, 0.45); background: rgba(40, 25, 15, 0.78); font-size: 0.8rem; }
 .site-nav a.site-nav-minor:hover { background: rgba(243, 234, 215, 0.95); color: #2b2118; }
-/* touch screens: every control at least 44px, the nav scrolls away with the page instead of covering it (#57) */
-@media (pointer: coarse) {
+/* touch screens and phones: every control at least 44px, the nav scrolls away with the page instead of covering it
+   (#57). By width too: a phone-sized window still had 22px buttons when the browser did not report a coarse pointer (#119) */
+@media (pointer: coarse), (max-width: 759px) {
   .site-nav { gap: 0.4rem; right: 0.5rem; }
   .site-nav a { padding: 0 0.7em; }
   .page-turn { min-height: 44px; min-width: 44px; }
@@ -608,6 +610,14 @@ body {
   .bookmark-tab, .thread-knot { position: relative; } /* .teo-pin is already absolute or relative */
   .bookmark-tab::before, .teo-pin::before { content: ""; position: absolute; inset: -9px -2px; }
   .thread-knot::before { content: ""; position: absolute; inset: -16px -3px; }
+  .tap { min-height: 44px; }
+  .tap-square { min-height: 44px; min-width: 44px; }
+  /* a link that keeps its small look: an invisible 44px box round it takes the thumb */
+  .tap-around { position: relative; }
+  .tap-around::after { content: ""; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
+  .outfit-x { width: 2.75rem; height: 2.75rem; margin-block: -0.4rem; }
+  .who-switch { min-height: 44px; }
+  .wardrobe-tab { min-height: 44px; }
 }
 
 /* ---------- the map's right page: on a short book (1280×720, 1366×768) the festival box gives its room to the two
@@ -686,7 +696,7 @@ body {
     .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: 0; right: 0; margin-inline: auto; width: max-content; max-width: calc(100vw - 2.5rem); padding: 0.25rem 0.6rem 0.25rem 1.2rem; white-space: nowrap; }
     .fitting-grid .dress-form .mirror-tag > span:not(.mirror-tag-hole) { display: inline !important; margin-right: 0.4rem; }
   }
-  .mirror-chip { position: absolute; z-index: 2; border-radius: 999px; background: rgba(20, 12, 7, 0.6); color: #f3ead7; padding: 0.05rem 0.55rem; font-size: 0.68rem; }
+  .mirror-chip { position: absolute; z-index: 2; border-radius: 999px; background: rgba(20, 12, 7, 0.6); color: #f3ead7; padding: 0.05rem 0.55rem; font-size: 0.75rem; }
   .mirror-caption { margin-top: 0.35rem; max-width: 36rem; border-radius: 999px; background: rgba(20, 12, 7, 0.6); padding: 0.15rem 0.8rem; text-align: center; font-size: 0.75rem; color: #f3ead7; }
   /* while Gemini works: a dashed thread is sewn round the glass */
   .sewing rect { stroke: #e3b04b; stroke-width: 0.9; stroke-dasharray: 3 2; stroke-dashoffset: 460; vector-effect: non-scaling-stroke; animation: sew 9s linear infinite; }
@@ -770,13 +780,13 @@ body {
   .fabric { position: relative; width: 2.3rem; height: 2.3rem; border-radius: 999px; border: 2px solid rgba(43, 33, 24, 0.25); background-image: linear-gradient(135deg, rgba(255,255,255,.18) 25%, transparent 25% 50%, rgba(255,255,255,.18) 50% 75%, transparent 75%); background-size: 6px 6px; transition: transform 160ms ease; }
   .fabric:hover { transform: scale(1.08); }
   .fabric-on { border-color: #2b2118; box-shadow: 0 0 0 3px #e3b04b; }
-  .fabric-n { position: absolute; right: -0.3rem; top: -0.3rem; width: 1rem; height: 1rem; border-radius: 999px; background: #27354f; color: #fbf6ea; font-size: 0.6rem; display: grid; place-items: center; }
+  .fabric-n { position: absolute; right: -0.3rem; top: -0.3rem; width: 1.1rem; height: 1.1rem; border-radius: 999px; background: #27354f; color: #fbf6ea; font-size: 0.75rem; display: grid; place-items: center; }
   .chip-paper { border-radius: 999px; border: 1px solid #d8c9a8; padding: 0.2rem 0.7rem; font-size: 0.8rem; color: #2b2118; background: #fbf6ea; }
   .chip-paper-on { background: #27354f; border-color: #27354f; color: #fbf6ea; }
 
   /* Đang mặc */
   .outfit { min-width: 0; border-radius: 0.8rem; background: rgba(251, 246, 234, 0.95); padding: 0.9rem 1rem 1rem; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35); }
-  .outfit-title { margin: 0 0 0.5rem; font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: #6b5a49; }
+  .outfit-title { margin: 0 0 0.5rem; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: #6b5a49; }
   .outfit-chip { display: flex; align-items: center; gap: 0.4rem; border-radius: 999px; border: 1px solid #d8c9a8; background: #fbf6ea; padding: 0.2rem 0.3rem 0.2rem 0.8rem; font-size: 0.85rem; color: #27354f; }
   .outfit-chip-bad { border-color: #b5452e; color: #b5452e; }
   .outfit-x { flex-shrink: 0; width: 1.4rem; height: 1.4rem; border-radius: 999px; font-size: 0.7rem; color: inherit; }
@@ -789,13 +799,13 @@ body {
   .look-card-back { transform: rotateY(180deg); background-color: #f6eedc; }
   .look-card-art { position: relative; flex: 1; min-height: 0; border-radius: 4px; border: 1px solid #d8c9a8; background: radial-gradient(ellipse at 50% 30%, #fbf6ea, #ead9b6); overflow: hidden; }
   .look-card-title { display: block; margin-top: 0.4rem; font-size: 1.55rem; line-height: 1.1; color: #8a4b2a; }
-  .look-card-meta { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.68rem; color: #6b5a49; margin-top: 0.2rem; }
+  .look-card-meta { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.75rem; color: #6b5a49; margin-top: 0.2rem; }
   /* the back: as many ruled lines as Bà wrote, then the pieces worn; no page of empty lines (#116) */
   .look-card-lines { flex: 0 0 auto; padding-top: 0.2rem; background-image: repeating-linear-gradient(transparent 0 27px, rgba(31,58,120,.18) 27px 28px); font-size: 1.2rem; line-height: 28px; color: #8a4b2a; }
   .look-card-back > .look-card-lines { margin-top: auto; } /* with the meta's own auto margin: the words sit in the middle */
   .look-card-items { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.7rem 0; }
-  .look-card-items-head { width: 100%; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: #6b5a49; }
+  .look-card-items-head { width: 100%; font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: #6b5a49; }
   .look-card-item { border: 1px solid #c9a35a; border-radius: 999px; background: #fbf6ea; padding: 0.1rem 0.55rem; font-size: 0.78rem; color: #27354f; }
-  .look-stamp { position: absolute; right: 18px; top: 18px; width: 4.4rem; height: 4.4rem; border-radius: 999px; border: 2.5px dashed #b5452e; background: rgba(251, 246, 234, 0.75); color: #b5452e; display: grid; place-items: center; text-align: center; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.04em; line-height: 1.25; }
+  .look-stamp { position: absolute; right: 18px; top: 18px; width: 4.8rem; height: 4.8rem; border-radius: 999px; border: 2.5px dashed #b5452e; background: rgba(251, 246, 234, 0.75); color: #b5452e; display: grid; place-items: center; text-align: center; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; line-height: 1.25; }
 }
 

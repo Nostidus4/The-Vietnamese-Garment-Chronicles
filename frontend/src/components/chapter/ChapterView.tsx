@@ -412,7 +412,10 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           ‹ <span className="hidden sm:inline">Về trang Mặc</span>
         </Link>
         <div className="min-w-0 text-center">
-          <p className="m-0 text-[0.75rem] uppercase tracking-[0.3em] text-amber-100/80">Tủ áo của Bà · {place}</p>
+          {/* the place stays whole: on a 390px phone "BỘ" of "TRUNG BỘ" went to a line of its own (#119) */}
+          <p className="m-0 text-[0.75rem] uppercase tracking-[0.18em] text-amber-100/80 sm:tracking-[0.3em]">
+            Tủ áo của Bà <span className="whitespace-nowrap">· {place}</span>
+          </p>
           <h1 className="font-hand m-0 truncate text-[1.7rem] leading-tight text-amber-50">{garment?.name_vi ?? "Chọn một bộ áo"}</h1>
         </div>
         <div className="flex shrink-0 gap-2">

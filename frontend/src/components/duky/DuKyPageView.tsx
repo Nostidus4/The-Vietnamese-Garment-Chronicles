@@ -77,9 +77,9 @@ function RegionStamp({ page, place }: { page: DuKyPage; place: string }) {
       aria-label={real ? hint : `Tem ${label.toLowerCase()} ${place}. ${hint}`}
       title={hint}
     >
-      {/* read at 100% zoom: 11–12px, not 7–9 (#117) */}
-      <span className="text-[0.6875rem] font-semibold leading-tight">{label}</span>
-      <span className="font-display px-1 text-[0.6875rem] leading-[1.1]">{place}</span>
+      {/* read at 100% zoom: 12px, not 7–9 (#117, #119) */}
+      <span className="text-[0.75rem] font-semibold leading-tight">{label}</span>
+      <span className="font-display px-1 text-[0.75rem] leading-[1.1]">{place}</span>
     </div>
   );
 }

@@ -179,12 +179,13 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
         onBlur={() => name !== book.cover.name && setCover({ name: name.trim() })}
         placeholder="tên của con"
         aria-label="Tên trên bìa sổ"
-        className="font-hand w-full border-0 border-b border-stone-400 bg-transparent text-[1.5rem] outline-none placeholder:text-stone-400"
+        className="tap font-hand w-full border-0 border-b border-stone-400 bg-transparent text-[1.5rem] outline-none placeholder:text-stone-400"
         style={{ color: "#1f3a78" }}
       />
       {/* the cover holds 24 letters: say so while typing instead of cutting the name off silently (#63) */}
       {name.length >= 18 && <p className="m-0 text-right text-[0.75rem] text-stone-600">{name.length}/24 chữ</p>}
-      <div className="mt-2 flex items-center gap-2" role="radiogroup" aria-label="Màu bìa">
+      {/* a 20px dot, a 44px button round it on a phone (#119) */}
+      <div className="mt-2 flex items-center gap-2 [@media(pointer:coarse),(max-width:759px)]:gap-0" role="radiogroup" aria-label="Màu bìa">
         <span className="text-[0.75rem] text-stone-600">Màu bìa</span>
         {COVER_COLORS.map((c) => (
           <button
@@ -195,19 +196,20 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
             aria-label={COVER_COLOR_NAMES[c] ?? "Màu bìa"}
             title={COVER_COLOR_NAMES[c]}
             onClick={() => setCover({ color: c })}
-            className={`h-5 w-5 rounded-full border-2 ${book.cover.color === c ? "border-[#D9A43B] ring-2 ring-[#D9A43B]/40" : "border-white/60"}`}
-            style={{ background: c }}
-          />
+            className="tap-square grid place-items-center"
+          >
+            <span className={`block h-5 w-5 rounded-full border-2 ${book.cover.color === c ? "border-[#D9A43B] ring-2 ring-[#D9A43B]/40" : "border-white/60"}`} style={{ background: c }} />
+          </button>
         ))}
       </div>
       <p className="font-hand m-0 mt-4 text-[1.1rem] leading-snug text-[#8a4b2a]">
         Sổ của Bà là những nơi Bà đã đi. Sổ này là những lần con mặc.
       </p>
       <div className="mt-4 flex flex-col gap-2">
-        <button type="button" onClick={() => actions.onNew({ status: "planned" })} className="rounded-full bg-[#27354f] px-4 py-2 text-sm text-amber-50">
+        <button type="button" onClick={() => actions.onNew({ status: "planned" })} className="tap rounded-full bg-[#27354f] px-4 py-2 text-sm text-amber-50">
           + Chuẩn bị đi sự kiện
         </button>
-        <button type="button" onClick={() => actions.onNew({ status: "worn" })} className="rounded-full border border-[#27354f] px-4 py-2 text-sm">
+        <button type="button" onClick={() => actions.onNew({ status: "worn" })} className="tap rounded-full border border-[#27354f] px-4 py-2 text-sm">
           + Trang đã mặc
         </button>
       </div>
@@ -230,13 +232,13 @@ function LastPage({ actions, empty }: { actions: Actions; empty: boolean }) {
       style={{ backgroundImage: "repeating-linear-gradient(transparent 0 27px, rgba(90,120,170,0.16) 27px 28px)" }}
     >
       <p className="font-hand m-0 text-[1.3rem] text-[#8a4b2a]">{empty ? "Trang đầu tiên của con đang chờ." : "Lần mặc tiếp theo?"}</p>
-      <button type="button" onClick={() => actions.onNew({ status: "planned" })} className="rounded-full bg-[#27354f] px-4 py-2 text-sm text-amber-50">
+      <button type="button" onClick={() => actions.onNew({ status: "planned" })} className="tap rounded-full bg-[#27354f] px-4 py-2 text-sm text-amber-50">
         + Chuẩn bị đi sự kiện
       </button>
-      <button type="button" onClick={() => actions.onNew({ status: "worn" })} className="rounded-full border border-[#27354f] px-4 py-2 text-sm text-[#27354f]">
+      <button type="button" onClick={() => actions.onNew({ status: "worn" })} className="tap rounded-full border border-[#27354f] px-4 py-2 text-sm text-[#27354f]">
         + Trang đã mặc
       </button>
-      <Link href="/" className="mt-2 text-xs text-stone-600 underline">
+      <Link href="/" className="tap mt-2 flex items-center text-xs text-stone-600 underline">
         hoặc mở sổ của Bà, chọn một vùng rồi mặc thử
       </Link>
     </div>
@@ -524,7 +526,7 @@ function DuKyFlip({
               role="tab"
               aria-selected={on}
               onClick={() => turnTo(t.page)}
-              className="font-hand whitespace-nowrap rounded-r-md py-1.5 pl-2.5 pr-3.5 text-left text-[1.05rem] text-amber-50 shadow-[2px_2px_5px_rgba(0,0,0,0.3)] transition-transform"
+              className="tap font-hand whitespace-nowrap rounded-r-md py-1.5 pl-2.5 pr-3.5 text-left text-[1.05rem] text-amber-50 shadow-[2px_2px_5px_rgba(0,0,0,0.3)] transition-transform"
               style={{ background: ["#B5452E", "#D9A43B", "#2F4A6D"][i % 3], transform: `translateX(${on ? 0 : -6}px)` }}
             >
               {t.label}
@@ -577,7 +579,7 @@ function ScrollBook({ data, book, actions }: { data: Bootstrap; book: DuKyBook; 
         <section className={`${card} h-72`}>
           <LastPage actions={actions} empty={pages.length === 0} />
         </section>
-        <Link href="/" className="font-hand text-center text-lg text-[#F3EAD7]/85 underline">
+        <Link href="/" className="tap font-hand flex items-center justify-center text-lg text-[#F3EAD7]/85 underline">
           ‹ Về sổ của Bà
         </Link>
       </div>

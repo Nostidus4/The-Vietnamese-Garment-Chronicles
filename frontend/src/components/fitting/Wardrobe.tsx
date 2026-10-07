@@ -173,7 +173,7 @@ export function WardrobePanel({
                       <span className="block text-[0.75rem] leading-tight text-stone-600">{noteOf(it)}</span>
                     </button>
                     {it.garment && (
-                      <button type="button" onClick={() => onLookPreview(it.garment!)} className="mt-0.5 block w-full text-center text-[0.75rem] text-[#27354f] underline">
+                      <button type="button" onClick={() => onLookPreview(it.garment!)} className="tap mt-0.5 flex w-full items-center justify-center text-[0.75rem] text-[#27354f] underline">
                         Xem ảnh mẫu
                       </button>
                     )}
@@ -306,7 +306,7 @@ export function OutfitList({
       )}
       <label className="mt-3 block text-[0.75rem] text-stone-600">
         Dịp
-        <select value={occasion} onChange={(e) => onOccasion(e.target.value)} className="mt-0.5 block w-full rounded-md border border-stone-300 bg-white/80 px-2 py-1 text-sm text-[#27354f]">
+        <select value={occasion} onChange={(e) => onOccasion(e.target.value)} className="tap mt-0.5 block w-full rounded-md border border-stone-300 bg-white/80 px-2 py-1 text-sm text-[#27354f]">
           {data.occasions.map((o) => (
             <option key={o.id} value={o.id}>
               {o.name}

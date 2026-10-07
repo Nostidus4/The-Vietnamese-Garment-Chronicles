@@ -83,7 +83,7 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
       <p className="font-hand m-0 text-[1.2rem] leading-snug" style={{ color: YOUNG }}>
         Những nơi Bà đã đi và đã nghe kể
       </p>
-      <ol className="m-0 mt-3 flex list-none flex-col gap-1 p-0">
+      <ol className="@container m-0 mt-3 flex list-none flex-col gap-1 p-0">
         {data.regions.map((r, i) => {
           const open = r.chapters.filter((c) => c.status === "open");
           const readable = r.status === "open" || open.length > 0;
@@ -97,14 +97,18 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
               >
                 <span className="font-display w-4 shrink-0 text-[0.8rem] text-stone-600">{i + 1}</span>
                 <span className="min-w-0 flex-1">
-                  <span className={`font-display block text-[1rem] ${readable ? "text-[#27354f]" : "text-stone-600"}`}>{r.name}</span>
+                  <span className={`font-display block truncate text-[1rem] ${readable ? "text-[#27354f]" : "text-stone-600"}`}>{r.name}</span>
                   <span className="font-hand block truncate text-[0.85rem]" style={{ color: readable ? OLD : PENCIL }}>
                     {open.length ? open.map((c) => `${c.province}: ${c.title ?? ""}`).join(" · ") : "chờ người ở đó cùng viết"}
                   </span>
                 </span>
-                <span className="shrink-0 text-right text-[0.75rem] leading-tight text-stone-600">
-                  {/* what there is to read first, then what is still to be written (#61) */}
-                  {open.length} chương{r.chapters.length > open.length ? ` · ${r.chapters.length - open.length} chương sắp tới` : ""}
+                <span className="max-w-[7rem] shrink-0 text-right text-[0.75rem] leading-tight text-stone-600">
+                  {/* what there is to read first, then what is still to be written (#61). On a small page (a phone held
+                      sideways) only the stamps: the words wrapped onto the region's name, and the line under the name
+                      already says which chapter there is (#119) */}
+                  <span className="hidden @min-[15rem]:inline">
+                    {open.length} chương{r.chapters.length > open.length ? ` · ${r.chapters.length - open.length} chương sắp tới` : ""}
+                  </span>
                   {readable && (
                     <span className="mt-0.5 flex justify-end gap-0.5" title={`Tem Đến · Hiểu · Mặc: ${n}/3`} aria-label={`Tem Đến · Hiểu · Mặc: ${n}/3`}>
                       {[0, 1, 2].map((k) => (

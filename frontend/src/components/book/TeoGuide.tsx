@@ -17,7 +17,8 @@ const TIPS = [
   { id: "tabs", target: '[data-guide="tabs"]', text: "Mấy dải màu này là mục lục nhanh của chương: bấm để nhảy tới phần bạn muốn." },
 ] as const;
 type Tip = { id: string; target: string; text: string; touch?: boolean };
-const touch = () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
+// a touch screen whose browser reports a fine pointer (some phones and test runs) still has no arrow keys (#119)
+const touch = () => typeof window !== "undefined" && (window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0);
 /** The tips for this screen: the touch wording of "next" on a phone or a tablet, the keyboard one elsewhere. */
 const tips = (): Tip[] => (TIPS as readonly Tip[]).filter((t) => (t.id === "next" ? !!t.touch === touch() : true));
 

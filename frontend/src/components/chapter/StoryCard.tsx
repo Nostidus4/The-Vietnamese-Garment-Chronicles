@@ -58,7 +58,7 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
           );
         })}
       </div>
-      <p className="m-0 mt-1 text-[11px] text-stone-600">Giữ phần đỏ, cân nhắc phần vàng, còn phần xanh cứ phối theo cách của con.</p>
+      <p className="m-0 mt-1 text-[0.75rem] text-stone-600">Giữ phần đỏ, cân nhắc phần vàng, còn phần xanh cứ phối theo cách của con.</p>
 
       {/* F6 how to wear it, step by step (hidden until the team has written the steps) */}
       {garment.wearing_steps.length > 0 && (

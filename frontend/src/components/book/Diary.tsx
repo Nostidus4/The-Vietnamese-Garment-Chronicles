@@ -118,7 +118,7 @@ export function KeepsakeArt({
     >
       {kind === "stamp" && (
         <div className="flex h-[3.9rem] w-[3.9rem] flex-col items-center justify-center rounded-full border-[2.5px] border-[#B5452E]/75 text-center text-[#B5452E]/80">
-          <span className="text-[0.48rem] tracking-[0.2em]">ĐÃ ĐẾN</span>
+          <span className="text-[0.75rem] font-semibold leading-tight">ĐÃ ĐẾN</span>
           <span className="font-display px-1 text-[0.75rem] leading-tight">
             {label}
           </span>
@@ -159,7 +159,7 @@ export function KeepsakeArt({
               "polygon(6% 0, 94% 0, 100% 50%, 94% 100%, 6% 100%, 0 50%)",
           }}
         >
-          <p className="m-0 text-[0.45rem] tracking-[0.25em] text-[#6b3c12]">
+          <p className="m-0 text-[0.75rem] tracking-[0.15em] text-[#6b3c12]">
             VÉ ĐI HỘI
           </p>
           <p className="font-display m-0 text-[0.75rem] leading-tight text-[#6b3c12]">
@@ -866,12 +866,12 @@ export function AskDiary({ region }: { region: Region }) {
       </div>
       {all && (
         <motion.div
-          className="pointer-events-none absolute right-[2%] top-[-2%] flex h-[3.6rem] w-[3.6rem] rotate-[12deg] flex-col items-center justify-center rounded-full border-[2.5px] border-[#5E7F4A]/80 text-center text-[#5E7F4A]"
+          className="pointer-events-none absolute right-[2%] top-[-2%] flex h-[3.9rem] w-[3.9rem] rotate-[12deg] flex-col items-center justify-center rounded-full border-[2.5px] border-[#5E7F4A]/80 text-center text-[#5E7F4A]"
           initial={{ opacity: 0, scale: 1.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", stiffness: 420, damping: 16 }}
         >
-          <span className="text-[0.45rem] tracking-[0.2em]">ĐÃ HIỂU</span>
+          <span className="text-[0.75rem] font-semibold leading-tight">ĐÃ HIỂU</span>
           <span className="font-display px-1 text-[0.75rem] leading-tight">{place(region)}</span>
         </motion.div>
       )}
@@ -997,7 +997,7 @@ export function OwnDiary({
           </p>
           {worn && (
             <div className="pointer-events-none absolute right-[4%] top-[10%] flex h-[3.9rem] w-[3.9rem] rotate-[10deg] flex-col items-center justify-center rounded-full border-[2.5px] border-[#2F4A6D]/70 text-center text-[#2F4A6D]/80">
-              <span className="text-[0.48rem] tracking-[0.2em]">ĐÃ MẶC</span>
+              <span className="text-[0.75rem] font-semibold leading-tight">ĐÃ MẶC</span>
               <span className="font-display px-1 text-[0.75rem] leading-tight">
                 {place(region)}
               </span>

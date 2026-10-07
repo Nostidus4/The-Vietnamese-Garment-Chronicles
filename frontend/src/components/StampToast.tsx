@@ -44,15 +44,15 @@ export function StampToast() {
           exit={{ opacity: 0 }}
         >
           <motion.span
-            className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-full border-[2.5px] text-center"
+            className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-full border-[2.5px] text-center"
             style={{ borderColor: w.color, color: w.color }}
             initial={reduced ? false : { scale: 1.8, rotate: -30, opacity: 0 }}
             animate={{ scale: 1, rotate: -10, opacity: 1 }}
             transition={{ type: "spring", stiffness: 380, damping: 14, delay: 0.15 }}
             aria-hidden
           >
-            <span className="text-[0.45rem] tracking-[0.14em]">{w.label}</span>
-            <span className="font-display px-0.5 text-[0.55rem] leading-tight">{place}</span>
+            <span className="text-[0.75rem] font-semibold leading-tight">{w.label}</span>
+            <span className="font-display px-0.5 text-[0.75rem] leading-tight">{place}</span>
           </motion.span>
           <span>
             <b>Tem mới:</b> {w.label === "ĐÃ ĐẾN" ? "đã đến" : "đã hiểu"} {place}.

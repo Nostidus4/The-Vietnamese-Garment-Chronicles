@@ -28,7 +28,10 @@ export function LockedRoom({ region, data }: { region: Region; data: Bootstrap }
           ‹ <span className="hidden sm:inline">Về bản đồ</span>
         </Link>
         <div className="min-w-0 text-center">
-          <p className="m-0 text-[0.75rem] uppercase tracking-[0.3em] text-amber-100/80">Tủ áo của Bà · {place}</p>
+          {/* the place stays whole: on a 390px phone "BỘ" of "TRUNG BỘ" went to a line of its own (#119) */}
+          <p className="m-0 text-[0.75rem] uppercase tracking-[0.18em] text-amber-100/80 sm:tracking-[0.3em]">
+            Tủ áo của Bà <span className="whitespace-nowrap">· {place}</span>
+          </p>
           <h1 className="font-hand m-0 text-[1.7rem] leading-tight text-amber-50">Tủ áo còn khép</h1>
         </div>
         <span className="w-11 shrink-0" aria-hidden />
@@ -60,7 +63,7 @@ export function LockedRoom({ region, data }: { region: Region; data: Bootstrap }
               Đọc chương {chapter.province} →
             </Link>
           )}
-          <a href={CONTRIBUTE_URL} target="_blank" rel="noreferrer" className="mt-3 block text-[0.85rem] text-[#27354f] underline">
+          <a href={CONTRIBUTE_URL} target="_blank" rel="noreferrer" className="tap mt-3 flex items-center text-[0.85rem] text-[#27354f] underline">
             Con là người ở đây? Góp ý cho Bà
           </a>
           <p className="m-0 mt-4 border-t border-dashed border-stone-400 pt-3 text-[0.85rem] leading-snug text-stone-700">
@@ -68,7 +71,7 @@ export function LockedRoom({ region, data }: { region: Region; data: Bootstrap }
             {open.map((r, i) => (
               <span key={r.id}>
                 {i > 0 && (i === open.length - 1 ? " và " : ", ")}
-                <Link href={`/chapter/${r.id}`} className="text-[#27354f] underline">
+                <Link href={`/chapter/${r.id}`} className="tap-around text-[#27354f] underline">
                   {r.name}
                 </Link>
               </span>

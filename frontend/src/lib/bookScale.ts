@@ -12,6 +12,8 @@ export const SCALE_MAX = 1;
 export const SCALE_STEP = 0.1;
 export const SCALE_DEFAULT = 0.9;
 const EVENT = "vpdk-book-scale";
+// up to this height (a phone on its side) the book is always as big as it can be; the same 500px is in BookSizeControl and globals.css
+const SHORT = 500;
 
 const clamp = (s: number) => Math.min(SCALE_MAX, Math.max(SCALE_MIN, Math.round(s * 100) / 100));
 
@@ -79,8 +81,9 @@ export function pageSize(vp: { w: number; h: number }, scale: number) {
     const h = Math.min(vp.h - 220, w / 0.58);
     return { w: Math.round(w), h: Math.round(h), portrait };
   }
-  // biggest that fits: height minus the top menu and the page-turn buttons, width for two pages side by side
+  // biggest that fits: height minus the top menu and the page-turn buttons, width for two pages side by side.
+  // A phone held sideways (390px tall) has no room to spare: the book always fills it, the size buttons are hidden (#119)
   const maxH = Math.min(vp.h - 116, (vp.w * 0.48) / 0.75);
-  const h = maxH * scale;
+  const h = maxH * (vp.h <= SHORT ? 1 : scale);
   return { w: Math.round(h * 0.75), h: Math.round(h), portrait };
 }

@@ -33,9 +33,9 @@ function Stamp({ label, place, look, color }: { label: string; place: string; lo
       style={{ borderColor: look === "off" ? "#a8a29e" : color, color: look === "off" ? "#a8a29e" : color }}
       aria-label={`${label} ${place}${look === "on" ? "" : `: chưa có. ${how}`}`}
     >
-      {/* read at 100% zoom: 11–12px, not 7–9 (#117) */}
-      <span className="text-[0.6875rem] font-semibold leading-tight">{label.toUpperCase()}</span>
-      <span className="font-display px-1 text-[0.6875rem] leading-[1.1]">{place}</span>
+      {/* read at 100% zoom: 12px, not 7–9 (#117, #119) */}
+      <span className="text-[0.75rem] font-semibold leading-tight">{label.toUpperCase()}</span>
+      <span className="font-display px-1 text-[0.75rem] leading-[1.1]">{place}</span>
     </div>
   );
 }
@@ -85,7 +85,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
           return (
             <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-0.5">
               <div className="w-[5.5rem] shrink-0">
-                <a href={asset(`/?region=${r.id}&page=own`)} title={stamped === place ? undefined : `${place} · chương ${stamped}`} className="font-display block text-[0.85rem] leading-tight text-[#27354f] hover:underline">
+                <a href={asset(`/?region=${r.id}&page=own`)} title={stamped === place ? undefined : `${place} · chương ${stamped}`} className="tap-around font-display block text-[0.85rem] leading-tight text-[#27354f] hover:underline">
                   {place}
                   {stopsTotal(r) > 0 && (
                     // "tem điểm": the stops of Bà's road the reader has turned to (said here, the legend has no room)
@@ -112,7 +112,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
                 {/* one name for the stamp, "ĐÃ MẶC", even before it is earned; what is missing is said under it (#114) */}
                 <div className="flex flex-col items-center">
                   <Stamp label="Đã mặc" place={stamped} look={worn.has(r.id) ? "on" : tried.has(r.id) ? "soft" : "off"} color="#2F4A6D" />
-                  {!worn.has(r.id) && <span className="mt-0.5 max-w-[5.5rem] text-center text-[0.6875rem] leading-none text-stone-600">cần ảnh mặc thật</span>}
+                  {!worn.has(r.id) && <span className="mt-0.5 max-w-[5.5rem] text-center text-[0.75rem] leading-none text-stone-600">cần ảnh mặc thật</span>}
                 </div>
               </div>
             </li>

@@ -112,7 +112,7 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
       return "Đã xóa dữ liệu trên mây.";
     });
 
-  const btn = "rounded-full border border-stone-600 px-3 py-1 text-[0.75rem] disabled:opacity-50";
+  const btn = "tap rounded-full border border-stone-600 px-3 py-1 text-[0.75rem] disabled:opacity-50";
   return (
     <div className={`rounded-md bg-white/40 p-2 text-[0.75rem] text-stone-700 ${compact ? "" : "mt-3"}`}>
       {session ? (
@@ -158,7 +158,7 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="email của con"
-              className="min-w-0 flex-1 rounded border border-stone-300 bg-white/80 px-2 py-1"
+              className="tap min-w-0 flex-1 rounded border border-stone-300 bg-white/80 px-2 py-1"
             />
             <button type="submit" disabled={busy} className={btn}>
               Gửi link
