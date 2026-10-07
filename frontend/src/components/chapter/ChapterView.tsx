@@ -19,6 +19,7 @@ import type { Bootstrap, CompassResult, CompassState, Garment, Selection, Wardro
 import { firstLook, garmentOf, lookOf, onBody, pieceState, selectionOf, toggled, type Look, type PieceState } from "@/lib/wardrobe";
 import { useBootstrap } from "@/lib/useBootstrap";
 import { ComparePanel } from "./ComparePanel";
+import { LockedRoom } from "./LockedRoom";
 import { CompassPanel, STATE } from "./CompassPanel";
 import { Fork } from "./CompassStep";
 import { WeatherNote } from "./WeatherNote";
@@ -377,17 +378,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
         </Link>
       </p>
     );
-  if (region.status === "locked") {
-    return (
-      <main className="mx-auto max-w-2xl p-8">
-        <h1 className="font-hand text-4xl">{region.name}</h1>
-        <p className="mt-4">🔒 {region.lock_note}</p>
-        <Link href="/" className="mt-6 inline-block underline">
-          ← Về bản đồ
-        </Link>
-      </main>
-    );
-  }
+  if (region.status === "locked") return <LockedRoom region={region} data={data} />;
 
   const place = region.name.split("/")[0].trim();
   const worn = Object.values(current.worn)
