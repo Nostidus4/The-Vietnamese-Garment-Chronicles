@@ -20,7 +20,7 @@
         "lon": 107.578
       },
       "date": "Huế, một chiều mưa tháng 10",
-      "entry": "Tàu vào ga lúc trời chập choạng. Mưa không to mà cứ rả rích mãi. Anh đỡ cái túi cho tôi, bảo: “Mai anh dẫn em đi Huế một vòng, tối về ăn cơm với mẹ.” Tôi gật đầu mà tay lạnh ngắt, không biết vì mưa hay vì sợ. Đi qua cầu Trường Tiền, tôi đếm được sáu vài, mười hai nhịp. Đêm ấy nằm nghe mưa trên mái ngói, tôi tập đi tập lại câu chào mẹ anh.",
+      "entry": "Tàu vào ga lúc trời chập choạng. Mưa không to mà cứ rả rích mãi. Anh đỡ cái túi cho tôi, bảo: “Mai anh dẫn em đi Huế một vòng, tối về ăn cơm với mẹ.” Tôi gật đầu mà tay lạnh ngắt, không biết vì mưa hay vì sợ. Đi qua cầu Trường Tiền, tôi đếm được sáu nhịp, nhớ câu hát “sáu vài mười hai nhịp”. Đêm ấy nằm nghe mưa trên mái ngói, tôi tập đi tập lại câu chào mẹ anh.",
       "margin": "Con đừng cười. Hồi ấy Bà tập câu “Dạ, con chào mẹ” đến hai chục lần.",
       "ti": "Bà cũng biết run à?",
       "keepsake": "ticket",
@@ -34,11 +34,12 @@
           "verified": true
         },
         {
-          "text": "Cầu Trường Tiền dài chừng 400 m, xây xong năm 1899 thời vua Thành Thái. Câu hát “sáu vài mười hai nhịp” không sai: “vài” thường được giải thích là một đôi, sáu vài là mười hai, đếm theo nửa vòm của sáu nhịp cầu.",
+          "text": "Cầu Trường Tiền bằng thép, dài chừng 400 m, khởi công năm 1899, khánh thành 18/12/1900. Cầu có sáu nhịp, mười hai vài (thường hiểu là mỗi nhịp hai vài, ở hai bên); câu hát “sáu vài mười hai nhịp” đã đảo lại cho thuận vần.",
           "unesco": null,
           "sources": [
             "vietnamnews-truong-tien",
-            "wiki-truong-tien"
+            "wiki-truong-tien",
+            "wiki-vi-truong-tien"
           ],
           "verified": true
         }

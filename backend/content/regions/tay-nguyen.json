@@ -31,7 +31,7 @@
         "text": "Mình đến Đắk Lắk đúng mùa khô, nắng gắt mà gió mát. Đường đất đỏ, xe chạy qua là bụi bay. Mình ghé một đồi cà phê, được mời một ly đen đá đặc sánh.",
         "tips": [
           "Mùa khô nắng gắt: mang nón, kem chống nắng, nước.",
-          "Hoa cà phê thường nở vào đầu mùa khô, hỏi người địa phương trước khi đi."
+          "Hoa cà phê ở Buôn Ma Thuột thường nở khoảng cuối tháng 2 đến tháng 4, tức giữa đến cuối mùa khô, mỗi đợt chỉ 7 đến 10 ngày; hỏi người địa phương trước khi đi."
         ],
         "photo": null
       },
@@ -287,13 +287,13 @@
         "lon": 108.04
       },
       "date": "Ông kể về lễ cúng bến nước",
-      "entry": "Ông kể thường vào cuối tháng Chạp, sau mùa thu hoạch, cả buôn làm lễ cúng bến nước. Người Ê Đê tin bến nước có thần linh, nên cúng để tạ ơn mưa thuận gió hòa. Ngày thứ hai buôn đóng cổng, không ai ra vào; ngày thứ ba mới mở. Ông được mời uống rượu cần, ngồi cạnh bếp lửa nghe già làng kể chuyện.",
+      "entry": "Ông kể buôn ấy thường làm lễ cúng bến nước vào cuối tháng Chạp, sau mùa thu hoạch; buôn khác có thể chọn ngày khác. Người Ê Đê tin bến nước có thần linh, nên cúng để tạ ơn mưa thuận gió hòa. Ngày thứ hai buôn đóng cổng, không ai ra vào; ngày thứ ba mới mở. Ông được mời uống rượu cần, ngồi cạnh bếp lửa nghe già làng kể chuyện.",
       "margin": "Bây giờ Buôn Ma Thuột còn có lễ hội cà phê vào tháng 3. Con đi dịp ấy thì nhớ ghé buôn nghe chiêng nhé.",
       "ti": null,
       "keepsake": "ticket",
       "teo": [
         {
-          "text": "Lễ cúng bến nước của người Ê Đê thường diễn ra vào cuối tháng Chạp, kéo dài ba ngày, để tạ ơn thần linh cho mưa thuận gió hòa; thầy cúng, già làng và chủ bến nước chủ trì.",
+          "text": "Lễ cúng bến nước của người Ê Đê thường diễn ra vào cuối tháng Chạp, sau mùa thu hoạch (ngày làm lễ có thể khác nhau tùy buôn), kéo dài ba ngày, để tạ ơn thần linh cho mưa thuận gió hòa; thầy cúng, già làng và chủ bến nước chủ trì.",
           "unesco": null,
           "sources": [
             "vnbusiness-ben-nuoc"
@@ -316,7 +316,7 @@
         {
           "id": "cung-ben-nuoc",
           "name": "Lễ cúng bến nước",
-          "time": "Cuối tháng Chạp, ba ngày",
+          "time": "Thường cuối tháng Chạp, ba ngày (tùy buôn)",
           "month": 1,
           "place": "Các buôn Ê Đê ở Đắk Lắk",
           "text": "Tạ ơn thần linh ở bến nước cho mưa thuận gió hòa; ngày thứ hai buôn đóng cổng, ngày thứ ba mở cổng.",
@@ -442,7 +442,7 @@
           "Khi trong buôn có người đi xa trở về"
         ],
         "answer": 0,
-        "explain": "Thường vào cuối tháng Chạp, sau mùa thu hoạch, kéo dài ba ngày, để tạ ơn mưa thuận gió hòa.",
+        "explain": "Thường vào cuối tháng Chạp, sau mùa thu hoạch (tùy buôn mà ngày có thể khác), kéo dài ba ngày, để tạ ơn mưa thuận gió hòa.",
         "sources": [
           "vnbusiness-ben-nuoc"
         ],
