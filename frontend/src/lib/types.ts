@@ -56,6 +56,7 @@ export interface Zone {
 export interface Garment {
   id: string;
   region: string;
+  origin?: string | null; // instead of the region's name, for a garment of the whole country (áo dài: "Cả nước")
   name_vi: string;
   name_en: string;
   group: string;
@@ -111,12 +112,21 @@ export interface DiaryPage {
   keepsake: Keepsake | null;
 }
 /** A real, credited photo on Tí's "Hôm nay" page (never AI). */
-export interface Photo {
-  image: string;
-  alt: string;
+/** who took a real photo and under which open licence */
+export interface Credit {
   credit: string;
   license: string;
   source_url: string;
+}
+export interface Photo extends Credit {
+  image: string;
+  alt: string;
+}
+/** a "Việt hay không?" question: photo is null for an AI illustration */
+export interface QuizItem {
+  id: string;
+  image: string;
+  photo: Credit | null;
 }
 export interface Festival {
   id: string;

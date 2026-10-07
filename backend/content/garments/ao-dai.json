@@ -1,10 +1,11 @@
 {
   "id": "ao-dai",
   "region": "hue",
+  "origin": "Cả nước",
   "name_vi": "Áo dài hiện đại",
   "name_en": "Modern ao dai",
   "group": "cach-tan",
-  "period": "Thế kỷ XX: áo Le Mur (Cát Tường) đầu thập niên 1930, áo Lê Phổ, áo chít eo thập niên 1950, tay raglan Sài Gòn thập niên 1960",
+  "period": "Thế kỷ XX: áo Le Mur của họa sĩ Cát Tường đầu thập niên 1930, áo Lê Phổ, áo chít eo thập niên 1950, tay raglan Sài Gòn thập niên 1960",
   "summary": "Biểu tượng quen thuộc nhất của Việt Nam, hình thành qua nhiều lần cách tân từ áo ngũ thân.",
   "facts": [
     {
@@ -15,7 +16,7 @@
       ]
     },
     {
-      "text": "Thập niên 1950, áo dài chít eo, ôm sát thân; đến thập niên 1960, nhà may Dung ở Dakao (Sài Gòn) đưa ra kiểu tay raglan (giác lăng) – nền tảng của dáng áo dài phổ biến hiện nay.",
+      "text": "Thập niên 1950, áo dài chít eo, ôm sát thân; đến thập niên 1960, nhà may Dung ở Đa Kao (Sài Gòn) đưa ra kiểu tay raglan (giác lăng) – nền tảng của dáng áo dài phổ biến hiện nay.",
       "sources": [
         "ref-04",
         "tapchicongthuong-ao-dai"

@@ -199,7 +199,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     if (it.garment) {
       if (st === "dim") return "chưa hợp dịp này";
       const g = data.garments.find((x) => x.id === it.garment)!;
-      return data.regions.find((r) => r.id === g.region)?.name.split("/")[0].trim() ?? "";
+      return g.origin ?? data.regions.find((r) => r.id === g.region)?.name.split("/")[0].trim() ?? "";
     }
     const a = data.accessories[it.accessory!];
     if (a.verified === false && a.kind === "traditional-vn") return "Tèo đang kiểm tra";

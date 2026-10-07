@@ -7,8 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import { answerQuiz, API_URL, getQuiz } from "@/lib/api";
 import { shownQuestions } from "@/lib/quiz";
 import { track } from "@/lib/track";
+import type { QuizItem } from "@/lib/types";
 
-type Item = { id: string; image: string };
 type Result = { correct: boolean; answer_name: string; explanation: string };
 
 const ORDER_KEY = (region: string) => `vpdk-quiz-${region}`;
@@ -22,7 +22,7 @@ function savedOrder(region: string): string[] | null {
 }
 
 export function ChapterQuiz({ regionId, phase }: { regionId: string; phase: "pre" | "post" }) {
-  const [items, setItems] = useState<Item[] | null>(null);
+  const [items, setItems] = useState<QuizItem[] | null>(null);
   const [choices, setChoices] = useState<Record<string, string>>({});
   const [results, setResults] = useState<Record<string, Result>>({});
   const [picked, setPicked] = useState<Record<string, string>>({}); // the reader's answer, marked on its button
@@ -38,7 +38,7 @@ export function ChapterQuiz({ regionId, phase }: { regionId: string; phase: "pre
         if (!alive) return;
         // the post quiz reuses the pre quiz's questions and order
         const order = savedOrder(regionId);
-        const list = order ? order.map((id) => q.items.find((i) => i.id === id)).filter((i): i is Item => !!i) : q.items;
+        const list = order ? order.map((id) => q.items.find((i) => i.id === id)).filter((i): i is QuizItem => !!i) : q.items;
         if (!order) {
           try {
             sessionStorage.setItem(ORDER_KEY(regionId), JSON.stringify(list.map((i) => i.id)));
@@ -109,7 +109,20 @@ export function ChapterQuiz({ regionId, phase }: { regionId: string; phase: "pre
                     className="max-h-56 rounded bg-stone-100"
                     onError={() => setBroken((x) => ({ ...x, [it.id]: true }))}
                   />
-                  <figcaption className="absolute bottom-1 left-1 rounded bg-black/60 px-1.5 text-[0.75rem] text-white">Ảnh minh họa AI</figcaption>
+                  <figcaption className="absolute bottom-1 left-1 max-w-[calc(100%-0.5rem)] truncate rounded bg-black/60 px-1.5 text-[0.75rem] text-white">
+                    {it.photo ? (
+                      // a real photo names its author and licence (#113)
+                      <>
+                        Ảnh:{" "}
+                        <a href={it.photo.source_url} target="_blank" rel="noreferrer" className="underline">
+                          {it.photo.credit}
+                        </a>
+                        , {it.photo.license}
+                      </>
+                    ) : (
+                      "Ảnh minh họa AI"
+                    )}
+                  </figcaption>
                 </figure>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {Object.entries(choices).map(([key, name]) => {

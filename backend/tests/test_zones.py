@@ -27,7 +27,7 @@ def _with_zone(tmp_path, garment: str, part: str, **zone):
 
 
 KEEP = {"id": "giu-nguyen", "label": "Giữ nguyên"}
-WIDE = {"id": "tay-thung", "label": "Tay thụng", "prompt": "wide sleeves", "sources": ["research-19-1"]}
+WIDE = {"id": "tay-thung", "label": "Tay thụng", "prompt": "wide sleeves", "sources": ["vietnamplus-ngu-than"]}
 
 
 # ---- check_content ----
@@ -86,7 +86,7 @@ def test_real_content_gives_every_open_caution_or_free_zone_options_or_a_control
 
 # ---- Compass and try-on, on a copy where áo ngũ thân's sleeves have options ----
 
-SLEEVES = [KEEP, WIDE, {"id": "tay-lung", "label": "Tay lửng", "prompt": "three-quarter sleeves", "sources": ["research-19-1"]}]
+SLEEVES = [KEEP, WIDE, {"id": "tay-lung", "label": "Tay lửng", "prompt": "three-quarter sleeves", "sources": ["vietnamplus-ngu-than"]}]
 
 
 @pytest.fixture
@@ -101,7 +101,7 @@ def sleeves(tmp_path, client):
         if z["part"] == "độ dài tay":
             z["options"] = SLEEVES
         if z["part"] == "chất liệu":
-            z["options"] = [KEEP, {"id": "lua", "label": "Lụa", "prompt": "silk", "sources": ["research-19-1"]}]
+            z["options"] = [KEEP, {"id": "lua", "label": "Lụa", "prompt": "silk", "sources": ["vietnamplus-ngu-than"]}]
     p.write_text(json.dumps(data, ensure_ascii=False))
     store.reload(root)
 

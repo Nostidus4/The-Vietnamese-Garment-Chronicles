@@ -8,7 +8,8 @@
       "teo": "Đây là yếu tố truyền thống của một nước khác. Đặt chung với Việt phục dễ khiến người xem nhầm bản sắc của cả hai.",
       "why": "Mỗi nước có trang phục truyền thống riêng. Pha hai nước trong một bộ dễ khiến người xem nhầm bản sắc của cả hai.",
       "sources": [
-        "research-19-2"
+        "ref-48",
+        "vietnamplus-ngu-than"
       ],
       "internal_ref": "Research Mục 19.2, tiêu chí 3: không pha trộn quốc gia trên cùng một tổng thể."
     },
@@ -19,8 +20,8 @@
       "teo": "Đây là món gắn với quy chế hoặc nghi lễ. Dùng làm phụ kiện thời trang có thể làm sai ý nghĩa gốc.",
       "why": "Món này gắn với quy chế hoặc nghi lễ xưa, không phải phụ kiện thời trang. Dùng tùy tiện là làm sai ý nghĩa gốc.",
       "sources": [
-        "research-19-1",
-        "research-19-2"
+        "bvh-mu-quan-nguyen",
+        "ref-71"
       ],
       "internal_ref": "Research Mục 19.1 và 19.2, tiêu chí 4: tôn trọng yếu tố thiêng và quy chế lễ nghi.",
       "by": {
@@ -38,7 +39,9 @@
       "teo": "Phần này là cấu trúc nhận diện của trang phục. Đổi nó mà vẫn gọi tên cũ là gắn nhãn sai.",
       "why": "Đây là phần làm nên tên gọi của bộ áo. Đổi nó thì nên gọi là thiết kế mới lấy cảm hứng, không gọi bằng tên cũ.",
       "sources": [
-        "research-19-2"
+        "ref-48",
+        "vietnamplus-ngu-than",
+        "ref-03"
       ],
       "internal_ref": "Research Mục 19.2, tiêu chí 2: giữ cấu trúc nhận diện.",
       "by": {
@@ -56,7 +59,8 @@
       "teo": "Phần này linh hoạt có giới hạn. Nếu đổi xa, hãy ghi là “lấy cảm hứng” để người xem hiểu đúng.",
       "why": "Phần này đổi được nhưng có giới hạn. Đổi xa khỏi dáng gốc thì nên gắn nhãn “lấy cảm hứng” để người xem hiểu đúng.",
       "sources": [
-        "research-19-1"
+        "ref-03",
+        "ref-04"
       ],
       "internal_ref": "Research Mục 19.1: độ dài, độ rộng tay linh hoạt ở nhóm Adapted, không ở Authentic.",
       "by": {
@@ -74,7 +78,8 @@
       "teo": "Món này thường dùng trong bối cảnh khác. Bạn cân nhắc đổi dịp hoặc đổi món nhé.",
       "why": "Mỗi trang phục, phụ kiện quen dùng trong một số dịp. Mặc lệch dịp không sai hẳn, nhưng nên cân nhắc.",
       "sources": [
-        "research-7"
+        "ref-01",
+        "ref-04"
       ],
       "internal_ref": "Research Mục 7: mỗi trang phục, phụ kiện gắn với bối cảnh sử dụng riêng.",
       "by": {

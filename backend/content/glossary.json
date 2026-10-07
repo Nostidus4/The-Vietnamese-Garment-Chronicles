@@ -12,9 +12,9 @@
     {
       "id": "nha-nhac",
       "term": "Nhã nhạc",
-      "text": "Âm nhạc cung đình, dùng trong các lễ lớn của triều Nguyễn. Nhã nhạc cung đình Huế được UNESCO công nhận là di sản phi vật thể.",
+      "text": "Âm nhạc cung đình, dùng trong các lễ lớn của triều Nguyễn. UNESCO công bố Nhã nhạc năm 2003, nay thuộc Danh sách Di sản văn hóa phi vật thể đại diện của nhân loại.",
       "sources": [
-        "unesco-ich-vn"
+        "unesco-nha-nhac"
       ],
       "verified": true
     },
@@ -50,7 +50,7 @@
       "term": "Bài chòi",
       "text": "Trò chơi dân gian ngày Tết ở Trung Bộ: người chơi ngồi trong chòi tre, anh hiệu hát câu thai để xướng tên con bài. Nghệ thuật Bài chòi Trung Bộ được UNESCO ghi danh.",
       "sources": [
-        "unesco-ich-vn"
+        "unesco-bai-choi"
       ],
       "verified": true
     },
@@ -125,7 +125,8 @@
       "term": "Vọng cổ",
       "text": "Điệu hát nổi tiếng nhất của đờn ca tài tử và cải lương, bắt nguồn từ bài Dạ cổ hoài lang của nhạc sĩ Cao Văn Lầu (khoảng năm 1918).",
       "sources": [
-        "wiki-cao-van-lau"
+        "wiki-cao-van-lau",
+        "unesco-don-ca-tai-tu"
       ],
       "verified": true
     },
@@ -195,7 +196,7 @@
     {
       "id": "cong-chieng",
       "term": "Cồng chiêng",
-      "text": "Nhạc cụ đồng của các dân tộc Tây Nguyên; mỗi dàn từ ba đến mười hai chiếc, mỗi người đánh một chiếc. UNESCO công nhận năm 2005.",
+      "text": "Nhạc cụ đồng của các dân tộc Tây Nguyên; mỗi dàn từ ba đến mười hai chiếc, mỗi người đánh một chiếc. UNESCO công bố năm 2005, ghi danh vào Danh sách đại diện năm 2008.",
       "sources": [
         "unesco-gong"
       ],
