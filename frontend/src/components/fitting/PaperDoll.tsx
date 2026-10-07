@@ -10,7 +10,7 @@ import { forwardRef, useLayoutEffect, useRef, type ReactNode } from "react";
 import type { WardrobeSlot } from "@/lib/types";
 
 export type Dress = Partial<Record<WardrobeSlot, string>>; // slot → art key
-export type DollColors = { main: string; second: string; yem?: string };
+export type DollColors = { main: string; second: string; yem?: string; body?: "nu" | "nam" }; // body: some garments are cut differently for a man (#116)
 
 const INK = "#2b2118";
 const SKIN = "#efcfae";
@@ -42,7 +42,7 @@ export const PaperDoll = forwardRef<SVGSVGElement, { dress: Dress; colors: DollC
       )}
     </AnimatePresence>
     );
-  const a = (slot: WardrobeSlot) => ART[dress[slot] ?? ""]?.(colors) ?? null;
+  const a = (slot: WardrobeSlot) => ART[dress[slot] ?? ""]?.({ ...colors, body }) ?? null;
   return (
     <svg ref={ref} viewBox="0 0 200 400" className={className} role="img" aria-label={title ?? (body === "nam" ? "Búp bê giấy nam" : "Búp bê giấy")} xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -172,31 +172,57 @@ const Sleeves = ({ fill, wide = 0 }: { fill: string; wide?: number }) => (
     <path d={`M125 100 Q${137 + wide} 150 ${143 + wide} 214 L${130 - wide} 216 Q126 160 115 116 Z`} fill={fill} {...line} />
   </g>
 );
-const StandingCollar = ({ fill }: { fill: string }) => <path d="M91 80 L91 91 Q100 94 109 91 L109 80 Q100 83 91 80 Z" fill={fill} {...line} />;
-const SideButtons = () => (
-  <g fill={INK}>
-    {[0, 1, 2, 3].map((i) => (
-      <circle key={i} cx={109 + i * 4} cy={92 + i * 4} r="1.2" />
-    ))}
+// the standing collar a shade darker than the cloth, so it reads under the chin even on a dark robe (#116)
+const StandingCollar = ({ fill }: { fill: string }) => (
+  <g>
+    <path d="M90 79 L90 92 Q100 95 110 92 L110 79 Q100 82 90 79 Z" fill={shade(fill)} {...line} />
+    <path d="M90 86 Q100 89 110 86" fill="none" stroke={mix(fill, "#ffffff", 0.45)} strokeWidth="0.8" />
   </g>
+);
+/** The front flap crossing from the collar to under the right arm, buttoned along its edge: what makes the robe a robe. */
+const SideFlap = ({ fill }: { fill: string }) => (
+  <g>
+    <path d="M104 93 Q116 96 124 106" fill="none" stroke={mix(fill, INK, 0.45)} strokeWidth="1.3" strokeLinecap="round" />
+    <g fill={mix(fill, "#ffffff", 0.65)} stroke={INK} strokeWidth="0.6">
+      {[0, 1, 2, 3].map((i) => (
+        <circle key={i} cx={107 + i * 5} cy={94.5 + i * 3.4 + i * i * 0.3} r="1.6" />
+      ))}
+    </g>
+  </g>
+);
+/** The side slits of a long robe, the trousers showing through. */
+const Slits = ({ top, hem, left, right, fill }: { top: number; hem: number; left: number; right: number; fill: string }) => (
+  <path d={`M${left} ${hem} L${left + 3} ${top} L${left + 7} ${hem} Z M${right} ${hem} L${right - 3} ${top} L${right - 7} ${hem} Z`} fill={fill} {...line} strokeWidth={1.1} />
 );
 
 const ART: Record<string, (c: DollColors) => ReactNode> = {
   /* bộ áo */
-  "ao-dai": ({ main, second }) => (
-    <g>
-      {/* wide trousers to the ankle */}
-      <path d="M82 170 L118 170 L127 366 L104 366 L100 240 L96 366 L73 366 Z" fill={second} {...line} />
-      {/* back flap peeking at the sides, then the fitted top and the front flap */}
-      <path d="M80 172 L120 172 L126 344 L74 344 Z" fill={shade(main)} {...line} />
-      <path d="M75 100 Q86 89 92 88 L108 88 Q114 89 125 100 L119 172 Q100 177 81 172 Z" fill={main} {...line} />
-      <path d="M83 170 Q100 175 117 170 L121 346 L79 346 Z" fill={main} {...line} />
-      <path d="M100 176 L100 344" stroke={shade(main)} strokeWidth="0.8" opacity="0.5" />
-      <Sleeves fill={main} />
-      <StandingCollar fill={main} />
-      <SideButtons />
-    </g>
-  ),
+  "ao-dai": ({ main, second, body }) =>
+    body === "nam" ? (
+      <g>
+        {/* a man's áo dài: straight from the shoulders, no waist, to below the knee */}
+        <path d="M82 176 L118 176 L127 366 L104 366 L100 250 L96 366 L73 366 Z" fill={second} {...line} />
+        <path d="M76 180 L124 180 L128 318 L72 318 Z" fill={shade(main)} {...line} />
+        <path d="M75 100 Q86 89 92 88 L108 88 Q114 89 125 100 L124 182 Q100 186 76 182 Z" fill={main} {...line} />
+        <path d="M78 180 Q100 184 122 180 L124 320 L76 320 Z" fill={main} {...line} />
+        <Sleeves fill={main} wide={2} />
+        <StandingCollar fill={main} />
+        <SideFlap fill={main} />
+      </g>
+    ) : (
+      <g>
+        {/* wide trousers to the ankle */}
+        <path d="M82 170 L118 170 L127 366 L104 366 L100 240 L96 366 L73 366 Z" fill={second} {...line} />
+        {/* back flap peeking at the sides, then the fitted top and the front flap */}
+        <path d="M80 172 L120 172 L126 344 L74 344 Z" fill={shade(main)} {...line} />
+        <path d="M75 100 Q86 89 92 88 L108 88 Q114 89 125 100 L119 172 Q100 177 81 172 Z" fill={main} {...line} />
+        <path d="M83 170 Q100 175 117 170 L121 346 L79 346 Z" fill={main} {...line} />
+        <path d="M100 176 L100 344" stroke={shade(main)} strokeWidth="0.8" opacity="0.5" />
+        <Sleeves fill={main} />
+        <StandingCollar fill={main} />
+        <SideFlap fill={main} />
+      </g>
+    ),
   "ao-ngu-than": ({ main, second }) => (
     <g>
       <path d="M82 230 L118 230 L126 366 L104 366 L100 290 L96 366 L74 366 Z" fill={second} {...line} />
@@ -204,9 +230,11 @@ const ART: Record<string, (c: DollColors) => ReactNode> = {
       <path d="M75 100 Q86 89 92 88 L108 88 Q114 89 125 100 L131 312 Q100 318 69 312 Z" fill={main} {...line} />
       <path d="M88 100 L84 312 M112 100 L116 312" stroke={shade(main)} strokeWidth="0.9" opacity="0.55" fill="none" />
       <path d="M100 94 L100 314" stroke={shade(main)} strokeWidth="0.9" opacity="0.4" />
+      {/* slit at the sides from the thigh, the trousers showing (#116) */}
+      <Slits top={250} hem={312} left={69} right={131} fill={second} />
       <Sleeves fill={main} wide={3} />
       <StandingCollar fill={main} />
-      <SideButtons />
+      <SideFlap fill={main} />
     </g>
   ),
   "ao-tu-than": ({ main, second, yem }) => (

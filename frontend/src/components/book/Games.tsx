@@ -9,6 +9,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Game } from "@/lib/types";
 import { YOUNG } from "./Diary";
+import { boxOf, currentLayer, DRAW_ORDER, LAYER_NAME, LAYERS, layerOf, PANELS, PLACE, placesAt, tryPlace } from "@/lib/nguThan";
+import { createPortal } from "react-dom";
 
 type Props = { game: Game; onWin: () => void };
 
@@ -261,80 +263,345 @@ function QuanHo({ game, onWin }: Props) {
   );
 }
 
-/* ---------- 2b · Áo ngũ thân: put the five panels where they belong ---------- */
+/* ---------- 2b · Áo ngũ thân: build the robe from the inside out ---------- */
 
-// where each panel sits on the drawn robe (front view; the two back panels peek out behind)
-const PANELS: Record<string, { d: string; z: number }> = {
-  "back-left": { d: "M30 16 L50 12 L50 92 L22 92 Z", z: 0 },
-  "back-right": { d: "M50 12 L70 16 L78 92 L50 92 Z", z: 0 },
-  inner: { d: "M50 20 L64 24 L66 90 L50 90 Z", z: 1 },
-  "front-left": { d: "M34 18 L50 14 L50 30 L46 90 L26 90 Z", z: 2 },
-  "front-right": { d: "M50 14 L66 18 L74 90 L42 90 L46 30 Z", z: 3 },
-};
 const PANEL_FILL: Record<string, string> = { "back-left": "#1d3a5c", "back-right": "#1d3a5c", inner: "#a7b8cc", "front-left": "#2F4A6D", "front-right": "#34557d" };
 
+/** A panel's own shape, small, on its button in the tray. */
+function PanelThumb({ slot }: { slot: string }) {
+  const [x, y, w, h] = boxOf(slot);
+  return (
+    <svg viewBox={`${x - 2} ${y - 2} ${w + 4} ${h + 4}`} className="h-9 w-7 shrink-0" aria-hidden>
+      <path d={PANELS[slot].d} fill={PANEL_FILL[slot]} stroke="#10263f" strokeWidth="1" />
+    </svg>
+  );
+}
+
+/**
+ * The robe goes together the way it is worn (#108): the two back panels, the inner panel, then the two front panels
+ * that close over it. Only that layer's places are open, so none is ever hidden under another; a panel picked too
+ * early says which layer comes first. A panel is dragged onto the robe, or picked and then its place pressed.
+ */
 function NguThan({ game, onWin }: Props) {
+  const reduced = !!useReducedMotion();
   const tray = useMemo(() => shuffle(game.rounds.map((_, i) => i), 4), [game.rounds]);
-  const [placed, setPlaced] = useState<number[]>([]);
-  const [sel, setSel] = useState<number | null>(null);
+  const [placed, setPlaced] = useState<string[]>([]); // places filled, in the order they were
+  const [sel, setSel] = useState<number | null>(null); // the round (panel) in hand
   const [note, setNote] = useState<{ text: string; good: boolean } | null>(null);
-  const drop = (slot: string) => {
-    if (sel === null) return setNote({ text: "Chọn một mảnh thân áo ở dưới trước đã.", good: false });
-    const r = game.rounds[sel];
-    if (r.item !== slot) return setNote({ text: `Mảnh “${r.label}” không nằm ở đó đâu con.`, good: false });
-    const next = [...placed, sel];
+  const [drag, setDrag] = useState<{ i: number; x: number; y: number } | null>(null);
+  const svg = useRef<SVGSVGElement>(null);
+  const start = useRef<{ i: number; x: number; y: number } | null>(null);
+  const cur = currentLayer(placed);
+  const all = cur === LAYERS.length;
+  const slotOf = (i: number) => game.rounds[i].item ?? "";
+
+  /** The panel `i` put down where the places `under` are. */
+  const put = (i: number | null, under: string[]) => {
+    if (i === null) return setNote({ text: "Chọn một mảnh thân áo ở dưới, hay kéo nó lên áo, trước đã.", good: false });
+    const r = game.rounds[i];
+    const res = tryPlace(placed, slotOf(i), under);
+    if (!res.ok) {
+      setNote({
+        good: false,
+        text:
+          res.why === "later"
+            ? `“${r.label}” nằm lớp ngoài, ghép sau con ạ. Áo ghép từ trong ra: giờ tới ${LAYER_NAME[cur]}.`
+            : `Mảnh “${r.label}” không nằm ở đó đâu con.`,
+      });
+      return;
+    }
+    const next = [...placed, slotOf(i)];
     setPlaced(next);
     setSel(null);
     setNote({ text: r.explain ?? "", good: true });
-    if (next.length === game.rounds.length) setTimeout(onWin, 1800);
+    if (currentLayer(next) === LAYERS.length) setTimeout(onWin, 1800);
   };
-  const filled = (slot: string) => placed.some((i) => game.rounds[i].item === slot);
-  const all = placed.length === game.rounds.length;
+  /** Every place under a point of the screen, in the robe's 100×100 box; none when the point is off the robe. */
+  const placesUnder = (cx: number, cy: number) => {
+    const m = svg.current?.getScreenCTM()?.inverse();
+    if (!m) return [];
+    const at = new DOMPoint(cx, cy).matrixTransform(m);
+    return at.x < 0 || at.y < 0 || at.x > 100 || at.y > 100 ? [] : placesAt(at.x, at.y);
+  };
+
   return (
     <div>
-      <svg viewBox="0 0 100 100" className="mx-auto block w-[62%]" aria-label="Chiếc áo ngũ thân đang ghép">
-        {/* sleeves and the standing collar are always there, the panels are what we place */}
+      {/* the three layers, the one being built lit */}
+      <ol className="m-0 mb-1.5 flex list-none flex-wrap justify-center gap-1 p-0 text-[0.7rem]">
+        {LAYER_NAME.map((name, k) => (
+          <li key={name} className={`rounded-full px-2 py-0.5 ${k < cur ? "bg-[#5E7F4A] text-amber-50" : k === cur ? "bg-[#27354f] text-amber-50" : "border border-stone-400 text-stone-600"}`}>
+            {k + 1} · {name} {k < cur ? "✓" : ""}
+          </li>
+        ))}
+      </ol>
+      <svg
+        ref={svg}
+        viewBox="0 0 100 100"
+        className="mx-auto block w-[58%] touch-none"
+        role="group"
+        aria-label={`Chiếc áo ngũ thân đang ghép: ${all ? "đã đủ năm thân" : `đang ghép ${LAYER_NAME[cur]}`}`}
+        onClick={(e) => {
+          const under = placesUnder(e.clientX, e.clientY);
+          if (under.some((slot) => layerOf(slot) === cur && !placed.includes(slot))) put(sel, under);
+        }}
+      >
         <path d="M34 18 L8 40 L14 48 L30 34 Z M66 18 L92 40 L86 48 L70 34 Z" fill={all ? "#2F4A6D" : "#d9ceb6"} stroke="#8a7a5c" strokeWidth=".5" />
         <path d="M42 10 Q50 7 58 10 L58 15 Q50 12 42 15 Z" fill={all ? "#1d3a5c" : "#d9ceb6"} stroke="#8a7a5c" strokeWidth=".5" />
-        {Object.entries(PANELS)
-          .sort((a, b) => a[1].z - b[1].z)
-          .map(([slot, p]) => (
+        {/* the layers still to come: a faint outline, not a place to press */}
+        {DRAW_ORDER.filter((slot) => layerOf(slot) > cur).map((slot) => (
+          <path key={`later-${slot}`} d={PANELS[slot].d} fill="none" stroke="#8a7a5c" strokeWidth=".4" strokeDasharray="1 1.5" opacity=".45" pointerEvents="none" />
+        ))}
+        {DRAW_ORDER.filter((slot) => layerOf(slot) <= cur).map((slot) =>
+          placed.includes(slot) ? (
+            <motion.path
+              key={slot}
+              d={PANELS[slot].d}
+              fill={PANEL_FILL[slot]}
+              stroke="#10263f"
+              strokeWidth=".6"
+              pointerEvents="none"
+              initial={reduced ? false : { opacity: 0, scale: 1.08 }}
+              animate={{ opacity: 1, scale: 1 }}
+              style={{ transformOrigin: "50% 50%" }}
+            />
+          ) : (
             <path
               key={slot}
-              d={p.d}
-              onClick={() => drop(slot)}
-              className="cursor-pointer"
-              fill={filled(slot) ? PANEL_FILL[slot] : "rgba(255,255,255,0.35)"}
-              stroke={filled(slot) ? "#10263f" : "#8a7a5c"}
-              strokeWidth=".6"
-              strokeDasharray={filled(slot) ? undefined : "2 1.5"}
-              opacity={slot === "inner" && filled("front-right") ? 0.35 : 1}
+              d={PANELS[slot].d}
               role="button"
-              aria-label={`Chỗ ${slot}`}
+              tabIndex={0}
+              aria-label={PLACE[slot]}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter" && e.key !== " ") return;
+                e.preventDefault();
+                put(sel, [slot]);
+              }}
+              className={`cursor-pointer focus:outline-none focus-visible:stroke-[#b4462f] ${sel !== null || drag ? "ngu-than-open" : ""}`}
+              fill="rgba(255,255,255,0.45)"
+              stroke="#8a4b2a"
+              strokeWidth=".7"
+              strokeDasharray="2 1.5"
             />
-          ))}
-        {/* the buttons along the right, once the front is closed */}
+          ),
+        )}
         {all && [34, 44, 54, 64, 74].map((y) => <circle key={y} cx={y < 40 ? 58 : 62 + (y - 44) * 0.12} cy={y} r="1.4" fill="#e8d9a8" />)}
       </svg>
-      <div className="mt-2 flex flex-wrap gap-1">
+      <div className="mt-2 flex flex-wrap justify-center gap-1">
         {tray
-          .filter((i) => !placed.includes(i))
+          .filter((i) => !placed.includes(slotOf(i)))
           .map((i) => (
             <button
               key={i}
               type="button"
               data-hint
-              onClick={() => setSel(i)}
-              className={`rounded border px-2 py-0.5 text-[0.75rem] ${sel === i ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
+              aria-pressed={sel === i}
+              // a press picks the panel; a press that moves drags it onto the robe
+              onPointerDown={(e) => {
+                start.current = { i, x: e.clientX, y: e.clientY };
+                e.currentTarget.setPointerCapture(e.pointerId);
+              }}
+              onPointerMove={(e) => {
+                const st = start.current;
+                if (!st || (!drag && Math.hypot(e.clientX - st.x, e.clientY - st.y) < 6)) return;
+                setDrag({ i: st.i, x: e.clientX, y: e.clientY });
+              }}
+              onPointerUp={(e) => {
+                const st = start.current;
+                start.current = null;
+                if (!st) return;
+                if (drag) {
+                  setDrag(null);
+                  const under = placesUnder(e.clientX, e.clientY);
+                  if (under.length) put(st.i, under);
+                } else setSel((v) => (v === st.i ? null : st.i));
+              }}
+              onPointerCancel={() => {
+                start.current = null;
+                setDrag(null);
+              }}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter" && e.key !== " ") return;
+                e.preventDefault();
+                setSel((v) => (v === i ? null : i));
+              }}
+              className={`flex touch-none items-center gap-1.5 rounded-md border px-1.5 py-1 text-left text-[0.75rem] leading-tight ${sel === i ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
             >
-              {game.rounds[i].label}
+              <PanelThumb slot={slotOf(i)} />
+              <span className="max-w-[6.5rem]">{game.rounds[i].label}</span>
             </button>
           ))}
       </div>
-      <p className="m-0 mt-1 text-[0.75rem] text-stone-600">
-        Đã ghép {placed.length}/{game.rounds.length} thân · chọn mảnh rồi bấm vào chỗ trên áo
+      <p className="m-0 mt-1 text-center text-[0.75rem] text-stone-600">
+        Đã ghép {placed.length}/{game.rounds.length} thân · kéo mảnh lên áo, hay chọn mảnh rồi bấm vào chỗ nét đứt
       </p>
       {note && <Hint tone={note.good ? "good" : "bad"}>{note.text}</Hint>}
+      {/* the panel following the pointer; on the page body, as the book's pages are transformed */}
+      {drag &&
+        createPortal(
+          <div className="pointer-events-none fixed z-[90] -translate-x-1/2 -translate-y-1/2 drop-shadow-lg" style={{ left: drag.x, top: drag.y }} aria-hidden>
+            <PanelThumb slot={slotOf(drag.i)} />
+          </div>,
+          document.body,
+        )}
+    </div>
+  );
+}
+
+/* ---------- 2c · Bữa cơm ra mắt: a seat at the tray, then a cup falls ---------- */
+
+// where the family sits around the tray (left %, top %), and the dishes on it; Bà sits at the bottom
+const SEATS = [
+  { x: 50, y: 7 },
+  { x: 8, y: 50 },
+  { x: 92, y: 50 },
+];
+const DISHES = [
+  { x: 36, y: 36, c: "#9a5a2a" },
+  { x: 64, y: 36, c: "#d0724a" },
+  { x: 36, y: 62, c: "#6f8f4a" },
+  { x: 64, y: 62, c: "#c9a24a" },
+];
+
+/**
+ * Bà's first meal with his mother, played at the tray instead of answered as a quiz (#108 follow-up): invite the
+ * family to eat, eldest first; taste each dish a little; then the cup slips. The rounds give the words: round 0 the
+ * people in the order they are invited, round 1 the dishes, round 2 the choice when the cup falls.
+ */
+function MamCom({ game, onWin }: Props) {
+  const reduced = !!useReducedMotion();
+  const [moi, tasting, cup] = game.rounds;
+  const [step, setStep] = useState(0); // 0 invite · 1 taste · 2 the cup · 3 done
+  const [invited, setInvited] = useState(0); // how many, in order
+  const [tasted, setTasted] = useState<number[]>([]);
+  const [fell, setFell] = useState(false);
+  const [picked, setPicked] = useState<number | null>(null);
+  const [note, setNote] = useState<{ text: string; tone: "good" | "bad" | "neutral" } | null>(null);
+  const order = useMemo(() => shuffle(cup.choices.map((_, i) => i), 5), [cup.choices]);
+
+  // the cup slips a moment after the last dish, by itself: the reader only chooses what Bà does next
+  useEffect(() => {
+    if (step !== 2 || fell) return;
+    const t = setTimeout(() => {
+      setFell(true);
+      setNote(null); // the praise for the dishes makes room for what happens next
+    }, reduced ? 0 : 900);
+    return () => clearTimeout(t);
+  }, [step, fell, reduced]);
+
+  const invite = (k: number) => {
+    if (step !== 0 || k < invited) return;
+    if (k !== invited) return setNote({ tone: "bad", text: "Mời người lớn nhất trước con ạ." });
+    const n = invited + 1;
+    setInvited(n);
+    if (n === moi.choices.length) {
+      setNote({ tone: "good", text: moi.explain ?? "" });
+      setStep(1);
+    } else setNote({ tone: "neutral", text: `“Mời ${moi.choices[k].split(" ")[0].toLowerCase()} ăn cơm.”` }); // "Mẹ anh" → "Mời mẹ…"
+  };
+  const taste = (k: number) => {
+    if (step !== 1) return;
+    if (tasted.includes(k)) return setNote({ tone: "bad", text: "Mỗi món một chút thôi, để phần cả nhà con ạ." });
+    const n = [...tasted, k];
+    setTasted(n);
+    if (n.length === tasting.choices.length) {
+      setNote({ tone: "good", text: `${tasting.item ?? ""} ${tasting.explain ?? ""}`.trim() });
+      setStep(2);
+    } else setNote({ tone: "neutral", text: `Bà nếm một chút ${tasting.choices[k].toLowerCase()}.` });
+  };
+  const react = (k: number) => {
+    setPicked(k);
+    if (k !== cup.answer) return setNote({ tone: "bad", text: "Bà mà làm vậy thì cả nhà buồn lắm. Con thử cách khác nhé." });
+    setNote({ tone: "good", text: cup.explain ?? "" });
+    setStep(3);
+    setTimeout(onWin, 2200);
+  };
+
+  const phase = [moi.label, tasting.label, cup.label];
+  return (
+    <div>
+      <ol className="m-0 mb-1.5 flex list-none flex-wrap justify-center gap-1 p-0 text-[0.7rem]">
+        {phase.map((name, k) => (
+          <li key={k} className={`rounded-full px-2 py-0.5 ${k < step ? "bg-[#5E7F4A] text-amber-50" : k === step ? "bg-[#27354f] text-amber-50" : "border border-stone-400 text-stone-600"}`}>
+            {k + 1} · {name} {k < step ? "✓" : ""}
+          </li>
+        ))}
+      </ol>
+      <p className="font-hand m-0 mb-1 text-center text-[0.95rem] leading-snug" style={{ color: YOUNG }}>
+        {[moi, tasting, cup, cup][step].prompt}
+      </p>
+
+      {/* the tray seen from above, the family around it */}
+      <div className={`relative mx-auto mt-4 aspect-square transition-[width] ${step >= 2 ? "w-[min(11rem,52%)]" : "w-[min(15rem,70%)]"}`}>
+        <div className="absolute inset-[16%] rounded-full border-4 border-[#5b3a22] bg-[radial-gradient(circle_at_40%_35%,#b07a45,#7a4a26)] shadow-[0_6px_14px_rgba(40,20,0,0.35)]" aria-hidden />
+        {/* the rice pot in the middle */}
+        <div className="absolute left-1/2 top-1/2 h-[13%] w-[13%] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#3b2615] bg-[#f3ead7]" aria-hidden />
+        {tasting.choices.map((d, k) => (
+          <motion.button
+            key={d}
+            type="button"
+            data-hint={step === 1 || undefined}
+            disabled={step !== 1}
+            onClick={() => taste(k)}
+            aria-label={`${d}${tasted.includes(k) ? ", đã nếm" : ""}`}
+            title={d}
+            className="absolute grid h-[17%] w-[17%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-[#2F4A6D] bg-[#f6efe0] disabled:cursor-default"
+            style={{ left: `${DISHES[k].x}%`, top: `${DISHES[k].y}%` }}
+            animate={tasted.includes(k) && !reduced ? { scale: [1, 0.9, 1] } : undefined}
+          >
+            <span className="h-[62%] w-[62%] rounded-full" style={{ background: DISHES[k].c, opacity: tasted.includes(k) ? 0.55 : 1 }} aria-hidden />
+          </motion.button>
+        ))}
+        {moi.choices.map((who, k) => (
+          <button
+            key={who}
+            type="button"
+            data-hint={(step === 0 && k === 0) || undefined}
+            disabled={step !== 0 || k < invited}
+            onClick={() => invite(k)}
+            className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center disabled:cursor-default"
+            style={{ left: `${SEATS[k].x}%`, top: `${SEATS[k].y}%` }}
+          >
+            <span className={`grid h-8 w-8 place-items-center rounded-full border-2 text-[0.95rem] ${k < invited ? "border-[#5E7F4A] bg-[#e7efdc]" : "border-[#8a4b2a] bg-[#f6efe0]"}`} aria-hidden>
+              {k === 0 ? "👵" : k === 1 ? "👨" : "👧"}
+            </span>
+            <span className="mt-0.5 whitespace-nowrap rounded bg-white/75 px-1 text-[0.68rem] leading-tight text-[#27354f]">
+              {who}
+              {k < invited ? " ✓" : ""}
+            </span>
+          </button>
+        ))}
+        {/* Bà's seat and her cup */}
+        <div className="absolute bottom-[1%] left-1/2 flex -translate-x-1/2 flex-col items-center" aria-hidden>
+          <motion.span
+            className="block h-4 w-6 rounded-b-full border-2 border-[#2F4A6D] bg-[#f6efe0]"
+            animate={fell && step < 3 && !reduced ? { y: 14, rotate: 70, opacity: 0.8 } : { y: 0, rotate: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 12 }}
+          />
+          <span className="mt-0.5 rounded bg-white/75 px-1 text-[0.68rem] text-[#27354f]">Bà</span>
+        </div>
+      </div>
+
+      <p className="m-0 mt-1 text-center text-[0.75rem] text-stone-600">
+        {step === 0 && `Bấm mời từng người · đã mời ${invited}/${moi.choices.length}`}
+        {step === 1 && `Bấm vào từng đĩa để nếm · đã nếm ${tasted.length}/${tasting.choices.length}`}
+        {step >= 2 && (fell ? "Bà làm gì đây?" : "…")}
+      </p>
+      {step >= 2 && fell && (
+        <div className="mt-1 flex flex-col gap-0.5">
+          {order.map((k) => (
+            <button
+              key={k}
+              type="button"
+              disabled={step === 3}
+              onClick={() => react(k)}
+              className={`rounded border px-2 py-0.5 text-left text-[0.78rem] leading-snug ${picked === k ? (k === cup.answer ? "border-[#5E7F4A] bg-[#e7efdc]" : "border-[#B5452E] bg-[#f7e0d8]") : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
+            >
+              {cup.choices[k]}
+            </button>
+          ))}
+        </div>
+      )}
+      {note && <Hint tone={note.tone}>{note.text}</Hint>}
     </div>
   );
 }
@@ -743,6 +1010,7 @@ const KINDS: Record<Game["kind"], (p: Props) => React.ReactElement> = {
   "dong-ho": DongHo,
   "quan-ho": QuanHo,
   "ngu-than": NguThan,
+  "mam-com": MamCom,
   "cay-beo": CayBeo,
   "xep-do": XepDo,
   "khuy-bac": KhuyBac,
@@ -764,9 +1032,14 @@ export const HOW_TO: Record<Game["kind"], string[]> = {
     "Đúng thì bấm “Lượt tiếp →”; sai thì đọc lời nhắc rồi chọn lại.",
   ],
   "ngu-than": [
-    "Bấm một mảnh thân áo ở hàng nút phía dưới (nút đổi màu xanh là đang chọn).",
-    "Bấm vào đúng chỗ của mảnh ấy trên chiếc áo (chỗ viền nét đứt).",
+    "Áo ghép từ trong ra như khi mặc: hai thân sau trước, rồi thân con, rồi hai thân trước khép lại.",
+    "Kéo một mảnh ở dưới lên đúng chỗ trên áo, hoặc bấm chọn mảnh rồi bấm vào chỗ viền nét đứt.",
     "Ghép đủ năm thân thì hàng khuy bên phải hiện ra.",
+  ],
+  "mam-com": [
+    "Mời cơm: bấm vào từng người quanh mâm, người lớn nhất trước.",
+    "Nếm mỗi món: bấm vào từng đĩa một lần, món nào cũng một chút.",
+    "Khi chén rơi, chọn điều Bà nên làm.",
   ],
   "cay-beo": [
     "Nhìn đồ treo trên đầu mỗi cây sào của từng chiếc ghe.",

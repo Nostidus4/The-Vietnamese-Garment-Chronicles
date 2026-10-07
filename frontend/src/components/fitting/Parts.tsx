@@ -40,15 +40,15 @@ export function EventPicker({ data, onPick }: { data: Bootstrap; onPick: (occasi
 /* ---------- the side sheet ---------- */
 
 export type SheetTab = "story" | "teo" | "quiz-pre" | "quiz-post" | "shops";
-// Hỏi Tèo, the quiz and the shops all ask the server: a build without one shows only the garment's story (#48)
-const SHEET_TABS: { id: SheetTab; name: string }[] = HAS_API
-  ? [
-      { id: "story", name: "Bộ áo" },
-      { id: "teo", name: "Hỏi Tèo" },
-      { id: "quiz-pre", name: "Việt hay không?" },
-      { id: "shops", name: "Thuê / may" },
-    ]
-  : [{ id: "story", name: "Bộ áo" }];
+// Hỏi Tèo, the quiz and the shops all ask the server: a build without one opens only the garment's story (#48), but
+// still shows the other tabs, faded, and says why, instead of a sheet with one tab and no word (#116)
+const SHEET_TABS: { id: SheetTab; name: string }[] = [
+  { id: "story", name: "Bộ áo" },
+  { id: "teo", name: "Hỏi Tèo" },
+  { id: "quiz-pre", name: "Việt hay không?" },
+  { id: "shops", name: "Thuê / may" },
+];
+export const FULL_ONLY = "Cần máy chủ: có ở bản đầy đủ";
 
 export function AboutSheet({
   tab,
@@ -90,8 +90,18 @@ export function AboutSheet({
               <div role="tablist" className="flex flex-wrap gap-1">
                 {SHEET_TABS.map((t) => {
                   const on = tab === t.id || (t.id === "quiz-pre" && tab === "quiz-post");
+                  const off = !HAS_API && t.id !== "story";
                   return (
-                    <button key={t.id} type="button" role="tab" aria-selected={on} onClick={() => onTab(t.id)} className={`rounded-full px-3 py-1 text-sm ${on ? "bg-[#27354f] text-amber-50" : "border border-stone-400/70"}`}>
+                    <button
+                      key={t.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={on}
+                      aria-disabled={off || undefined}
+                      title={off ? FULL_ONLY : undefined}
+                      onClick={() => !off && onTab(t.id)}
+                      className={`rounded-full px-3 py-1 text-sm ${on ? "bg-[#27354f] text-amber-50" : off ? "cursor-not-allowed border border-dashed border-stone-400 text-stone-500" : "border border-stone-400/70"}`}
+                    >
                       {t.name}
                     </button>
                   );
@@ -101,6 +111,11 @@ export function AboutSheet({
                 Đóng
               </button>
             </div>
+            {!HAS_API && (
+              <p className="m-0 mb-3 rounded-md bg-[#f7e4c8] px-3 py-2 text-[0.8rem] text-[#5b3a22]">
+                Bản đọc thử chỉ mở được phần <b>Bộ áo</b>. Hỏi Tèo, câu đố “Việt hay không?” và chỗ thuê / may cần máy chủ, có ở bản đầy đủ.
+              </p>
+            )}
             {body[HAS_API ? tab : "story"]}
           </motion.aside>
         </motion.div>

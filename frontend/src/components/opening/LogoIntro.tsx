@@ -1,18 +1,20 @@
 "use client";
 
-// The first thing anyone sees: the logo rises out of the blank cream page, a golden light passes over it,
-// then it dissolves back into the page and the story rises from that same page (OpeningPlayer's paper).
+// The first thing anyone sees: the logo on the cream page (already in the static HTML, see BootShell), a golden light
+// passes over it, then it dissolves back into the page and the story rises from that same page (OpeningPlayer's paper).
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { asset } from "@/lib/base";
+import { LOGO_SMALL, TAGLINE, logoImg } from "./BootShell";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-/** The logo at 560 px wide (scripts/optimize-images.mjs). */
-export const LOGO_SMALL = "/page/logo-mark-560.webp";
 
 export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave: () => void; onDone: () => void }) {
   const reduced = !!useReducedMotion();
+  // BootShell already put the page and the logo on screen, unless it stayed dark for a returning visitor (layout.tsx)
+  // who came back with "Xem lại mở đầu": then the logo rises out of the page as it used to
+  const [fromShell] = useState(() => document.documentElement.dataset.seen !== "1");
   const [shown, setShown] = useState(false); // logo image decoded
   const [minTime, setMinTime] = useState(false); // the logo has had its moment
   const [skippable, setSkippable] = useState(false);
@@ -44,7 +46,8 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
     <motion.div
       className="paper fixed inset-0 z-[45] flex cursor-pointer flex-col items-center justify-center px-6"
       onClick={() => skippable && ready && leave()}
-      initial={{ opacity: 0 }}
+      // starts where BootShell left off: nothing fades in from an empty page (#110)
+      initial={fromShell ? false : { opacity: 0 }}
       animate={{ opacity: leaving ? 0 : 1 }}
       transition={{ duration: leaving ? (reduced ? 0.4 : 0.9) : 0.6, ease: [0.4, 0, 0.2, 1] }}
       role="img"
@@ -52,7 +55,7 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
     >
       <motion.div
         className="relative w-[min(72vw,520px)]"
-        initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 10, filter: "blur(6px)" }}
+        initial={fromShell ? false : reduced ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 10, filter: "blur(6px)" }}
         animate={
           !shown
             ? {}
@@ -68,17 +71,7 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
             It is the largest thing on a first visit's screen (Lighthouse LCP, #64): phones get the 560 px copy, which
             the light's mask below and the logo above the first question also use, so a phone downloads one file */}
         {/* eslint-disable-next-line @next/next/no-img-element -- a hand-made srcSet: the static site has no image server */}
-        <img
-          src={asset(LOGO_SMALL)}
-          srcSet={`${asset(LOGO_SMALL)} 560w, ${asset("/page/logo-mark.webp")} 1118w`}
-          sizes="min(72vw, 520px)"
-          alt=""
-          width={1118}
-          height={802}
-          fetchPriority="high"
-          className="h-auto w-full"
-          onLoad={() => setShown(true)}
-        />
+        <img {...logoImg()} alt="" fetchPriority="high" className="h-auto w-full" onLoad={() => setShown(true)} />
         {/* a golden light passing over the logo once, like light on gold thread */}
         {!reduced && shown && (
           <motion.span
@@ -105,7 +98,7 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
         animate={shown && !leaving ? { opacity: 1, y: 0 } : { opacity: 0 }}
         transition={{ duration: 0.8, delay: leaving ? 0 : 1.0, ease: EASE }}
       >
-        Hiểu để mặc đúng – Sáng tạo để mặc theo cách của mình.
+        {TAGLINE}
       </motion.p>
     </motion.div>
   );

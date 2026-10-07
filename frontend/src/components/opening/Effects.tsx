@@ -298,7 +298,8 @@ function Label({ e }: { e: TimedEffect }) {
   return (
     <motion.div
       ref={ref}
-      className="font-display pointer-events-none absolute whitespace-nowrap rounded-[3px] px-[0.9em] py-[0.3em] text-[#2F4A6D] shadow-md"
+      // above the text boxes: the scene's title is never covered by its narration (#110)
+      className="font-display pointer-events-none absolute z-[1] whitespace-nowrap rounded-[3px] px-[0.9em] py-[0.3em] text-[#2F4A6D] shadow-md"
       style={{
         left: `${e.x}%`,
         top: `${e.y}%`,

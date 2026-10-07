@@ -53,6 +53,11 @@ describe("a remembered look", () => {
     expect(firstLook(data, items, byId, "hue", undefined, last)?.worn.set).not.toBe("ao-ba-ba");
     expect(garments.find((g) => g.id === byId.get(firstLook(data, items, byId, "hue", undefined, last)!.worn.set!)?.garment)?.region).toBe("hue");
   });
+  it("with nothing remembered opens the region's own garment first: Huế is áo ngũ thân (#116)", () => {
+    expect(firstLook(data, items, byId, "hue", undefined, null)?.worn.set).toBe("ao-ngu-than");
+    expect(firstLook(data, items, byId, "bac-bo", undefined, null)?.worn.set).toBe("ao-tu-than");
+    expect(firstLook(data, items, byId, "nam-bo", undefined, null)?.worn.set).toBe("ao-ba-ba");
+  });
   it("of this region is kept, and ?garment= always wins", () => {
     expect(firstLook(data, items, byId, "nam-bo", undefined, wearing("ao-ba-ba", { feet: "guoc-moc" }))?.worn).toEqual({ set: "ao-ba-ba", feet: "guoc-moc" });
     expect(firstLook(data, items, byId, "nam-bo", "ao-dai", wearing("ao-ba-ba"))?.worn.set).toBe("ao-dai");

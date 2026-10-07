@@ -9,7 +9,12 @@ import { AmbientSound } from "./AmbientSound";
 import { asset } from "@/lib/base";
 
 export function SiteNav() {
-  const shared = usePathname()?.startsWith("/du-ky/p") ?? false;
+  const path = usePathname() ?? "";
+  // only the shared page itself (/du-ky/p/?id=…): any deeper address is a 404, prebuilt with the usual links, and
+  // switching them on in the browser broke the hydration of that page (React #418, #118)
+  const shared = /^\/du-ky\/p\/?$/.test(path);
+  // the page the reader is on is marked for screen readers and drawn with a gold rim (#111)
+  const here = (p: string) => (path === p || path === `${p}/` ? "page" : undefined);
   return (
     <nav className="site-nav absolute right-4 top-3 z-30 flex gap-4 text-sm sm:fixed">
       {shared ? (
@@ -20,10 +25,10 @@ export function SiteNav() {
       ) : (
         <>
           {/* a full load on purpose: pressed while Bà's book is open, it puts the book back on the table (#65) */}
-          <a href={asset("/")}>Sổ của Bà</a>
-          <Link href="/du-ky">Du Ký của con</Link>
-          {/* full reload on purpose so the opening restarts from the first screen */}
-          <a href={asset("/?opening=1")}>Xem lại mở đầu</a>
+          <a href={asset("/")} aria-current={here("/")}>Sổ của Bà</a>
+          <Link href="/du-ky" aria-current={here("/du-ky")}>Du Ký của con</Link>
+          {/* full reload on purpose so the opening restarts from the first screen; a lesser button, it is not a place */}
+          <a href={asset("/?opening=1")} className="site-nav-minor">Xem lại mở đầu</a>
         </>
       )}
       <AmbientSound />
