@@ -350,6 +350,10 @@ body {
   @media (max-aspect-ratio: 3/4) {
     .desk-bg { object-position: 58% 55%; }
   }
+  /* upright phones get Desk-portrait.webp, already cut around that 58% (components/desk/DeskBackdrop) */
+  @media (max-aspect-ratio: 3/5) {
+    .desk-bg { object-position: 50% 55%; }
+  }
   /* a soft pool of shade under the book and a darker rim so the notebook owns the centre */
   .desk-light {
     background:
@@ -660,6 +664,9 @@ body {
   /* pulled up over the layout's 2.5rem spacer so the room runs to the top edge under the site links */
   .fitting { min-height: 100vh; margin-top: -2.5rem; background-color: #140c07; background-size: cover; background-position: 50% 42%; background-attachment: fixed; padding: 3.6rem 1rem 6.5rem; color: #2b2118; }
   @media (max-width: 760px) { .fitting { padding-bottom: 10rem; background-attachment: scroll; } }
+  /* the backdrop comes from components/chapter/RoomShell (roomStyle); upright phones see only its middle strip (#120) */
+  .fitting { background-image: var(--room-shade), var(--room); }
+  @media (max-aspect-ratio: 3/5) { .fitting { background-image: var(--room-shade), var(--room-strip); } }
   .fitting-weather { border-radius: 999px; background: rgba(251, 246, 234, 0.9); padding: 0.1rem 0.9rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); }
   .fitting-weather p { font-size: 0.95rem !important; }
   .fitting-head { max-width: 80rem; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
@@ -809,3 +816,6 @@ body {
   .look-stamp { position: absolute; right: 18px; top: 18px; width: 4.8rem; height: 4.8rem; border-radius: 999px; border: 2.5px dashed #b5452e; background: rgba(251, 246, 234, 0.75); color: #b5452e; display: grid; place-items: center; text-align: center; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; line-height: 1.25; }
 }
 
+/* the static "Ai mặc?" of a first visit (components/chapter/RoomShell): gone before paint for a reader who answered.
+   Outside the layers, so it beats the box's own `grid` utility. */
+[data-who-known] .who-static { display: none; }

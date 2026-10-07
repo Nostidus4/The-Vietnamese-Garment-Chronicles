@@ -16,9 +16,7 @@ import { GameBody, HOW_TO } from "./Games";
 import { TeoPin } from "./TeoPin";
 import { RichText } from "./Glossary";
 import { asset } from "@/lib/base";
-
-/** Where someone who wants to write a province's chapter starts (README, "Viết một chương cho tỉnh của bạn"). */
-export const CONTRIBUTE_URL = "https://github.com/Nostidus4/The-Vietnamese-Garment-Chronicles#viết-một-chương-cho-tỉnh-của-bạn";
+import { CONTRIBUTE_URL } from "@/lib/links";
 
 /** The way to write a chapter: a guide on GitHub, so the link says it opens another site in a new tab. */
 function WriteLink() {

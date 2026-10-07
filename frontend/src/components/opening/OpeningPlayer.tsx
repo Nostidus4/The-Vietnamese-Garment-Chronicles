@@ -180,9 +180,11 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
   );
 
   // First screen: wait for its artwork, the logo to start leaving and the viewer's sound choice, then rise out of a blank cream page.
-  // The artwork only starts downloading once the logo leaves (see `defer`), so the wait counts from then.
+  // The artwork only starts downloading once the logo has left and the viewer has answered the sound question (see
+  // `defer`): a visitor who leaves at the question never pays for three full-screen pictures (#120). The wait counts from then.
+  const waitArt = hold || sound === null;
   useEffect(() => {
-    if (hold) return;
+    if (waitArt) return;
     let alive = true;
     const first = scenes.current[screens[idx].id];
     Promise.race([first?.ready, new Promise((r) => setTimeout(r, 4000))]).then(() => alive && setArtReady(true));
@@ -190,7 +192,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
       alive = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hold]);
+  }, [waitArt]);
   useEffect(() => {
     if (!artReady || hold || sound === null || phase !== "intro") return;
     let alive = true;
@@ -411,14 +413,14 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
           compact={compact}
           debug={debug}
           hidden={i === incoming}
-          defer={hold}
+          defer={waitArt}
           viewport={viewport}
         />
       ))}
 
       {/* preload the next screens with the same sizes so the browser reuses the optimised files */}
       <div className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0" aria-hidden>
-        {!hold && preload.map((i) => (
+        {!waitArt && preload.map((i) => (
           <Image key={screens[i].id} src={asset(screens[i].image)} alt="" width={1672} height={941} sizes={IMAGE_SIZES} quality={88} />
         ))}
       </div>
@@ -449,7 +451,7 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
         <div className="relative" style={{ height: "min(78vh, 62vw)", aspectRatio: "1086 / 1448" }}>
           <div ref={(el) => void (ov.current.cover = el!)} className="absolute inset-0 origin-left [transform-style:preserve-3d]">
             <div className="absolute inset-0 [backface-visibility:hidden]">
-              {!hold && <BookCover sizes="62vw" />}
+              {!waitArt && <BookCover sizes="62vw" />}
             </div>
             <div className="paper absolute inset-0 rounded-l-md [backface-visibility:hidden] [transform:rotateY(180deg)]" />
           </div>

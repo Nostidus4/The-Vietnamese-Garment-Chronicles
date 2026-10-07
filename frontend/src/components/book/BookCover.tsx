@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { asset } from "@/lib/base";
 
+const COVER = "/page/title-page.webp";
+const COVER_SMALL = "/page/title-page-560.webp"; // scripts/optimize-images.mjs
 const LOGO = "/page/logo-mark-560.webp"; // LogoIntro's LOGO_SMALL, named here so this file stays free of the client module
 
 // The label of public/page/title-page.webp occupies 20.8–88.3% × 27.5–49% of the cover.
@@ -14,7 +16,11 @@ export function BookCover({ sizes = "560px", heading = false }: { sizes?: string
   const Title = heading ? "h1" : "p";
   return (
     <div className="absolute inset-0 [container-type:inline-size]">
-      <Image src={asset("/page/title-page.webp")} alt="Bìa sổ Việt Phục Du Ký" fill loading="eager" sizes={sizes} className="select-none object-cover" draggable={false} />
+      {/* the static site has no image server: the <source> offers the 560 px copy for phones and Du Ký's corner (#120) */}
+      <picture className="absolute inset-0">
+        <source srcSet={`${asset(COVER_SMALL)} 560w, ${asset(COVER)} 1086w`} sizes={sizes} />
+        <Image src={asset(COVER)} alt="Bìa sổ Việt Phục Du Ký" fill loading="eager" sizes={sizes} className="select-none object-cover" draggable={false} />
+      </picture>
       <div className="absolute flex flex-col items-center justify-center text-center" style={{ left: "20.8%", top: "27.5%", width: "67.5%", height: "21.5%" }}>
         <p className="m-0 text-[max(12px,2.6cqw)] font-semibold tracking-[min(0.3em,1cqw)] text-[#2F4A6D]">SỔ CỦA BÀ</p>
         {/* the name in the logo's own lettering (the opening showed it a moment ago), not bold sans (#115): the words of
