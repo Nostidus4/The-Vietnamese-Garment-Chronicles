@@ -468,6 +468,10 @@ body {
   @media (prefers-reduced-motion: reduce) { .ink-in { animation: none; opacity: 1; } }
   /* a game nobody has touched yet: the first things to press glow gently */
   .game-fresh [data-hint] { animation: hint-glow 1.6s ease-in-out infinite; }
+  /* Áo ngũ thân: with a panel in hand, the open places breathe (#108) */
+  .ngu-than-open { animation: ngu-than-open 1.2s ease-in-out infinite; }
+  @keyframes ngu-than-open { 50% { fill: rgba(227, 176, 75, 0.45); } }
+  @media (prefers-reduced-motion: reduce) { .ngu-than-open { animation: none; fill: rgba(227, 176, 75, 0.35); } }
   @keyframes hint-glow {
     0%, 100% { box-shadow: 0 0 0 0 rgba(217, 164, 59, 0); }
     50% { box-shadow: 0 0 0 4px rgba(217, 164, 59, 0.55); }

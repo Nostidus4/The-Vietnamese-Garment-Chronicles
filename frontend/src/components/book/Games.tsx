@@ -9,6 +9,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Game } from "@/lib/types";
 import { YOUNG } from "./Diary";
+import { boxOf, currentLayer, DRAW_ORDER, LAYER_NAME, LAYERS, layerOf, PANELS, PLACE, placesAt, tryPlace } from "@/lib/nguThan";
+import { createPortal } from "react-dom";
 
 type Props = { game: Game; onWin: () => void };
 
@@ -261,80 +263,186 @@ function QuanHo({ game, onWin }: Props) {
   );
 }
 
-/* ---------- 2b · Áo ngũ thân: put the five panels where they belong ---------- */
+/* ---------- 2b · Áo ngũ thân: build the robe from the inside out ---------- */
 
-// where each panel sits on the drawn robe (front view; the two back panels peek out behind)
-const PANELS: Record<string, { d: string; z: number }> = {
-  "back-left": { d: "M30 16 L50 12 L50 92 L22 92 Z", z: 0 },
-  "back-right": { d: "M50 12 L70 16 L78 92 L50 92 Z", z: 0 },
-  inner: { d: "M50 20 L64 24 L66 90 L50 90 Z", z: 1 },
-  "front-left": { d: "M34 18 L50 14 L50 30 L46 90 L26 90 Z", z: 2 },
-  "front-right": { d: "M50 14 L66 18 L74 90 L42 90 L46 30 Z", z: 3 },
-};
 const PANEL_FILL: Record<string, string> = { "back-left": "#1d3a5c", "back-right": "#1d3a5c", inner: "#a7b8cc", "front-left": "#2F4A6D", "front-right": "#34557d" };
 
+/** A panel's own shape, small, on its button in the tray. */
+function PanelThumb({ slot }: { slot: string }) {
+  const [x, y, w, h] = boxOf(slot);
+  return (
+    <svg viewBox={`${x - 2} ${y - 2} ${w + 4} ${h + 4}`} className="h-9 w-7 shrink-0" aria-hidden>
+      <path d={PANELS[slot].d} fill={PANEL_FILL[slot]} stroke="#10263f" strokeWidth="1" />
+    </svg>
+  );
+}
+
+/**
+ * The robe goes together the way it is worn (#108): the two back panels, the inner panel, then the two front panels
+ * that close over it. Only that layer's places are open, so none is ever hidden under another; a panel picked too
+ * early says which layer comes first. A panel is dragged onto the robe, or picked and then its place pressed.
+ */
 function NguThan({ game, onWin }: Props) {
+  const reduced = !!useReducedMotion();
   const tray = useMemo(() => shuffle(game.rounds.map((_, i) => i), 4), [game.rounds]);
-  const [placed, setPlaced] = useState<number[]>([]);
-  const [sel, setSel] = useState<number | null>(null);
+  const [placed, setPlaced] = useState<string[]>([]); // places filled, in the order they were
+  const [sel, setSel] = useState<number | null>(null); // the round (panel) in hand
   const [note, setNote] = useState<{ text: string; good: boolean } | null>(null);
-  const drop = (slot: string) => {
-    if (sel === null) return setNote({ text: "Chọn một mảnh thân áo ở dưới trước đã.", good: false });
-    const r = game.rounds[sel];
-    if (r.item !== slot) return setNote({ text: `Mảnh “${r.label}” không nằm ở đó đâu con.`, good: false });
-    const next = [...placed, sel];
+  const [drag, setDrag] = useState<{ i: number; x: number; y: number } | null>(null);
+  const svg = useRef<SVGSVGElement>(null);
+  const start = useRef<{ i: number; x: number; y: number } | null>(null);
+  const cur = currentLayer(placed);
+  const all = cur === LAYERS.length;
+  const slotOf = (i: number) => game.rounds[i].item ?? "";
+
+  /** The panel `i` put down where the places `under` are. */
+  const put = (i: number | null, under: string[]) => {
+    if (i === null) return setNote({ text: "Chọn một mảnh thân áo ở dưới, hay kéo nó lên áo, trước đã.", good: false });
+    const r = game.rounds[i];
+    const res = tryPlace(placed, slotOf(i), under);
+    if (!res.ok) {
+      setNote({
+        good: false,
+        text:
+          res.why === "later"
+            ? `“${r.label}” nằm lớp ngoài, ghép sau con ạ. Áo ghép từ trong ra: giờ tới ${LAYER_NAME[cur]}.`
+            : `Mảnh “${r.label}” không nằm ở đó đâu con.`,
+      });
+      return;
+    }
+    const next = [...placed, slotOf(i)];
     setPlaced(next);
     setSel(null);
     setNote({ text: r.explain ?? "", good: true });
-    if (next.length === game.rounds.length) setTimeout(onWin, 1800);
+    if (currentLayer(next) === LAYERS.length) setTimeout(onWin, 1800);
   };
-  const filled = (slot: string) => placed.some((i) => game.rounds[i].item === slot);
-  const all = placed.length === game.rounds.length;
+  /** Every place under a point of the screen, in the robe's 100×100 box; none when the point is off the robe. */
+  const placesUnder = (cx: number, cy: number) => {
+    const m = svg.current?.getScreenCTM()?.inverse();
+    if (!m) return [];
+    const at = new DOMPoint(cx, cy).matrixTransform(m);
+    return at.x < 0 || at.y < 0 || at.x > 100 || at.y > 100 ? [] : placesAt(at.x, at.y);
+  };
+
   return (
     <div>
-      <svg viewBox="0 0 100 100" className="mx-auto block w-[62%]" aria-label="Chiếc áo ngũ thân đang ghép">
-        {/* sleeves and the standing collar are always there, the panels are what we place */}
+      {/* the three layers, the one being built lit */}
+      <ol className="m-0 mb-1.5 flex list-none flex-wrap justify-center gap-1 p-0 text-[0.7rem]">
+        {LAYER_NAME.map((name, k) => (
+          <li key={name} className={`rounded-full px-2 py-0.5 ${k < cur ? "bg-[#5E7F4A] text-amber-50" : k === cur ? "bg-[#27354f] text-amber-50" : "border border-stone-400 text-stone-600"}`}>
+            {k + 1} · {name} {k < cur ? "✓" : ""}
+          </li>
+        ))}
+      </ol>
+      <svg
+        ref={svg}
+        viewBox="0 0 100 100"
+        className="mx-auto block w-[58%] touch-none"
+        role="group"
+        aria-label={`Chiếc áo ngũ thân đang ghép: ${all ? "đã đủ năm thân" : `đang ghép ${LAYER_NAME[cur]}`}`}
+        onClick={(e) => {
+          const under = placesUnder(e.clientX, e.clientY);
+          if (under.some((slot) => layerOf(slot) === cur && !placed.includes(slot))) put(sel, under);
+        }}
+      >
         <path d="M34 18 L8 40 L14 48 L30 34 Z M66 18 L92 40 L86 48 L70 34 Z" fill={all ? "#2F4A6D" : "#d9ceb6"} stroke="#8a7a5c" strokeWidth=".5" />
         <path d="M42 10 Q50 7 58 10 L58 15 Q50 12 42 15 Z" fill={all ? "#1d3a5c" : "#d9ceb6"} stroke="#8a7a5c" strokeWidth=".5" />
-        {Object.entries(PANELS)
-          .sort((a, b) => a[1].z - b[1].z)
-          .map(([slot, p]) => (
+        {/* the layers still to come: a faint outline, not a place to press */}
+        {DRAW_ORDER.filter((slot) => layerOf(slot) > cur).map((slot) => (
+          <path key={`later-${slot}`} d={PANELS[slot].d} fill="none" stroke="#8a7a5c" strokeWidth=".4" strokeDasharray="1 1.5" opacity=".45" pointerEvents="none" />
+        ))}
+        {DRAW_ORDER.filter((slot) => layerOf(slot) <= cur).map((slot) =>
+          placed.includes(slot) ? (
+            <motion.path
+              key={slot}
+              d={PANELS[slot].d}
+              fill={PANEL_FILL[slot]}
+              stroke="#10263f"
+              strokeWidth=".6"
+              pointerEvents="none"
+              initial={reduced ? false : { opacity: 0, scale: 1.08 }}
+              animate={{ opacity: 1, scale: 1 }}
+              style={{ transformOrigin: "50% 50%" }}
+            />
+          ) : (
             <path
               key={slot}
-              d={p.d}
-              onClick={() => drop(slot)}
-              className="cursor-pointer"
-              fill={filled(slot) ? PANEL_FILL[slot] : "rgba(255,255,255,0.35)"}
-              stroke={filled(slot) ? "#10263f" : "#8a7a5c"}
-              strokeWidth=".6"
-              strokeDasharray={filled(slot) ? undefined : "2 1.5"}
-              opacity={slot === "inner" && filled("front-right") ? 0.35 : 1}
+              d={PANELS[slot].d}
               role="button"
-              aria-label={`Chỗ ${slot}`}
+              tabIndex={0}
+              aria-label={PLACE[slot]}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter" && e.key !== " ") return;
+                e.preventDefault();
+                put(sel, [slot]);
+              }}
+              className={`cursor-pointer focus:outline-none focus-visible:stroke-[#b4462f] ${sel !== null || drag ? "ngu-than-open" : ""}`}
+              fill="rgba(255,255,255,0.45)"
+              stroke="#8a4b2a"
+              strokeWidth=".7"
+              strokeDasharray="2 1.5"
             />
-          ))}
-        {/* the buttons along the right, once the front is closed */}
+          ),
+        )}
         {all && [34, 44, 54, 64, 74].map((y) => <circle key={y} cx={y < 40 ? 58 : 62 + (y - 44) * 0.12} cy={y} r="1.4" fill="#e8d9a8" />)}
       </svg>
-      <div className="mt-2 flex flex-wrap gap-1">
+      <div className="mt-2 flex flex-wrap justify-center gap-1">
         {tray
-          .filter((i) => !placed.includes(i))
+          .filter((i) => !placed.includes(slotOf(i)))
           .map((i) => (
             <button
               key={i}
               type="button"
               data-hint
-              onClick={() => setSel(i)}
-              className={`rounded border px-2 py-0.5 text-[0.75rem] ${sel === i ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
+              aria-pressed={sel === i}
+              // a press picks the panel; a press that moves drags it onto the robe
+              onPointerDown={(e) => {
+                start.current = { i, x: e.clientX, y: e.clientY };
+                e.currentTarget.setPointerCapture(e.pointerId);
+              }}
+              onPointerMove={(e) => {
+                const st = start.current;
+                if (!st || (!drag && Math.hypot(e.clientX - st.x, e.clientY - st.y) < 6)) return;
+                setDrag({ i: st.i, x: e.clientX, y: e.clientY });
+              }}
+              onPointerUp={(e) => {
+                const st = start.current;
+                start.current = null;
+                if (!st) return;
+                if (drag) {
+                  setDrag(null);
+                  const under = placesUnder(e.clientX, e.clientY);
+                  if (under.length) put(st.i, under);
+                } else setSel((v) => (v === st.i ? null : st.i));
+              }}
+              onPointerCancel={() => {
+                start.current = null;
+                setDrag(null);
+              }}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter" && e.key !== " ") return;
+                e.preventDefault();
+                setSel((v) => (v === i ? null : i));
+              }}
+              className={`flex touch-none items-center gap-1.5 rounded-md border px-1.5 py-1 text-left text-[0.75rem] leading-tight ${sel === i ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
             >
-              {game.rounds[i].label}
+              <PanelThumb slot={slotOf(i)} />
+              <span className="max-w-[6.5rem]">{game.rounds[i].label}</span>
             </button>
           ))}
       </div>
-      <p className="m-0 mt-1 text-[0.75rem] text-stone-600">
-        Đã ghép {placed.length}/{game.rounds.length} thân · chọn mảnh rồi bấm vào chỗ trên áo
+      <p className="m-0 mt-1 text-center text-[0.75rem] text-stone-600">
+        Đã ghép {placed.length}/{game.rounds.length} thân · kéo mảnh lên áo, hay chọn mảnh rồi bấm vào chỗ nét đứt
       </p>
       {note && <Hint tone={note.good ? "good" : "bad"}>{note.text}</Hint>}
+      {/* the panel following the pointer; on the page body, as the book's pages are transformed */}
+      {drag &&
+        createPortal(
+          <div className="pointer-events-none fixed z-[90] -translate-x-1/2 -translate-y-1/2 drop-shadow-lg" style={{ left: drag.x, top: drag.y }} aria-hidden>
+            <PanelThumb slot={slotOf(drag.i)} />
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
@@ -764,8 +872,8 @@ export const HOW_TO: Record<Game["kind"], string[]> = {
     "Đúng thì bấm “Lượt tiếp →”; sai thì đọc lời nhắc rồi chọn lại.",
   ],
   "ngu-than": [
-    "Bấm một mảnh thân áo ở hàng nút phía dưới (nút đổi màu xanh là đang chọn).",
-    "Bấm vào đúng chỗ của mảnh ấy trên chiếc áo (chỗ viền nét đứt).",
+    "Áo ghép từ trong ra như khi mặc: hai thân sau trước, rồi thân con, rồi hai thân trước khép lại.",
+    "Kéo một mảnh ở dưới lên đúng chỗ trên áo, hoặc bấm chọn mảnh rồi bấm vào chỗ viền nét đứt.",
     "Ghép đủ năm thân thì hàng khuy bên phải hiện ra.",
   ],
   "cay-beo": [
