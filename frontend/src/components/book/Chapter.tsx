@@ -726,6 +726,10 @@ export function EnvelopeLetter({ region }: { region: Region }) {
             <span className="absolute left-1/2 top-[42%] flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full bg-[#B5452E] text-[0.75rem] text-amber-50 shadow" aria-hidden>
               Bà
             </span>
+            {/* say that it opens: a sealed envelope reads as a picture (#117) */}
+            <span className="font-hand absolute left-1/2 top-[66%] -translate-x-1/2 whitespace-nowrap text-[0.95rem] text-[#8a4b2a]" aria-hidden>
+              bấm để mở
+            </span>
             <span className="font-hand absolute bottom-3 right-4 text-[1rem] text-[#27354f]">Gửi con, từ {chapterPlace}</span>
           </motion.button>
         ) : (

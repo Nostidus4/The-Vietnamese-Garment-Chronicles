@@ -24,15 +24,17 @@ const HOW: Record<string, string> = {
 function Stamp({ label, place, look, color }: { label: string; place: string; look: Look; color: string }) {
   return (
     <div
+      role="img"
       title={look === "on" ? `${label} ${place}` : HOW[label]}
-      className={`flex h-[3.1rem] w-[3.1rem] shrink-0 flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
+      className={`flex h-[3.6rem] w-[3.6rem] shrink-0 flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
         look === "on" ? "rotate-[-8deg]" : look === "soft" ? "rotate-[6deg] border-dashed opacity-55" : "border-dashed opacity-60"
       }`}
       style={{ borderColor: look === "off" ? "#a8a29e" : color, color: look === "off" ? "#a8a29e" : color }}
       aria-label={`${label} ${place}${look === "on" ? "" : `: chưa có. ${HOW[label]}`}`}
     >
-      <span className="text-[0.48rem] tracking-[0.14em]">{label.toUpperCase()}</span>
-      <span className="font-display px-0.5 text-[0.55rem] leading-tight">{place}</span>
+      {/* read at 100% zoom: 11–12px, not 7–9 (#117) */}
+      <span className="text-[0.6875rem] font-semibold leading-tight">{label.toUpperCase()}</span>
+      <span className="font-display px-1 text-[0.6875rem] leading-[1.1]">{place}</span>
     </div>
   );
 }
@@ -63,12 +65,12 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
       {/* the legend: what each ring is for, so an empty cabinet says how to fill it (#63) */}
       <p className="m-0 mt-1 text-[0.75rem] leading-snug text-stone-600">
         <b className="font-semibold text-[#B5452E]">Đến</b>: mở chương của Bà · <b className="font-semibold text-[#5E7F4A]">Hiểu</b>: trả lời “Bà hỏi con” ·{" "}
-        <b className="font-semibold text-[#2F4A6D]">Mặc</b>: dán ảnh lần con mặc thật. Tem điểm: mỗi chỗ Bà dừng chân con đã ghé qua.
+        <b className="font-semibold text-[#2F4A6D]">Mặc</b>: dán ảnh lần con mặc thật.
       </p>
       {allStamps && (
         <p className="font-hand m-0 mt-1 rounded bg-[#f7e4c8] px-2 py-1 text-[1rem] text-[#8a4b2a]">🎉 Con đã đủ tem ở mọi vùng. Bà mừng lắm!</p>
       )}
-      <ul className="m-0 mt-2 flex min-h-0 flex-1 list-none flex-col justify-around gap-1 p-0">
+      <ul className="m-0 mt-1.5 flex min-h-0 flex-1 list-none flex-col justify-around gap-0.5 p-0">
         {data.regions.map((r) => {
           const place = r.name.split("/")[0].trim();
           if (r.status === "locked" && !r.chapters.some((c) => c.status === "open"))
@@ -79,16 +81,30 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
               </li>
             );
           return (
-            <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-1">
-              <a href={asset(`/?region=${r.id}&page=own`)} className="font-display w-[5.5rem] shrink-0 text-[0.8rem] leading-tight text-[#27354f] hover:underline">
-                {place}
-                {stopsTotal(r) > 0 && (
-                  <span className="block font-sans text-[0.75rem] text-stone-600">
-                    tem điểm {stopsGot(r)}/{stopsTotal(r)}
-                  </span>
+            <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-0.5">
+              <div className="w-[5.5rem] shrink-0">
+                <a href={asset(`/?region=${r.id}&page=own`)} className="font-display block text-[0.85rem] leading-tight text-[#27354f] hover:underline">
+                  {place}
+                  {stopsTotal(r) > 0 && (
+                    // "tem điểm": the stops of Bà's road the reader has turned to (said here, the legend has no room)
+                    <span className="block font-sans text-[0.75rem] text-stone-600" title="Mỗi chỗ Bà dừng chân con đã ghé qua">
+                      tem điểm {stopsGot(r)}/{stopsTotal(r)}
+                    </span>
+                  )}
+                </a>
+                {/* with the region's name, as a button, not a lone word at the edge of the row (#117) */}
+                {postcard.includes(r.id) && (
+                  <button
+                    type="button"
+                    onClick={() => setReading(r)}
+                    className="font-hand rounded bg-[#f7e4c8] px-1.5 text-[0.95rem] leading-snug text-[#8a4b2a] shadow-[1px_2px_4px_rgba(60,35,10,0.25)] hover:bg-[#f3d9b1]"
+                    title="Đọc lại thư của Bà"
+                  >
+                    ✉ đọc thư
+                  </button>
                 )}
-              </a>
-              <div className="flex gap-1.5">
+              </div>
+              <div className="flex flex-1 justify-around gap-1">
                 <Stamp label="Đã đến" place={place} look={arrived.includes(r.id) ? "on" : "off"} color="#B5452E" />
                 <Stamp label="Đã hiểu" place={place} look={understood.includes(r.id) ? "on" : "off"} color="#5E7F4A" />
                 <Stamp
@@ -98,16 +114,6 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
                   color="#2F4A6D"
                 />
               </div>
-              {postcard.includes(r.id) && (
-                <button
-                  type="button"
-                  onClick={() => setReading(r)}
-                  className="font-hand ml-auto shrink-0 whitespace-nowrap rotate-[-4deg] rounded bg-[#f7e4c8] px-1.5 text-[0.85rem] text-[#8a4b2a] shadow-[1px_2px_4px_rgba(60,35,10,0.25)] hover:rotate-0"
-                  title="Đọc lại thư của Bà"
-                >
-                  ✉ đọc thư
-                </button>
-              )}
             </li>
           );
         })}

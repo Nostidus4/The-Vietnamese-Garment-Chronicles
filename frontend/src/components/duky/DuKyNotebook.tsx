@@ -11,7 +11,7 @@ import { animate, motion, useMotionValue, useReducedMotion, useTransform } from 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { pageSize, useBookScale, useViewport } from "@/lib/bookScale";
-import { byWhen, COVER_COLORS, ensureMigrated, loadBook, setCover, TAKEN_OUT, useDuKy, type DuKyBook, type DuKyPage, type TakenOut } from "@/lib/dukyBook";
+import { byWhen, COVER_COLOR_NAMES, COVER_COLORS, ensureMigrated, loadBook, setCover, TAKEN_OUT, useDuKy, type DuKyBook, type DuKyPage, type TakenOut } from "@/lib/dukyBook";
 import { useBootstrap } from "@/lib/useBootstrap";
 import type { Bootstrap } from "@/lib/types";
 import { BookCover } from "../book/BookCover";
@@ -56,15 +56,14 @@ export default function DuKyNotebook() {
     window.addEventListener(TAKEN_OUT, on);
     return () => window.removeEventListener(TAKEN_OUT, on);
   }, []);
-  // five seconds to change one's mind, then the photos leave this device too
+  // ten seconds to change one's mind, the clock stopped while the pointer or the focus is on the toast (#117); the
+  // photos stay on this device until the next visit (sweepPhotos), so a late "Hoàn tác" never brings back empty frames
+  const [holding, setHolding] = useState(false);
   useEffect(() => {
-    if (!trash) return;
-    const t = setTimeout(() => {
-      void trash.forget();
-      setTrash(null);
-    }, 5000);
+    if (!trash || holding) return;
+    const t = setTimeout(() => setTrash(null), 10000);
     return () => clearTimeout(t);
-  }, [trash]);
+  }, [trash, holding]);
   useEffect(() => {
     if (!pasted) return;
     const t = setTimeout(() => setPasted(false), 2500);
@@ -127,8 +126,16 @@ export default function DuKyNotebook() {
       )}
       {sharePage && <ShareDialog page={sharePage} onClose={() => setSharing(null)} />}
       {exporting && <ExportCard page={exporting} data={data} onDone={onExportDone} />}
+      {/* above "Trang trước / Trang sau", like the stamp toast (#117) */}
       {(pasted || trash) && (
-        <div role="status" className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full bg-black/80 px-4 py-2 text-sm text-white">
+        <div
+          role="status"
+          onPointerEnter={() => setHolding(true)}
+          onPointerLeave={() => setHolding(false)}
+          onFocus={() => setHolding(true)}
+          onBlur={() => setHolding(false)}
+          className="fixed bottom-24 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full bg-black/80 px-4 py-2 text-sm text-white"
+        >
           {trash ? (
             <>
               <span>Đã xóa trang.</span>
@@ -137,6 +144,7 @@ export default function DuKyNotebook() {
                 onClick={() => {
                   trash.undo();
                   setTrash(null);
+                  setHolding(false);
                 }}
                 className="font-semibold text-amber-200 underline"
               >
@@ -149,7 +157,7 @@ export default function DuKyNotebook() {
         </div>
       )}
       {exportError && (
-        <p role="alert" className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black/75 px-4 py-2 text-sm text-white" onClick={() => setExportError(null)}>
+        <p role="alert" className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black/75 px-4 py-2 text-sm text-white" onClick={() => setExportError(null)}>
           {exportError}
         </p>
       )}
@@ -184,7 +192,8 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
             type="button"
             role="radio"
             aria-checked={book.cover.color === c}
-            aria-label={`Màu ${c}`}
+            aria-label={COVER_COLOR_NAMES[c] ?? "Màu bìa"}
+            title={COVER_COLOR_NAMES[c]}
             onClick={() => setCover({ color: c })}
             className={`h-5 w-5 rounded-full border-2 ${book.cover.color === c ? "border-[#D9A43B] ring-2 ring-[#D9A43B]/40" : "border-white/60"}`}
             style={{ background: c }}
@@ -204,7 +213,11 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
       </div>
       <div className="mt-auto">
         <CloudSync compact={compact} />
-        <p className="m-0 mt-1 text-[0.75rem] text-stone-600">Không đăng nhập thì sổ và ảnh chỉ lưu trên máy này.</p>
+        <p className="m-0 mt-1 text-[0.75rem] text-stone-600">
+          Không đăng nhập thì sổ và ảnh chỉ lưu trên máy này.
+          {/* the share link lives on the server: say why there is no button for it (#117) */}
+          {!HAS_API && " Bản đọc thử chưa tạo được link chia sẻ; muốn gửi ai, con dùng “Xuất ảnh” ở mỗi trang nhé."}
+        </p>
       </div>
     </div>
   );
@@ -226,6 +239,20 @@ function LastPage({ actions, empty }: { actions: Actions; empty: boolean }) {
       <Link href="/" className="mt-2 text-xs text-stone-600 underline">
         hoặc mở sổ của Bà, chọn một vùng rồi mặc thử
       </Link>
+    </div>
+  );
+}
+
+/** The spare page at the end: three lines on how the notebook fills itself. */
+function HowTo({ empty }: { empty: boolean }) {
+  return (
+    <div className="flex h-full flex-col justify-center text-[#27354f]" style={{ backgroundImage: "repeating-linear-gradient(transparent 0 27px, rgba(90,120,170,0.16) 27px 28px)" }}>
+      <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">{empty ? "SỔ NÀY DÙNG THẾ NÀO" : "GHI THÊM"}</p>
+      <ol className="font-hand m-0 mt-2 flex list-none flex-col gap-2 p-0 text-[1.1rem] leading-snug">
+        <li>1 · Sắp đi đâu mặc Việt phục: viết trang “Chuẩn bị”, Tèo nhắc thời tiết và chỗ thuê.</li>
+        <li>2 · Mặc xong: dán ảnh thật, tem “Đã mặc” của vùng đậm lên trong Tủ tem.</li>
+        <li>3 · Muốn khoe: “Xuất ảnh” ra một tấm 1080×1350.</li>
+      </ol>
     </div>
   );
 }
@@ -412,7 +439,8 @@ function DuKyFlip({
     ...pages.map((p) => ({ key: p.id, node: <DuKyPageView page={p} data={data} compact onExport={actions.onExport} onShare={actions.onShare} />, still: true })),
     { key: "last", node: <LastPage actions={actions} empty={pages.length === 0} />, still: true },
   ];
-  if (sheets.length % 2) sheets.push({ key: "blank", node: null });
+  // the page facing "Trang mới" when the count is odd: how the book works, not a white page (#117)
+  if (sheets.length % 2) sheets.push({ key: "blank", node: <HowTo empty={pages.length === 0} /> });
   const n = sheets.length;
   const [page, setPage] = useState(Math.min(memo.page, n - 2));
   useEffect(() => {
@@ -496,7 +524,7 @@ function DuKyFlip({
               role="tab"
               aria-selected={on}
               onClick={() => turnTo(t.page)}
-              className="font-hand whitespace-nowrap rounded-r-md py-1 pl-2 pr-3 text-left text-[0.85rem] text-amber-50 shadow-[2px_2px_5px_rgba(0,0,0,0.3)] transition-transform"
+              className="font-hand whitespace-nowrap rounded-r-md py-1.5 pl-2.5 pr-3.5 text-left text-[1.05rem] text-amber-50 shadow-[2px_2px_5px_rgba(0,0,0,0.3)] transition-transform"
               style={{ background: ["#B5452E", "#D9A43B", "#2F4A6D"][i % 3], transform: `translateX(${on ? 0 : -6}px)` }}
             >
               {t.label}
