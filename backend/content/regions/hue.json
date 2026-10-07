@@ -344,37 +344,38 @@
       },
       "stamp": "Rứa thôi",
       "game": {
-        "kind": "quan-ho",
+        "kind": "mam-com",
         "title": "Bữa cơm ra mắt",
-        "intro": "Tối ấy Bà run lắm. Con giúp Bà ứng xử trong bữa cơm đầu tiên với mẹ Ông nhé.",
+        "intro": "Tối ấy Bà run lắm. Con ngồi vào mâm cùng Bà: mời cơm cả nhà, nếm các món của mẹ anh, rồi xem chuyện gì xảy ra nhé.",
         "rounds": [
           {
-            "label": "Mẹ Ông",
-            "item": "Bà nên làm gì?",
-            "prompt": "“Con ăn đi, đừng ngại.”",
+            "label": "Mời cơm",
+            "item": null,
+            "prompt": "Mẹ anh bảo: “Con ăn đi, đừng ngại.”",
             "choices": [
-              "Mời cả nhà trước rồi mới ăn",
-              "Cầm đũa ăn ngay cho mẹ vui",
-              "Từ chối vì ngại"
+              "Mẹ anh",
+              "Anh",
+              "Em gái anh"
             ],
-            "answer": 0,
-            "explain": "Trong mâm cơm, con cháu mời ông bà, cha mẹ trước rồi mới ăn."
+            "answer": null,
+            "explain": "Trong mâm cơm, con cháu mời người lớn trước, từ mẹ đến anh rồi đến em, xong mới cầm đũa."
           },
           {
-            "label": "Mẹ Ông",
-            "item": "Bà gắp thế nào?",
+            "label": "Nếm mỗi món",
+            "item": "Bà khen: “Món nào mẹ nấu cũng khéo.”",
             "prompt": "Mâm cơm có rất nhiều món, món nào cũng một ít.",
             "choices": [
-              "Mỗi món nếm một ít, khen người nấu",
-              "Gắp thật nhiều món mình thích",
-              "Chỉ ăn cơm trắng cho lịch sự"
+              "Cá kho tiêu",
+              "Tôm chua",
+              "Rau luộc",
+              "Canh chua"
             ],
-            "answer": 0,
+            "answer": null,
             "explain": "Người Huế nấu ít mà nhiều món; nếm mỗi món một chút là quý công người nấu."
           },
           {
-            "label": "Mẹ Ông",
-            "item": "Bà làm gì đây?",
+            "label": "Chén rơi",
+            "item": null,
             "prompt": "Chiếc chén trên tay Bà rơi xuống đất. Cả nhà im phăng phắc.",
             "choices": [
               "Nhặt lên, xin lỗi mẹ, rồi bình tĩnh ăn tiếp",
@@ -382,7 +383,7 @@
               "Giả vờ như không có gì"
             ],
             "answer": 0,
-            "explain": "Rơi thì nhặt, rứa thôi."
+            "explain": "Mẹ anh lấy chén khác, nói nhỏ: “Rơi thì nhặt, rứa thôi.”"
           }
         ],
         "done": "Mẹ Ông gật đầu: “Rứa là được rồi.” Tối ấy, ra đến cổng, Bà trả lời Ông.",

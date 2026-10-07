@@ -9,7 +9,10 @@ import { AmbientSound } from "./AmbientSound";
 import { asset } from "@/lib/base";
 
 export function SiteNav() {
-  const shared = usePathname()?.startsWith("/du-ky/p") ?? false;
+  const path = usePathname() ?? "";
+  const shared = path.startsWith("/du-ky/p");
+  // the page the reader is on is marked for screen readers and drawn with a gold rim (#111)
+  const here = (p: string) => (path === p || path === `${p}/` ? "page" : undefined);
   return (
     <nav className="site-nav absolute right-4 top-3 z-30 flex gap-4 text-sm sm:fixed">
       {shared ? (
@@ -20,10 +23,10 @@ export function SiteNav() {
       ) : (
         <>
           {/* a full load on purpose: pressed while Bà's book is open, it puts the book back on the table (#65) */}
-          <a href={asset("/")}>Sổ của Bà</a>
-          <Link href="/du-ky">Du Ký của con</Link>
-          {/* full reload on purpose so the opening restarts from the first screen */}
-          <a href={asset("/?opening=1")}>Xem lại mở đầu</a>
+          <a href={asset("/")} aria-current={here("/")}>Sổ của Bà</a>
+          <Link href="/du-ky" aria-current={here("/du-ky")}>Du Ký của con</Link>
+          {/* full reload on purpose so the opening restarts from the first screen; a lesser button, it is not a place */}
+          <a href={asset("/?opening=1")} className="site-nav-minor">Xem lại mở đầu</a>
         </>
       )}
       <AmbientSound />

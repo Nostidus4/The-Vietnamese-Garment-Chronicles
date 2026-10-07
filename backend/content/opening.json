@@ -15,7 +15,7 @@
         {"type": "label", "x": 52.5, "y": 10.5, "text": "Ngày hội Sắc Việt", "rotate": -2, "ms": 700, "at": 600}
       ],
       "beats": [
-        {"kind": "narration", "style": "box", "text": "Năm nay, mỗi đội sẽ lựa chọn một vùng văn hóa Việt Nam…", "voice": "co-giao", "delivery": "Bright and enthusiastic, announcing a new school project to the whole class.", "x": 6, "y": 6, "w": 36, "delay": 1300},
+        {"kind": "narration", "style": "box", "text": "Năm nay, mỗi đội sẽ lựa chọn một vùng văn hóa Việt Nam…", "voice": "co-giao", "delivery": "Bright and enthusiastic, announcing a new school project to the whole class.", "x": 6, "y": 6, "w": 29, "delay": 1300},
         {"kind": "narration", "style": "box", "text": "Tìm hiểu một loại trang phục truyền thống…", "voice": "co-giao", "delivery": "Continuing the announcement, clear and encouraging, a small pause at the ellipsis.", "join": true, "delay": 1000},
         {"kind": "narration", "style": "box", "text": "Và đề xuất cách để người trẻ có thể mặc nó hôm nay.", "voice": "co-giao", "delivery": "Warm and inspiring, finishing the announcement with a smile.", "join": true, "delay": 1000},
         {"kind": "speech", "speaker": "Tí", "text": "Áo dài thôi. Quá dễ!", "voice": "ti", "delivery": "Instantly, cocky and overconfident, a little show-off, quick.", "x": 55, "y": 17, "w": 21, "tail": "down-right", "wait_click": true}

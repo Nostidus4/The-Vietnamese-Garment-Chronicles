@@ -19,8 +19,10 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/chapter/[id]">) {
   const { id } = await params;
   const file = path.join(process.cwd(), "..", "backend", "content", "regions.json");
-  const region = fs.existsSync(file) ? (JSON.parse(fs.readFileSync(file, "utf8")).regions as { id: string; name: string }[]).find((r) => r.id === id) : undefined;
+  const region = fs.existsSync(file) ? (JSON.parse(fs.readFileSync(file, "utf8")).regions as { id: string; name: string; status: string }[]).find((r) => r.id === id) : undefined;
   const place = region?.name.split("/")[0].trim();
+  // a room still closed says so in the tab too (#112)
+  if (place && region?.status === "locked") return { title: `Tủ áo của Bà · ${place} (đang cùng cộng đồng viết)` };
   return { title: place ? `Tủ áo của Bà · ${place}` : "Tủ áo của Bà" };
 }
 
