@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { API_URL, getShare, HAS_API, type SharedPage } from "@/lib/api";
 import { useBootstrap } from "@/lib/useBootstrap";
 import { labelVi } from "@/lib/text";
+import { stampPlaceOf } from "@/lib/stampPlace";
 import { CTA, ErrorSheet } from "../ErrorSheet";
 
 const MONTH = (m: string) => {
@@ -64,7 +65,7 @@ export function SharedView({ id }: { id: string }) {
   const m = page.meta;
   const g = data.garments.find((x) => x.id === m.garment_id);
   const occasion = data.occasions.find((o) => o.id === m.occasion_id)?.name ?? m.occasion_id;
-  const place = data.regions.find((r) => r.id === m.region_id)?.name.split("/")[0].trim() ?? "";
+  const place = stampPlaceOf(data.regions, m.region_id);
   return (
     <main className="desk -mt-10 min-h-screen px-4 pb-8 pt-18">
       {/* who sent this, for someone who has never opened the app (#54) */}

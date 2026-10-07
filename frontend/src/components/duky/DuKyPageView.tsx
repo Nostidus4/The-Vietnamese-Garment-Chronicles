@@ -8,6 +8,7 @@ import { getShops, getWeatherOn } from "@/lib/api";
 import { addPhoto, takeOutPage, updatePage, usePhotoUrl, type DuKyPage, type PhotoRef } from "@/lib/dukyBook";
 import { cited } from "@/lib/sources";
 import { track } from "@/lib/track";
+import { stampPlaceOf } from "@/lib/stampPlace";
 import type { Bootstrap, Shop } from "@/lib/types";
 import { asset } from "@/lib/base";
 import { labelVi } from "@/lib/text";
@@ -71,14 +72,14 @@ function RegionStamp({ page, place }: { page: DuKyPage; place: string }) {
   return (
     <div
       role="img"
-      className={`pointer-events-none flex h-14 w-14 shrink-0 rotate-[-10deg] flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
+      className={`pointer-events-none flex h-[4.5rem] w-[4.5rem] shrink-0 rotate-[-10deg] flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
         real ? "border-[#2F4A6D]/80 text-[#2F4A6D]" : "border-dashed border-stone-400/70 text-stone-400"
       }`}
       aria-label={real ? hint : `Tem ${label.toLowerCase()} ${place}. ${hint}`}
       title={hint}
     >
-      {/* read at 100% zoom: 12px, not 7–9 (#117, #119) */}
-      <span className="text-[0.75rem] font-semibold leading-tight">{label}</span>
+      {/* read at 100% zoom: 12px, not 7–9 (#117, #119); the ring is 72px so "ĐÃ MẶC" stays on one line and a long place wraps inside it */}
+      <span className="whitespace-nowrap text-[0.75rem] font-semibold leading-tight">{label}</span>
       <span className="font-display px-1 text-[0.75rem] leading-[1.1]">{place}</span>
     </div>
   );
@@ -155,9 +156,8 @@ export function DuKyPageView({
   onShare?: (p: DuKyPage) => void;
 }) {
   const g = data.garments.find((x) => x.id === page.garment_id);
-  const region = data.regions.find((r) => r.id === page.region_id);
   const occasion = data.occasions.find((o) => o.id === page.occasion_id)?.name ?? page.occasion_id;
-  const place = region?.name.split("/")[0].trim() ?? "";
+  const place = stampPlaceOf(data.regions, page.region_id); // named after the chapter (Huế), like every stamp (#114)
   const fact = teoFact(data, page);
   const file = useRef<HTMLInputElement>(null);
   const [note, setNote] = useState(page.note);

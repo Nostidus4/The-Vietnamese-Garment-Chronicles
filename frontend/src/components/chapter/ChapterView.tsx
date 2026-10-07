@@ -15,6 +15,7 @@ import { compassContent, evaluate } from "@/lib/compass";
 import { addPage, addPhoto, dataUrlToBlob, ensureMigrated, newPage } from "@/lib/dukyBook";
 import { cited } from "@/lib/sources";
 import { track } from "@/lib/track";
+import { stampPlace, stampPlaceOf } from "@/lib/stampPlace";
 import type { Bootstrap, CompassResult, CompassState, Garment, Selection, WardrobeItem, WardrobeSlot } from "@/lib/types";
 import { firstLook, garmentOf, lookOf, onBody, pieceState, selectionOf, toggled, type Look, type PieceState } from "@/lib/wardrobe";
 import { useBootstrap } from "@/lib/useBootstrap";
@@ -286,7 +287,7 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
       state,
       number: n,
       title: `${g.name_vi} · ${data.occasions.find((o) => o.id === snap.selection.occasion_id)?.name.split("/")[0].trim()}`,
-      place: data.regions.find((r) => r.id === g.region)?.name.split("/")[0].trim() ?? "",
+      place: stampPlaceOf(data.regions, g.region),
       date: new Date().toLocaleDateString("vi-VN"),
       note: baNote(data, g, snap.selection, snap.verdict),
       fact: (() => {
@@ -391,7 +392,7 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
     );
   if (region.status === "locked") return <LockedRoom region={region} data={data} />;
 
-  const place = region.name.split("/")[0].trim();
+  const place = stampPlace(region); // Huế, not Trung Bộ: the room is named like its stamps (#114)
   const worn = Object.values(current.worn)
     .map((id) => byId.get(id!))
     .filter((it): it is WardrobeItem => !!it);

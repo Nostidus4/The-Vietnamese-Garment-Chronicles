@@ -9,6 +9,7 @@
 import { toPng } from "html-to-image";
 import { useEffect, useRef, useState } from "react";
 import { getPhoto, type DuKyPage } from "@/lib/dukyBook";
+import { stampPlaceOf } from "@/lib/stampPlace";
 import type { Bootstrap } from "@/lib/types";
 import { formatDate, teoFact } from "./DuKyPageView";
 import { useDialog } from "@/lib/useDialog";
@@ -39,11 +40,7 @@ export function ExportCard({
   const g = data.garments.find((x) => x.id === page.garment_id);
   const occasion =
     data.occasions.find((o) => o.id === page.occasion_id)?.name ?? "";
-  const place =
-    data.regions
-      .find((r) => r.id === page.region_id)
-      ?.name.split("/")[0]
-      .trim() ?? "";
+  const place = stampPlaceOf(data.regions, page.region_id);
   const fact = teoFact(data, page);
 
   useEffect(() => {

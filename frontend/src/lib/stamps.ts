@@ -4,7 +4,6 @@
 // đã mặc (a real photo in the Du Ký; computed from the book, not stored here). Kept on this device.
 
 import { useEffect, useState } from "react";
-import type { Region } from "./types";
 
 type Kind = "arrived" | "understood" | "postcard" | "stop" | "game";
 const KEYS: Record<Kind, string> = {
@@ -24,11 +23,7 @@ function read(kind: Kind): string[] {
   }
 }
 
-/**
- * The place a region's stamps are named after: its open chapter (Huế), else the region. Every stamp says it the same
- * way, in the chapter, the toast and the Tủ tem, so "đã hiểu Huế" is never "đã hiểu Trung Bộ" elsewhere (#114).
- */
-export const stampPlace = (r: Region) => r.chapters?.find((c) => c.status === "open")?.province ?? r.name.split("/")[0].trim();
+export { stampPlace } from "./stampPlace";
 
 /** Fired with { kind, id } when a region stamp is earned for the first time; StampToast shows it (#63). */
 export const NEW_STAMP = "vpdk-new-stamp";

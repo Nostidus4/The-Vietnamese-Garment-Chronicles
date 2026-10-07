@@ -27,14 +27,14 @@ function Stamp({ label, place, look, color }: { label: string; place: string; lo
     <div
       role="img"
       title={look === "on" ? `${label} ${place}` : how}
-      className={`flex h-[3.6rem] w-[3.6rem] shrink-0 flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
+      className={`flex h-[4.5rem] w-[4.5rem] shrink-0 flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
         look === "on" ? "rotate-[-8deg]" : look === "soft" ? "rotate-[6deg] border-dashed opacity-55" : "border-dashed opacity-60"
       }`}
       style={{ borderColor: look === "off" ? "#a8a29e" : color, color: look === "off" ? "#a8a29e" : color }}
       aria-label={`${label} ${place}${look === "on" ? "" : `: chưa có. ${how}`}`}
     >
       {/* read at 100% zoom: 12px, not 7–9 (#117, #119) */}
-      <span className="text-[0.75rem] font-semibold leading-tight">{label.toUpperCase()}</span>
+      <span className="whitespace-nowrap text-[0.75rem] font-semibold leading-tight">{label.toUpperCase()}</span>
       <span className="font-display px-1 text-[0.75rem] leading-[1.1]">{place}</span>
     </div>
   );

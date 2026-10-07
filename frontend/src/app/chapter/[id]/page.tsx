@@ -3,6 +3,7 @@ import path from "node:path";
 import { Suspense } from "react";
 import { ChapterView } from "@/components/chapter/ChapterView";
 import { RoomShell } from "@/components/chapter/RoomShell";
+import { stampPlace } from "@/lib/stampPlace";
 
 // One page per region, built ahead of time (static export for GitHub Pages); ?garment= and ?step= are read in the
 // browser (useSearchParams), so the view sits in a Suspense boundary and is rendered on the client.
@@ -19,7 +20,7 @@ export function generateStaticParams() {
 function regionOf(id: string) {
   const file = path.join(process.cwd(), "..", "backend", "content", "regions.json");
   const region = fs.existsSync(file) ? (JSON.parse(fs.readFileSync(file, "utf8")).regions as { id: string; name: string; status: string }[]).find((r) => r.id === id) : undefined;
-  return { region, place: region?.name.split("/")[0].trim() };
+  return { region, place: region && stampPlace(region) };
 }
 
 /** "Tủ áo của Bà · Huế": a tab per room instead of the same title everywhere (#54). */
