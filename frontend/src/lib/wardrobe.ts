@@ -109,5 +109,8 @@ export function firstLook(data: Data, items: WardrobeItem[], byId: Map<string, W
   const asked = wanted ? sets.find((it) => it.garment === wanted) : undefined;
   if (asked) return last?.worn.set === asked.id ? keepOffered(last, data, byId) : fresh(asked);
   if (last?.worn.set && regionOf(byId.get(last.worn.set)) === regionId) return keepOffered(last, data, byId);
-  return fresh(sets.find((it) => regionOf(it) === regionId) ?? sets[0]);
+  // the region's own garment first, in the order its page lists them: Huế opens on áo ngũ thân, not the modern áo dài (#116)
+  const own = data.regions.find((r) => r.id === regionId)?.garments ?? [];
+  const first = own.map((id) => sets.find((it) => it.garment === id)).find(Boolean);
+  return fresh(first ?? sets.find((it) => regionOf(it) === regionId) ?? sets[0]);
 }

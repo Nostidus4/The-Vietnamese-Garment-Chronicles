@@ -19,13 +19,14 @@ import type { Bootstrap, CompassResult, CompassState, Garment, Selection, Wardro
 import { firstLook, garmentOf, lookOf, onBody, pieceState, selectionOf, toggled, type Look, type PieceState } from "@/lib/wardrobe";
 import { useBootstrap } from "@/lib/useBootstrap";
 import { ComparePanel } from "./ComparePanel";
+import { LockedRoom } from "./LockedRoom";
 import { CompassPanel, STATE } from "./CompassPanel";
 import { Fork } from "./CompassStep";
 import { WeatherNote } from "./WeatherNote";
 import { cardPicture, dollImage } from "../fitting/cardImage";
 import { Mirror } from "../fitting/Mirror";
 import { DRAWN, PaperDoll, type Dress } from "../fitting/PaperDoll";
-import { AboutSheet, EventPicker, type SheetTab } from "../fitting/Parts";
+import { AboutSheet, EventPicker, FULL_ONLY, type SheetTab } from "../fitting/Parts";
 import { useTryOn } from "../fitting/useTryOn";
 import { AI_LABEL, baNote, DRAWERS, LookCard, OutfitList, STAMP, WardrobePanel, WhoPicker, type CardFace, type Drawer, type Who } from "../fitting/Wardrobe";
 import { friendlyError } from "@/lib/errors";
@@ -78,12 +79,8 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   const [comparing, setComparing] = useState(false);
   const [preview, setPreview] = useState<string | null>(null); // "Xem ảnh mẫu" of a garment: an AI picture, labelled so (#60)
   const [toast, setToast] = useState(false);
-  const [hint, setHint] = useState<string | null>(null); // why a piece cannot be worn, after a tap on it
-  useEffect(() => {
-    if (!hint) return;
-    const t = setTimeout(() => setHint(null), 5000);
-    return () => clearTimeout(t);
-  }, [hint]);
+  // why a piece cannot be worn, after a tap on it: shown under that piece until closed or another tap (#116)
+  const [hint, setHint] = useState<{ id: string; text: string } | null>(null);
   const [pulse, setPulse] = useState(0); // the Compass tag swings on every change
   const doll = useRef<SVGSVGElement>(null); // a still copy of the doll, the source of the card's picture
   const tryon = useTryOn();
@@ -180,6 +177,8 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   }, []);
 
   function pickWho(w: Who) {
+    // the first time, nothing opened the dialog to go back to: the focus goes to the open drawer of the wardrobe (#109)
+    if (!who) requestAnimationFrame(() => document.querySelector<HTMLElement>('.wardrobe [role="tab"][aria-selected="true"]')?.focus({ preventScroll: true }));
     setWho(w);
     setAskWho(false);
     // the boy cannot keep on what is drawn only for the girl (#77)
@@ -227,7 +226,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     if (!current || !data || frozen) return;
     const next = toggled(current, it, stateOf(it), data, byId);
     if (!next) {
-      setHint(whyOf(it));
+      setHint({ id: it.id, text: whyOf(it) });
       return;
     }
     setHint(null);
@@ -377,17 +376,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
         </Link>
       </p>
     );
-  if (region.status === "locked") {
-    return (
-      <main className="mx-auto max-w-2xl p-8">
-        <h1 className="font-hand text-4xl">{region.name}</h1>
-        <p className="mt-4">🔒 {region.lock_note}</p>
-        <Link href="/" className="mt-6 inline-block underline">
-          ← Về bản đồ
-        </Link>
-      </main>
-    );
-  }
+  if (region.status === "locked") return <LockedRoom region={region} data={data} />;
 
   const place = region.name.split("/")[0].trim();
   const worn = Object.values(current.worn)
@@ -430,11 +419,17 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           <button type="button" onClick={() => setSheet("story")} disabled={!garment} className="page-turn !text-[0.95rem]" aria-label="Hiểu bộ áo">
             📖 <span className="hidden sm:inline">Hiểu bộ áo</span>
           </button>
-          {HAS_API && (
-            <button type="button" onClick={() => setSheet("teo")} disabled={!garment} className="page-turn !text-[0.95rem]" title="Hỏi Tèo" aria-label="Hỏi Tèo">
-              📌 <span className="hidden sm:inline">Hỏi Tèo</span>
-            </button>
-          )}
+          {/* without a server: still there, faded, and it opens the sheet that says why (#116) */}
+          <button
+            type="button"
+            onClick={() => setSheet(HAS_API ? "teo" : "story")}
+            disabled={!garment}
+            className={`page-turn !text-[0.95rem] ${HAS_API ? "" : "opacity-60"}`}
+            title={HAS_API ? "Hỏi Tèo" : `Hỏi Tèo · ${FULL_ONLY}`}
+            aria-label={HAS_API ? "Hỏi Tèo" : "Hỏi Tèo, có ở bản đầy đủ"}
+          >
+            📌 <span className="hidden sm:inline">Hỏi Tèo</span>
+          </button>
         </div>
       </header>
 
@@ -446,6 +441,8 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
           noteOf={noteOf}
           whyOf={whyOf}
           onToggle={toggle}
+          why={hint}
+          onWhyClose={() => setHint(null)}
           garment={garment}
           selection={selection}
           onSelection={(s) => change({ ...current, colors: s.colors, mods: s.modifications })}
@@ -544,6 +541,7 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
               Thuê / may ở đâu
             </button>
           )}
+          {!HAS_API && garment && <span className="text-amber-50/75">Ghim so sánh, chỗ thuê / may: có ở bản đầy đủ</span>}
         </div>
       </div>
 
@@ -636,15 +634,6 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
         </CompareDrawer>
       )}
 
-      {hint && (
-        <div role="status" className="fixed inset-x-4 bottom-28 z-40 mx-auto flex max-w-md items-start gap-3 rounded-lg bg-[#fbf6ea] px-4 py-3 text-sm text-[#27354f] shadow-lg">
-          <span className="min-w-0 flex-1">{hint}</span>
-          <button type="button" aria-label="Đóng" onClick={() => setHint(null)} className="shrink-0 text-stone-600">
-            ✕
-          </button>
-        </div>
-      )}
-
       {toast && (
         // at the top: down by the bar it covered the doll's feet; the ✕ keeps its corner however the words wrap (#62)
         <div role="status" className="fixed inset-x-4 top-16 z-50 mx-auto flex max-w-md flex-wrap items-center gap-3 rounded-lg bg-stone-900 py-3 pl-4 pr-10 text-sm text-amber-50 shadow-lg">
@@ -716,9 +705,11 @@ function Modal({ label, onClose, children, bare = false }: { label: string; onCl
   const box = useDialog<HTMLDivElement>(onClose);
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-[#140c07]/55 p-4" role="dialog" aria-modal="true" aria-label={label} onClick={onClose}>
-      <div ref={box} className={`w-full max-w-lg ${bare ? "" : "paper rounded-xl p-5 shadow-2xl"}`} onClick={(e) => e.stopPropagation()}>
+      {/* never taller than the screen, and on paper the button is the paper's own (navy), not a cream pill hanging off
+          its lower edge (#116) */}
+      <div ref={box} className={`max-h-[calc(100svh-2rem)] w-full max-w-lg overflow-y-auto ${bare ? "" : "paper rounded-xl p-5 shadow-2xl"}`} onClick={(e) => e.stopPropagation()}>
         {children}
-        <button type="button" onClick={onClose} className="mx-auto mt-3 block rounded-full bg-amber-50 px-4 py-1.5 text-sm">
+        <button type="button" onClick={onClose} className={`mx-auto mt-4 block rounded-full px-5 py-1.5 text-sm ${bare ? "bg-amber-50 text-[#27354f]" : "bg-[#27354f] text-amber-50"}`}>
           Đóng
         </button>
       </div>
