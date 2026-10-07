@@ -102,12 +102,14 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
                     {open.length ? open.map((c) => `${c.province}: ${c.title ?? ""}`).join(" · ") : "chờ người ở đó cùng viết"}
                   </span>
                 </span>
-                <span className="max-w-[7rem] shrink-0 text-right text-[0.75rem] leading-tight text-stone-600">
+                <span className="shrink-0 text-right text-[0.75rem] leading-tight text-stone-600">
                   {/* what there is to read first, then what is still to be written (#61). On a small page (a phone held
                       sideways) only the stamps: the words wrapped onto the region's name, and the line under the name
                       already says which chapter there is (#119) */}
-                  <span className="hidden @min-[15rem]:inline">
-                    {open.length} chương{r.chapters.length > open.length ? ` · ${r.chapters.length - open.length} chương sắp tới` : ""}
+                  <span className="hidden whitespace-nowrap @min-[15rem]:block">
+                    {/* two lines, each with its own noun: "1 chương · 10 chương" read as "1/10" when it wrapped */}
+                    <span className="block">{open.length} chương đọc được</span>
+                    {r.chapters.length > open.length && <span className="block">{r.chapters.length - open.length} chương sắp viết</span>}
                   </span>
                   {readable && (
                     <span className="mt-0.5 flex justify-end gap-0.5" title={`Tem Đến · Hiểu · Mặc: ${n}/3`} aria-label={`Tem Đến · Hiểu · Mặc: ${n}/3`}>

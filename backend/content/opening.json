@@ -76,7 +76,7 @@
         {"kind": "narration", "style": "box", "text": "Rồi Tí bất chợt im lặng.", "voice": "narrator", "delivery": "Quieter, slower, the mood suddenly turns still.", "x": 3, "y": 5, "w": 30, "delay": 800},
         {"kind": "narration", "style": "box", "text": "Một chiếc áo dài màu xanh thiên thanh xuất hiện trên màn hình.", "voice": "narrator", "delivery": "Soft and tender, almost a whisper of memory.", "join": true, "delay": 1600,
          "effects": [{"type": "glow", "x": 80, "y": 85, "r": 11, "strength": 0.35, "ms": 1400}]},
-        {"kind": "narration", "style": "hand-light-large", "text": "Cậu nhớ đến bà.", "voice": "narrator", "delivery": "Very soft and slow, full of feeling, a gentle pause before \"bà\".", "x": 5, "y": 76, "w": 42, "delay": 1400, "type_ms": 95}
+        {"kind": "narration", "style": "hand-light-large", "text": "Cậu nhớ đến Bà.", "voice": "narrator", "delivery": "Very soft and slow, full of feeling, a gentle pause before \"bà\".", "x": 5, "y": 76, "w": 42, "delay": 1400, "type_ms": 95}
       ],
       "exit": {"type": "gold-wash", "ms": 2200},
       "sfx": ["night"]
@@ -112,8 +112,8 @@
         {"type": "dust", "x": 30, "y": 40, "r": 30}
       ],
       "beats": [
-        {"kind": "speech", "style": "memory", "speaker": "Tí", "text": "Sao bà giữ bộ này kỹ vậy?", "voice": "ti", "delivery": "Soft and curious, a child who noticed something special.", "x": 60, "y": 52, "w": 27, "tail": "down-left", "delay": 800},
-        {"kind": "speech", "style": "memory", "speaker": "Bà", "text": "Vì nó là bộ bà trân trọng nhất.", "voice": "ba", "delivery": "Slow, warm, a little emotional, a quiet smile.", "x": 62, "y": 63, "w": 29, "tail": "up", "wait_click": true},
+        {"kind": "speech", "style": "memory", "speaker": "Tí", "text": "Sao Bà giữ bộ này kỹ vậy?", "voice": "ti", "delivery": "Soft and curious, a child who noticed something special.", "x": 60, "y": 52, "w": 27, "tail": "down-left", "delay": 800},
+        {"kind": "speech", "style": "memory", "speaker": "Bà", "text": "Vì nó là bộ Bà trân trọng nhất.", "voice": "ba", "delivery": "Slow, warm, a little emotional, a quiet smile.", "x": 62, "y": 63, "w": 29, "tail": "up", "wait_click": true},
         {"kind": "narration", "style": "hand", "text": "Có những bộ quần áo không chỉ để mặc.", "voice": "narrator", "delivery": "Reflective and slow, letting the idea sink in.", "x": 60, "y": 76, "w": 38, "delay": 1100, "type_ms": 45},
         {"kind": "narration", "style": "hand-large", "text": "Chúng còn để nhớ.", "voice": "narrator", "delivery": "Very soft, almost whispered, heartfelt; the last word lingers.", "x": 60, "y": 84, "w": 38, "delay": 1300, "type_ms": 115}
       ],
@@ -128,7 +128,7 @@
       "focal": {"x": 50, "y": 55},
       "camera_start": {"s": 1.35, "x": 17, "y": 55, "mode": "center"},
       "beats": [
-        {"kind": "narration", "style": "box", "text": "Chiều hôm đó, Tí và Tèo quay lại căn nhà cũ của bà.", "voice": "narrator", "delivery": "Calm storytelling, a new chapter beginning, gentle.", "space": "screen", "x": 3, "y": 80, "w": 40, "delay": 700},
+        {"kind": "narration", "style": "box", "text": "Chiều hôm đó, Tí và Tèo quay lại căn nhà cũ của Bà.", "voice": "narrator", "delivery": "Calm storytelling, a new chapter beginning, gentle.", "space": "screen", "x": 3, "y": 80, "w": 40, "delay": 700},
         {"kind": "narration", "style": "box", "text": "Mọi thứ dường như vẫn còn ở nguyên vị trí.", "voice": "narrator", "delivery": "Hushed, looking around an old quiet house.", "space": "screen", "x": 3, "y": 80, "w": 40, "wait_click": true, "clear": true,
          "camera": {"s": 1.35, "x": 48, "y": 44, "mode": "center", "ms": 1600}},
         {"kind": "narration", "style": "box", "text": "Và dưới chiếc áo màu xanh…", "voice": "narrator", "delivery": "Building suspense, slow, trailing off at the ellipsis.", "space": "screen", "x": 3, "y": 80, "w": 34, "wait_click": true, "clear": true,
@@ -147,14 +147,14 @@
       "beats": [
         {"kind": "title", "style": "title", "text": "Việt Phục Du Ký", "x": 60.6, "y": 52.8, "w": 20, "rotate": 12, "delay": 800},
         {"kind": "narration", "text": "", "delay": 700, "effects": [{"type": "light-sweep", "x": 60, "y": 52, "r": 30, "ms": 1400, "rotate": 12}]},
-        {"kind": "narration", "style": "caption", "text": "Cuốn sổ bà vẫn để trên bàn may ngày trước.", "voice": "narrator", "delivery": "Soft and reverent, like finding a treasure.", "x": 4, "y": 86, "w": 40, "delay": 800}
+        {"kind": "narration", "style": "caption", "text": "Cuốn sổ Bà vẫn để trên bàn may ngày trước.", "voice": "narrator", "delivery": "Soft and reverent, like finding a treasure.", "x": 4, "y": 86, "w": 40, "delay": 800}
       ],
       "exit": {"type": "cover-open", "ms": 2900, "x": 60.6, "y": 52.8},
       "sfx": ["cloth"]
     },
     {
       "id": "s09",
-      "title": "Những trang bà chưa viết xong",
+      "title": "Những trang Bà chưa viết xong",
       "scene": "Bà's voice reads from her own diary, as if she were beside Tí. Nostalgic, gentle, wise; the last question is spoken directly to the listener.",
       "image": "/opening/s09.webp",
       "mood": "present",
@@ -168,7 +168,7 @@
            {"type": "spotlight", "x": 20, "y": 71, "r": 11, "strength": 0.3, "ms": 600, "at": 1800},
            {"type": "spotlight", "x": 49, "y": 71, "r": 11, "strength": 0.3, "ms": 600, "at": 2700}
          ]},
-        {"kind": "narration", "style": "memory", "text": "Sau này bà mới hiểu… đẹp chỉ là một phần rất nhỏ.", "voice": "ba", "delivery": "Thoughtful, a real pause at the ellipsis, wise and gentle.", "join": true, "wait_click": true},
+        {"kind": "narration", "style": "memory", "text": "Sau này Bà mới hiểu… đẹp chỉ là một phần rất nhỏ.", "voice": "ba", "delivery": "Thoughtful, a real pause at the ellipsis, wise and gentle.", "join": true, "wait_click": true},
         {"kind": "narration", "style": "memory", "text": "Bà đã đi qua một phần của hành trình này.", "voice": "ba", "delivery": "Peaceful, accepting, slow.", "space": "screen", "x": 3, "y": 78, "w": 44, "wait_click": true, "clear": true,
          "camera": {"s": 1.3, "x": 79, "y": 56, "mode": "center", "ms": 2000}},
         {"kind": "narration", "style": "memory", "text": "Phần còn lại… có lẽ sẽ dành cho người khác.", "voice": "ba", "delivery": "Hopeful and tender, a pause at the ellipsis, as if looking at the listener.", "join": true, "delay": 1100},
@@ -191,7 +191,7 @@
         {"type": "particles", "x": 57, "y": 45, "r": 34, "at": 400}
       ],
       "beats": [
-        {"kind": "finale", "style": "finale", "text": "Hành trình của bà đã kết thúc.", "voice": "ba", "delivery": "Serene and gentle, saying goodbye with a smile.", "space": "screen", "x": 50, "y": 9, "w": 70, "delay": 1300},
+        {"kind": "finale", "style": "finale", "text": "Hành trình của Bà đã kết thúc.", "voice": "ba", "delivery": "Serene and gentle, saying goodbye with a smile.", "space": "screen", "x": 50, "y": 9, "w": 70, "delay": 1300},
         {"kind": "finale", "style": "finale-large", "text": "Hành trình của con bắt đầu từ đây.", "voice": "ba", "delivery": "Warm, clear and encouraging, a blessing to the listener; slightly stronger.", "space": "screen", "x": 50, "y": 44, "w": 86, "delay": 1300}
       ],
       "exit": {"type": "flash", "ms": 3000},
