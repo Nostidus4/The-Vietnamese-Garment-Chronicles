@@ -289,7 +289,10 @@ def _check_refs(c: Content, r: Report) -> None:
                     if g.teo.verified and not g.teo.sources:
                         r.errors.append(f"{wj}: verified Tèo note in game '{g.kind}' needs a source")
                 for i, rd in enumerate(g.rounds):
-                    if rd.choices and (rd.answer is None or rd.answer >= len(rd.choices)):
+                    # in Bữa cơm ra mắt the rounds before the last list things to go through one by one (who to
+                    # invite, in order; the dishes to taste): no single right answer there. The last (the cup) has one.
+                    walk = g.kind == "mam-com" and rd.answer is None and i < len(g.rounds) - 1
+                    if rd.choices and not walk and (rd.answer is None or rd.answer >= len(rd.choices)):
                         r.errors.append(f"{wj} [{st.id}] game round {i}: answer has no matching choice")
                 if j.community_review and not g.community_review and any(ch.status == "draft" for ch in reg.chapters):
                     r.errors.append(f"{wj} [{st.id}]: games in a community draft must be community_review")

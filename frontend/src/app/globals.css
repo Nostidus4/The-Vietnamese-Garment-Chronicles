@@ -165,6 +165,13 @@ body {
   /* ================================================================
      Opening – chrome
      ================================================================ */
+  /* the home page before its JavaScript runs (BootShell): the logo is there at once, a returning visitor gets the
+     dark loading screen of the desk instead */
+  .boot-shell__logo { animation: boot-logo 0.45s ease-out both; }
+  @keyframes boot-logo { from { opacity: 0; } }
+  html[data-seen] .boot-shell { background: #140c07; }
+  html[data-seen] .boot-shell > * { display: none; }
+
   .skip-btn {
     min-height: 44px;
     min-width: 44px;
@@ -179,6 +186,18 @@ body {
     transition: background 0.25s, color 0.25s;
   }
   .skip-btn:hover { background: rgba(251, 246, 234, 0.9); color: var(--ink); }
+  .skip-btn--loud { background: rgba(251, 246, 234, 0.92); color: var(--ink); font-weight: 600; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35); }
+  .skip-btn--loud:hover { background: #fffaf0; }
+  .opening-count {
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: rgba(251, 246, 234, 0.95);
+    background: rgba(20, 12, 7, 0.5);
+    border-radius: 999px;
+    padding: 0.3em 0.8em;
+    backdrop-filter: blur(6px);
+    font-variant-numeric: tabular-nums;
+  }
   .next-hint {
     font-family: var(--font-body), sans-serif;
     font-size: 44px;
@@ -449,6 +468,10 @@ body {
   @media (prefers-reduced-motion: reduce) { .ink-in { animation: none; opacity: 1; } }
   /* a game nobody has touched yet: the first things to press glow gently */
   .game-fresh [data-hint] { animation: hint-glow 1.6s ease-in-out infinite; }
+  /* Áo ngũ thân: with a panel in hand, the open places breathe (#108) */
+  .ngu-than-open { animation: ngu-than-open 1.2s ease-in-out infinite; }
+  @keyframes ngu-than-open { 50% { fill: rgba(227, 176, 75, 0.45); } }
+  @media (prefers-reduced-motion: reduce) { .ngu-than-open { animation: none; fill: rgba(227, 176, 75, 0.35); } }
   @keyframes hint-glow {
     0%, 100% { box-shadow: 0 0 0 0 rgba(217, 164, 59, 0); }
     50% { box-shadow: 0 0 0 4px rgba(217, 164, 59, 0.55); }
@@ -550,19 +573,34 @@ body {
   outline: 3px solid #d9480f;
   outline-offset: 2px;
 }
+/* the opening's first question: the same ring on both answers, in the colour of the first one (#110) */
+.choice-btn:focus-visible {
+  outline: 2px solid #2f4a6d;
+  outline-offset: 3px;
+}
 
+/* a solid dark pill on every page: on the light pages (Du Ký, 404, a chapter) the old see-through one gave the cream
+   words 2.32:1; at least 44px tall everywhere, as on the desk (#111) */
 .site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: #f3ead7;
-  background: rgba(20, 12, 7, 0.35);
-  padding: 0.35em 0.8em;
+  background: rgba(40, 25, 15, 0.85);
+  border: 1px solid transparent;
+  padding: 0 0.9em;
   border-radius: 999px;
   backdrop-filter: blur(6px);
 }
-.site-nav a:hover { background: rgba(243, 234, 215, 0.9); color: #2b2118; }
+.site-nav a:hover { background: rgba(243, 234, 215, 0.95); color: #2b2118; }
+.site-nav a[aria-current="page"] { border-color: #d9a43b; box-shadow: inset 0 0 0 1px #d9a43b; }
+/* "Xem lại mở đầu": a lesser button, smaller words in a thin pale rim (still well over 4.5:1) */
+.site-nav a.site-nav-minor { border-color: rgba(243, 234, 215, 0.45); background: rgba(40, 25, 15, 0.78); font-size: 0.8rem; }
+.site-nav a.site-nav-minor:hover { background: rgba(243, 234, 215, 0.95); color: #2b2118; }
 /* touch screens: every control at least 44px, the nav scrolls away with the page instead of covering it (#57) */
 @media (pointer: coarse) {
   .site-nav { gap: 0.4rem; right: 0.5rem; }
-  .site-nav a { display: inline-flex; align-items: center; min-height: 44px; }
+  .site-nav a { padding: 0 0.7em; }
   .page-turn { min-height: 44px; min-width: 44px; }
   .book-size button { min-height: 44px; min-width: 44px; }
   [role="note"] button { min-height: 44px; padding-inline: 1rem; }
@@ -668,19 +706,33 @@ body {
   /* in the room a button that cannot be pressed yet still says why ("Compass đang chấm…", "cần máy chủ") */
   .fitting-bar .page-turn:disabled { display: inline-block; opacity: 0.6; cursor: not-allowed; animation: none; }
 
+  /* a region still being written with its community (#112): the mirror with a curtain drawn over the doll, Bà's note beside it */
+  .locked-room { max-width: 64rem; margin: 1.2rem auto 0; display: grid; gap: 1.5rem; justify-items: center; }
+  @media (min-width: 900px) { .locked-room { grid-template-columns: auto minmax(0, 26rem); align-items: center; justify-content: center; } }
+  .locked-room .dress-form { height: min(60vh, 560px); }
+  @media (max-width: 760px) { .locked-room .dress-form { height: min(44svh, 380px); } }
+  .locked-curtain { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(122, 59, 30, 0.92) 0 14px, rgba(90, 40, 20, 0.95) 14px 22px, rgba(140, 72, 38, 0.9) 22px 34px); box-shadow: inset 0 -18px 24px rgba(20, 12, 7, 0.45); clip-path: polygon(0 0, 100% 0, 100% 100%, 62% 100%, 54% 46%, 46% 46%, 38% 100%, 0 100%); }
+  .locked-note { width: 100%; border-radius: 0.5rem; background: #fbf3df; padding: 1.2rem 1.3rem; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); border: 1px solid #c9a35a; }
+  .locked-cta { margin-top: 1rem; display: inline-flex; min-height: 44px; align-items: center; border-radius: 999px; background: #27354f; padding: 0.5rem 1.3rem; color: #fef3c7; font-size: 0.95rem; }
+  .locked-cta:hover { background: #1c2740; }
+
   /* ---------- Tủ áo của Bà ---------- */
   .dress-form { aspect-ratio: 3 / 5; }
   /* phones and tablets: the doll first, then the wardrobe, then what is worn */
   @media (max-width: 1023px) { .fitting-grid > .fitting-stage { order: -1; } .wardrobe-body { max-height: 46vh; } }
   .mirror-tag-bad { border-color: #b5452e; color: #b5452e; }
   .who-switch { position: relative; z-index: 6; margin-bottom: -0.4rem; border-radius: 999px; background: rgba(251, 246, 234, 0.92); padding: 0.1rem 0.8rem; font-size: 0.78rem; color: #27354f; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); }
-  .who-card { width: 6.4rem; border-radius: 0.7rem; border: 2px solid transparent; background: #fbf6ea; padding: 0.6rem 0.4rem; color: #27354f; transition: transform 160ms ease, border-color 160ms ease; }
+  .who-card { min-width: 0; border-radius: 0.7rem; border: 2px solid transparent; background: #fbf6ea; padding: 0.6rem 0.4rem; color: #27354f; transition: transform 160ms ease, border-color 160ms ease; }
   .who-card:hover:not(:disabled) { transform: translateY(-3px); }
-  .who-card:disabled { opacity: 0.5; cursor: not-allowed; }
+  /* "Con · bản đầy đủ": not for this build, but still readable (#109) */
+  .who-card:disabled { cursor: not-allowed; border: 2px dashed #b9a98a; background: #f1ead9; color: #57534e; }
+  .who-card:disabled svg, .who-card:disabled > span:first-child { opacity: 0.55; }
   .who-card-on { border-color: #e3b04b; box-shadow: 0 0 0 3px rgba(227, 176, 75, 0.35); transform: translateY(-3px); }
 
   /* the wardrobe: dark wood with brass, the drawers' tabs like the book's bookmarks, the pieces on paper */
-  .wardrobe { position: relative; min-width: 0; display: flex; flex-direction: column; border-radius: 0.9rem 0.9rem 0.5rem 0.5rem; background: linear-gradient(#5b3a22, #3b2615); border: 2px solid #c9a35a; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); overflow: hidden; perspective: 1200px; }
+  .wardrobe { position: relative; min-width: 0; display: flex; flex-direction: column; border-radius: 0.9rem 0.9rem 0.5rem 0.5rem; background: linear-gradient(#5b3a22, #3b2615); border: 2px solid #c9a35a; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); overflow: hidden; overflow: clip; perspective: 1200px; }
+  /* clip, not just hide: the doors turn out past the frame, and a hidden overflow could still be scrolled sideways by
+     a focus, cutting the first letters of every tab and name (#109) */
   .wardrobe-doors { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
   .wardrobe-doors::before, .wardrobe-doors::after { content: ""; position: absolute; top: 0; bottom: 0; width: 50%; background: linear-gradient(90deg, #4a2f1b, #5b3a22 40%, #3b2615); border: 2px solid #c9a35a; animation: door-open 0.7s cubic-bezier(.2,.8,.2,1) 0.15s forwards; }
   .wardrobe-doors::before { left: 0; transform-origin: left center; }
@@ -689,10 +741,10 @@ body {
   @keyframes door-open-r { to { transform: rotateY(100deg); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .wardrobe-doors { display: none; } }
   .wardrobe-tabs { display: flex; flex-wrap: wrap; gap: 0.2rem; padding: 0.55rem 0.55rem 0; }
-  /* phones: the drawers on one row that scrolls sideways, each tab tall enough for a thumb (#57) */
+  /* phones: each tab tall enough for a thumb (#57), the drawers on two full rows instead of a strip that scrolls and
+     cuts the names at its edges (#109) */
   @media (max-width: 760px) {
-    .wardrobe-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
-    .wardrobe-tab { flex-shrink: 0; min-height: 44px; }
+    .wardrobe-tab { flex: 1 1 auto; min-height: 44px; }
   }
   .wardrobe-tab { border-radius: 0.5rem 0.5rem 0 0; padding: 0.3rem 0.65rem; font-size: 0.78rem; color: #f3ead7; background: rgba(243, 234, 215, 0.12); }
   .wardrobe-tab:hover { background: rgba(243, 234, 215, 0.22); }
