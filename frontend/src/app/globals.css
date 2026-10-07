@@ -575,18 +575,28 @@ body {
   outline-offset: 3px;
 }
 
+/* a solid dark pill on every page: on the light pages (Du Ký, 404, a chapter) the old see-through one gave the cream
+   words 2.32:1; at least 44px tall everywhere, as on the desk (#111) */
 .site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: #f3ead7;
-  background: rgba(20, 12, 7, 0.35);
-  padding: 0.35em 0.8em;
+  background: rgba(40, 25, 15, 0.85);
+  border: 1px solid transparent;
+  padding: 0 0.9em;
   border-radius: 999px;
   backdrop-filter: blur(6px);
 }
-.site-nav a:hover { background: rgba(243, 234, 215, 0.9); color: #2b2118; }
+.site-nav a:hover { background: rgba(243, 234, 215, 0.95); color: #2b2118; }
+.site-nav a[aria-current="page"] { border-color: #d9a43b; box-shadow: inset 0 0 0 1px #d9a43b; }
+/* "Xem lại mở đầu": a lesser button, smaller words in a thin pale rim (still well over 4.5:1) */
+.site-nav a.site-nav-minor { border-color: rgba(243, 234, 215, 0.45); background: rgba(40, 25, 15, 0.78); font-size: 0.8rem; }
+.site-nav a.site-nav-minor:hover { background: rgba(243, 234, 215, 0.95); color: #2b2118; }
 /* touch screens: every control at least 44px, the nav scrolls away with the page instead of covering it (#57) */
 @media (pointer: coarse) {
   .site-nav { gap: 0.4rem; right: 0.5rem; }
-  .site-nav a { display: inline-flex; align-items: center; min-height: 44px; }
+  .site-nav a { padding: 0 0.7em; }
   .page-turn { min-height: 44px; min-width: 44px; }
   .book-size button { min-height: 44px; min-width: 44px; }
   [role="note"] button { min-height: 44px; padding-inline: 1rem; }
