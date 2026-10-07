@@ -15,6 +15,14 @@ import { mergeBooks } from "@/lib/dukyMerge";
 const BUCKET = "duky-photos";
 const configured = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
 
+// Supabase's own mail is capped at a few a hour for the whole project, so on the live site "Gửi link" often answers
+// 429 (over_email_send_rate_limit): say so, instead of the same line as for every failure (#117)
+function signInMessage(e: { status?: number; code?: string }): string {
+  if (e.status === 429 || e.code === "over_email_send_rate_limit") return "Hôm nay thư đăng nhập đã gửi đi nhiều quá, con thử lại sau ít phút nhé. Sổ vẫn lưu trên máy này.";
+  if (e.code === "email_address_invalid" || e.code === "validation_failed") return "Địa chỉ email này chưa dùng được, con kiểm tra lại nhé.";
+  return "Chưa gửi được link đăng nhập, con thử lại sau chút nhé.";
+}
+
 export function CloudSync({ compact = false }: { compact?: boolean }) {
   const sb = useMemo(() => (configured ? createClient() : null), []);
   const [session, setSession] = useState<Session | null>(null);
@@ -56,8 +64,13 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
 
   const signIn = () =>
     run(async () => {
-      const { error } = await sb.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: `${window.location.origin}${asset("/du-ky")}` } });
-      if (error) throw error;
+      // no answer in 15 s is also a failure to tell, not a button that stays grey
+      const wait = new Promise<never>((_, no) => setTimeout(() => no(new Error("Chưa gửi được link đăng nhập, con thử lại sau chút nhé.")), 15000));
+      const { error } = await Promise.race([
+        sb.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: `${window.location.origin}${asset("/du-ky")}` } }),
+        wait,
+      ]);
+      if (error) throw new Error(signInMessage(error));
       return "Đã gửi link đăng nhập, con mở email để bấm vào nhé.";
     });
 
@@ -166,7 +179,12 @@ export function CloudSync({ compact = false }: { compact?: boolean }) {
           </div>
         </form>
       )}
-      {msg && <p className="m-0 mt-1 text-[#8a4b2a]">{msg}</p>}
+      {/* read out when it appears: a failed "Gửi link" used to look like a button that only greyed out (#117) */}
+      {msg && (
+        <p role="status" className="m-0 mt-1.5 text-[0.8125rem] font-semibold text-[#8a4b2a]">
+          {msg}
+        </p>
+      )}
     </div>
   );
 }

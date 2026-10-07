@@ -125,7 +125,8 @@ export default function DuKyNotebook() {
       )}
       {sharePage && <ShareDialog page={sharePage} onClose={() => setSharing(null)} />}
       {exporting && <ExportCard page={exporting} data={data} onDone={onExportDone} />}
-      {/* above "Trang trước / Trang sau", like the stamp toast (#117) */}
+      {/* above "Trang trước / Trang sau", like the stamp toast (#117); on a phone at the very bottom and on one line, so it
+          covers neither "‹ Về sổ của Bà" (pb-16 keeps it clear) nor the page's buttons, and "Đã dán" lets taps through */}
       {(pasted || trash) && (
         <div
           role="status"
@@ -133,7 +134,7 @@ export default function DuKyNotebook() {
           onPointerLeave={() => setHolding(false)}
           onFocus={() => setHolding(true)}
           onBlur={() => setHolding(false)}
-          className="fixed bottom-24 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full bg-black/80 px-4 py-2 text-sm text-white"
+          className={`fixed bottom-3 left-1/2 z-50 flex w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-3 whitespace-nowrap rounded-full bg-black/80 px-4 py-2 text-sm text-white min-[760px]:bottom-24 ${trash ? "" : "pointer-events-none"}`}
         >
           {trash ? (
             <>
@@ -156,7 +157,7 @@ export default function DuKyNotebook() {
         </div>
       )}
       {exportError && (
-        <p role="alert" className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black/75 px-4 py-2 text-sm text-white" onClick={() => setExportError(null)}>
+        <p role="alert" className="fixed bottom-3 left-1/2 z-50 w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-full bg-black/75 px-4 py-2 text-sm text-white min-[760px]:bottom-24" onClick={() => setExportError(null)}>
           {exportError}
         </p>
       )}
@@ -560,6 +561,8 @@ function ScrollBook({ data, book, actions }: { data: Bootstrap; book: DuKyBook; 
   }, [pages.length, newest]);
   return (
     <main className="desk min-h-screen px-4 pb-16 pt-4">
+      {/* the one h1 of the phone view too, as in the desk book (#117) */}
+      <h1 className="sr-only">Du Ký của con</h1>
       <div className="relative mx-auto aspect-[3/4] w-[62%] max-w-[260px] shadow-[10px_16px_24px_rgba(20,8,0,0.5)]">
         <DuKyCover name={book.cover.name} color={book.cover.color} />
       </div>
