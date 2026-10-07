@@ -95,8 +95,13 @@ export default function DuKyNotebook() {
     setExportError(err ?? null);
   }, []);
 
-  if (error) return <p className="p-6 text-red-700">{error}</p>;
-  if (!data || !ready) return <p className="font-hand p-6 text-xl text-stone-600">Đang mở sổ…</p>;
+  if (error || !data || !ready)
+    return (
+      <main className="p-6">
+        <h1 className="sr-only">Du Ký của con</h1>
+        {error ? <p className="m-0 text-red-700">{error}</p> : <p className="font-hand m-0 text-xl text-stone-600">Đang mở sổ…</p>}
+      </main>
+    );
 
   const actions: Actions = { onNew: setCreating, onExport: setExporting, onShare: HAS_API ? (p) => setSharing(p.id) : undefined }; // a share link lives on the server (#48)
   const sharePage = book.pages.find((p) => p.id === sharing);
