@@ -327,7 +327,7 @@ function NguThan({ game, onWin }: Props) {
   return (
     <div>
       {/* the three layers, the one being built lit */}
-      <ol className="m-0 mb-1.5 flex list-none flex-wrap justify-center gap-1 p-0 text-[0.7rem]">
+      <ol className="m-0 mb-1.5 flex list-none flex-wrap justify-center gap-1 p-0 text-[0.75rem]">
         {LAYER_NAME.map((name, k) => (
           <li key={name} className={`rounded-full px-2 py-0.5 ${k < cur ? "bg-[#5E7F4A] text-amber-50" : k === cur ? "bg-[#27354f] text-amber-50" : "border border-stone-400 text-stone-600"}`}>
             {k + 1} · {name} {k < cur ? "✓" : ""}
@@ -519,7 +519,7 @@ function MamCom({ game, onWin }: Props) {
   const phase = [moi.label, tasting.label, cup.label];
   return (
     <div>
-      <ol className="m-0 mb-1.5 flex list-none flex-wrap justify-center gap-1 p-0 text-[0.7rem]">
+      <ol className="m-0 mb-1.5 flex list-none flex-wrap justify-center gap-1 p-0 text-[0.75rem]">
         {phase.map((name, k) => (
           <li key={k} className={`rounded-full px-2 py-0.5 ${k < step ? "bg-[#5E7F4A] text-amber-50" : k === step ? "bg-[#27354f] text-amber-50" : "border border-stone-400 text-stone-600"}`}>
             {k + 1} · {name} {k < step ? "✓" : ""}
@@ -564,7 +564,7 @@ function MamCom({ game, onWin }: Props) {
             <span className={`grid h-8 w-8 place-items-center rounded-full border-2 text-[0.95rem] ${k < invited ? "border-[#5E7F4A] bg-[#e7efdc]" : "border-[#8a4b2a] bg-[#f6efe0]"}`} aria-hidden>
               {k === 0 ? "👵" : k === 1 ? "👨" : "👧"}
             </span>
-            <span className="mt-0.5 whitespace-nowrap rounded bg-white/75 px-1 text-[0.68rem] leading-tight text-[#27354f]">
+            <span className="mt-0.5 whitespace-nowrap rounded bg-white/75 px-1 text-[0.75rem] leading-tight text-[#27354f]">
               {who}
               {k < invited ? " ✓" : ""}
             </span>
@@ -577,7 +577,7 @@ function MamCom({ game, onWin }: Props) {
             animate={fell && step < 3 && !reduced ? { y: 14, rotate: 70, opacity: 0.8 } : { y: 0, rotate: 0, opacity: 1 }}
             transition={{ type: "spring", stiffness: 260, damping: 12 }}
           />
-          <span className="mt-0.5 rounded bg-white/75 px-1 text-[0.68rem] text-[#27354f]">Bà</span>
+          <span className="mt-0.5 rounded bg-white/75 px-1 text-[0.75rem] text-[#27354f]">Bà</span>
         </div>
       </div>
 
@@ -641,13 +641,13 @@ function CayBeo({ game, onWin }: Props) {
               onClick={() => drop(b)}
               animate={shake === b ? { x: [0, -5, 5, -3, 0] } : { y: [0, -2, 0] }}
               transition={shake === b ? { duration: 0.35 } : { duration: 2.4 + b * 0.3, repeat: Infinity }}
-              className="flex flex-col items-center"
+              className="flex min-w-0 flex-col items-center"
               aria-label={`Ghe treo ${rest.join(" ")}`}
             >
               <span className="text-[1.4rem] leading-none">{icon}</span>
               <span className="h-10 w-[2px] bg-[#6b4a2f]" />
               <span className="h-4 w-full rounded-b-[60%] bg-[#6b4a2f]" />
-              <span className="mt-0.5 min-h-[1.8em] text-center text-[0.55rem] leading-tight text-amber-50">
+              <span className="mt-0.5 min-h-[1.8em] text-center text-[0.75rem] leading-tight text-amber-50">
                 {placed.includes(b) ? game.rounds[b].label : rest.join(" ")}
               </span>
             </motion.button>
@@ -842,7 +842,7 @@ function Xoe({ game, onWin }: Props) {
         {running ? "Bước!" : "Bắt đầu nghe trống"}
       </button>
       <p className="m-0 mt-1 text-[0.75rem] text-stone-600">
-        {hits}/{need} bước đúng nhịp · phím cách cũng được
+        {hits}/{need} bước đúng nhịp<span className="[@media(pointer:coarse)]:hidden"> · phím cách cũng được</span>
       </p>
       {msg && running && <Hint tone={msg === "Đúng nhịp!" ? "good" : "bad"}>{msg}</Hint>}
     </div>

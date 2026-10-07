@@ -217,7 +217,7 @@ function ChapterContents({ region }: { region: Region }) {
           return (
             <span
               key={s.id}
-              className={`flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border-2 px-0.5 text-center text-[0.38rem] leading-[1.05] [overflow-wrap:anywhere] ${on ? "rotate-[-8deg] border-[#B5452E] text-[#B5452E]" : "border-dashed border-stone-400/60 text-stone-400"}`}
+              className={`rounded-full border-2 px-2 py-0.5 text-[0.75rem] leading-tight ${on ? "rotate-[-8deg] border-[#B5452E] text-[#B5452E]" : "border-dashed border-stone-400/60 text-stone-400"}`}
               title={s.stamp ?? ""}
             >
               {s.stamp}
@@ -289,14 +289,14 @@ function StopStamp({ label, regionId, stopId }: { label: string; regionId: strin
   return (
     <motion.div
       key={on ? "on" : "off"}
-      className={`flex h-[2.6rem] w-[2.6rem] shrink-0 flex-col items-center justify-center rounded-full border-2 text-center ${on ? "border-[#B5452E]/80 text-[#B5452E]" : "border-dashed border-stone-400/60 text-stone-400/70"}`}
+      className={`flex h-[3.6rem] w-[3.6rem] shrink-0 flex-col items-center justify-center rounded-full border-2 text-center ${on ? "border-[#B5452E]/80 text-[#B5452E]" : "border-dashed border-stone-400/60 text-stone-400/70"}`}
       initial={on && !reduced ? { scale: 1.9, opacity: 0, rotate: -30 } : false}
       animate={{ scale: 1, opacity: 1, rotate: -10 }}
       transition={{ type: "spring", stiffness: 380, damping: 15, delay: 0.5 }}
       aria-label={on ? `Tem ${label}` : `Chỗ đóng tem ${label}`}
     >
-      <span className="text-[0.34rem] tracking-[0.18em]">{on ? "ĐÃ ĐẾN" : "TEM"}</span>
-      <span className="font-display px-0.5 text-[0.48rem] leading-tight">{label}</span>
+      <span className="text-[0.75rem] font-semibold leading-tight">{on ? "ĐÃ ĐẾN" : "TEM"}</span>
+      <span className="font-display px-1 text-[0.75rem] leading-[1.1]">{label}</span>
     </motion.div>
   );
 }
@@ -562,7 +562,7 @@ export function StopGame({ stop, regionId, data }: { stop: Stop; regionId: strin
           <button
             type="button"
             onClick={() => setRound((r) => r + 1)}
-            className="mt-0.5 shrink-0 rounded-full border border-stone-400/70 px-2 py-0.5 text-[0.75rem] text-stone-600 hover:bg-stone-200/60"
+            className="tap-around mt-0.5 shrink-0 rounded-full border border-stone-400/70 px-2 py-0.5 text-[0.75rem] text-stone-600 hover:bg-stone-200/60"
             title="Bắt đầu lại trò chơi này từ đầu"
           >
             ↺ Làm lại
@@ -652,7 +652,7 @@ export function FestivalBoard({ stop, chapterPlace }: { stop: Stop; chapterPlace
             >
               <span className="line-clamp-2">{f.name.replace(/\s*\(.*\)$/, "")}</span>
               {done && !on && (
-                <span className="absolute -right-1 -top-1 rounded-full bg-[#5E7F4A] px-1 text-[0.5rem] text-white" aria-label="đã xem">
+                <span className="absolute -right-1 -top-1 rounded-full bg-[#5E7F4A] px-1 text-[0.75rem] leading-none text-white" aria-label="đã xem">
                   ✓
                 </span>
               )}

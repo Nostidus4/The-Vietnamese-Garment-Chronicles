@@ -6,9 +6,9 @@ export function DuKyCover({ name, color }: { name: string; color: string }) {
     <div className="duky-cloth absolute inset-0 [container-type:inline-size]" style={{ ["--cloth" as string]: color }}>
       <div className="duky-stitch absolute inset-[4.5%]" />
       <div className="duky-label absolute left-[17%] right-[17%] top-[24%] flex flex-col items-center justify-center py-[5cqw] text-center">
-        <p className="m-0 text-[2.4cqw] tracking-[0.4em] text-[#8a4b2a]/80">SỔ TAY</p>
-        <p className="font-display m-0 text-[10cqw] leading-none text-[#27354f]">Du Ký</p>
-        <p className="font-hand m-0 mt-[1.5cqw] max-w-[90%] truncate text-[5cqw] leading-tight text-[#1f3a78]">
+        <p className="m-0 text-[max(12px,2.4cqw)] tracking-[min(0.4em,1cqw)] text-[#8a4b2a]/80">SỔ TAY</p>
+        <p className="font-display m-0 text-[max(16px,10cqw)] leading-none text-[#27354f]">Du Ký</p>
+        <p className="font-hand m-0 mt-[1.5cqw] max-w-[90%] truncate text-[max(12px,5cqw)] leading-tight text-[#1f3a78]">
           {name ? `của ${name}` : "của con"}
         </p>
       </div>

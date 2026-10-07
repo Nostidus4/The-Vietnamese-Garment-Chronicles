@@ -491,7 +491,12 @@ function WhatsInside({ onRead }: { onRead: () => void }) {
         </nav>
         <DeskPhoto />
       </div>
-      <nav aria-label="Trong sổ có gì" className="absolute inset-x-0 bottom-3 z-20 flex justify-center gap-2 px-3 lg:hidden">
+      {/* a phone held sideways: a column at the left of the book, where the table is empty; along the bottom the two
+          sat on "Bấm để mở sổ" and next to the page-turn buttons (#119) */}
+      <nav
+        aria-label="Trong sổ có gì"
+        className="absolute inset-x-0 bottom-3 z-20 flex justify-center gap-2 px-3 lg:hidden [@media(max-height:500px)]:inset-x-auto [@media(max-height:500px)]:bottom-auto [@media(max-height:500px)]:left-3 [@media(max-height:500px)]:top-1/2 [@media(max-height:500px)]:-translate-y-1/2 [@media(max-height:500px)]:flex-col [@media(max-height:500px)]:items-start"
+      >
         <a href={asset("/chapter/hue?entry=event")} className="page-turn !text-[0.95rem]">
           👗 Tủ áo của Bà
         </a>

@@ -167,7 +167,7 @@ export function VietnamMap({
         x={LABEL_AT.bienDong[0]}
         y={LABEL_AT.bienDong[1]}
         className="font-hand"
-        fontSize={13 * s}
+        style={{ fontSize: `max(${13 * s}px, calc(var(--u, 0.37) * 12px))` }}
         fill="#2F4A6D"
         opacity="0.45"
         transform={`rotate(-62 ${LABEL_AT.bienDong[0]} ${LABEL_AT.bienDong[1]})`}
@@ -344,10 +344,9 @@ export function VietnamMap({
       {/* chapter names (whole-country view only) */}
       <g
         className="font-hand"
-        fontSize="11.5"
+        style={{ fontSize: "max(11.5px, calc(var(--u, 0.37) * 13px))", opacity: focus ? 0 : 1, transition: "opacity 300ms ease" }}
         textAnchor="middle"
         pointerEvents="none"
-        style={{ opacity: focus ? 0 : 1, transition: "opacity 300ms ease" }}
       >
         {CHAPTERS.map((c) => {
           const [x, y] = LABEL_AT[c.id];
@@ -364,7 +363,7 @@ export function VietnamMap({
             >
               {c.label}
               {isLocked && (
-                <tspan x={x} dy="11" fontSize="8.5">
+                <tspan x={x} dy="1.3em" style={{ fontSize: "max(8.5px, calc(var(--u, 0.37) * 12px))" }}>
                   (đang xây dựng)
                 </tspan>
               )}
@@ -382,7 +381,8 @@ export function VietnamMap({
       {/* 9 map units: about 9px on a 1280×720 screen, readable without zooming (#56) */}
       <g
         className="font-hand"
-        fontSize={9 * s}
+        // never under 12 screen pixels: 9 map units were about 10px on a phone (#119)
+        style={{ fontSize: `max(${9 * s}px, calc(var(--u, 0.37) * 12px))` }}
         fill={INK}
         stroke="#f6efe0"
         strokeWidth={2.4 * s}
@@ -390,8 +390,12 @@ export function VietnamMap({
         pointerEvents="none"
         opacity="0.85"
       >
+        {/* two lines: at 12px one ran off the page's left edge on a phone */}
         <text x={LABEL_AT.phuQuoc[0]} y={LABEL_AT.phuQuoc[1]} textAnchor="end">
-          Phú Quốc
+          <tspan dy="-0.5em">Phú</tspan>
+          <tspan x={LABEL_AT.phuQuoc[0]} dy="1.05em">
+            Quốc
+          </tspan>
         </text>
         <text x={LABEL_AT.conDao[0]} y={LABEL_AT.conDao[1]} textAnchor="middle">
           Côn Đảo
@@ -420,7 +424,7 @@ export function VietnamMap({
         ))}
         <g
           className="font-hand"
-          fontSize={9.5 * s}
+          style={{ fontSize: `max(${9.5 * s}px, calc(var(--u, 0.37) * 12px))` }}
           fill={INK}
           textAnchor="middle"
           stroke="#f6efe0"
