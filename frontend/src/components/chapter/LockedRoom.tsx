@@ -3,10 +3,10 @@
 // that can already be read (#112).
 
 import Link from "next/link";
-import { asset } from "@/lib/base";
 import type { Bootstrap, Region } from "@/lib/types";
-import { CONTRIBUTE_URL } from "../book/Chapter";
+import { CONTRIBUTE_URL } from "@/lib/links";
 import { PaperDoll } from "../fitting/PaperDoll";
+import { roomStyle } from "./RoomShell";
 
 export function LockedRoom({ region, data }: { region: Region; data: Bootstrap }) {
   const place = region.name.split("/")[0].trim();
@@ -19,9 +19,7 @@ export function LockedRoom({ region, data }: { region: Region; data: Bootstrap }
   return (
     <main
       className="fitting"
-      style={{
-        backgroundImage: `linear-gradient(rgba(20,12,7,0.6), rgba(20,12,7,0.3) 26%, rgba(20,12,7,0.3) 70%, rgba(20,12,7,0.85)), url(${asset("/page/fitting-room.webp")}), url(${asset("/page/Desk.webp")})`,
-      }}
+      style={roomStyle(true)}
     >
       <header className="fitting-head">
         <Link href="/" className="page-turn shrink-0 !text-[0.95rem]" aria-label="Về bản đồ">

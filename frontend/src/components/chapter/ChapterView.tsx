@@ -20,6 +20,7 @@ import { firstLook, garmentOf, lookOf, onBody, pieceState, selectionOf, toggled,
 import { useBootstrap } from "@/lib/useBootstrap";
 import { ComparePanel } from "./ComparePanel";
 import { LockedRoom } from "./LockedRoom";
+import { RoomShell, roomStyle, WARDROBE_KEY } from "./RoomShell";
 import { CompassPanel, STATE } from "./CompassPanel";
 import { Fork } from "./CompassStep";
 import { WeatherNote } from "./WeatherNote";
@@ -33,7 +34,7 @@ import { friendlyError } from "@/lib/errors";
 import { useDialog } from "@/lib/useDialog";
 import { lowerFirst } from "@/lib/text";
 
-const KEY = "vpdk-wardrobe";
+const KEY = WARDROBE_KEY;
 const COUNT = "vpdk-card-count";
 // the label a saved card carries, as backend/app/models.py LABELS (⛔ never reaches a card)
 const LABEL: Record<CompassState, string | null> = { fit: "Authentic", adapted: "Adapted", review: "Inspired", distorted: null };
@@ -59,7 +60,8 @@ function remember(who: Who | null, look: Look | null) {
   }
 }
 
-export function ChapterView({ regionId, garmentId }: { regionId: string; garmentId?: string }) {
+// shellPlace and locked: known when the page is built, so the room's frame shows while the content loads (RoomShell, #120)
+export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regionId: string; garmentId?: string; shellPlace?: string; locked?: boolean }) {
   const { data, error } = useBootstrap();
   const params = useSearchParams();
   // "Con" needs the server: a static build puts a reader who chose it last time back on the paper doll (#48)
@@ -184,7 +186,8 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
     // the boy cannot keep on what is drawn only for the girl (#77)
     const next = current && data ? onBody(current, w, items, data, byId) : current;
     if (next && next !== current && JSON.stringify(next) !== JSON.stringify(current)) change(next);
-    remember(w, next);
+    // picked before the content arrived: keep the look saved last time
+    remember(w, next ?? remembered().look);
   }
 
   const stateOf = (it: WardrobeItem): PieceState =>
@@ -366,7 +369,17 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
   }
 
   if (error) return <p className="p-8 text-red-700">{error}</p>;
-  if (!data || !current) return <p className="p-8">Đang mở tủ áo…</p>;
+  // "Ai mặc?" needs nothing from bootstrap.json: on a first visit it opens over the room's frame as soon as the page runs,
+  // instead of after the content has come down too (#120). Same tree as the room below, so it is not opened twice.
+  const askingWho = askWho || (!who && event.asked);
+  if (!data || !current)
+    return (
+      <>
+        <RoomShell regionId={regionId} place={shellPlace} locked={locked} />
+        {/* initial={false}: the static HTML already shows this box (RoomShell `ask`), so it does not fade in again */}
+        <AnimatePresence initial={false}>{askingWho && !locked && <WhoPicker key="who" value={who} onPick={pickWho} onClose={who ? () => setAskWho(false) : undefined} />}</AnimatePresence>
+      </>
+    );
   if (!region)
     return (
       <p className="p-8">
@@ -399,262 +412,264 @@ export function ChapterView({ regionId, garmentId }: { regionId: string; garment
         : { label: "Xong rồi ›", off: !verdict };
 
   return (
-    <main
-      className="fitting"
-      style={{
-        backgroundImage: `linear-gradient(rgba(20,12,7,0.55), rgba(20,12,7,0.12) 26%, rgba(20,12,7,0.12) 70%, rgba(20,12,7,0.8)), url(${asset("/page/fitting-room.webp")}), url(${asset("/page/Desk.webp")})`,
-      }}
-    >
-      <header className="fitting-head">
-        {/* back to the Mặc page this room was opened from (DeskScene reopens the book there); Link adds the base path */}
-        {/* on a phone the words give their room to the garment's name (#57) */}
-        <Link href={`/?region=${garment?.region ?? regionId}&page=wear`} className="page-turn shrink-0 !text-[0.95rem]" aria-label="Về trang Mặc">
-          ‹ <span className="hidden sm:inline">Về trang Mặc</span>
-        </Link>
-        <div className="min-w-0 text-center">
-          {/* the place stays whole: on a 390px phone "BỘ" of "TRUNG BỘ" went to a line of its own (#119) */}
-          <p className="m-0 text-[0.75rem] uppercase tracking-[0.18em] text-amber-100/80 sm:tracking-[0.3em]">
-            Tủ áo của Bà <span className="whitespace-nowrap">· {place}</span>
-          </p>
-          <h1 className="font-hand m-0 truncate text-[1.7rem] leading-tight text-amber-50">{garment?.name_vi ?? "Chọn một bộ áo"}</h1>
-        </div>
-        <div className="flex shrink-0 gap-2">
-          <button type="button" onClick={() => setSheet("story")} disabled={!garment} className="page-turn !text-[0.95rem]" aria-label="Hiểu bộ áo">
-            📖 <span className="hidden sm:inline">Hiểu bộ áo</span>
-          </button>
-          {/* without a server: still there, faded, and it opens the sheet that says why (#116) */}
-          <button
-            type="button"
-            onClick={() => setSheet(HAS_API ? "teo" : "story")}
-            disabled={!garment}
-            className={`page-turn !text-[0.95rem] ${HAS_API ? "" : "opacity-60"}`}
-            title={HAS_API ? "Hỏi Tèo" : `Hỏi Tèo · ${FULL_ONLY}`}
-            aria-label={HAS_API ? "Hỏi Tèo" : "Hỏi Tèo, có ở bản đầy đủ"}
-          >
-            📌 <span className="hidden sm:inline">Hỏi Tèo</span>
-          </button>
-        </div>
-      </header>
-
-      <div className="fitting-grid">
-        <WardrobePanel
-          data={data}
-          items={items}
-          stateOf={stateOf}
-          noteOf={noteOf}
-          whyOf={whyOf}
-          onToggle={toggle}
-          why={hint}
-          onWhyClose={() => setHint(null)}
-          garment={garment}
-          selection={selection}
-          onSelection={(s) => change({ ...current, colors: s.colors, mods: s.modifications })}
-          occasion={current.occasion}
-          open={drawer}
-          onOpen={setDrawer}
-          onLookPreview={setPreview}
-        />
-
-        <div className="fitting-stage">
-          <p className="rotate-hint">📱 Xoay dọc máy để thấy cả búp bê và tủ áo nhé.</p>
-          {garment && (
-            <div className="fitting-weather empty:hidden">
-              <WeatherNote regionId={garment.region} garmentId={garment.id} place={place} />
-            </div>
-          )}
-          <button type="button" onClick={() => setAskWho(true)} className="who-switch">
-            👤 {who === "con" ? "Con" : who === "nam" ? "Nam" : "Nữ"} ▾
-          </button>
-          {who === "con" && garment ? (
-            <Mirror key={garment.id} garmentId={garment.id} garmentName={garment.name_vi} verdict={verdict} scoring={false} offline={!compass} tryon={tryon} onTag={() => verdict && setWhy(true)} onPick={pickPhoto} />
-          ) : (
-            <figure className="m-0 flex flex-col items-center">
-              <div className="mirror-frame dress-form">
-                <div className="mirror-glass relative h-full w-full overflow-hidden">
-                  <PaperDoll
-                    body={who === "nam" ? "nam" : "nu"}
-                    dress={dress}
-                    colors={{ main: c1, second: c2, yem: yem === "yem-dao" ? "#f4a6a0" : yem === "yem-trang" ? "#fafafa" : undefined }}
-                    className="absolute inset-0 h-full w-full p-[6%]"
-                    title={`Búp bê mặc ${garment?.name_vi ?? "áo lót"}`}
-                  />
-                </div>
-                <motion.button
-                  key={pulse}
-                  type="button"
-                  onClick={() => verdict && setWhy(true)}
-                  className={`mirror-tag ${tag ? "" : "mirror-tag-quiet"} ${verdict?.state === "distorted" ? "mirror-tag-bad" : ""}`}
-                  // no aria-label: the printed "Tèo chấm ✅ Phù hợp vì sao?" is the name, verdict included; the old label
-                  // "Compass: vì sao?" hid the verdict from a screen reader (#58)
-                  initial={{ rotate: 12 }}
-                  animate={{ rotate: [12, -3, 2, 6] }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <span className="mirror-tag-hole" aria-hidden />
-                  <span className="block text-[0.75rem] uppercase tracking-[0.18em] opacity-70">Tèo chấm</span>
-                  <span className="block text-sm font-semibold leading-tight">{tag ? `${tag.icon} ${tag.name}` : garment ? "chưa chấm được" : "chưa mặc gì"}</span>
-                  {tag && <span className="block text-[0.75rem] underline opacity-70">vì sao?</span>}
-                </motion.button>
-              </div>
-              <figcaption className="mirror-caption">Bấm một món trong tủ để mặc, bấm lần nữa để cởi</figcaption>
-              <div aria-hidden className="pointer-events-none absolute h-0 w-0 overflow-hidden">
-                <PaperDoll ref={doll} still body={who === "nam" ? "nam" : "nu"} dress={dress} colors={{ main: c1, second: c2, yem: yem === "yem-dao" ? "#f4a6a0" : yem === "yem-trang" ? "#fafafa" : undefined }} />
-              </div>
-            </figure>
-          )}
-        </div>
-
-        <OutfitList data={data} worn={worn} bad={bad} occasion={current.occasion} onOccasion={(o) => change({ ...current, occasion: o })} onTakeOff={toggle} />
-      </div>
-
-      <div className="fitting-bar">
-        <div className="flex flex-wrap items-center gap-2">
-          <button type="button" onClick={undo} disabled={!history.length || frozen} className="page-turn !text-[0.95rem]" aria-label="Hoàn tác">
-            ↶ <span className="hidden sm:inline">Hoàn tác</span>
-          </button>
-          <button type="button" onClick={surprise} disabled={frozen} className="page-turn !text-[0.95rem]" aria-label="Bà chọn giúp">
-            🎲 <span className="hidden sm:inline">Bà chọn giúp</span>
-          </button>
-        </div>
-        <div className="flex justify-center">
-          <button type="button" disabled={main.off} onClick={finish} className="page-turn page-turn-main !px-7">
-            {main.label}
-          </button>
-          <input
-            id="con-photo"
-            type="file"
-            accept="image/*"
-            className="sr-only"
-            aria-label="Ảnh của con để thử đồ"
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              e.target.value = ""; // so picking the same file again (after "Bỏ ảnh") still counts
-              if (f) void tryon.choosePhoto(f);
-            }}
-          />
-        </div>
-        <div className="flex items-center justify-end gap-3 text-sm text-amber-50">
-          {HAS_API && garment && (
-            <button type="button" onClick={() => setComparing(true)} className="underline">
-              Ghim để so sánh
+    <>
+      <main
+        className="fitting"
+        style={roomStyle()}
+      >
+        <header className="fitting-head">
+          {/* back to the Mặc page this room was opened from (DeskScene reopens the book there); Link adds the base path */}
+          {/* on a phone the words give their room to the garment's name (#57) */}
+          <Link href={`/?region=${garment?.region ?? regionId}&page=wear`} className="page-turn shrink-0 !text-[0.95rem]" aria-label="Về trang Mặc">
+            ‹ <span className="hidden sm:inline">Về trang Mặc</span>
+          </Link>
+          <div className="min-w-0 text-center">
+            {/* the place stays whole: on a 390px phone "BỘ" of "TRUNG BỘ" went to a line of its own (#119) */}
+            <p className="m-0 text-[0.75rem] uppercase tracking-[0.18em] text-amber-100/80 sm:tracking-[0.3em]">
+              Tủ áo của Bà <span className="whitespace-nowrap">· {place}</span>
+            </p>
+            <h1 className="font-hand m-0 truncate text-[1.7rem] leading-tight text-amber-50">{garment?.name_vi ?? "Chọn một bộ áo"}</h1>
+          </div>
+          <div className="flex shrink-0 gap-2">
+            <button type="button" onClick={() => setSheet("story")} disabled={!garment} className="page-turn !text-[0.95rem]" aria-label="Hiểu bộ áo">
+              📖 <span className="hidden sm:inline">Hiểu bộ áo</span>
             </button>
-          )}
-          {HAS_API && garment && (
-            <button type="button" onClick={() => setSheet("shops")} className="underline">
-              Thuê / may ở đâu
-            </button>
-          )}
-          {!HAS_API && garment && <span className="text-amber-50/75">Ghim so sánh, chỗ thuê / may: có ở bản đầy đủ</span>}
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {(askWho || (!who && event.asked)) && <WhoPicker key="who" value={who} onPick={pickWho} onClose={who ? () => setAskWho(false) : undefined} />}
-        {!event.asked && (
-          <EventPicker
-            key="event"
-            data={data}
-            onPick={(occasion) => {
-              setEvent({ asked: true });
-              if (!occasion) return;
-              const fits = items.find((it) => it.slot === "set" && data.garments.find((g) => g.id === it.garment)?.occasions.includes(occasion));
-              const keep = garment?.occasions.includes(occasion);
-              change({ ...current, occasion, ...(keep || !fits ? {} : { worn: { set: fits.id }, colors: [], mods: [] }) });
-            }}
-          />
-        )}
-        {card && (
-          <LookCard
-            key="card"
-            face={card}
-            saving={saving}
-            error={saveError}
-            onSave={save}
-            onDownload={download}
-            onClose={() => setCard(null)}
-            onRedo={
-              card.isAI
-                ? () => {
-                    const snap = card.snap;
-                    setCard(null);
-                    setSent(snap);
-                    void tryon.run(snap.selection);
-                  }
-                : undefined
-            }
-          />
-        )}
-      </AnimatePresence>
-
-      {fork && verdict && selection && (
-        <Modal label="Cách sửa bộ phối ⛔" onClose={() => setFork(false)}>
-          <Fork data={data} selection={selection} verdict={verdict} />
-          <div className="mt-3 flex flex-wrap gap-2">
-            <button type="button" onClick={wearAlternative} className="rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
-              Mặc theo gợi ý của Tèo →
-            </button>
+            {/* without a server: still there, faded, and it opens the sheet that says why (#116) */}
             <button
               type="button"
-              onClick={() => {
-                setFork(false);
-                const culprit = DRAWERS.find((d) => worn.some((it) => d.slots.includes(it.slot) && it.accessory && bad.has(it.accessory)));
-                setDrawer(culprit?.id ?? "style");
-              }}
-              className="rounded-full border border-stone-700 px-4 py-1.5 text-sm"
+              onClick={() => setSheet(HAS_API ? "teo" : "story")}
+              disabled={!garment}
+              className={`page-turn !text-[0.95rem] ${HAS_API ? "" : "opacity-60"}`}
+              title={HAS_API ? "Hỏi Tèo" : `Hỏi Tèo · ${FULL_ONLY}`}
+              aria-label={HAS_API ? "Hỏi Tèo" : "Hỏi Tèo, có ở bản đầy đủ"}
             >
-              ← Tự sửa lại
+              📌 <span className="hidden sm:inline">Hỏi Tèo</span>
             </button>
           </div>
-        </Modal>
-      )}
+        </header>
 
-      {why && verdict && (
-        <Modal label="Tèo chấm: vì sao?" onClose={() => setWhy(false)} bare>
-          <CompassPanel result={verdict} sources={data.sources} garment={garment} />
-        </Modal>
-      )}
-
-      {preview && (
-        <Modal label="Ảnh mẫu (AI)" onClose={() => setPreview(null)}>
-          {/* eslint-disable-next-line @next/next/no-img-element -- static export */}
-          <img src={asset(`/garments/${preview}-preview.webp`)} alt={`Người mẫu mặc ${data.garments.find((g) => g.id === preview)?.name_vi}`} className="mx-auto max-h-[70vh] rounded" />
-          <p className="m-0 mt-2 text-center text-xs text-stone-600">Ảnh mẫu tạo bằng AI: người mẫu mặc bộ chuẩn, để con hình dung ngoài đời.</p>
-        </Modal>
-      )}
-
-      {garment && <AboutSheet tab={sheet} onTab={setSheet} onClose={() => setSheet(null)} garment={garment} data={data} regionId={garment.region} />}
-
-      {selection && (
-        <CompareDrawer open={comparing} onClose={() => setComparing(false)}>
-          <ComparePanel
-            current={selection}
+        <div className="fitting-grid">
+          <WardrobePanel
             data={data}
-            onUse={(s) => {
-              change(lookOf(s, items, data, byId));
-              setComparing(false);
-            }}
+            items={items}
+            stateOf={stateOf}
+            noteOf={noteOf}
+            whyOf={whyOf}
+            onToggle={toggle}
+            why={hint}
+            onWhyClose={() => setHint(null)}
+            garment={garment}
+            selection={selection}
+            onSelection={(s) => change({ ...current, colors: s.colors, mods: s.modifications })}
+            occasion={current.occasion}
+            open={drawer}
+            onOpen={setDrawer}
+            onLookPreview={setPreview}
           />
-        </CompareDrawer>
-      )}
 
-      {toast && (
-        // at the top: down by the bar it covered the doll's feet; the ✕ keeps its corner however the words wrap (#62)
-        <div role="status" className="fixed inset-x-4 top-16 z-50 mx-auto flex max-w-md flex-wrap items-center gap-3 rounded-lg bg-stone-900 py-3 pl-4 pr-10 text-sm text-amber-50 shadow-lg">
-          <span>Đã lưu thẻ vào Du Ký ✓</span>
-          {HAS_API && (
-            <button type="button" onClick={() => setSheet("quiz-post")} className="underline">
-              Thử lại: Việt hay không?
+          <div className="fitting-stage">
+            <p className="rotate-hint">📱 Xoay dọc máy để thấy cả búp bê và tủ áo nhé.</p>
+            {garment && (
+              <div className="fitting-weather empty:hidden">
+                <WeatherNote regionId={garment.region} garmentId={garment.id} place={place} />
+              </div>
+            )}
+            <button type="button" onClick={() => setAskWho(true)} className="who-switch">
+              👤 {who === "con" ? "Con" : who === "nam" ? "Nam" : "Nữ"} ▾
             </button>
-          )}
-          <a href={asset("/du-ky")} className="ml-auto font-semibold text-amber-200 underline">
-            Mở Du Ký
-          </a>
-          <button type="button" aria-label="Đóng" onClick={() => setToast(false)} className="absolute right-3 top-2.5 text-amber-50/70">
-            ✕
-          </button>
+            {who === "con" && garment ? (
+              <Mirror key={garment.id} garmentId={garment.id} garmentName={garment.name_vi} verdict={verdict} scoring={false} offline={!compass} tryon={tryon} onTag={() => verdict && setWhy(true)} onPick={pickPhoto} />
+            ) : (
+              <figure className="m-0 flex flex-col items-center">
+                <div className="mirror-frame dress-form">
+                  <div className="mirror-glass relative h-full w-full overflow-hidden">
+                    <PaperDoll
+                      body={who === "nam" ? "nam" : "nu"}
+                      dress={dress}
+                      colors={{ main: c1, second: c2, yem: yem === "yem-dao" ? "#f4a6a0" : yem === "yem-trang" ? "#fafafa" : undefined }}
+                      className="absolute inset-0 h-full w-full p-[6%]"
+                      title={`Búp bê mặc ${garment?.name_vi ?? "áo lót"}`}
+                    />
+                  </div>
+                  <motion.button
+                    key={pulse}
+                    type="button"
+                    onClick={() => verdict && setWhy(true)}
+                    className={`mirror-tag ${tag ? "" : "mirror-tag-quiet"} ${verdict?.state === "distorted" ? "mirror-tag-bad" : ""}`}
+                    // no aria-label: the printed "Tèo chấm ✅ Phù hợp vì sao?" is the name, verdict included; the old label
+                    // "Compass: vì sao?" hid the verdict from a screen reader (#58)
+                    initial={{ rotate: 12 }}
+                    animate={{ rotate: [12, -3, 2, 6] }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <span className="mirror-tag-hole" aria-hidden />
+                    <span className="block text-[0.75rem] uppercase tracking-[0.18em] opacity-70">Tèo chấm</span>
+                    <span className="block text-sm font-semibold leading-tight">{tag ? `${tag.icon} ${tag.name}` : garment ? "chưa chấm được" : "chưa mặc gì"}</span>
+                    {tag && <span className="block text-[0.75rem] underline opacity-70">vì sao?</span>}
+                  </motion.button>
+                </div>
+                <figcaption className="mirror-caption">Bấm một món trong tủ để mặc, bấm lần nữa để cởi</figcaption>
+                <div aria-hidden className="pointer-events-none absolute h-0 w-0 overflow-hidden">
+                  <PaperDoll ref={doll} still body={who === "nam" ? "nam" : "nu"} dress={dress} colors={{ main: c1, second: c2, yem: yem === "yem-dao" ? "#f4a6a0" : yem === "yem-trang" ? "#fafafa" : undefined }} />
+                </div>
+              </figure>
+            )}
+          </div>
+
+          <OutfitList data={data} worn={worn} bad={bad} occasion={current.occasion} onOccasion={(o) => change({ ...current, occasion: o })} onTakeOff={toggle} />
         </div>
-      )}
-    </main>
+
+        <div className="fitting-bar">
+          <div className="flex flex-wrap items-center gap-2">
+            <button type="button" onClick={undo} disabled={!history.length || frozen} className="page-turn !text-[0.95rem]" aria-label="Hoàn tác">
+              ↶ <span className="hidden sm:inline">Hoàn tác</span>
+            </button>
+            <button type="button" onClick={surprise} disabled={frozen} className="page-turn !text-[0.95rem]" aria-label="Bà chọn giúp">
+              🎲 <span className="hidden sm:inline">Bà chọn giúp</span>
+            </button>
+          </div>
+          <div className="flex justify-center">
+            <button type="button" disabled={main.off} onClick={finish} className="page-turn page-turn-main !px-7">
+              {main.label}
+            </button>
+            <input
+              id="con-photo"
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              aria-label="Ảnh của con để thử đồ"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                e.target.value = ""; // so picking the same file again (after "Bỏ ảnh") still counts
+                if (f) void tryon.choosePhoto(f);
+              }}
+            />
+          </div>
+          <div className="flex items-center justify-end gap-3 text-sm text-amber-50">
+            {HAS_API && garment && (
+              <button type="button" onClick={() => setComparing(true)} className="underline">
+                Ghim để so sánh
+              </button>
+            )}
+            {HAS_API && garment && (
+              <button type="button" onClick={() => setSheet("shops")} className="underline">
+                Thuê / may ở đâu
+              </button>
+            )}
+            {!HAS_API && garment && <span className="text-amber-50/75">Ghim so sánh, chỗ thuê / may: có ở bản đầy đủ</span>}
+          </div>
+        </div>
+
+
+        {fork && verdict && selection && (
+          <Modal label="Cách sửa bộ phối ⛔" onClose={() => setFork(false)}>
+            <Fork data={data} selection={selection} verdict={verdict} />
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button type="button" onClick={wearAlternative} className="rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
+                Mặc theo gợi ý của Tèo →
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setFork(false);
+                  const culprit = DRAWERS.find((d) => worn.some((it) => d.slots.includes(it.slot) && it.accessory && bad.has(it.accessory)));
+                  setDrawer(culprit?.id ?? "style");
+                }}
+                className="rounded-full border border-stone-700 px-4 py-1.5 text-sm"
+              >
+                ← Tự sửa lại
+              </button>
+            </div>
+          </Modal>
+        )}
+
+        {why && verdict && (
+          <Modal label="Tèo chấm: vì sao?" onClose={() => setWhy(false)} bare>
+            <CompassPanel result={verdict} sources={data.sources} garment={garment} />
+          </Modal>
+        )}
+
+        {preview && (
+          <Modal label="Ảnh mẫu (AI)" onClose={() => setPreview(null)}>
+            {/* eslint-disable-next-line @next/next/no-img-element -- static export */}
+            <img src={asset(`/garments/${preview}-preview.webp`)} alt={`Người mẫu mặc ${data.garments.find((g) => g.id === preview)?.name_vi}`} className="mx-auto max-h-[70vh] rounded" />
+            <p className="m-0 mt-2 text-center text-xs text-stone-600">Ảnh mẫu tạo bằng AI: người mẫu mặc bộ chuẩn, để con hình dung ngoài đời.</p>
+          </Modal>
+        )}
+
+        {garment && <AboutSheet tab={sheet} onTab={setSheet} onClose={() => setSheet(null)} garment={garment} data={data} regionId={garment.region} />}
+
+        {selection && (
+          <CompareDrawer open={comparing} onClose={() => setComparing(false)}>
+            <ComparePanel
+              current={selection}
+              data={data}
+              onUse={(s) => {
+                change(lookOf(s, items, data, byId));
+                setComparing(false);
+              }}
+            />
+          </CompareDrawer>
+        )}
+
+        {toast && (
+          // at the top: down by the bar it covered the doll's feet; the ✕ keeps its corner however the words wrap (#62)
+          <div role="status" className="fixed inset-x-4 top-16 z-50 mx-auto flex max-w-md flex-wrap items-center gap-3 rounded-lg bg-stone-900 py-3 pl-4 pr-10 text-sm text-amber-50 shadow-lg">
+            <span>Đã lưu thẻ vào Du Ký ✓</span>
+            {HAS_API && (
+              <button type="button" onClick={() => setSheet("quiz-post")} className="underline">
+                Thử lại: Việt hay không?
+              </button>
+            )}
+            <a href={asset("/du-ky")} className="ml-auto font-semibold text-amber-200 underline">
+              Mở Du Ký
+            </a>
+            <button type="button" aria-label="Đóng" onClick={() => setToast(false)} className="absolute right-3 top-2.5 text-amber-50/70">
+              ✕
+            </button>
+          </div>
+        )}
+      </main>
+        {/* outside <main>: the same place while loading, so "Ai mặc?" can open before bootstrap.json arrives and stays put
+            when the room fills in under it (#120) */}
+        <AnimatePresence>
+          {askingWho && <WhoPicker key="who" value={who} onPick={pickWho} onClose={who ? () => setAskWho(false) : undefined} />}
+          {!event.asked && (
+            <EventPicker
+              key="event"
+              data={data}
+              onPick={(occasion) => {
+                setEvent({ asked: true });
+                if (!occasion) return;
+                const fits = items.find((it) => it.slot === "set" && data.garments.find((g) => g.id === it.garment)?.occasions.includes(occasion));
+                const keep = garment?.occasions.includes(occasion);
+                change({ ...current, occasion, ...(keep || !fits ? {} : { worn: { set: fits.id }, colors: [], mods: [] }) });
+              }}
+            />
+          )}
+          {card && (
+            <LookCard
+              key="card"
+              face={card}
+              saving={saving}
+              error={saveError}
+              onSave={save}
+              onDownload={download}
+              onClose={() => setCard(null)}
+              onRedo={
+                card.isAI
+                  ? () => {
+                      const snap = card.snap;
+                      setCard(null);
+                      setSent(snap);
+                      void tryon.run(snap.selection);
+                    }
+                  : undefined
+              }
+            />
+          )}
+        </AnimatePresence>
+    </>
   );
 }
 

@@ -8,7 +8,6 @@ import Link from "next/link";
 
 import HTMLFlipBook from "react-pageflip";
 import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { pageSize, useBookScale, useViewport } from "@/lib/bookScale";
 import { byWhen, COVER_COLOR_NAMES, COVER_COLORS, ensureMigrated, loadBook, setCover, TAKEN_OUT, useDuKy, type DuKyBook, type DuKyPage, type TakenOut } from "@/lib/dukyBook";
@@ -18,6 +17,7 @@ import { BookCover } from "../book/BookCover";
 import { NoPageTurn } from "../book/Flipbook";
 import { Page } from "../book/Page";
 import { BookSizeControl } from "../desk/BookSizeControl";
+import { DeskBackdrop } from "../desk/DeskBackdrop";
 import { CloudSync } from "./CloudSync";
 import { DuKyCover } from "./DuKyCover";
 import { DuKyPageView } from "./DuKyPageView";
@@ -26,7 +26,6 @@ import { NewPageDialog, type NewPreset } from "./NewPageDialog";
 import { ShareDialog } from "./ShareDialog";
 import { StampCabinet } from "./StampCabinet";
 import { asset } from "@/lib/base";
-import { placeholder } from "@/lib/placeholders";
 import { HAS_API } from "@/lib/api";
 
 // where the reader is, kept across a rebuild of the book (new size or a page added)
@@ -339,7 +338,7 @@ function DeskBook({
     <main className="desk fixed inset-0 overflow-hidden">
       <h1 className="sr-only">Du Ký của con</h1>
       <BookSizeControl />
-      <Image src={asset("/page/Desk.webp")} alt="" fill loading="eager" placeholder={placeholder("/page/Desk.webp")} quality={88} sizes="100vw" className="desk-bg object-cover" />
+      <DeskBackdrop />
       <div className="desk-light pointer-events-none absolute inset-0" aria-hidden />
 
       {/* Bà's notebook, closed in the corner: back to her book */}

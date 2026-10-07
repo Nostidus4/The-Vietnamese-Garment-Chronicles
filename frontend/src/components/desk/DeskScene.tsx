@@ -16,10 +16,10 @@ import Flipbook, { type Resume } from "../book/Flipbook";
 import { LetterPage, TocPage } from "../book/FrontMatter";
 import { pageSize, useBookScale, useViewport } from "@/lib/bookScale";
 import { BookSizeControl } from "./BookSizeControl";
+import { DeskBackdrop } from "./DeskBackdrop";
 import { useDuKy } from "@/lib/dukyBook";
 import { DuKyCover } from "../duky/DuKyCover";
 import { asset } from "@/lib/base";
-import { placeholder } from "@/lib/placeholders";
 
 type Landing = "flash" | "soft";
 type Phase = "landing" | "closed" | "opening" | "open" | "closing";
@@ -182,16 +182,7 @@ export function DeskScene({
   return (
     <main className="desk fixed inset-0 overflow-hidden">
       {!size.portrait && <BookSizeControl />}
-      <Image
-        src={asset("/page/Desk.webp")}
-        alt=""
-        fill
-        loading="eager"
-        placeholder={placeholder("/page/Desk.webp")}
-        quality={88}
-        sizes="100vw"
-        className="desk-bg object-cover"
-      />
+      <DeskBackdrop />
       <div
         className="desk-light pointer-events-none absolute inset-0"
         aria-hidden
