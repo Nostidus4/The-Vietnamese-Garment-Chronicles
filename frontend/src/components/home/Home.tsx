@@ -62,6 +62,7 @@ export default function Home() {
     try {
       localStorage.setItem(SEEN_KEY, "1");
     } catch {}
+    document.documentElement.dataset.seen = "1"; // what app/layout.tsx's script would say now (BootShell)
     setLanding("flash");
     setMode("desk");
     // T10 second half: the light clears while the camera pulls back to the desk
