@@ -9,7 +9,7 @@ const WHO: { id: Who; name: string; note: string; soon?: boolean }[] = [
   { id: "nu", name: "Nữ", note: "búp bê giấy" },
   { id: "nam", name: "Nam", note: "búp bê giấy" },
   // a build without the server (GitHub Pages before the backend is up, a fork) has no room to dress a photo in (#48)
-  { id: "con", name: "Con", note: HAS_API ? "ảnh của con" : "bản đầy đủ", soon: !HAS_API },
+  { id: "con", name: "Con", note: HAS_API ? "ảnh của con" : "có ở bản đầy đủ", soon: !HAS_API },
 ];
 
 export const WHO_BACKDROP = "fixed inset-0 z-50 grid place-items-center bg-[#140c07]/70 p-4 backdrop-blur-[2px]";
@@ -28,14 +28,15 @@ export function WhoChoices({ value, onPick }: { value: Who | null; onPick?: (w: 
             type="button"
             role="radio"
             aria-checked={value === w.id}
-            disabled={w.soon}
+            // aria-disabled, not disabled: still reachable by keyboard, where the note under it says why it does nothing
+            aria-disabled={w.soon || undefined}
             aria-describedby={w.soon ? "who-soon" : undefined}
-            onClick={onPick && (() => onPick(w.id))}
+            onClick={onPick && !w.soon ? () => onPick(w.id) : undefined}
             className={`who-card ${value === w.id ? "who-card-on" : ""}`}
           >
             <WhoFigure who={w.id} />
             <span className="block text-[0.95rem] font-semibold">{w.name}</span>
-            <span className="block text-[0.75rem] text-stone-600">{w.note}</span>
+            <span className="block text-[0.75rem] leading-tight text-stone-600 [text-wrap:balance]">{w.note}</span>
           </button>
         ))}
       </div>

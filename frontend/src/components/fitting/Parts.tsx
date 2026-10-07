@@ -100,9 +100,10 @@ export function AboutSheet({
                       aria-disabled={off || undefined}
                       title={off ? FULL_ONLY : undefined}
                       onClick={() => !off && onTab(t.id)}
-                      className={`rounded-full px-3 py-1 text-sm ${on ? "bg-[#27354f] text-amber-50" : off ? "cursor-not-allowed border border-dashed border-stone-400 text-stone-500" : "border border-stone-400/70"}`}
+                      className={`rounded-full px-3 py-1 text-sm ${on ? "bg-[#27354f] text-amber-50" : off ? "cursor-not-allowed border border-dashed border-stone-500 text-stone-600" : "border border-stone-400/70"}`}
                     >
                       {t.name}
+                      {off && <span className="block text-[0.75rem] leading-tight">có ở bản đầy đủ</span>}
                     </button>
                   );
                 })}

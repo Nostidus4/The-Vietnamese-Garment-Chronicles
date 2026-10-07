@@ -431,7 +431,8 @@ function NguThan({ game, onWin }: Props) {
             </button>
           ))}
       </div>
-      <p className="m-0 mt-1 text-center text-[0.75rem] text-stone-600">
+      {/* a narrow, centred line: across the whole page its end ran under Tèo's note at the page's lower right (re-review 10-08) */}
+      <p className="m-0 mx-auto mt-1 max-w-[22rem] text-center text-[0.75rem] text-stone-600">
         Đã ghép {placed.length}/{game.rounds.length} thân · kéo mảnh lên áo, hay chọn mảnh rồi bấm vào chỗ nét đứt
       </p>
       {note && <Hint tone={note.good ? "good" : "bad"}>{note.text}</Hint>}
