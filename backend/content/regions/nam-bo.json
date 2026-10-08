@@ -111,7 +111,7 @@
           },
           {
             "label": "Ghe bán bí",
-            "item": "🥒 trái bí đao",
+            "item": "draw:bi-dao trái bí đao",
             "prompt": null,
             "choices": [],
             "answer": null,
