@@ -211,6 +211,7 @@ class Festival(Strict):
     name: str
     time: str = Field(description="As people say it, e.g. 13 tháng Giêng âm lịch")
     month: int | None = Field(None, ge=1, le=12, description="For the calendar strip")
+    year_round: bool = Field(False, description="Held through the year, so there is always one on (the board says so when no festival falls in this month)")
     place: str
     text: str = Field(max_length=350, description="In young Bà's voice")
     review: str | None = Field(None, max_length=300, description="Tí today: what it feels like to be there")

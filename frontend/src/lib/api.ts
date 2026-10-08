@@ -1,4 +1,5 @@
 import { asset } from "./base";
+import { pickStaticQuiz, staticAnswer } from "./quiz";
 import { retryAfterSeconds } from "./tryonWait";
 import type { Bootstrap, CompassResult, QuizItem, Selection, Shop, TryOnResult } from "./types";
 
@@ -72,7 +73,7 @@ export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string; s
     .then(async (r) => {
       if (r.status === 429) {
         const body = await r.json().catch(() => ({}));
-        throw new RateLimited(body.detail ?? "Bạn thử đồ nhanh quá, chờ một chút nhé.", retryAfterSeconds(r.headers.get("Retry-After"), Date.now()));
+        throw new RateLimited(body.detail ?? "Con thử đồ nhanh quá, chờ một chút nhé.", retryAfterSeconds(r.headers.get("Retry-After"), Date.now()));
       }
       return json<TryOnResult>(r);
     })
@@ -82,11 +83,25 @@ export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string; s
     });
 }
 
+// "Việt hay không?" needs no server: without one the questions and answers come from the bundled bootstrap.json (#151)
 export const getQuiz = (count = 5) =>
-  call(`${API_URL}/quiz?count=${count}`).then((r) => json<{ choices: Record<string, string>; items: QuizItem[] }>(r));
+  HAS_API
+    ? call(`${API_URL}/quiz?count=${count}`).then((r) => json<{ choices: Record<string, string>; items: QuizItem[] }>(r))
+    : getBootstrap().then((b) => {
+        if (!b.quiz) throw new Error(NO_SERVER);
+        return pickStaticQuiz(b.quiz, count);
+      });
 
 export const answerQuiz = (id: string, answer: string) =>
-  post<{ correct: boolean; answer_name: string; explanation: string; sources: string[] }>("/quiz/answer", { id, answer });
+  HAS_API
+    ? post<{ correct: boolean; answer_name: string; explanation: string; sources: string[] }>("/quiz/answer", { id, answer })
+    : getBootstrap().then((b) => {
+        if (!b.quiz) throw new Error(NO_SERVER);
+        return staticAnswer(b.quiz, id, answer);
+      });
+
+/** Where a quiz picture lives: on the server, or bundled with the site (public/media/quiz) when there is none. */
+export const quizImage = (path: string) => (HAS_API ? `${API_URL}${path}` : asset(path));
 
 export const getShops = (params: { city?: string; garment_id?: string; service?: string }) =>
   call(`${API_URL}/shops?${new URLSearchParams(params as Record<string, string>)}`).then((r) => json<Shop[]>(r));

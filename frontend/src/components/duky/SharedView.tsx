@@ -8,7 +8,8 @@ import { API_URL, getShare, HAS_API, type SharedPage } from "@/lib/api";
 import { useBootstrap } from "@/lib/useBootstrap";
 import { labelVi } from "@/lib/text";
 import { stampPlaceOf } from "@/lib/stampPlace";
-import { CTA, ErrorSheet } from "../ErrorSheet";
+import { CTA, CTA_SECOND, ErrorSheet } from "../ErrorSheet";
+import { asset } from "@/lib/base";
 
 const MONTH = (m: string) => {
   const [y, mm] = m.split("-");
@@ -25,26 +26,32 @@ export function SharedView({ id }: { id: string }) {
 
   // a link cut short before "?id=…": not a page that was taken down (#63). The reader is usually someone who has never
   // opened the app: one sheet, one way in (the links at the top already say "Mở Việt Phục Du Ký", #118)
-  const into = (
-    <Link href="/" className={CTA}>
-      Đi qua cuốn sổ của Bà
-    </Link>
+  // …and a chapter to read straight away: a stranger on an empty page had nowhere to go but the closed book (#145)
+  const ways = (
+    <>
+      <a href={asset("/?region=hue&page=read")} className={CTA}>
+        Đọc chương Huế
+      </a>
+      <Link href="/" className={CTA_SECOND}>
+        Đi qua cuốn sổ của Bà
+      </Link>
+    </>
   );
   if (!id)
     return (
-      <ErrorSheet kicker="LINK BỊ THIẾU" title="Link này bị thiếu mã trang." action={into}>
-        Bạn nhờ người gửi chép lại cả link nhé. Trong lúc chờ, bạn có thể tự đi qua trang phục các vùng.
+      <ErrorSheet art kicker="LINK BỊ THIẾU" title="Link này bị thiếu mã trang." action={ways}>
+        Con nhờ người gửi chép lại cả link nhé. Trong lúc chờ, con có thể tự đi qua trang phục các vùng.
       </ErrorSheet>
     );
 
   if (missing)
     return HAS_API ? (
-      <ErrorSheet kicker="TRANG DU KÝ ĐÃ GỠ" title="Trang Du Ký này không còn nữa." action={into}>
-        Có thể người viết đã gỡ link. Bạn vẫn có thể tự đi qua trang phục các vùng.
+      <ErrorSheet art kicker="TRANG DU KÝ ĐÃ GỠ" title="Trang Du Ký này không còn nữa." action={ways}>
+        Có thể người viết đã gỡ link. Con vẫn có thể tự đi qua trang phục các vùng.
       </ErrorSheet>
     ) : (
       // a build without the server cannot open any shared page: say so, not that the page is gone (#48)
-      <ErrorSheet kicker="BẢN ĐỌC THỬ" title="Bản này chưa mở được trang chia sẻ." action={into}>
+      <ErrorSheet art kicker="BẢN ĐỌC THỬ" title="Bản này chưa mở được trang chia sẻ." action={ways}>
         Trang Du Ký người khác chia sẻ được lưu trên máy chủ, mà bản đọc thử này chạy không có máy chủ. Cuốn sổ của Bà thì đọc
         được trọn vẹn ngay ở đây.
       </ErrorSheet>
@@ -72,7 +79,7 @@ export function SharedView({ id }: { id: string }) {
       <header className="mx-auto mb-4 max-w-md text-center text-amber-50">
         <p className="font-hand m-0 text-2xl">Việt Phục Du Ký</p>
         <p className="m-0 mt-1 text-sm text-amber-50/85">
-          Một người bạn chia sẻ với bạn một lần họ mặc Việt phục, ghi trong cuốn sổ đưa người trẻ đi qua trang phục truyền thống từng vùng.
+          Một người bạn chia sẻ với con một lần họ mặc Việt phục, ghi trong cuốn sổ đưa người trẻ đi qua trang phục truyền thống từng vùng.
         </p>
       </header>
       <article className="paper mx-auto max-w-md rounded-md p-6 text-[#27354f] shadow-[0_10px_24px_rgba(20,8,0,0.4)]">
