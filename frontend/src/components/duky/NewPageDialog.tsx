@@ -8,6 +8,12 @@ import { track } from "@/lib/track";
 import type { Bootstrap } from "@/lib/types";
 import { useDialog } from "@/lib/useDialog";
 
+// today as the reader's calendar says it (not UTC), for a worn page's date
+const today = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
+
 export type NewPreset = { status: "planned" | "worn"; region?: string };
 
 export function NewPageDialog({
@@ -30,14 +36,17 @@ export function NewPageDialog({
   const g = garments.find((x) => x.id === garment) ?? garments[0];
   const occasions = data.occasions.filter((o) => g?.occasions.includes(o.id));
   const [occasion, setOccasion] = useState(occasions[0]?.id ?? "");
-  const [date, setDate] = useState("");
+  // a worn page already happened, so its date starts as today (the reader changes it); a planned one has none yet (#117)
+  const [date, setDate] = useState(preset.status === "worn" ? today() : "");
   const [place, setPlace] = useState("");
   const [note, setNote] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   // Esc or a click outside with something already written asks first, instead of losing it (#58)
   const [asking, setAsking] = useState(false);
-  const dirty = !!(date || place.trim() || note.trim() || file);
+  // what the dialog opened with: the first region, garment and occasion are a default, so changing them is writing too
+  const [first] = useState({ status: preset.status, date, region, garment: g?.id ?? "", occasion });
+  const dirty = !!(date !== first.date || place.trim() || note.trim() || file || status !== first.status || region !== first.region || (g?.id ?? "") !== first.garment || occasion !== first.occasion);
   const requestClose = () => (dirty ? setAsking(true) : onClose());
   const box = useDialog<HTMLFormElement>(requestClose);
 
@@ -88,7 +97,12 @@ export function NewPageDialog({
               type="button"
               role="radio"
               aria-checked={status === s}
-              onClick={() => setStatus(s)}
+              onClick={() => {
+                setStatus(s);
+                // the date follows the kind of page unless the reader already chose one
+                if (s === "worn" && !date) setDate(today());
+                if (s === "planned" && date === today()) setDate("");
+              }}
               className={`flex-1 rounded-full border px-3 py-1.5 text-sm ${status === s ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400"}`}
             >
               {s === "planned" ? "Chuẩn bị đi sự kiện" : "Trang đã mặc"}
@@ -96,6 +110,8 @@ export function NewPageDialog({
           ))}
         </div>
         <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
+          {/* the first of each list is only a starting point, say so (#117) */}
+          <p className="col-span-2 m-0 text-stone-600">Con chọn vùng, trang phục và dịp. Sổ để sẵn mục đầu tiên của mỗi ô, con đổi được.</p>
           <label>
             Vùng
             <select value={region} onChange={(e) => pickRegion(e.target.value)} className={field}>
@@ -128,7 +144,7 @@ export function NewPageDialog({
           </label>
           <label>
             {status === "planned" ? "Ngày đi" : "Ngày mặc"}
-            <input type="date" lang="vi" value={date} onChange={(e) => setDate(e.target.value)} className={field} />
+            <input type="date" lang="vi" value={date} max={status === "worn" ? today() : undefined} onChange={(e) => setDate(e.target.value)} className={field} />
           </label>
           <label className="col-span-2">
             Ở đâu (không bắt buộc)
