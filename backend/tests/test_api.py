@@ -202,8 +202,8 @@ def test_ask_says_why_it_refuses(client, scripted, reason):
 
 
 def test_ask_refusals_speak_as_teo():
-    # Tí and Tèo say "tớ" and call the reader "bạn" (content/_templates/README.md, #59)
-    assert all("tớ" in t.lower() and "bạn" in t.lower() for t in ask_service.REFUSALS.values())
+    # Tí and Tèo say "tớ" and call the reader "con" (content/_templates/README.md, #59)
+    assert all("tớ" in t.lower() and "con" in t.lower() for t in ask_service.REFUSALS.values())
 
 
 def test_ask_refusal_points_to_the_chips():

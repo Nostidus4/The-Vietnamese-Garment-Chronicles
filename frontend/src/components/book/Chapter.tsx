@@ -427,7 +427,7 @@ function HiddenSvg() {
 
 function PhotoCredit({ photo }: { photo: Photo }) {
   return (
-    <figcaption className="mt-0.5 truncate text-right text-[0.75rem] text-stone-600">
+    <figcaption className="mt-0.5 text-right text-[0.75rem] text-stone-600">
       Ảnh:{" "}
       <a href={photo.source_url} target="_blank" rel="noreferrer" className="underline">
         {photo.credit}

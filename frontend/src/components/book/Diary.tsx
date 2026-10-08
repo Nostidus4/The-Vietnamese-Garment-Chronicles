@@ -654,7 +654,7 @@ export function WearDiary({
                       <span key={z.part}>
                         {i > 0 && " · "}
                         {z.part}
-                        {z.note && <span className="wear-extra text-stone-600"> ({z.note})</span>}
+                        {z.note && <span className="wear-extra text-stone-600">: {z.note}</span>}
                       </span>
                     ))}
                   </span>

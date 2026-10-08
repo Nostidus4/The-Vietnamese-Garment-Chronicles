@@ -1,6 +1,6 @@
 # Việt Phục Du Ký
 
-> Hiểu để mặc đúng – Sáng tạo để mặc theo cách của mình.
+> Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.
 
 Việt Phục Du Ký là web app tương tác dạng sách lật, đưa người dùng đi qua các vùng văn hóa Việt Nam, tìm hiểu trang phục truyền thống, tự phối đồ bằng **Cultural Compass** và thử trang phục với Gemini.
 

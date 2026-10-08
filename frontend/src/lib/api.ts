@@ -72,7 +72,7 @@ export function tryOn(sel: Selection, opts: { photo?: File; avatarId?: string; s
     .then(async (r) => {
       if (r.status === 429) {
         const body = await r.json().catch(() => ({}));
-        throw new RateLimited(body.detail ?? "Bạn thử đồ nhanh quá, chờ một chút nhé.", retryAfterSeconds(r.headers.get("Retry-After"), Date.now()));
+        throw new RateLimited(body.detail ?? "Con thử đồ nhanh quá, chờ một chút nhé.", retryAfterSeconds(r.headers.get("Retry-After"), Date.now()));
       }
       return json<TryOnResult>(r);
     })

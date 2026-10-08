@@ -74,8 +74,8 @@
     {
       "type": "occasion",
       "state": "review",
-      "ti": "Đẹp đó, nhưng hình như chưa hợp dịp bạn chọn lắm.",
-      "teo": "Món này thường dùng trong bối cảnh khác. Bạn cân nhắc đổi dịp hoặc đổi món nhé.",
+      "ti": "Đẹp đó, nhưng hình như chưa hợp dịp con chọn lắm.",
+      "teo": "Món này thường dùng trong bối cảnh khác. Con cân nhắc đổi dịp hoặc đổi món nhé.",
       "why": "Mỗi trang phục, phụ kiện quen dùng trong một số dịp. Mặc lệch dịp không sai hẳn, nhưng nên cân nhắc.",
       "sources": [
         "ref-01",
@@ -84,13 +84,13 @@
       "internal_ref": "Research Mục 7: mỗi trang phục, phụ kiện gắn với bối cảnh sử dụng riêng.",
       "by": {
         "accessory": {
-          "ti": "{name} đẹp đó, nhưng hình như chưa hợp dịp bạn chọn lắm.",
-          "teo": "{name} quen dùng trong dịp khác. Bạn cân nhắc đổi dịp, hoặc bỏ món này ra nhé.",
+          "ti": "{name} đẹp đó, nhưng hình như chưa hợp dịp con chọn lắm.",
+          "teo": "{name} quen dùng trong dịp khác. Con cân nhắc đổi dịp, hoặc bỏ món này ra nhé.",
           "why": "{name} quen dùng trong một số dịp nhất định. Dùng lệch dịp không sai hẳn, nhưng nên cân nhắc."
         },
         "garment": {
-          "ti": "{name} đẹp đó, nhưng hình như chưa hợp dịp bạn chọn lắm.",
-          "teo": "{name} thường mặc trong dịp khác. Bạn cân nhắc đổi dịp, hoặc chọn bộ hợp dịp hơn nhé.",
+          "ti": "{name} đẹp đó, nhưng hình như chưa hợp dịp con chọn lắm.",
+          "teo": "{name} thường mặc trong dịp khác. Con cân nhắc đổi dịp, hoặc chọn bộ hợp dịp hơn nhé.",
           "why": "{name} quen mặc trong một số dịp nhất định. Mặc lệch dịp không sai hẳn, nhưng nên cân nhắc."
         }
       }
@@ -99,7 +99,7 @@
       "type": "flexible",
       "state": "adapted",
       "ti": "Phối hiện đại mà vẫn giữ dáng áo, đẹp lắm! Đây là cách tân có chủ đích.",
-      "teo": "Bạn đang đổi phần linh hoạt (màu, chất liệu, phụ kiện hiện đại) và vẫn giữ dáng áo. Chuyên gia ủng hộ cách này.",
+      "teo": "Con đang đổi phần linh hoạt (màu, chất liệu, phụ kiện hiện đại) và vẫn giữ dáng áo. Chuyên gia ủng hộ cách này.",
       "why": "Màu vải, chất liệu và phụ kiện hiện đại là phần linh hoạt. Giữ đúng dáng áo thì cách tân như vậy được nhiều người làm nghề ủng hộ.",
       "sources": [
         "ref-16"
@@ -113,7 +113,7 @@
         },
         "color": {
           "ti": "Màu {name} lên dáng áo đẹp đấy! Đổi màu là cách tân nhẹ nhàng nhất.",
-          "teo": "Bạn đổi sang màu {name} mà vẫn giữ dáng áo. Màu vải là phần linh hoạt của bộ áo.",
+          "teo": "Con đổi sang màu {name} mà vẫn giữ dáng áo. Màu vải là phần linh hoạt của bộ áo.",
           "why": "Màu vải là phần linh hoạt. Giữ đúng dáng áo thì đổi sang màu {name} là cách tân được nhiều người làm nghề ủng hộ."
         },
         "zone": {

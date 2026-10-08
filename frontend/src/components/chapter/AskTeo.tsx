@@ -27,7 +27,7 @@ export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap })
       setHistory((h) => [{ q: text, ...r }, ...h].slice(0, 5));
       setQ("");
     } catch (e) {
-      setError(friendlyError(e, "Tớ chưa nghe rõ, bạn hỏi lại nhé."));
+      setError(friendlyError(e, "Tớ chưa nghe rõ, con hỏi lại nhé."));
     } finally {
       setBusy(false);
     }
@@ -75,7 +75,7 @@ export function AskTeo({ garment, data }: { garment: Garment; data: Bootstrap })
       <ul className="m-0 mt-3 list-none space-y-3 p-0" aria-live="polite" aria-busy={busy}>
         {history.map((a, i) => (
           <li key={`${a.q}-${i}`} className="rounded bg-white/55 p-3 text-sm">
-            <p className="m-0 text-xs font-semibold opacity-70">Bạn: {a.q}</p>
+            <p className="m-0 text-xs font-semibold opacity-70">Con: {a.q}</p>
             <p className={`m-0 mt-1 text-stone-800 ${a.grounded ? "" : "italic"}`}>
               <b className="text-[#1f3a78]">Tèo:</b> {plainAnswer(a.answer)}
             </p>
