@@ -8,6 +8,7 @@ import { useStamps } from "@/lib/stamps";
 import type { Bootstrap } from "@/lib/types";
 import { OLD, PENCIL, YOUNG } from "./Diary";
 import { useSyncExternalStore } from "react";
+import { HandIcon } from "../HandIcon";
 
 /** A screen wider than a phone (the legend under the letter starts open there). */
 function useWide() {
@@ -277,7 +278,7 @@ export function StartPage({
       {/* "Bắt đầu từ Huế" is the bright button under the book; here, the shortcut for someone with an event ahead (#65) */}
       <div className="mt-auto flex flex-wrap items-center gap-2 pt-3">
         <button type="button" onClick={onEvent} className="rounded-full border border-stone-700 px-3 py-2 text-[0.85rem] hover:bg-stone-800 hover:text-amber-50">
-          👗 Sắp đi sự kiện? Vào thẳng tủ áo của Bà
+          <HandIcon name="aodai" /> Sắp đi sự kiện? Vào thẳng tủ áo của Bà
         </button>
       </div>
     </div>

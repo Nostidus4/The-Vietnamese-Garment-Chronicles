@@ -28,6 +28,7 @@ import { FOCUS } from "./vietnam-geo";
 import { asset } from "@/lib/base";
 import { choiceOrder, isUnderstood } from "@/lib/quiz";
 import { DRAWN, PaperDoll } from "../fitting/PaperDoll";
+import { HandIcon } from "../HandIcon";
 
 export const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
 export const OLD = "#8a4b2a"; // old Bà: sepia, written years later
@@ -996,7 +997,9 @@ export function OwnDiary({
               Trang này đầy dần thế này:
             </p>
             <ol className="m-0 mt-0.5 list-none space-y-0.5 p-0">
-              <li>👗 Mặc thử trong tủ áo của Bà, Tèo chấm bộ nào đúng và nói vì sao.</li>
+              <li>
+                <HandIcon name="aodai" /> Mặc thử trong tủ áo của Bà, Tèo chấm bộ nào đúng và nói vì sao.
+              </li>
               <li>📸 Đi lễ, đi hội thật, nhờ ai chụp cho một tấm.</li>
               <li>📓 Dán vào Du Ký: tem “Đã mặc” của {place(region)} sẽ đậm lên.</li>
             </ol>

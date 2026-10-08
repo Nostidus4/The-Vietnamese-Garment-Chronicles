@@ -1,5 +1,8 @@
 "use client";
 
+import type { ReactNode } from "react";
+import { HandIcon } from "../HandIcon";
+
 // Under the book while a trip chapter is open: Bà's red thread runs through the chapter's places.
 // The reader sees where they are ("Điểm 3/6 · Đại Nội"), can jump to any knot, and the main button says where it goes next.
 
@@ -10,7 +13,8 @@ export type Step = {
   game?: string; // stamp key of the game on this stop's spread, if it has one
 };
 
-const ICON: Record<Step["kind"], string> = { title: "◇", stop: "", wear: "👘", ask: "?", own: "✎", letter: "✉" };
+// "Mặc" is drawn: the kimono emoji (👘) stood for Vietnamese dress here
+const ICON: Record<Step["kind"], ReactNode> = { title: "◇", stop: "", wear: <HandIcon name="aodai" className="!align-[-0.25em]" />, ask: "?", own: "✎", letter: "✉" };
 
 export function ThreadNav({
   steps,
