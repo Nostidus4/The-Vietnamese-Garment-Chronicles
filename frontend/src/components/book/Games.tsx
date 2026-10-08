@@ -449,6 +449,45 @@ function NguThan({ game, onWin }: Props) {
   );
 }
 
+/* ---------- drawn in place of an emoji that says the wrong thing ---------- */
+
+// what a boat's pole shows when the content names a drawing ("draw:bi-dao") instead of an emoji: there is no wax gourd
+// emoji, and 🥒 is a cucumber (#164)
+const DRAWN_ITEM: Record<string, React.ReactNode> = {
+  "draw:bi-dao": (
+    <svg viewBox="0 0 24 24" className="h-[2.1rem] w-[2.1rem]" aria-hidden>
+      <g transform="rotate(-28 12 13)">
+        <ellipse cx="12" cy="13.5" rx="5.6" ry="9" fill="#7f9f5a" stroke="#3f5a2c" strokeWidth="1.1" />
+        <path d="M9.6 6.8 C8.8 10.5 8.8 16.5 9.8 20.2 M14.4 6.8 C15.2 10.5 15.2 16.5 14.2 20.2" fill="none" stroke="#5f7f3e" strokeWidth=".7" />
+        {[
+          [10.6, 9.6], [13.4, 11.2], [11.2, 14.6], [13, 17.4], [10.4, 18],
+        ].map(([x, y]) => (
+          <circle key={`${x}-${y}`} cx={x} cy={y} r=".55" fill="#e3ebcf" />
+        ))}
+        <path d="M11.4 4.8 L12.6 4.8 L12.4 2.6 L11.6 2.6 Z" fill="#6b4a2f" />
+      </g>
+    </svg>
+  ),
+};
+
+/** The three at the meal, in the paper doll's hand rather than emoji faces (#164): his mother (grey bun), him, his sister. */
+function SeatFace({ who }: { who: 0 | 1 | 2 }) {
+  const ink = { stroke: "#2b2118", strokeWidth: 1.1, strokeLinejoin: "round" as const };
+  return (
+    <svg viewBox="0 0 32 32" className="h-full w-full" aria-hidden>
+      {who === 0 && <circle cx="16" cy="6.4" r="3.6" fill="#8d8781" {...ink} />}
+      {who === 2 && <path d="M7.6 14 C7 22 8.6 26 10.6 27 L21.4 27 C23.4 26 25 22 24.4 14 Z" fill="#2b2118" />}
+      <ellipse cx="16" cy="17" rx="7.4" ry="8.4" fill="#efcfae" {...ink} />
+      {who === 0 && <path d="M8.6 15.4 C8.6 9.6 12 8 16 8 C20 8 23.4 9.6 23.4 15.4 C21.4 12 18.8 11.4 16 11.4 C13.2 11.4 10.6 12 8.6 15.4 Z" fill="#8d8781" {...ink} />}
+      {who === 1 && <path d="M8.6 16 C8 9.8 11.6 8.2 16 8.2 C20.4 8.2 24 9.8 23.4 16 C22.4 12.6 20.4 11.8 18 12.4 C15.4 11 12.2 11.6 8.6 16 Z" fill="#2b2118" {...ink} />}
+      {who === 2 && <path d="M8.4 17 C7.8 10 11.4 8.2 16 8.2 C20.6 8.2 24.2 10 23.6 17 C22.6 13 20 12 17 12.6 C14 12 11 12.8 8.4 17 Z" fill="#2b2118" {...ink} />}
+      <path d="M12.4 18 q1.4 -1 2.8 0 M16.8 18 q1.4 -1 2.8 0" fill="none" stroke="#2b2118" strokeWidth=".9" strokeLinecap="round" />
+      <path d="M14.2 21.8 q1.8 1.2 3.6 0" fill="none" stroke="#a5503a" strokeWidth=".9" strokeLinecap="round" />
+      {who === 0 && <path d="M10.6 20.6 l1.4 .6 M21.4 20.6 l-1.4 .6" stroke="#c99a74" strokeWidth=".7" strokeLinecap="round" />}
+    </svg>
+  );
+}
+
 /* ---------- 2c · Bữa cơm ra mắt: a seat at the tray, then a cup falls ---------- */
 
 // where the family sits around the tray (left %, top %), and the dishes on it; Bà sits at the bottom
@@ -563,8 +602,8 @@ function MamCom({ game, onWin }: Props) {
             className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center disabled:cursor-default"
             style={{ left: `${SEATS[k].x}%`, top: `${SEATS[k].y}%` }}
           >
-            <span className={`grid h-8 w-8 place-items-center rounded-full border-2 text-[0.95rem] ${k < invited ? "border-[#5E7F4A] bg-[#e7efdc]" : "border-[#8a4b2a] bg-[#f6efe0]"}`} aria-hidden>
-              {k === 0 ? "👵" : k === 1 ? "👨" : "👧"}
+            <span className={`grid h-9 w-9 place-items-center overflow-hidden rounded-full border-2 ${k < invited ? "border-[#5E7F4A] bg-[#e7efdc]" : "border-[#8a4b2a] bg-[#f6efe0]"}`} aria-hidden>
+              <SeatFace who={k as 0 | 1 | 2} />
             </span>
             {/* once the tray shrinks for the falling cup everyone is invited: the faces stay, the names would cover the dishes (#146) */}
             <span className={`mt-0.5 whitespace-nowrap rounded bg-white/75 px-1 text-[0.75rem] leading-tight text-[#27354f] ${step >= 2 ? "sr-only" : ""}`}>
@@ -647,7 +686,7 @@ function CayBeo({ game, onWin }: Props) {
               className="flex min-w-0 flex-col items-center"
               aria-label={`Ghe treo ${rest.join(" ")}`}
             >
-              <span className="text-[1.4rem] leading-none">{icon}</span>
+              <span className="text-[1.4rem] leading-none">{DRAWN_ITEM[icon] ?? icon}</span>
               <span className="h-10 w-[2px] bg-[#6b4a2f]" />
               <span className="h-4 w-full rounded-b-[60%] bg-[#6b4a2f]" />
               <span className="mt-0.5 min-h-[1.8em] text-center text-[0.75rem] leading-tight text-amber-50">
