@@ -10,12 +10,17 @@ import { createPortal } from "react-dom";
 
 const KEY = "vpdk-guide";
 const TIPS = [
-  { id: "next", target: '[data-guide="next"]', text: "Bấm nút vàng này để đi tiếp. Kéo góc trang, hay dùng phím ← →, cũng lật được." },
+  { id: "next", target: '[data-guide="next"]', text: "Bấm nút vàng {btn}để đi tiếp. Kéo góc trang, hay dùng phím ← →, cũng lật được." },
   // on a touch screen there are no arrow keys to speak of (#115)
-  { id: "next", target: '[data-guide="next"]', text: "Bấm nút vàng này để đi tiếp. Vuốt trang cũng lật được.", touch: true },
+  { id: "next", target: '[data-guide="next"]', text: "Bấm nút vàng {btn}để đi tiếp. Vuốt trang cũng lật được.", touch: true },
   { id: "pin", target: ".teo-pin", text: "Thấy ghim đỏ là có ghi chú của tớ. Bấm vào để đọc thêm nhé." },
   { id: "tabs", target: '[data-guide="tabs"]', text: "Mấy dải màu này là mục lục nhanh của chương: bấm để nhảy tới phần bạn muốn." },
 ] as const;
+// the note sits beside the button, not always right next to it: it says which button by its words ("{btn}")
+const nameOf = (el: HTMLElement) => {
+  const w = (el.getAttribute("aria-label") ?? el.textContent ?? "").replace(/\s+/g, " ").replace(/[→›‹←\s]+$/u, "").trim();
+  return w && w.length <= 34 ? `“${w}” ` : "này ";
+};
 type Tip = { id: string; target: string; text: string; touch?: boolean };
 // a touch screen whose browser reports a fine pointer (some phones and test runs) still has no arrow keys (#119)
 const touch = () => typeof window !== "undefined" && (window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0);
@@ -52,7 +57,7 @@ function visible(sel: string): HTMLElement | null {
 
 export function TeoGuide() {
   const reduced = !!useReducedMotion();
-  const [tip, setTip] = useState<{ tip: Tip; rect: DOMRect } | null>(null);
+  const [tip, setTip] = useState<{ tip: Tip; rect: DOMRect; name: string } | null>(null);
   const [h, setH] = useState(H); // the note's real height, once drawn: the estimate put it over the buttons below (#115)
   const note = useRef<HTMLDivElement>(null);
   const shownOn = useRef<HTMLElement | null>(null); // the "next" button the first tip was shown beside
@@ -75,7 +80,7 @@ export function TeoGuide() {
         }
         shownOn.current = el;
       }
-      setTip((cur) => (cur?.tip.id === next.id && sameRect(cur.rect, el.getBoundingClientRect()) ? cur : { tip: next, rect: el.getBoundingClientRect() }));
+      setTip((cur) => (cur?.tip.id === next.id && sameRect(cur.rect, el.getBoundingClientRect()) ? cur : { tip: next, rect: el.getBoundingClientRect(), name: nameOf(el) }));
     }, 600);
     return () => clearInterval(t);
   }, []);
@@ -145,7 +150,7 @@ export function TeoGuide() {
             />
           )}
           <b className="font-hand block text-[1.05rem] text-[#8a4b2a]">Tèo chỉ bạn</b>
-          {tip.tip.text}
+          {tip.tip.text.replace("{btn}", tip.name)}
           <span className="mt-2 flex items-center justify-between">
             <span className="text-[0.75rem] opacity-70">
               {tips().findIndex((t) => t.id === tip.tip.id) + 1}/{tips().length}

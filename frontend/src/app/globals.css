@@ -598,9 +598,10 @@ body {
   backdrop-filter: blur(6px);
 }
 .site-nav a:hover { background: rgba(243, 234, 215, 0.95); color: #2b2118; }
-.site-nav a[aria-current="page"] { border-color: #d9a43b; box-shadow: inset 0 0 0 1px #d9a43b; }
-/* "Xem lại mở đầu": a lesser button, smaller words in a thin pale rim (still well over 4.5:1) */
-.site-nav a.site-nav-minor { border-color: rgba(243, 234, 215, 0.45); background: rgba(40, 25, 15, 0.78); font-size: 0.8rem; }
+/* where the reader is is the strongest of the three: a pale pill with a gold rim, the others stay dark (#111) */
+.site-nav a[aria-current="page"] { background: #f3ead7; color: #2b2118; font-weight: 600; border-color: #d9a43b; box-shadow: inset 0 0 0 1px #d9a43b; }
+/* "Xem lại mở đầu": the quietest of the links, a small underlined line on a dark ground with no rim (still well over 4.5:1) */
+.site-nav a.site-nav-minor { border-color: transparent; background: rgba(40, 25, 15, 0.78); color: #e4d9c3; font-size: 0.8rem; text-decoration: underline; text-underline-offset: 3px; }
 .site-nav a.site-nav-minor:hover { background: rgba(243, 234, 215, 0.95); color: #2b2118; }
 /* touch screens and phones: every control at least 44px, the nav scrolls away with the page instead of covering it
    (#57). By width too: a phone-sized window still had 22px buttons when the browser did not report a coarse pointer (#119) */

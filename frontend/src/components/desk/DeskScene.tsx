@@ -84,18 +84,20 @@ export function DeskScene({
   useEffect(() => {
     const t = setTimeout(
       () => setPhase("closed"),
-      reduced ? 300 : landing === "flash" ? 1900 : 1000,
+      reduced || resume ? 300 : landing === "flash" ? 1900 : 1000,
     );
     return () => clearTimeout(t);
-  }, [landing, reduced]);
+  }, [landing, reduced, resume]);
 
   useEffect(() => {
     if (phase !== "closed") return;
-    const t = setTimeout(() => setPrepared(true), 450);
+    const t = setTimeout(() => setPrepared(true), resume ? 0 : 450);
     return () => clearTimeout(t);
-  }, [phase]);
+  }, [phase, resume]);
 
-  async function open() {
+  // `instant`: back from a page of the book, the cover is not shown swinging open again: the slide and the swing started
+  // with the paper under the cover growing past it, a cream rectangle behind the cover for a second (#106 re-review)
+  async function open(instant = false) {
     if (phase !== "closed") return;
     if (!prepared) {
       setPrepared(true); // tapped very early: build now, start moving on the next frames
@@ -103,7 +105,10 @@ export function DeskScene({
     }
     setPhase("opening");
     const shift = size.portrait ? 0 : size.w / 2;
-    if (!reduced && bookRef.current && underRef.current) {
+    if (instant) {
+      await sleep(250); // the flipbook is laid out behind the cover before it takes over
+      rot.set(-180);
+    } else if (!reduced && bookRef.current && underRef.current) {
       // slide and swing overlap, like a hand pulling the book closer while lifting the cover
       await Promise.all([
         animate(
@@ -163,7 +168,7 @@ export function DeskScene({
     if (!resume || autoOpened.current || phase !== "closed" || !prepared)
       return;
     autoOpened.current = true;
-    const t = setTimeout(open, 350);
+    const t = setTimeout(() => open(true), 0);
     return () => clearTimeout(t);
   });
 
@@ -292,7 +297,7 @@ export function DeskScene({
                   phase === "closed" && !reduced ? { y: -5 } : undefined
                 }
                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                onClick={open}
+                onClick={() => open()}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) =>
