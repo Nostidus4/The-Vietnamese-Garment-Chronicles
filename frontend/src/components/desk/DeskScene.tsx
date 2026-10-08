@@ -20,6 +20,7 @@ import { DeskBackdrop } from "./DeskBackdrop";
 import { useDuKy } from "@/lib/dukyBook";
 import { DuKyCover } from "../duky/DuKyCover";
 import { asset } from "@/lib/base";
+import { HandIcon } from "../HandIcon";
 
 type Landing = "flash" | "soft";
 type Phase = "landing" | "closed" | "opening" | "open" | "closing";
@@ -474,13 +475,13 @@ function WhatsInside({ onRead }: { onRead: () => void }) {
           <p className="font-hand m-0 text-[1.05rem] leading-snug text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
           <div className="mt-2 flex flex-col gap-1.5">
             <button type="button" onClick={onRead} className={entry}>
-              <span aria-hidden>📖</span> Đọc sổ của Bà theo vùng{arrow}
+              <HandIcon name="book" /> Đọc sổ của Bà theo vùng{arrow}
             </button>
             <a href={asset("/chapter/hue?entry=event")} className={entry}>
-              <span aria-hidden>👗</span> Vào thẳng tủ áo của Bà{arrow}
+              <HandIcon name="dress" /> Vào thẳng tủ áo của Bà{arrow}
             </a>
             <a href={asset("/du-ky")} className={entry}>
-              <span aria-hidden>📓</span> Ghi Du Ký những lần con mặc{arrow}
+              <HandIcon name="notebook" /> Ghi Du Ký những lần con mặc{arrow}
             </a>
           </div>
           <p className="m-0 mt-1.5 px-2 text-[0.75rem] leading-snug text-stone-600">Phối áo cùng Bà, Tèo chấm bộ nào đúng và nói vì sao.</p>
@@ -494,10 +495,10 @@ function WhatsInside({ onRead }: { onRead: () => void }) {
         className="absolute inset-x-0 bottom-3 z-20 flex justify-center gap-2 px-3 lg:hidden [@media(max-height:500px)]:inset-x-auto [@media(max-height:500px)]:bottom-auto [@media(max-height:500px)]:left-3 [@media(max-height:500px)]:top-1/2 [@media(max-height:500px)]:-translate-y-1/2 [@media(max-height:500px)]:flex-col [@media(max-height:500px)]:items-start"
       >
         <a href={asset("/chapter/hue?entry=event")} className="page-turn !text-[0.95rem]">
-          👗 Tủ áo của Bà
+          <HandIcon name="dress" /> Tủ áo của Bà
         </a>
         <a href={asset("/du-ky")} className="page-turn !text-[0.95rem]">
-          📓 Du Ký
+          <HandIcon name="notebook" /> Du Ký
         </a>
       </nav>
     </>
