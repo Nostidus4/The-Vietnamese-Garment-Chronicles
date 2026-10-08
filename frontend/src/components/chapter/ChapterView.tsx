@@ -203,7 +203,8 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
     if (st === "lock") return who === "nam" ? "chưa có dáng nam" : "chưa vẽ";
     if (st === "worn") return "đang mặc";
     if (st === "bad") return "gây sai lệch";
-    if (st === "off") return garment ? `không đi với ${lowerFirst(garment.name_vi)}` : "chọn bộ áo trước";
+    // what Bà's sources do not show yet, not a claim that the two never go together (quạt giấy with áo tứ thân, #146)
+    if (st === "off") return garment ? `Bà chưa ghi đi cùng ${lowerFirst(garment.name_vi)}` : "chọn bộ áo trước";
     if (it.garment) {
       if (st === "dim") return "chưa hợp dịp này";
       const g = data.garments.find((x) => x.id === it.garment)!;
@@ -443,7 +444,7 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
                 sheet that says why (#116, re-review 10-08) */}
             <button
               type="button"
-              onClick={() => setSheet(HAS_API ? "teo" : "story")}
+              onClick={() => setSheet("teo")} // its own tab, which says why it needs the full build when it does (#146)
               disabled={!garment}
               className={`page-turn !text-[0.95rem] ${HAS_API ? "" : "!border-dashed !border-amber-100/70 !bg-[#140c07]/85"}`}
               title={HAS_API ? "Hỏi Tèo" : `Hỏi Tèo · ${FULL_ONLY}`}
@@ -526,11 +527,14 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
 
         <div className="fitting-bar">
           <div className="flex flex-wrap items-center gap-2">
-            <button type="button" onClick={undo} disabled={!history.length || frozen} className="page-turn !text-[0.95rem]" aria-label="Hoàn tác">
-              ↶ <span className="hidden sm:inline">Hoàn tác</span>
+            {/* on a phone the word goes under the icon instead of away: an icon alone did not say what it does (#146) */}
+            <button type="button" onClick={undo} disabled={!history.length || frozen} className="page-turn !text-[0.95rem] max-sm:!flex max-sm:flex-col max-sm:items-center max-sm:!px-2.5 max-sm:!py-0.5 max-sm:leading-none">
+              <span aria-hidden>↶</span> <span className="max-sm:mt-0.5 max-sm:text-[0.75rem]">Hoàn tác</span>
             </button>
-            <button type="button" onClick={surprise} disabled={frozen} className="page-turn !text-[0.95rem]" aria-label="Bà chọn giúp">
-              🎲 <span className="hidden sm:inline">Bà chọn giúp</span>
+            <button type="button" onClick={surprise} disabled={frozen} className="page-turn !text-[0.95rem] max-sm:!flex max-sm:flex-col max-sm:items-center max-sm:!px-2.5 max-sm:!py-0.5 max-sm:leading-none">
+              <span aria-hidden>🎲</span> <span className="max-sm:mt-0.5 max-sm:text-[0.75rem]" aria-label="Bà chọn giúp">
+                Bà chọn<span className="max-sm:hidden"> giúp</span>
+              </span>
             </button>
           </div>
           <div className="flex justify-center">
@@ -618,8 +622,9 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
         )}
 
         {toast && (
-          // at the top: down by the bar it covered the doll's feet; the ✕ keeps its corner however the words wrap (#62)
-          <div role="status" className="fixed inset-x-4 top-16 z-50 mx-auto flex max-w-md flex-wrap items-center gap-3 rounded-lg bg-stone-900 py-3 pl-4 pr-10 text-sm text-amber-50 shadow-lg">
+          // not over the doll's feet (#62) nor over the room's title (#146): above the bar on a phone, in the empty
+          // bottom-right corner of the table on a wider screen; the ✕ keeps its corner however the words wrap
+          <div role="status" className="fixed inset-x-4 bottom-[9.5rem] z-50 mx-auto flex max-w-md flex-wrap items-center gap-3 rounded-lg bg-stone-900 py-3 pl-4 pr-10 text-sm text-amber-50 shadow-lg sm:inset-x-auto sm:bottom-24 sm:right-6 sm:w-[24rem]">
             <span>Đã lưu thẻ vào Du Ký ✓</span>
             <button type="button" onClick={() => setSheet("quiz-post")} className="underline">
               Thử lại: Việt hay không?

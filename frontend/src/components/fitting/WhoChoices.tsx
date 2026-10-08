@@ -31,7 +31,9 @@ export function WhoChoices({ value, onPick }: { value: Who | null; onPick?: (w: 
             // aria-disabled, not disabled: still reachable by keyboard, where the note under it says why it does nothing
             aria-disabled={w.soon || undefined}
             aria-describedby={w.soon ? "who-soon" : undefined}
-            onClick={onPick && !w.soon ? () => onPick(w.id) : undefined}
+            // "Con" without a server answers a press: the card shakes and the line under it lights up (#146); no hooks here,
+            // so it is done on the elements themselves
+            onClick={onPick ? (w.soon ? (e) => sayWhy(e.currentTarget) : () => onPick(w.id)) : undefined}
             className={`who-card ${value === w.id ? "who-card-on" : ""}`}
           >
             <WhoFigure who={w.id} />
@@ -41,12 +43,19 @@ export function WhoChoices({ value, onPick }: { value: Who | null; onPick?: (w: 
         ))}
       </div>
       {!HAS_API && (
-        <p id="who-soon" className="font-hand m-0 mt-4 text-[1.05rem] leading-snug text-stone-700">
+        <p id="who-soon" role="status" className="font-hand m-0 mt-4 rounded px-1 text-[1.05rem] leading-snug text-stone-700">
           Bản đọc thử chưa có phòng chụp, con ạ. Con mặc cho búp bê giấy trước, mở bản đầy đủ thì thử được với ảnh của con.
         </p>
       )}
     </>
   );
+}
+
+/** Shows why "Con" does nothing on this build. */
+function sayWhy(card: HTMLElement) {
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!still) card.animate([{ transform: "translateX(0)" }, { transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0)" }], { duration: 300 });
+  document.getElementById("who-soon")?.animate([{ backgroundColor: "#fbe99a" }, { backgroundColor: "rgba(251, 233, 154, 0)" }], { duration: 1600, easing: "ease-out" });
 }
 
 function WhoFigure({ who }: { who: Who }) {

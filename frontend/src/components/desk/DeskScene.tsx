@@ -58,6 +58,7 @@ export function DeskScene({
     const region = q.get("region");
     if (!region) return null;
     const page = q.get("page");
+    if (page && /^\d+$/.test(page)) return { region, page: Number(page) }; // the stop being read when the page was reloaded (#146)
     return { region, page: page === "wear" || page === "read" ? page : "own" };
   });
   const bookRef = useRef<HTMLDivElement>(null);
