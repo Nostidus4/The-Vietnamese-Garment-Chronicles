@@ -27,6 +27,7 @@ import { ShareDialog } from "./ShareDialog";
 import { StampCabinet } from "./StampCabinet";
 import { asset } from "@/lib/base";
 import { HAS_API } from "@/lib/api";
+import { coverCount } from "@/lib/dukyStamp";
 
 // where the reader is, kept across a rebuild of the book (new size or a page added)
 const memo = { page: 0 };
@@ -405,7 +406,8 @@ function DeskBook({
           </div>
           {phase === "closed" && (
             <p className="font-hand absolute -bottom-14 left-0 right-0 text-center text-xl text-[#F3EAD7]/85">
-              {book.pages.length ? `${book.pages.length} lần mặc · bấm để mở` : "Bấm để mở sổ của con"}
+              {/* a page still "Sắp đi" is not a time worn (#144) */}
+              {book.pages.length ? `${coverCount(book.pages)} · bấm để mở` : "Bấm để mở sổ của con"}
             </p>
           )}
         </motion.div>

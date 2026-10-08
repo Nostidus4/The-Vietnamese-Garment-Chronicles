@@ -9,6 +9,7 @@ import { addPhoto, takeOutPage, updatePage, usePhotoUrl, type DuKyPage, type Pho
 import { cited } from "@/lib/sources";
 import { track } from "@/lib/track";
 import { stampPlaceOf } from "@/lib/stampPlace";
+import { hasRealPhoto, stampLabel } from "@/lib/dukyStamp";
 import type { Bootstrap, Shop } from "@/lib/types";
 import { asset } from "@/lib/base";
 import { labelVi } from "@/lib/text";
@@ -66,8 +67,8 @@ export function Photo({ photo, className = "", big = false }: { photo: PhotoRef;
 const NOTE_MAX = 200;
 
 function RegionStamp({ page, place }: { page: DuKyPage; place: string }) {
-  const real = page.photos.some((p) => p.kind === "real");
-  const label = real || page.status === "worn" ? "ĐÃ MẶC" : page.photos.length ? "ĐÃ THỬ" : "SẮP ĐI";
+  const real = hasRealPhoto(page);
+  const label = stampLabel(page); // the same word as on the exported card (#144)
   const hint = real ? `Tem đã mặc ${place}, đã vào Tủ tem` : "Dán ảnh con mặc thật để tem này đậm lên và vào Tủ tem";
   return (
     <div

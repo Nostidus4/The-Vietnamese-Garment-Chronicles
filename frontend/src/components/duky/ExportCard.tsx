@@ -10,6 +10,7 @@ import { toPng } from "html-to-image";
 import { useEffect, useRef, useState } from "react";
 import { getPhoto, type DuKyPage } from "@/lib/dukyBook";
 import { stampPlaceOf } from "@/lib/stampPlace";
+import { hasRealPhoto, stampLabel } from "@/lib/dukyStamp";
 import type { Bootstrap } from "@/lib/types";
 import { formatDate, teoFact } from "./DuKyPageView";
 import { useDialog } from "@/lib/useDialog";
@@ -139,7 +140,7 @@ export function ExportCard({
         >
           <div className="flex shrink-0 items-start justify-between">
             <div>
-              <p className="m-0 text-[11px] tracking-[0.3em] text-stone-600">
+              <p className="m-0 text-[12px] tracking-[0.3em] text-stone-600">
                 {page.status === "planned" ? "SẮP ĐI" : "ĐÃ MẶC"} ·{" "}
                 {place.toUpperCase()}
               </p>
@@ -154,21 +155,18 @@ export function ExportCard({
               </p>
             </div>
             <div
-              className="flex h-[70px] w-[70px] shrink-0 rotate-[-10deg] flex-col items-center justify-center rounded-full border-[3px] text-center"
+              // the stamp of the page in the book, word for word (#144): bold with a real photo, dashed until then
+              className={`flex h-[78px] w-[78px] shrink-0 rotate-[-10deg] flex-col items-center justify-center rounded-full border-[3px] text-center ${hasRealPhoto(page) ? "" : "border-dashed"}`}
               style={{
                 borderColor: "#2F4A6D",
                 color: "#2F4A6D",
-                opacity: page.photos.some((p) => p.kind === "real")
-                  ? 0.85
-                  : 0.4,
+                opacity: hasRealPhoto(page) ? 0.85 : 0.5,
               }}
             >
-              <span className="text-[8px] tracking-[0.2em]">
-                {page.photos.some((p) => p.kind === "real")
-                  ? "ĐÃ MẶC"
-                  : "ĐÃ THỬ"}
+              <span className="whitespace-nowrap text-[12px] font-semibold tracking-[0.06em]">
+                {stampLabel(page)}
               </span>
-              <span className="font-display text-[11px] leading-tight">
+              <span className="font-display text-[13px] leading-tight">
                 {place}
               </span>
             </div>
@@ -215,18 +213,25 @@ export function ExportCard({
 
           {/* no photo yet: the page is the words, set large, instead of an empty frame */}
           {n === 0 ? (
-            <div className="flex min-h-0 flex-1 flex-col justify-center px-4">
-              <p
-                className="font-hand m-0 text-[70px] leading-none text-[#B5452E]/40"
-                aria-hidden
-              >
-                “
-              </p>
-              <p className="font-hand m-0 -mt-4 text-[30px] leading-snug text-[#1f3a78]">
-                {page.note ||
-                  `Con sắp mặc ${g ? lowerFirst(g.name_vi) : "Việt phục"} ${occasion ? `đi ${lowerFirst(occasion)}` : ""}.`}
-              </p>
-            </div>
+            page.note ? (
+              // the reader's own words, in quotes and in their hand
+              <div className="flex min-h-0 flex-1 flex-col justify-center px-4">
+                <p className="font-hand m-0 text-[70px] leading-none text-[#B5452E]/40" aria-hidden>
+                  “
+                </p>
+                <p className="font-hand m-0 -mt-4 text-[30px] leading-snug text-[#1f3a78]">{page.note}</p>
+              </div>
+            ) : (
+              // nothing written, no photo: an empty frame on purpose, and the plan in print, not quoted as if the
+              // reader had written it (#144)
+              <div className="mt-4 flex min-h-0 flex-1 flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed border-[#8a7a5c]/60 bg-white/30 px-6 text-center">
+                <span className="text-[13px] tracking-[0.25em] text-stone-600">{stampLabel(page) === "SẮP ĐI" ? "ẢNH SẼ DÁN SAU KHI MẶC" : "CHƯA CÓ ẢNH"}</span>
+                <span className="font-display text-[22px] leading-snug text-[#27354f]">
+                  {stampLabel(page) === "SẮP ĐI" ? "Sắp mặc" : "Đã mặc"} {g ? lowerFirst(g.name_vi) : "Việt phục"}
+                  {occasion ? ` đi ${lowerFirst(occasion)}` : ""}
+                </span>
+              </div>
+            )
           ) : (
             page.note && (
               <p className="font-hand m-0 mt-4 line-clamp-3 shrink-0 text-[22px] leading-snug text-[#1f3a78]">
@@ -237,12 +242,12 @@ export function ExportCard({
           {fact && (
             <div className="mt-3 shrink-0 rotate-[-0.5deg] bg-[#fbe99a] px-3 py-2 text-[12px] leading-snug text-[#1f3a78] shadow-[1px_3px_6px_rgba(60,40,0,0.2)]">
               {fact.text}
-              <span className="mt-0.5 block text-[10px] opacity-80">
+              <span className="mt-0.5 block text-[12px] opacity-80">
                 Tèo chép từ: {fact.source.title}
               </span>
             </div>
           )}
-          <p className="m-0 mt-3 flex shrink-0 justify-between text-[10px] tracking-[0.2em] text-stone-600">
+          <p className="m-0 mt-3 flex shrink-0 justify-between text-[12px] tracking-[0.2em] text-stone-600">
             <span>VIỆT PHỤC DU KÝ</span>
             <span>Hiểu để mặc đúng</span>
           </p>
