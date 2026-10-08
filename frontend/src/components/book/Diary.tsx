@@ -488,7 +488,13 @@ export function LifeDiary({
             style={{ color: YOUNG }}
           >
             <b className="font-semibold">
-              {it.kind === "dish" ? "🍲 " : "· "}
+              {it.kind === "dish" ? (
+                <>
+                  <HandIcon name="bowl" />{" "}
+                </>
+              ) : (
+                "· "
+              )}
               {it.title}.
             </b>{" "}
             {it.text}

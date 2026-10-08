@@ -17,6 +17,7 @@ import { TeoPin } from "./TeoPin";
 import { RichText } from "./Glossary";
 import { asset } from "@/lib/base";
 import { CONTRIBUTE_URL } from "@/lib/links";
+import { HandIcon } from "../HandIcon";
 
 /** The way to write a chapter: a guide on GitHub, so the link says it opens another site in a new tab. */
 function WriteLink() {
@@ -206,7 +207,9 @@ function ChapterContents({ region }: { region: Region }) {
       <ul className="m-0 mt-1 grid list-none grid-cols-2 gap-x-3 gap-y-0.5 p-0 text-[0.76rem] text-stone-700">
         <li>🗺 {j.stops.length} điểm dừng</li>
         <li>🎲 {played}/{games.length} trò chơi</li>
-        <li>📮 tem {have}/{stamps.length}</li>
+        <li>
+          <HandIcon name="stamp" /> tem {have}/{stamps.length}
+        </li>
         <li>✉ {postcard.includes(region.id) ? "đã có bưu thiếp" : "1 bưu thiếp cuối chương"}</li>
       </ul>
       <div className="mt-1.5 flex flex-wrap gap-1" aria-label="Tem các điểm dừng">
