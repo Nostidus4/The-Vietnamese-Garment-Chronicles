@@ -287,13 +287,14 @@ function StopStamp({ label, regionId, stopId }: { label: string; regionId: strin
   return (
     <motion.div
       key={on ? "on" : "off"}
-      className={`flex h-[3.6rem] w-[3.6rem] shrink-0 flex-col items-center justify-center rounded-full border-2 text-center ${on ? "border-[#B5452E]/80 text-[#B5452E]" : "border-dashed border-stone-400/60 text-stone-400/70"}`}
+      // 72px: "ĐÃ ĐẾN" stays on one line and a long stop name ("Làng tranh Đông Hồ", "Thổ cẩm") wraps inside the ring
+      className={`flex h-[4.5rem] w-[4.5rem] shrink-0 flex-col items-center justify-center rounded-full border-2 text-center ${on ? "border-[#B5452E]/80 text-[#B5452E]" : "border-dashed border-stone-400/60 text-stone-400/70"}`}
       initial={on && !reduced ? { scale: 1.9, opacity: 0, rotate: -30 } : false}
       animate={{ scale: 1, opacity: 1, rotate: -10 }}
       transition={{ type: "spring", stiffness: 380, damping: 15, delay: 0.5 }}
       aria-label={on ? `Tem ${label}` : `Chỗ đóng tem ${label}`}
     >
-      <span className="text-[0.75rem] font-semibold leading-tight">{on ? "ĐÃ ĐẾN" : "TEM"}</span>
+      <span className="whitespace-nowrap text-[0.75rem] font-semibold leading-tight">{on ? "ĐÃ ĐẾN" : "TEM"}</span>
       <span className="font-display px-1 text-[0.75rem] leading-[1.1]">{label}</span>
     </motion.div>
   );

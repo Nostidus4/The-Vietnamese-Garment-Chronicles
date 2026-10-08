@@ -117,9 +117,10 @@ export function KeepsakeArt({
       aria-hidden
     >
       {kind === "stamp" && (
-        <div className="flex h-[3.9rem] w-[3.9rem] flex-col items-center justify-center rounded-full border-[2.5px] border-[#B5452E]/75 text-center text-[#B5452E]/80">
-          <span className="text-[0.75rem] font-semibold leading-tight">ĐÃ ĐẾN</span>
-          <span className="font-display px-1 text-[0.75rem] leading-tight">
+        <div className="flex h-[4.5rem] w-[4.5rem] flex-col items-center justify-center rounded-full border-[2.5px] border-[#B5452E]/75 text-center text-[#B5452E]/80">
+          <span className="whitespace-nowrap text-[0.75rem] font-semibold leading-tight">ĐÃ ĐẾN</span>
+          {/* 72px: a long place ("Nhà sàn", "Thổ cẩm") wraps inside the ring instead of crossing it */}
+          <span className="font-display px-1.5 text-[0.75rem] leading-[1.1]">
             {label}
           </span>
         </div>

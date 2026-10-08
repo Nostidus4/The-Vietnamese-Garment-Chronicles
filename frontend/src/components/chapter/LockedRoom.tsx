@@ -6,10 +6,11 @@ import Link from "next/link";
 import type { Bootstrap, Region } from "@/lib/types";
 import { CONTRIBUTE_URL } from "@/lib/links";
 import { PaperDoll } from "../fitting/PaperDoll";
+import { stampPlace } from "@/lib/stampPlace";
 import { roomStyle } from "./RoomShell";
 
 export function LockedRoom({ region, data }: { region: Region; data: Bootstrap }) {
-  const place = region.name.split("/")[0].trim();
+  const place = stampPlace(region);
   const chapter = region.chapters.find((c) => c.status === "open");
   const garments = region.garments.map((id) => data.garments.find((g) => g.id === id)?.name_vi).filter(Boolean);
   const open = data.regions.filter((r) => r.status === "open");
