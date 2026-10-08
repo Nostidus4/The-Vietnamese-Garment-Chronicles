@@ -14,7 +14,7 @@ import { formatDateVi } from "@/lib/dateVi";
 import { DateField } from "./DateField";
 import type { Bootstrap, Shop } from "@/lib/types";
 import { asset } from "@/lib/base";
-import { labelVi } from "@/lib/text";
+import { keptSaid, labelVi } from "@/lib/text";
 
 const INK = "#27354f";
 const ACT = "rounded-full border border-stone-400/80 bg-white/40 px-2.5 py-1 leading-tight hover:bg-white/80";
@@ -103,22 +103,22 @@ function Preparation({ page, data }: { page: DuKyPage; data: Bootstrap }) {
     <div className="mt-2 space-y-1.5 rounded-md bg-white/50 p-2 text-[0.75rem] leading-snug text-stone-700">
       {keep.length > 0 && (
         <p className="m-0">
-          <b>Nhớ giữ nguyên:</b> {keep.map((z) => z.part).join(" · ")}
+          <b>Nhớ giữ nguyên:</b> {keep.map((z) => keptSaid(z.part)).join(", ")}
         </p>
       )}
-      <p className="m-0">
-        <b>Thời tiết:</b>{" "}
-        {!page.date
-          ? "chọn ngày đi để xem dự báo."
-          : w?.available
-            ? `cao nhất ${Math.round(w.max_c!)}°C${w.rain_chance != null ? `, khả năng mưa ${w.rain_chance}%` : ""}.`
-            : w?.reason === "too_far"
-              ? `sẽ có dự báo khi còn 16 ngày (khoảng ${w.days_until_forecast} ngày nữa).`
-              : w?.reason === "past"
-                ? "ngày này đã qua."
-                : "chưa lấy được dự báo."}
-        {tip && <span className="block text-[#8a4b2a]">Mặc cho mát: {tip}</span>}
-      </p>
+      {page.date && (
+        <p className="m-0">
+          <b>Thời tiết:</b>{" "}
+          {w?.available
+              ? `cao nhất ${Math.round(w.max_c!)}°C${w.rain_chance != null ? `, khả năng mưa ${w.rain_chance}%` : ""}.`
+              : w?.reason === "too_far"
+                ? `sẽ có dự báo khi còn 16 ngày (khoảng ${w.days_until_forecast} ngày nữa).`
+                : w?.reason === "past"
+                  ? "ngày này đã qua."
+                  : "chưa xem được dự báo lúc này, con thử lại khi có mạng nhé."}
+          {tip && <span className="block text-[#8a4b2a]">Mặc cho mát: {tip}</span>}
+        </p>
+      )}
       {shops.length > 0 && (
         <p className="m-0">
           <b>Thuê/may:</b>{" "}
@@ -240,14 +240,14 @@ export function DuKyPageView({
         placeholder="Viết một dòng của con…"
         rows={compact ? 1 : 2}
         maxLength={NOTE_MAX}
-        className={`font-hand mt-2 w-full shrink-0 ${compact ? "max-h-[2.8em]" : "max-h-[5.6em]"} resize-none overflow-y-auto [field-sizing:content] border-0 border-b border-stone-400 bg-transparent text-[1rem] leading-snug outline-none placeholder:text-stone-400`}
+        className={`font-hand mt-2 w-full shrink-0 ${compact ? "max-h-[2.8em]" : "max-h-[5.6em]"} resize-none overflow-y-auto [field-sizing:content] border-0 border-b border-stone-400 bg-transparent text-[1rem] leading-snug outline-none placeholder:text-stone-600`}
         style={{ color: "#1f3a78" }}
         aria-label="Một dòng của con"
         aria-describedby={note.length >= NOTE_MAX - 40 ? `count-${page.id}` : undefined}
       />
       {note.length >= NOTE_MAX - 40 && (
         <p id={`count-${page.id}`} className="m-0 mt-1 text-right text-[0.75rem] text-stone-600">
-          {note.length}/{NOTE_MAX} chữ{note.length > 120 ? " · ảnh xuất giữ 3 dòng đầu" : ""}
+          {note.length}/{NOTE_MAX} chữ{note.length > 120 ? " · ảnh chỉ in 3 dòng đầu" : ""}
         </p>
       )}
 

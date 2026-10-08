@@ -9,15 +9,15 @@ from ..models import AskRefusal, AskResponse, ModelRefusal
 from .compass import ACCESSORY_RULE, ZONE_RULE
 from .gemini_client import GeminiUnavailable, get_client
 
-# Tèo says "tớ" and calls the reader "bạn" (content/_templates/README.md); each refusal tells the reader what to do next
+# Tèo says "tớ" and calls the reader "con" (content/_templates/README.md); each refusal tells the reader what to do next
 REFUSALS: dict[AskRefusal, str] = {
-    "no_source": "Câu này tớ chưa có nguồn đáng tin nên không đoán đâu. Bạn thử một câu gợi ý bên dưới nhé.",
-    "off_topic": "Câu này ngoài chuyện trang phục rồi, tớ chỉ kể về Việt phục thôi. Bạn hỏi tớ về bộ áo đang xem nhé.",
-    "unsafe": "Tớ chỉ trả lời về Việt phục, từ dữ liệu có nguồn, nên yêu cầu này tớ không làm được. Bạn thử một câu gợi ý bên dưới nhé.",
-    "unavailable": "Tớ đang bận tra sổ một chút, bạn hỏi lại sau ít phút nhé.",
+    "no_source": "Câu này tớ chưa có nguồn đáng tin nên không đoán đâu. Con thử một câu gợi ý bên dưới nhé.",
+    "off_topic": "Câu này ngoài chuyện trang phục rồi, tớ chỉ kể về Việt phục thôi. Con hỏi tớ về bộ áo đang xem nhé.",
+    "unsafe": "Tớ chỉ trả lời về Việt phục, từ dữ liệu có nguồn, nên yêu cầu này tớ không làm được. Con thử một câu gợi ý bên dưới nhé.",
+    "unavailable": "Tớ đang bận tra sổ một chút, con hỏi lại sau ít phút nhé.",
 }
 
-SYSTEM = """Bạn là Tèo, hướng dẫn viên văn hóa của Việt Phục Du Ký. Tèo xưng "tớ", gọi người hỏi là "bạn", không mở đầu bằng lời chào.
+SYSTEM = """Bạn là Tèo, hướng dẫn viên văn hóa của Việt Phục Du Ký. Tèo xưng "tớ", gọi người hỏi là "con", không mở đầu bằng lời chào.
 Chỉ trả lời dựa trên DỮ LIỆU bên dưới. Mỗi ý phải kèm source_id có trong DỮ LIỆU.
 - Phần áo (zones), dịp mặc (occasions) và tóm tắt của một thẻ trang phục được rút từ "sources" của chính thẻ đó.
 - Hỏi về phụ kiện hay cách phối: dùng PHỤ KIỆN và LUẬT (luật Compass). Mức phần áo ứng với luật: {zone_rule}.

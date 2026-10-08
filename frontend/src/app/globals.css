@@ -605,8 +605,8 @@ body {
 .site-nav a.site-nav-minor:hover { background: rgba(243, 234, 215, 0.95); color: #2b2118; }
 /* touch screens and phones: every control at least 44px, the nav scrolls away with the page instead of covering it
    (#57). By width too: a phone-sized window still had 22px buttons when the browser did not report a coarse pointer (#119) */
-@media (pointer: coarse), (max-width: 759px) {
-  .site-nav { gap: 0.4rem; right: 0.5rem; }
+@media (pointer: coarse), (max-width: 759px), (max-height: 500px) {
+  .site-nav { gap: 0.4rem; right: 0.75rem; }
   .site-nav a { padding: 0 0.7em; }
   .page-turn { min-height: 44px; min-width: 44px; }
   .book-size button { min-height: 44px; min-width: 44px; }
@@ -696,8 +696,10 @@ body {
     .fitting-grid .mirror-caption { display: none; }
     /* the frame is only ~180px wide here: a tag hung on its side covered the doll's head and ran out of the room.
        It hangs under the frame instead, on one line (#116) */
-    .fitting-grid .dress-form { margin-bottom: 1.9rem; }
-    .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: 0; right: 0; margin-inline: auto; width: max-content; max-width: calc(100vw - 2.5rem); transform: none; padding: 0.25rem 0.6rem 0.25rem 1.2rem; white-space: nowrap; }
+    /* …and wraps inside the screen: on one line "Tèo chấm ⛔ Sai lệch – không nên" ran 60px off a phone and dragged
+       the bar with "Xem cách sửa" below the screen (#143) */
+    .fitting-grid .dress-form { margin-bottom: 3.2rem; }
+    .fitting-grid .dress-form .mirror-tag { top: calc(100% + 0.25rem); bottom: auto; right: auto; margin-inline: 0; width: min(17rem, calc(100vw - 3rem)); left: calc(50% - min(8.5rem, calc(50vw - 1.5rem))); transform: none; padding: 0.25rem 0.6rem 0.25rem 1.2rem; white-space: normal; text-align: center; line-height: 1.35; }
     .fitting-grid .dress-form .mirror-tag > span:not(.mirror-tag-hole) { display: inline !important; margin-right: 0.4rem; }
   }
   .mirror-chip { position: absolute; z-index: 2; border-radius: 999px; background: rgba(20, 12, 7, 0.6); color: #f3ead7; padding: 0.05rem 0.55rem; font-size: 0.75rem; }
@@ -717,22 +719,23 @@ body {
     /* the hint is a line of its own, inset from the screen's edges */
     .fitting-hint { max-width: 22rem; padding-inline: 0.5rem; text-align: center; font-size: 0.75rem; line-height: 1.3; }
     .fitting-bar .page-turn { min-height: 44px; min-width: 44px; }
-    .fitting { padding-bottom: 8.5rem; }
+    .fitting { padding-bottom: 8.5rem; overflow-x: clip; } /* nothing in the room may widen the page (#143) */
   }
   /* landscape phone: a slim bar (one row, no hint), and the room's own scroll for the long wardrobe */
   @media (orientation: landscape) and (max-height: 500px) {
-    .fitting { padding: 2.9rem 0.75rem 4rem; }
+    /* 4rem: the site links (44px, from 12px down) keep a hand's breadth clear of the room's own buttons and title */
+    .fitting { padding: 4rem 0.75rem 4rem; }
     .fitting-head h1 { font-size: 1.3rem; }
     .fitting-grid { grid-template-columns: 14rem minmax(0, 1fr); align-items: start; margin-top: 0; gap: 0.7rem; }
-    .fitting-grid > .fitting-stage { order: 0; grid-column: 1; grid-row: 1 / span 2; position: sticky; top: 3.2rem; }
+    .fitting-grid > .fitting-stage { order: 0; grid-column: 1; grid-row: 1 / span 2; position: sticky; top: 4.3rem; }
     .fitting-grid > .wardrobe { grid-column: 2; grid-row: 1; width: auto; }
     .fitting-grid > .outfit { grid-column: 2; grid-row: 2; width: auto; justify-self: stretch; }
-    .fitting-grid .dress-form { height: calc(100svh - 14.4rem); min-height: 140px; margin-bottom: 1.9rem; }
+    .fitting-grid .dress-form { height: calc(100svh - 15.5rem); min-height: 140px; margin-bottom: 1.9rem; }
     .fitting-grid .mirror-caption, .fitting-weather { display: none; }
-    .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: calc(50% - 6.4rem); right: auto; margin-inline: 0; width: 12.8rem; text-align: center; padding: 0.2rem 0.5rem 0.2rem 1.1rem; white-space: nowrap; }
+    .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: calc(50% - 6.4rem); right: auto; margin-inline: 0; width: 12.8rem; text-align: center; padding: 0.2rem 0.5rem 0.2rem 1.1rem; white-space: normal; line-height: 1.25; }
     .fitting-grid .dress-form .mirror-tag > span:not(.mirror-tag-hole) { display: inline !important; margin-right: 0.3rem; }
     .fitting-grid .dress-form .mirror-tag > span:nth-child(4) { display: none !important; }
-    .wardrobe-body { max-height: calc(100svh - 11.5rem); min-height: 8rem; }
+    .wardrobe-body { max-height: calc(100svh - 12.6rem); min-height: 8rem; }
     .wardrobe-tabs { padding-top: 0.3rem; }
     .wardrobe-tab { min-height: 40px; }
     .fitting-bar { grid-template-columns: auto 1fr auto; padding: 0.3rem 0.75rem calc(0.3rem + env(safe-area-inset-bottom, 0px)); gap: 0.5rem; background: rgba(20, 12, 7, 0.88); }
@@ -764,7 +767,9 @@ body {
   /* "Con · bản đầy đủ": not for this build, but still readable (#109) */
   .who-card[aria-disabled="true"] { cursor: not-allowed; border: 2px dashed #b9a98a; background: #f1ead9; color: #57534e; }
   .who-card[aria-disabled="true"] svg, .who-card[aria-disabled="true"] > span:first-child { opacity: 0.55; }
-  .who-card-on { border-color: #e3b04b; box-shadow: 0 0 0 3px rgba(227, 176, 75, 0.35); transform: translateY(-3px); }
+  .who-card-on { background: #fff1cc; border-color: #e3b04b; box-shadow: 0 0 0 3px rgba(227, 176, 75, 0.35); transform: translateY(-3px); }
+  /* focus is a navy ring set off from the card; chosen is gold on a warm fill, so the two never read as one (#149) */
+  .who-card:focus-visible { outline: 3px solid #2f4a6d; outline-offset: 4px; }
 
   /* the wardrobe: dark wood with brass, the drawers' tabs like the book's bookmarks, the pieces on paper */
   .wardrobe { position: relative; min-width: 0; display: flex; flex-direction: column; border-radius: 0.9rem 0.9rem 0.5rem 0.5rem; background: linear-gradient(#5b3a22, #3b2615); border: 2px solid #c9a35a; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); overflow: hidden; overflow: clip; perspective: 1200px; }
@@ -782,6 +787,10 @@ body {
      cuts the names at its edges (#109) */
   @media (max-width: 760px) {
     .wardrobe-tab { flex: 1 1 auto; min-height: 44px; }
+    /* five drawers as 3 + 2, both rows full: in a wrapping row the fifth sat alone and read as a heading (#143) */
+    .wardrobe-tabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .wardrobe-tab { grid-column: span 2; padding-inline: 0.35rem; }
+    .wardrobe-tab:nth-child(n + 4) { grid-column: span 3; }
   }
   .wardrobe-tab { border-radius: 0.5rem 0.5rem 0 0; padding: 0.3rem 0.65rem; font-size: 0.78rem; color: #f3ead7; background: rgba(243, 234, 215, 0.12); }
   .wardrobe-tab:hover { background: rgba(243, 234, 215, 0.22); }
@@ -816,7 +825,7 @@ body {
   .outfit-title { margin: 0 0 0.5rem; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: #6b5a49; }
   .outfit-chip { display: flex; align-items: center; gap: 0.4rem; border-radius: 999px; border: 1px solid #d8c9a8; background: #fbf6ea; padding: 0.2rem 0.3rem 0.2rem 0.8rem; font-size: 0.85rem; color: #27354f; }
   .outfit-chip-bad { border-color: #b5452e; color: #b5452e; }
-  .outfit-x { flex-shrink: 0; width: 1.4rem; height: 1.4rem; border-radius: 999px; font-size: 0.7rem; color: inherit; }
+  .outfit-x { flex-shrink: 0; width: 1.4rem; height: 1.4rem; border-radius: 999px; font-size: 0.75rem; color: inherit; }
   .outfit-x:hover { background: rgba(181, 69, 46, 0.12); }
 
   /* the Việt phục card: 2:3 paper, flips like Bà's postcards */

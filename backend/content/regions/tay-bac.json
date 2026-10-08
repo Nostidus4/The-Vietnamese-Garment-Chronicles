@@ -406,8 +406,8 @@
         "id": "tb-pieu",
         "q": "Khăn piêu được thêu hoa văn ở đâu?",
         "choices": [
-          "Ở hai đầu khăn",
-          "Ở chính giữa khăn",
+          "Ở hai đầu khăn, giữa khăn để trơn",
+          "Ở chính giữa khăn, hai đầu để trơn",
           "Khắp mặt khăn, không chừa chỗ nào"
         ],
         "answer": 0,

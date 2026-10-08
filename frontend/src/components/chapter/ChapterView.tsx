@@ -621,11 +621,9 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
           // at the top: down by the bar it covered the doll's feet; the ✕ keeps its corner however the words wrap (#62)
           <div role="status" className="fixed inset-x-4 top-16 z-50 mx-auto flex max-w-md flex-wrap items-center gap-3 rounded-lg bg-stone-900 py-3 pl-4 pr-10 text-sm text-amber-50 shadow-lg">
             <span>Đã lưu thẻ vào Du Ký ✓</span>
-            {HAS_API && (
-              <button type="button" onClick={() => setSheet("quiz-post")} className="underline">
-                Thử lại: Việt hay không?
-              </button>
-            )}
+            <button type="button" onClick={() => setSheet("quiz-post")} className="underline">
+              Thử lại: Việt hay không?
+            </button>
             <a href={asset("/du-ky")} className="ml-auto font-semibold text-amber-200 underline">
               Mở Du Ký
             </a>

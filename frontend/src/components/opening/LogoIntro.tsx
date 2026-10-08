@@ -54,7 +54,7 @@ export function LogoIntro({ ready, onLeave, onDone }: { ready: boolean; onLeave:
       aria-label="Việt Phục Du Ký – Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình"
     >
       <motion.div
-        className="relative w-[min(72vw,520px)]"
+        className="relative w-[min(72vw,520px)] [@media(max-height:500px)]:w-[min(72vw,520px,calc(58dvh*1.39))]"
         initial={fromShell ? false : reduced ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 10, filter: "blur(6px)" }}
         animate={
           !shown
