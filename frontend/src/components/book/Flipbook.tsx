@@ -47,7 +47,8 @@ const memo = { focus: null as string | null, reading: false, page: 0 };
 // the furthest stop reached in each trip chapter, for the route on its title page
 const reachedOf: Record<string, number> = {};
 
-export type Resume = { region: string; page: "own" | "wear" | "read" } | null;
+// page: a named page of the chapter, or the book's own page number (a reload keeps the stop being read, #146)
+export type Resume = { region: string; page: "own" | "wear" | "read" | number } | null;
 
 type Built = { tabs: Tab[]; steps: Step[]; pages: { node: ReactNode; still?: boolean }[] };
 
@@ -272,10 +273,25 @@ export default function Flipbook({
   useEffect(() => {
     if (!resume || resumed.current || !j || !reading) return;
     resumed.current = true;
+    if (typeof resume.page === "number") {
+      const to = Math.min(resume.page, used - 1);
+      return void setTimeout(() => jump(portrait ? to : to - (to % 2)), 1200);
+    }
     // "read" (from a fitting room still closed, #112): the chapter's first page
     const tab = resume.page === "read" ? tabs[0] : tabs.find((t) => t.label === (resume.page === "own" ? "Trang của con" : "Mặc"));
     if (tab) setTimeout(() => jump(portrait ? tab.page : tab.page - (tab.page % 2)), 1200);
   });
+
+  // the address follows the reader inside a chapter, so a reload or a shared link opens on the same stop (#146);
+  // out of the chapter it goes back to the plain one
+  useEffect(() => {
+    if (!active) return;
+    const here = new URLSearchParams(window.location.search);
+    if (focus && reading && page >= FIRST) {
+      const want = `?region=${focus}&page=${page}`;
+      if (window.location.search !== want) window.history.replaceState(window.history.state, "", asset(`/${want}`));
+    } else if (here.has("region")) window.history.replaceState(window.history.state, "", asset("/"));
+  }, [active, focus, reading, page]);
 
   // ← → turn pages, Esc steps back out (chapter → region → country); ignored while typing in a field
   const keys = useRef({ prev, next: keyNext, active, toCountry, leaveChapter, focus, reading, atEnd });

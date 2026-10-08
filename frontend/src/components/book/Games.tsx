@@ -271,7 +271,7 @@ const PANEL_FILL: Record<string, string> = { "back-left": "#1d3a5c", "back-right
 function PanelThumb({ slot }: { slot: string }) {
   const [x, y, w, h] = boxOf(slot);
   return (
-    <svg viewBox={`${x - 2} ${y - 2} ${w + 4} ${h + 4}`} className="h-9 w-7 shrink-0" aria-hidden>
+    <svg viewBox={`${x - 2} ${y - 2} ${w + 4} ${h + 4}`} className="h-9 w-7 shrink-0 max-sm:h-7 max-sm:w-5" aria-hidden>
       <path d={PANELS[slot].d} fill={PANEL_FILL[slot]} stroke="#10263f" strokeWidth="1" />
     </svg>
   );
@@ -337,7 +337,7 @@ function NguThan({ game, onWin }: Props) {
       <svg
         ref={svg}
         viewBox="0 0 100 100"
-        className="mx-auto block w-[58%] touch-none"
+        className="mx-auto block w-[58%] touch-none max-sm:w-[44%]"
         role="group"
         aria-label={`Chiếc áo ngũ thân đang ghép: ${all ? "đã đủ năm thân" : `đang ghép ${LAYER_NAME[cur]}`}`}
         onClick={(e) => {
@@ -386,7 +386,8 @@ function NguThan({ game, onWin }: Props) {
         )}
         {all && [34, 44, 54, 64, 74].map((y) => <circle key={y} cx={y < 40 ? 58 : 62 + (y - 44) * 0.12} cy={y} r="1.4" fill="#e8d9a8" />)}
       </svg>
-      <div className="mt-2 flex flex-wrap justify-center gap-1">
+      {/* two columns everywhere: one under the other, on a phone the fifth panel and the count fell off the page (#146) */}
+      <div className="mt-2 grid grid-cols-2 gap-1">
         {tray
           .filter((i) => !placed.includes(slotOf(i)))
           .map((i) => (
@@ -424,10 +425,10 @@ function NguThan({ game, onWin }: Props) {
                 e.preventDefault();
                 setSel((v) => (v === i ? null : i));
               }}
-              className={`flex touch-none items-center gap-1.5 rounded-md border px-1.5 py-1 text-left text-[0.75rem] leading-tight ${sel === i ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
+              className={`flex min-w-0 touch-none items-center gap-1.5 rounded-md border px-1.5 py-1 text-left text-[0.75rem] leading-tight max-sm:py-0.5 ${sel === i ? "border-[#27354f] bg-[#27354f] text-amber-50" : "border-stone-400 bg-white/70 hover:bg-amber-50"}`}
             >
               <PanelThumb slot={slotOf(i)} />
-              <span className="max-w-[6.5rem]">{game.rounds[i].label}</span>
+              <span className="min-w-0">{game.rounds[i].label}</span>
             </button>
           ))}
       </div>
@@ -565,7 +566,8 @@ function MamCom({ game, onWin }: Props) {
             <span className={`grid h-8 w-8 place-items-center rounded-full border-2 text-[0.95rem] ${k < invited ? "border-[#5E7F4A] bg-[#e7efdc]" : "border-[#8a4b2a] bg-[#f6efe0]"}`} aria-hidden>
               {k === 0 ? "👵" : k === 1 ? "👨" : "👧"}
             </span>
-            <span className="mt-0.5 whitespace-nowrap rounded bg-white/75 px-1 text-[0.75rem] leading-tight text-[#27354f]">
+            {/* once the tray shrinks for the falling cup everyone is invited: the faces stay, the names would cover the dishes (#146) */}
+            <span className={`mt-0.5 whitespace-nowrap rounded bg-white/75 px-1 text-[0.75rem] leading-tight text-[#27354f] ${step >= 2 ? "sr-only" : ""}`}>
               {who}
               {k < invited ? " ✓" : ""}
             </span>

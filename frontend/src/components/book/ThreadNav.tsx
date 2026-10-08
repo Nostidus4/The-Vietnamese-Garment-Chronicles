@@ -49,7 +49,8 @@ export function ThreadNav({
   const stops = steps.filter((s) => s.kind === "stop");
   const stopNo = steps[cur].kind === "stop" ? stops.indexOf(steps[cur]) + 1 : 0;
   // a game on the open spread that is not played yet: going on is allowed, but the button is not the bright one
-  const pending = steps.some((s) => s.game && left(s.page) === page && !won.includes(s.game));
+  // (the game is the page right after the stop's diary: on a phone, where one page shows at a time, that page, #146)
+  const pending = steps.some((s) => s.game && (portrait ? s.page + 1 === page : left(s.page) === page) && !won.includes(s.game));
   const nextLabel = ahead > cur ? steps[ahead].label : "Trang sau";
 
   return (
@@ -93,7 +94,9 @@ export function ThreadNav({
           onClick={onNext}
           aria-label={pending ? "Bỏ qua trò chơi, đi tiếp" : ahead > cur ? `Đi tiếp: ${nextLabel}` : "Trang sau"}
         >
-          <span className="hidden sm:inline">{pending ? "Bỏ qua, đi tiếp" : ahead > cur ? `Đi tiếp: ${nextLabel}` : "Trang sau"}</span>{" "}
+          {/* a phone says "Bỏ qua" too while the game waits: a bright › alone looked like the way to go on (#146) */}
+          <span className={pending ? "" : "hidden sm:inline"}>{pending ? "Bỏ qua" : ahead > cur ? `Đi tiếp: ${nextLabel}` : "Trang sau"}</span>
+          <span className={pending ? "hidden sm:inline" : "hidden"}>, đi tiếp</span>{" "}
           <span aria-hidden>›</span>
         </button>
       )}

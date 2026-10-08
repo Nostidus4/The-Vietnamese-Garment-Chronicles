@@ -34,15 +34,17 @@ export function StoryCard({ garment, sources }: { garment: Garment; sources: Boo
 
       {/* F3 Style Freedom Map: three lanes, from "keep" to "free", so the rule reads at a glance */}
       <h3 className="mt-4 mb-2 font-semibold">Phần nào được đổi?</h3>
-      <div className="grid grid-cols-3 gap-2 text-xs">
+      {/* one lane per row, the label beside its parts: in three equal columns "Giữ", which has the most to say, was
+          squeezed into a tall narrow box (#146) */}
+      <div className="flex flex-col gap-2 text-xs">
         {(["keep", "caution", "free"] as const).map((lv) => {
           const parts = garment.zones.filter((z) => z.level === lv);
           return (
-            <div key={lv} className={`rounded-lg border-2 p-2 ${ZONE_STYLE[lv]}`}>
-              <p className="m-0 flex items-center gap-1 font-semibold">
+            <div key={lv} className={`flex items-start gap-3 rounded-lg border-2 p-2 ${ZONE_STYLE[lv]}`}>
+              <p className="m-0 flex w-[5.5rem] shrink-0 items-center gap-1 font-semibold">
                 <span aria-hidden>{ZONE_ICON[lv]}</span> {ZONE_LABEL[lv]}
               </p>
-              <ul className="m-0 mt-1 list-none space-y-1 p-0">
+              <ul className="m-0 min-w-0 flex-1 list-none space-y-1 p-0">
                 {parts.length ? (
                   parts.map((z) => (
                     <li key={z.part} title={z.note ?? undefined}>

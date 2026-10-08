@@ -97,10 +97,10 @@ export function AboutSheet({
                       type="button"
                       role="tab"
                       aria-selected={on}
-                      aria-disabled={off || undefined}
                       title={off ? FULL_ONLY : undefined}
-                      onClick={() => !off && onTab(t.id)}
-                      className={`rounded-full px-3 py-1 text-sm ${on ? "bg-[#27354f] text-amber-50" : off ? "cursor-not-allowed border border-dashed border-stone-500 text-stone-600" : "border border-stone-400/70"}`}
+                      // a tab that needs the server still opens: on its page it says so (#146)
+                      onClick={() => onTab(t.id)}
+                      className={`rounded-full px-3 py-1 text-sm ${on ? "bg-[#27354f] text-amber-50" : off ? "border border-dashed border-stone-500 text-stone-600" : "border border-stone-400/70"}`}
                     >
                       {t.name}
                       {off && <span className="block text-[0.75rem] leading-tight">có ở bản đầy đủ</span>}
@@ -112,12 +112,20 @@ export function AboutSheet({
                 Đóng
               </button>
             </div>
-            {!HAS_API && (
-              <p className="m-0 mb-3 rounded-md bg-[#f7e4c8] px-3 py-2 text-[0.8rem] text-[#5b3a22]">
-                Bản đọc thử chỉ mở được phần <b>Bộ áo</b>. Hỏi Tèo, câu đố “Việt hay không?” và chỗ thuê / may cần máy chủ, có ở bản đầy đủ.
-              </p>
+            {HAS_API || tab === "story" ? (
+              body[tab]
+            ) : (
+              <div className="rounded-md border border-dashed border-stone-400 bg-[#f7e4c8] px-4 py-5 text-[0.9rem] leading-snug text-[#5b3a22]">
+                <p className="m-0 font-semibold">{SHEET_TABS.find((t) => t.id === tab || (t.id === "quiz-pre" && tab === "quiz-post"))?.name}: có ở bản đầy đủ</p>
+                <p className="m-0 mt-1">
+                  Phần này hỏi máy chủ (Tèo tra nguồn, câu đố, danh sách chỗ thuê / may), mà bản đọc thử chạy không có máy chủ. Câu chuyện của bộ áo thì đọc
+                  được ngay ở tab <b>Bộ áo</b>.
+                </p>
+                <button type="button" onClick={() => onTab("story")} className="mt-3 rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">
+                  Đọc tab Bộ áo
+                </button>
+              </div>
             )}
-            {body[HAS_API ? tab : "story"]}
           </motion.aside>
         </motion.div>
       )}
