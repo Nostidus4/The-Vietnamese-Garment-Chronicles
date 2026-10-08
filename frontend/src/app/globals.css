@@ -696,8 +696,10 @@ body {
     .fitting-grid .mirror-caption { display: none; }
     /* the frame is only ~180px wide here: a tag hung on its side covered the doll's head and ran out of the room.
        It hangs under the frame instead, on one line (#116) */
-    .fitting-grid .dress-form { margin-bottom: 1.9rem; }
-    .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: 0; right: 0; margin-inline: auto; width: max-content; max-width: calc(100vw - 2.5rem); transform: none; padding: 0.25rem 0.6rem 0.25rem 1.2rem; white-space: nowrap; }
+    /* …and wraps inside the screen: on one line "Tèo chấm ⛔ Sai lệch – không nên" ran 60px off a phone and dragged
+       the bar with "Xem cách sửa" below the screen (#143) */
+    .fitting-grid .dress-form { margin-bottom: 3.2rem; }
+    .fitting-grid .dress-form .mirror-tag { top: calc(100% + 0.25rem); bottom: auto; right: auto; margin-inline: 0; width: min(17rem, calc(100vw - 3rem)); left: calc(50% - min(8.5rem, calc(50vw - 1.5rem))); transform: none; padding: 0.25rem 0.6rem 0.25rem 1.2rem; white-space: normal; text-align: center; line-height: 1.35; }
     .fitting-grid .dress-form .mirror-tag > span:not(.mirror-tag-hole) { display: inline !important; margin-right: 0.4rem; }
   }
   .mirror-chip { position: absolute; z-index: 2; border-radius: 999px; background: rgba(20, 12, 7, 0.6); color: #f3ead7; padding: 0.05rem 0.55rem; font-size: 0.75rem; }
@@ -717,7 +719,7 @@ body {
     /* the hint is a line of its own, inset from the screen's edges */
     .fitting-hint { max-width: 22rem; padding-inline: 0.5rem; text-align: center; font-size: 0.75rem; line-height: 1.3; }
     .fitting-bar .page-turn { min-height: 44px; min-width: 44px; }
-    .fitting { padding-bottom: 8.5rem; }
+    .fitting { padding-bottom: 8.5rem; overflow-x: clip; } /* nothing in the room may widen the page (#143) */
   }
   /* landscape phone: a slim bar (one row, no hint), and the room's own scroll for the long wardrobe */
   @media (orientation: landscape) and (max-height: 500px) {
@@ -729,7 +731,7 @@ body {
     .fitting-grid > .outfit { grid-column: 2; grid-row: 2; width: auto; justify-self: stretch; }
     .fitting-grid .dress-form { height: calc(100svh - 14.4rem); min-height: 140px; margin-bottom: 1.9rem; }
     .fitting-grid .mirror-caption, .fitting-weather { display: none; }
-    .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: calc(50% - 6.4rem); right: auto; margin-inline: 0; width: 12.8rem; text-align: center; padding: 0.2rem 0.5rem 0.2rem 1.1rem; white-space: nowrap; }
+    .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: calc(50% - 6.4rem); right: auto; margin-inline: 0; width: 12.8rem; text-align: center; padding: 0.2rem 0.5rem 0.2rem 1.1rem; white-space: normal; line-height: 1.25; }
     .fitting-grid .dress-form .mirror-tag > span:not(.mirror-tag-hole) { display: inline !important; margin-right: 0.3rem; }
     .fitting-grid .dress-form .mirror-tag > span:nth-child(4) { display: none !important; }
     .wardrobe-body { max-height: calc(100svh - 11.5rem); min-height: 8rem; }
@@ -782,6 +784,10 @@ body {
      cuts the names at its edges (#109) */
   @media (max-width: 760px) {
     .wardrobe-tab { flex: 1 1 auto; min-height: 44px; }
+    /* five drawers as 3 + 2, both rows full: in a wrapping row the fifth sat alone and read as a heading (#143) */
+    .wardrobe-tabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .wardrobe-tab { grid-column: span 2; padding-inline: 0.35rem; }
+    .wardrobe-tab:nth-child(n + 4) { grid-column: span 3; }
   }
   .wardrobe-tab { border-radius: 0.5rem 0.5rem 0 0; padding: 0.3rem 0.65rem; font-size: 0.78rem; color: #f3ead7; background: rgba(243, 234, 215, 0.12); }
   .wardrobe-tab:hover { background: rgba(243, 234, 215, 0.22); }
