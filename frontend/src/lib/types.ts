@@ -133,6 +133,7 @@ export interface Festival {
   name: string;
   time: string;
   month: number | null;
+  year_round?: boolean;
   place: string;
   text: string;
   review: string | null;

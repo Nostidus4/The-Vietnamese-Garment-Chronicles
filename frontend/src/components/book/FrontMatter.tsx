@@ -15,7 +15,7 @@ export function LetterPage() {
       <div className="font-hand mt-2 space-y-2 text-[1.12rem] leading-[1.42]" style={{ color: YOUNG }}>
         <p className="m-0">Con của Bà,</p>
         <p className="m-0">
-          Hồi hai mươi tuổi, Bà xếp vào túi hai bộ áo rồi theo một người con trai đi xa. Từ ấy, đi đến đâu Bà cũng ghi lại:
+          Từ năm mười tám tuổi, Bà đã ghi sổ. Hồi hai mươi, Bà xếp vào túi hai bộ áo rồi theo một người con trai đi xa. Đi đến đâu Bà cũng ghi lại:
           trời hôm ấy thế nào, người ta ăn gì, mặc gì, cười nói ra sao.
         </p>
         <p className="m-0">
@@ -39,7 +39,7 @@ export function LetterPage() {
             <span className="font-hand shrink-0 text-[0.95rem] leading-none" style={{ color: YOUNG }}>
               Aa
             </span>
-            <span>Mực xanh: Bà năm hai mươi tuổi.</span>
+            <span>Mực xanh: Bà hồi còn trẻ.</span>
           </li>
           {/* one ink, one line: the two shared a line and read as one (#115) */}
           <li className="flex items-start gap-2">

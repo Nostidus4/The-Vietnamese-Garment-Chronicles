@@ -619,7 +619,8 @@ export function FestivalBoard({ stop, chapterPlace }: { stop: Stop; chapterPlace
   const fests = stop.festivals.filter((f) => !f.community_review || DRAFT);
   const month = new Date().getMonth() + 1;
   const now = fests.find((f) => f.month === month);
-  const next = [...fests].filter((f) => f.month).sort((a, b) => ((a.month! - month + 12) % 12) - ((b.month! - month + 12) % 12))[0];
+  const yearRound = fests.find((f) => f.year_round);
+  const next = [...fests].filter((f) => f.month && !f.year_round).sort((a, b) => ((a.month! - month + 12) % 12) - ((b.month! - month + 12) % 12))[0];
   // always open on the first festival; the reader taps through the others (the board says how many are left)
   const [sel, setSel] = useState<Festival | undefined>(fests[0]);
   const [seen, setSeen] = useState<string[]>(fests[0] ? [fests[0].id] : []);
@@ -629,7 +630,11 @@ export function FestivalBoard({ stop, chapterPlace }: { stop: Stop; chapterPlace
     <div className="flex h-full flex-col">
       <p className="m-0 text-[0.75rem] tracking-[0.22em] text-stone-600">LỄ HỘI QUANH NĂM Ở {chapterPlace.toUpperCase()}</p>
       <p className="font-hand m-0 mt-0.5 text-[0.92rem]" style={{ color: OLD }}>
-        {now ? `Nếu con đến ${chapterPlace} tháng này: ${now.name}!` : `Tháng này chưa có hội lớn. Gần nhất là ${next?.name ?? fests[0].name}.`}
+        {now
+          ? `Nếu con đến ${chapterPlace} tháng này: ${now.name}!`
+          : yearRound
+            ? `Tháng này chưa có hội riêng. ${yearRound.name} diễn ra bốn mùa trong năm, gần nhất là ${next?.name ?? fests[0].name}.`
+            : `Tháng này chưa có hội lớn. Gần nhất là ${next?.name ?? fests[0].name}.`}
       </p>
       {/* every festival on one row, like tabs; a tick once the reader has looked at it */}
       <div className="mt-2 grid gap-1" style={{ gridTemplateColumns: `repeat(${fests.length}, minmax(0, 1fr))` }} role="tablist" aria-label="Các lễ hội">
