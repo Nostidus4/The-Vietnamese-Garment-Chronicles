@@ -1,7 +1,36 @@
 // "Việt hay không?" (#49): a question is only a question with its picture. One whose picture fails to load is left
 // out, not shown with "(ảnh đang được cập nhật)" and answer buttons to guess blind.
 
+import type { QuizItem } from "./types";
+
 export type QuizQuestion = { id: string; image: string };
+
+// "Bà hỏi con" (#151): the ĐÃ HIỂU stamp says the reader understood, so it needs at least two thirds right (2 of 3).
+export function isUnderstood(correct: number, total: number): boolean {
+  return total > 0 && correct * 3 >= total * 2;
+}
+
+// "Việt hay không?" without a server (#151): the book ships the questions and their answers as JSON, and the browser
+// draws and judges them like GET /quiz and POST /quiz/answer do.
+export type StaticQuizItem = QuizItem & { answer: string; answer_name: string; explanation: string; sources: string[] };
+export type StaticQuiz = { choices: Record<string, string>; items: StaticQuizItem[] };
+
+/** `count` different questions in a random order, without their answers. */
+export function pickStaticQuiz(quiz: StaticQuiz, count: number, rand: () => number = Math.random) {
+  const pool = [...quiz.items];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const k = Math.floor(rand() * (i + 1));
+    [pool[i], pool[k]] = [pool[k], pool[i]];
+  }
+  const items: QuizItem[] = pool.slice(0, count).map((q) => ({ id: q.id, image: q.image, photo: q.photo }));
+  return { choices: quiz.choices, items };
+}
+
+export function staticAnswer(quiz: StaticQuiz, id: string, answer: string) {
+  const q = quiz.items.find((i) => i.id === id);
+  if (!q) throw new Error(`Không có câu hỏi '${id}'`);
+  return { correct: answer === q.answer, answer_name: q.answer_name, explanation: q.explanation, sources: q.sources };
+}
 
 /** The questions to show, in order, without the ones whose picture is broken. */
 export function shownQuestions<T extends QuizQuestion>(items: T[], broken: Record<string, boolean>): T[] {

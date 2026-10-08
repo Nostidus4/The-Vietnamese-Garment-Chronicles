@@ -4,7 +4,7 @@
 // so the Impact report can compare what a visitor knew before and after the chapter.
 
 import { useEffect, useRef, useState } from "react";
-import { answerQuiz, API_URL, getQuiz } from "@/lib/api";
+import { answerQuiz, getQuiz, quizImage } from "@/lib/api";
 import { shownQuestions } from "@/lib/quiz";
 import { track } from "@/lib/track";
 import type { QuizItem } from "@/lib/types";
@@ -104,7 +104,7 @@ export function ChapterQuiz({ regionId, phase }: { regionId: string; phase: "pre
                 <figure className="relative m-0 mt-2 inline-block">
                   {/* eslint-disable-next-line @next/next/no-img-element -- quiz images live on the backend */}
                   <img
-                    src={`${API_URL}${it.image}`}
+                    src={quizImage(it.image)}
                     alt={`Ảnh câu hỏi ${n + 1}`}
                     className="max-h-56 rounded bg-stone-100"
                     onError={() => setBroken((x) => ({ ...x, [it.id]: true }))}

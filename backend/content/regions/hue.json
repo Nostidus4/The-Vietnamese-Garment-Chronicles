@@ -381,8 +381,8 @@
             "prompt": "Chiếc chén trên tay Bà rơi xuống đất. Cả nhà im phăng phắc.",
             "choices": [
               "Nhặt lên, xin lỗi mẹ, rồi bình tĩnh ăn tiếp",
-              "Bỏ chạy ra ngoài",
-              "Giả vờ như không có gì"
+              "Xin lỗi rối rít, rồi xin về sớm cho đỡ phiền",
+              "Nói chén trơn quá, rồi nhờ anh nhặt giúp mình"
             ],
             "answer": 0,
             "explain": "Mẹ anh lấy chén khác, nói nhỏ: “Rơi thì nhặt, rứa thôi.”"
@@ -603,9 +603,9 @@
         "id": "hue-bai-choi",
         "q": "Bài chòi là gì?",
         "choices": [
-          "Trò chơi và hát diễn dân gian dịp Tết ở Trung Bộ",
+          "Trò chơi và hát diễn dân gian ngày Tết",
           "Món bánh gói lá chuối người Huế ăn dịp Tết",
-          "Một kiểu áo dài của các cô gái Huế"
+          "Một kiểu áo dài truyền thống của các cô gái Huế"
         ],
         "answer": 0,
         "explain": "Bài chòi vừa là trò chơi vừa là hát diễn ngày Tết: người chơi ngồi trong chòi tre, anh hiệu hát câu thai để xướng con bài. UNESCO ghi danh Nghệ thuật Bài chòi Trung Bộ năm 2017.",

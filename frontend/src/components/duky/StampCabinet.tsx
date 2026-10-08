@@ -16,7 +16,7 @@ type Look = "on" | "soft" | "off";
 // how each stamp is earned, said on the stamp itself while it is still a dashed ring (#63)
 const HOW: Record<string, string> = {
   "Đã đến": "Mở chương của vùng này trong sổ của Bà",
-  "Đã hiểu": "Trả lời hết “Bà hỏi con” ở cuối chương",
+  "Đã hiểu": "Đúng ít nhất 2 trong 3 câu “Bà hỏi con” ở cuối chương",
   "Đã mặc": "Dán ảnh một lần con mặc thật vào Du Ký",
 };
 const TRIED = "Đã có ảnh thử đồ; dán ảnh mặc thật để tem đậm lên";
@@ -65,7 +65,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
       </p>
       {/* the legend: what each ring is for, so an empty cabinet says how to fill it (#63) */}
       <p className="m-0 mt-1 text-[0.75rem] leading-snug text-stone-600">
-        <b className="font-semibold text-[#B5452E]">Đến</b>: mở chương của Bà · <b className="font-semibold text-[#5E7F4A]">Hiểu</b>: trả lời “Bà hỏi con” ·{" "}
+        <b className="font-semibold text-[#B5452E]">Đến</b>: mở chương của Bà · <b className="font-semibold text-[#5E7F4A]">Hiểu</b>: đúng 2 trong 3 câu “Bà hỏi con” ·{" "}
         <b className="font-semibold text-[#2F4A6D]">Mặc</b>: dán ảnh lần con mặc thật.
       </p>
       {allStamps && (
