@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { OpeningScreen } from "@/lib/types";
 import { BookCover } from "../book/BookCover";
 import { LOGO_SMALL } from "./BootShell";
+import { HandIcon } from "../HandIcon";
 import { IMAGE_SIZES, Scene, type SceneHandle } from "./Scene";
 import { crossfade, runTransition, type Overlays } from "./transitions";
 import { asset } from "@/lib/base";
@@ -474,15 +475,25 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
               <Image src={asset(LOGO_SMALL)} alt="Việt Phục Du Ký" width={560} height={402} loading="eager" unoptimized className="h-auto w-full" />
             </h1>
             <p className="font-hand m-0 -mt-2 text-lg text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
+            {/* what the app does, in one line, before any choice: a judge has a minute (#148) */}
+            <p className="m-0 max-w-[26rem] text-[0.95rem] leading-snug text-stone-800">Đọc sổ của Bà theo vùng · phối áo để Tèo chấm · ghi lại vào Du Ký.</p>
             <p className="font-hand m-0 text-xl text-stone-600">Con muốn nghe kể, hay tự đọc?</p>
             <div className="mt-2 flex flex-wrap justify-center gap-3">
               <button type="button" ref={firstChoice} onClick={() => choose(true)} className="choice-btn rounded-full bg-[#2F4A6D] px-6 py-3 text-amber-50 shadow hover:bg-[#243a57]">
-                🔊 Nghe kể chuyện
+                <HandIcon name="speaker" className="mr-1.5" /> Nghe kể chuyện
               </button>
               <button type="button" onClick={() => choose(false)} className="choice-btn rounded-full border border-stone-500 px-6 py-3 text-stone-700 hover:bg-stone-800 hover:text-amber-50">
                 Chỉ đọc
               </button>
             </div>
+            {/* a way in for someone in a hurry: not "Bỏ qua" (which only shows once the story runs) but straight to Bà's table */}
+            <button
+              type="button"
+              onClick={() => onFinish()}
+              className="choice-btn -mt-1 inline-flex min-h-11 items-center rounded-full px-4 py-2 text-[0.95rem] text-[#8a4b2a] underline underline-offset-4 hover:bg-stone-800/10"
+            >
+              Vào thẳng sổ của Bà ›
+            </button>
             <p className="m-0 mt-1 text-sm text-stone-700">Nên đeo tai nghe · Giọng đọc được tạo bằng Gemini TTS</p>
           </motion.div>
         )}
