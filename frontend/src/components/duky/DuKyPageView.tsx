@@ -10,6 +10,8 @@ import { cited } from "@/lib/sources";
 import { track } from "@/lib/track";
 import { stampPlaceOf } from "@/lib/stampPlace";
 import { hasRealPhoto, stampLabel } from "@/lib/dukyStamp";
+import { formatDateVi } from "@/lib/dateVi";
+import { DateField } from "./DateField";
 import type { Bootstrap, Shop } from "@/lib/types";
 import { asset } from "@/lib/base";
 import { labelVi } from "@/lib/text";
@@ -18,11 +20,7 @@ const INK = "#27354f";
 const ACT = "rounded-full border border-stone-400/80 bg-white/40 px-2.5 py-1 leading-tight hover:bg-white/80";
 const VERDICT: Record<string, string> = { Authentic: "✅", Adapted: "✨", Inspired: "⚠️" };
 
-export function formatDate(d: string | null) {
-  if (!d) return "";
-  const [y, m, day] = d.split("-");
-  return `${Number(day)}/${Number(m)}/${y}`;
-}
+export const formatDate = (d: string | null) => formatDateVi(d); // one form everywhere (#145)
 
 /** Tèo's note for a page: one sourced fact of the garment, chosen from the page id so it stays the same. */
 export function teoFact(data: Bootstrap, page: DuKyPage) {
@@ -202,7 +200,7 @@ export function DuKyPageView({
         <div className="mt-1.5 grid grid-cols-2 gap-1.5 rounded-md bg-white/55 p-2 text-[0.75rem]">
           <label className="flex flex-col gap-0.5">
             Ngày
-            <input type="date" lang="vi" value={page.date ?? ""} onChange={(e) => updatePage(page.id, { date: e.target.value || null })} className="rounded border border-stone-300 bg-white/80 px-1.5 py-1" />
+            <DateField value={page.date} onChange={(d) => updatePage(page.id, { date: d })} className="rounded border border-stone-300 bg-white/80 px-1.5 py-1" />
           </label>
           <label className="flex flex-col gap-0.5">
             Dịp
@@ -248,7 +246,7 @@ export function DuKyPageView({
         aria-describedby={note.length >= NOTE_MAX - 40 ? `count-${page.id}` : undefined}
       />
       {note.length >= NOTE_MAX - 40 && (
-        <p id={`count-${page.id}`} className="m-0 text-right text-[0.75rem] text-stone-600">
+        <p id={`count-${page.id}`} className="m-0 mt-1 text-right text-[0.75rem] text-stone-600">
           {note.length}/{NOTE_MAX} chữ{note.length > 120 ? " · ảnh xuất giữ 3 dòng đầu" : ""}
         </p>
       )}

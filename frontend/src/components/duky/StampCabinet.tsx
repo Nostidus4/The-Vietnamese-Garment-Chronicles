@@ -28,9 +28,10 @@ function Stamp({ label, place, look, color }: { label: string; place: string; lo
       role="img"
       title={look === "on" ? `${label} ${place}` : how}
       className={`flex h-[4.5rem] w-[4.5rem] shrink-0 flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
-        look === "on" ? "rotate-[-8deg]" : look === "soft" ? "rotate-[6deg] border-dashed opacity-55" : "border-dashed opacity-60"
+        look === "on" ? "rotate-[-8deg]" : look === "soft" ? "rotate-[6deg] border-dashed opacity-75" : "border-dashed"
       }`}
-      style={{ borderColor: look === "off" ? "#a8a29e" : color, color: look === "off" ? "#a8a29e" : color }}
+      // an empty ring still readable: #a8a29e at 60% was too faint to read its own words (#145)
+      style={{ borderColor: look === "off" ? "#a8a29e" : color, color: look === "off" ? "#6b6560" : color }}
       aria-label={`${label} ${place}${look === "on" ? "" : `: chưa có. ${how}`}`}
     >
       {/* read at 100% zoom: 12px, not 7–9 (#117, #119) */}
@@ -110,10 +111,9 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
                 <Stamp label="Đã đến" place={stamped} look={arrived.includes(r.id) ? "on" : "off"} color="#B5452E" />
                 <Stamp label="Đã hiểu" place={stamped} look={understood.includes(r.id) ? "on" : "off"} color="#5E7F4A" />
                 {/* one name for the stamp, "ĐÃ MẶC", even before it is earned; what is missing is said under it (#114) */}
-                <div className="flex flex-col items-center">
-                  <Stamp label="Đã mặc" place={stamped} look={worn.has(r.id) ? "on" : tried.has(r.id) ? "soft" : "off"} color="#2F4A6D" />
-                  {!worn.has(r.id) && <span className="mt-0.5 max-w-[5.5rem] text-center text-[0.75rem] leading-none text-stone-600">cần ảnh mặc thật</span>}
-                </div>
+                {/* what an empty "ĐÃ MẶC" needs is in the legend above and on the stamp itself (its label and title):
+                    under every row it made the rows tall and ran into the mailbox line (#145) */}
+                <Stamp label="Đã mặc" place={stamped} look={worn.has(r.id) ? "on" : tried.has(r.id) ? "soft" : "off"} color="#2F4A6D" />
               </div>
             </li>
           );

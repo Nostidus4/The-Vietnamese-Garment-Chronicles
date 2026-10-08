@@ -2,6 +2,7 @@
 
 // A new page of the Du Ký (#20): "Chuẩn bị đi sự kiện" (Sắp đi) or "Trang đã mặc" (with a real photo).
 
+import { DateField } from "./DateField";
 import { useState } from "react";
 import { addPage, addPhoto, ensureMigrated, newPage, type DuKyPage } from "@/lib/dukyBook";
 import { track } from "@/lib/track";
@@ -144,11 +145,13 @@ export function NewPageDialog({
           </label>
           <label>
             {status === "planned" ? "Ngày đi" : "Ngày mặc"}
-            <input type="date" lang="vi" value={date} max={status === "worn" ? today() : undefined} onChange={(e) => setDate(e.target.value)} className={field} />
+            <DateField value={date || null} onChange={(d) => setDate(d ?? "")} max={status === "worn" ? today() : undefined} maxWhy="Trang đã mặc thì ngày không thể ở sau hôm nay." className={field} />
           </label>
           <label className="col-span-2">
             Ở đâu (không bắt buộc)
-            <input value={place} onChange={(e) => setPlace(e.target.value.slice(0, 60))} placeholder="Đại Nội Huế, nhà ngoại…" className={field} />
+            {/* stops at 60 letters and says so, instead of cutting the end off without a word (#145) */}
+            <input value={place} maxLength={60} onChange={(e) => setPlace(e.target.value.slice(0, 60))} placeholder="Đại Nội Huế, nhà ngoại…" className={field} />
+            {place.length >= 45 && <span className="block text-right text-[0.75rem] text-stone-600">{place.length}/60 chữ</span>}
           </label>
           <label className="col-span-2">
             Một dòng của con
@@ -158,6 +161,7 @@ export function NewPageDialog({
               onChange={(e) => setNote(e.target.value.slice(0, 200))}
               maxLength={200}
               rows={2}
+              placeholder="Viết một dòng của con…" // the same words as on a page already pasted (#145)
               className={`${field} font-hand max-h-[7.5em] resize-none text-base leading-snug [field-sizing:content]`}
             />
             {note.length >= 160 && <span className="block text-right text-[0.75rem] text-stone-600">{note.length}/200 chữ</span>}
