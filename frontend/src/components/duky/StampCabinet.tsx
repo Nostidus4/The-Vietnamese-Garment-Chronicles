@@ -85,7 +85,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
           return (
             <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-0.5">
               <div className="w-[5.5rem] shrink-0">
-                <a href={asset(`/?region=${r.id}&page=own`)} title={stamped === place ? undefined : `${place} · chương ${stamped}`} className="tap-around font-display block text-[0.85rem] leading-tight text-[#27354f] hover:underline">
+                <a href={asset(`/?region=${r.id}&page=own`)} title={stamped === place ? undefined : `${place} · chương ${stamped}`} className="tap font-display block text-[0.85rem] leading-tight text-[#27354f] hover:underline">
                   {place}
                   {stopsTotal(r) > 0 && (
                     // "tem điểm": the stops of Bà's road the reader has turned to (said here, the legend has no room)

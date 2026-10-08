@@ -16,5 +16,5 @@ export function ErrorSheet({ kicker, title, children, action }: { kicker: string
   );
 }
 
-export const CTA = "rounded-full bg-[#27354f] px-5 py-2 text-sm text-amber-50";
-export const CTA_SECOND = "rounded-full border border-[#27354f] px-5 py-2 text-sm";
+export const CTA = "tap inline-flex items-center justify-center rounded-full bg-[#27354f] px-5 py-2 text-sm text-amber-50";
+export const CTA_SECOND = "tap inline-flex items-center justify-center rounded-full border border-[#27354f] px-5 py-2 text-sm";

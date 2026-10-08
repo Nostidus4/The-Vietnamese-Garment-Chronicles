@@ -241,7 +241,7 @@ export function DuKyPageView({
         placeholder="Viết một dòng của con…"
         rows={compact ? 1 : 2}
         maxLength={NOTE_MAX}
-        className={`font-hand mt-2 w-full shrink-0 ${compact ? "max-h-[2.8em]" : "max-h-[5.6em]"} resize-none overflow-y-auto [field-sizing:content] border-0 border-b border-stone-400 bg-transparent text-[1rem] leading-snug outline-none placeholder:text-stone-400`}
+        className={`font-hand mt-2 w-full shrink-0 ${compact ? "max-h-[2.8em]" : "max-h-[5.6em]"} resize-none overflow-y-auto [field-sizing:content] border-0 border-b border-stone-400 bg-transparent text-[1rem] leading-snug outline-none placeholder:text-stone-600`}
         style={{ color: "#1f3a78" }}
         aria-label="Một dòng của con"
         aria-describedby={note.length >= NOTE_MAX - 40 ? `count-${page.id}` : undefined}

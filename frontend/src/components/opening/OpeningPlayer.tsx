@@ -464,21 +464,21 @@ export function OpeningPlayer({ screens, flashEl, onFinish, pace, debug, noClick
         {sound === null && (
           <motion.div
             key="voice-choice"
-            className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 px-6 text-center"
+            className="absolute inset-0 z-20 flex flex-col items-center justify-center-safe gap-4 overflow-y-auto px-6 text-center [@media(max-height:500px)]:gap-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.4 } }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* the calligraphy logo the viewer has just seen, not the name again in bold type (#81) */}
-            <h1 className="m-0 w-[min(22rem,70vw)]">
+            <h1 className="m-0 w-[min(22rem,70vw)] [@media(max-height:500px)]:w-[min(13rem,70vw)]">
               <Image src={asset(LOGO_SMALL)} alt="Việt Phục Du Ký" width={560} height={402} loading="eager" unoptimized className="h-auto w-full" />
             </h1>
             <p className="font-hand m-0 -mt-2 text-lg text-[#8a4b2a]">Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.</p>
             {/* what the app does, in one line, before any choice: a judge has a minute (#148) */}
             <p className="m-0 max-w-[26rem] text-[0.95rem] leading-snug text-stone-800">Đọc sổ của Bà theo vùng · phối áo để Tèo chấm · ghi lại vào Du Ký.</p>
             <p className="font-hand m-0 text-xl text-stone-600">Con muốn nghe kể, hay tự đọc?</p>
-            <div className="mt-2 flex flex-wrap justify-center gap-3">
+            <div className="mt-2 flex flex-wrap justify-center gap-3 [@media(max-height:500px)]:mt-0">
               <button type="button" ref={firstChoice} onClick={() => choose(true)} className="choice-btn rounded-full bg-[#2F4A6D] px-6 py-3 text-amber-50 shadow hover:bg-[#243a57]">
                 <HandIcon name="speaker" className="mr-1.5" /> Nghe kể chuyện
               </button>
