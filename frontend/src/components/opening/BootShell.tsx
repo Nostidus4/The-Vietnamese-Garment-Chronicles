@@ -20,7 +20,7 @@ export const TAGLINE = "Hiểu để mặc đúng, sáng tạo để mặc theo 
 export function BootShell() {
   return (
     <div className="boot-shell paper fixed inset-0 z-[45] flex flex-col items-center justify-center px-6" aria-hidden>
-      <div className="boot-shell__logo w-[min(72vw,520px)]">
+      <div className="boot-shell__logo w-[min(72vw,520px)] [@media(max-height:500px)]:w-[min(72vw,520px,calc(58dvh*1.39))]">
         {/* eslint-disable-next-line @next/next/no-img-element -- a hand-made srcSet: the static site has no image server */}
         <img {...logoImg()} alt="" fetchPriority="high" className="h-auto w-full" />
       </div>

@@ -179,7 +179,7 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
         onBlur={() => name !== book.cover.name && setCover({ name: name.trim() })}
         placeholder="tên của con"
         aria-label="Tên trên bìa sổ"
-        className="tap font-hand w-full border-0 border-b border-stone-400 bg-transparent text-[1.5rem] outline-none placeholder:text-stone-400"
+        className="tap font-hand w-full border-0 border-b border-stone-400 bg-transparent text-[1.5rem] outline-none placeholder:text-stone-600"
         style={{ color: "#1f3a78" }}
       />
       {/* the cover holds 24 letters: say so while typing instead of cutting the name off silently (#63) */}
