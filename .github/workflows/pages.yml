@@ -37,6 +37,9 @@ jobs:
         run: |
           pip install -r requirements.txt
           python -m scripts.export_bootstrap ../frontend/public/bootstrap.json
+          # the pictures of "Việt hay không?" (the quiz runs in the browser, from the bootstrap file)
+          mkdir -p ../frontend/public/media
+          cp -r content/media/quiz ../frontend/public/media/quiz
 
       - uses: actions/setup-node@v4
         with:

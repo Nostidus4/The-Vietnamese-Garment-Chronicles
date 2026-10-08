@@ -24,6 +24,8 @@ frontend/public/audio/ambient.mp3
 
 # content bundled at build time for the static site (scripts/export_bootstrap.py)
 frontend/public/bootstrap.json
+# the pictures of "Việt hay không?", copied from backend/content/media/quiz by the Pages workflow
+frontend/public/media/
 
 # original AI art (3 MB PNGs, kept locally as proof); the site uses the compressed .jpg next to it
 frontend/public/regions/*/diary/

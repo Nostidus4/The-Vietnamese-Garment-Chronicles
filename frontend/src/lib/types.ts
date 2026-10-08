@@ -306,6 +306,8 @@ export interface Bootstrap {
   glossary: Record<string, GlossaryTerm>;
   /** Bà's wardrobe for the dress-up room (backend/content/wardrobe.json) */
   wardrobe?: WardrobeItem[];
+  /** "Việt hay không?" with its answers, only in the static build (backend/scripts/export_bootstrap.py) */
+  quiz?: import("./quiz").StaticQuiz;
   /** the Compass rules, so the browser can judge a look (lib/compass.ts) */
   rules?: { type: string; state: CompassState; ti: string; teo: string; why: string; sources: string[] }[];
 }

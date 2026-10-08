@@ -475,8 +475,8 @@
       "id": "bb-pre",
       "q": "Con đoán xem: “áo mớ ba” của liền chị quan họ nghĩa là gì?",
       "choices": [
-        "Mặc ba lớp áo chồng lên nhau",
-        "Ba chiếc áo giống hệt nhau cho ba chị em",
+        "Mặc ba lớp áo dài chồng lên nhau",
+        "Ba chiếc áo giống nhau cho ba chị em",
         "Áo có ba hàng cúc chạy dọc thân"
       ],
       "answer": 0,
@@ -493,7 +493,7 @@
         "choices": [
           "Mũi khăn chụm về phía trước như nụ sen",
           "Buông hai đuôi khăn dài thả sau lưng",
-          "Quấn tròn quanh đầu như khăn xếp"
+          "Quấn tròn kín quanh đầu như khăn xếp"
         ],
         "answer": 0,
         "explain": "Khăn vấn sao cho đường giữa thẳng, mũi khăn nhọn chụm về phía trước như nụ sen.",

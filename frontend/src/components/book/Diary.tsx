@@ -26,7 +26,7 @@ import { RichText } from "./Glossary";
 import { TeoPin } from "./TeoPin";
 import { FOCUS } from "./vietnam-geo";
 import { asset } from "@/lib/base";
-import { choiceOrder } from "@/lib/quiz";
+import { choiceOrder, isUnderstood } from "@/lib/quiz";
 import { DRAWN, PaperDoll } from "../fitting/PaperDoll";
 
 export const YOUNG = "#27354f"; // young Bà: blue-black fountain-pen ink
@@ -839,11 +839,14 @@ export function PreQuestion({ region, onDone }: { region: Region; onDone: () => 
   );
 }
 
-/** "Bà hỏi con": three questions after reading; answering all of them earns the "đã hiểu" stamp. */
+/** "Bà hỏi con": three questions after reading; at least two right earns the "đã hiểu" stamp (#151). */
 export function AskDiary({ region }: { region: Region }) {
   const qs = region.journey!.check!.post.filter((q) => q.verified || DRAFT);
   const [count, setCount] = useState(0);
+  const [right, setRight] = useState(0);
+  const [round, setRound] = useState(0); // "Hỏi lại" starts the questions over
   const all = count >= qs.length && qs.length > 0;
+  const passed = all && isUnderstood(right, qs.length);
   return (
     <div className="relative flex h-full flex-col">
       <p className="font-hand m-0 text-[1.2rem] leading-snug" style={{ color: OLD }}>
@@ -852,20 +855,41 @@ export function AskDiary({ region }: { region: Region }) {
       <div className="min-h-0 flex-1 overflow-y-auto pr-1">
         {qs.map((q) => (
           <Question
-            key={q.id}
+            key={`${round}-${q.id}`}
             q={q}
             regionId={region.id}
             phase="post"
-            onAnswer={() => {
+            onAnswer={(ok) => {
               // count first, stamp outside React's update: the stamp wakes up other components (the contents page)
-              if (count + 1 >= qs.length) markStamp("understood", region.id);
+              if (count + 1 >= qs.length && isUnderstood(right + (ok ? 1 : 0), qs.length)) markStamp("understood", region.id);
               setCount((c) => c + 1);
+              if (ok) setRight((r) => r + 1);
             }}
           />
         ))}
         {qs.length === 0 && <p className="text-sm text-stone-600">Câu hỏi đang được kiểm tra lại.</p>}
+        {all && (
+          <div role="status" className="mt-3 rounded-md border border-dashed border-stone-400/60 px-3 py-2">
+            <p className="font-hand m-0 text-[1.05rem] leading-snug" style={{ color: YOUNG }}>
+              Con đúng {right}/{qs.length}. {passed ? "Bà đóng dấu ĐÃ HIỂU cho con." : "Cần đúng ít nhất 2 câu thì Bà mới đóng dấu. Đọc lại chương rồi hỏi lại nhé."}
+            </p>
+            {!passed && (
+              <button
+                type="button"
+                onClick={() => {
+                  setCount(0);
+                  setRight(0);
+                  setRound((n) => n + 1);
+                }}
+                className="mt-1 min-h-11 rounded-full bg-[#27354f] px-4 text-sm text-amber-50"
+              >
+                Hỏi lại
+              </button>
+            )}
+          </div>
+        )}
       </div>
-      {all && (
+      {passed && (
         <motion.div
           className="pointer-events-none absolute right-[2%] top-[-2%] flex h-[3.9rem] w-[3.9rem] rotate-[12deg] flex-col items-center justify-center rounded-full border-[2.5px] border-[#5E7F4A]/80 text-center text-[#5E7F4A]"
           initial={{ opacity: 0, scale: 1.8 }}
