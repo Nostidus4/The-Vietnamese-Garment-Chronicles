@@ -235,6 +235,8 @@ export default function Flipbook({
     if (then) setTimeout(then, 1100); // after the map has zoomed in
   };
   const openRegion = (id: string) => (page === MAP ? go(id) : jump(MAP, () => go(id)));
+  // "Bắt đầu hành trình: Huế →" goes into the chapter itself, not to the region's page with one more "Đọc →" (#147)
+  const startChapter = (id: string) => (page === MAP ? go(id, () => setReading(true)) : jump(MAP, () => go(id, () => setReading(true))));
   const leaveChapter = () => {
     setHotProvince(null);
     if (page === MAP || (portrait && page === MAP + 1)) return setReading(false);
@@ -253,7 +255,7 @@ export default function Flipbook({
     jump(page - 1);
   };
   const next = () => {
-    if (!focus && (page === MAP || (portrait && page === MAP + 1))) return go(SUGGEST.id);
+    if (!focus && (page === MAP || (portrait && page === MAP + 1))) return startChapter(SUGGEST.id); // "Bắt đầu từ Huế ›" (#147)
     if (!atEnd) bookRef.current?.pageFlip()?.flipNext("bottom");
   };
   // → only turns pages: on the map of the whole country it does not pick a region for the reader (#61)
@@ -403,7 +405,7 @@ export default function Flipbook({
             <LetterPage />
           </Page>
           <Page className="flex flex-col p-[8%]">
-            <TocPage data={data} onRegion={openRegion} onStart={() => openRegion(SUGGEST.id)} suggest={SUGGEST.label} />
+            <TocPage data={data} onRegion={openRegion} onStart={() => startChapter(SUGGEST.id)} suggest={SUGGEST.label} />
           </Page>
 
           <Page className="relative p-4">

@@ -130,7 +130,7 @@ export function TeoGuide() {
           ref={note}
           role="note"
           aria-live="polite"
-          className="pointer-events-auto fixed z-[70] bg-[#fbe99a] px-4 pb-3 pt-3 text-[0.9rem] leading-snug text-[#1f3a78] shadow-[3px_8px_18px_rgba(40,25,0,0.4)]"
+          className={`pointer-events-auto fixed z-[70] bg-[#fbe99a] text-[#1f3a78] shadow-[3px_8px_18px_rgba(40,25,0,0.4)] ${place.side === "dock" ? "px-3 py-2 text-[0.85rem] leading-snug" : "px-4 pb-3 pt-3 text-[0.9rem] leading-snug"}`}
           style={{ left: place.x, top: place.y, width: place.w, rotate: place.side === "dock" ? "0deg" : "-1deg" }}
           initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.85, ...OFFSET[place.side] }}
           animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
@@ -149,11 +149,18 @@ export function TeoGuide() {
               }
             />
           )}
-          <b className="font-hand block text-[1.05rem] text-[#8a4b2a]">Tèo chỉ bạn</b>
-          {tip.tip.text.replace("{btn}", tip.name)}
-          <span className="mt-2 flex items-center justify-between">
+          {/* Tèo himself on the note, so a first-time reader sees a character speaking, not a yellow box (#147) */}
+          <span className="flex items-start gap-2">
+            <TeoFace />
+            <span className="min-w-0">
+              {place.side !== "dock" && <b className="font-hand block text-[1.05rem] text-[#8a4b2a]">Tèo chỉ bạn</b>}
+              {tip.tip.text.replace("{btn}", tip.name)}
+            </span>
+          </span>
+          <span className={`flex items-center justify-between ${place.side === "dock" ? "mt-1" : "mt-2"}`}>
+            {/* how many tips this reader has met, this one included: the place in TIPS skipped and repeated (#147) */}
             <span className="text-[0.75rem] opacity-70">
-              {tips().findIndex((t) => t.id === tip.tip.id) + 1}/{tips().length}
+              {Math.min(seen().length + 1, tips().length)}/{tips().length}
             </span>
             <button
               type="button"
@@ -170,6 +177,21 @@ export function TeoGuide() {
       )}
     </AnimatePresence>,
     document.body,
+  );
+}
+
+/** Tèo: a boy of about thirteen with round glasses (docs/VOICE_PROMPTS.md). */
+function TeoFace() {
+  return (
+    <svg viewBox="0 0 40 40" className="h-9 w-9 shrink-0" aria-hidden>
+      <circle cx="20" cy="20" r="19" fill="#f6efe0" stroke="#1f3a78" strokeWidth="1.5" />
+      <circle cx="20" cy="22" r="11" fill="#efcfae" stroke="#2b2118" strokeWidth="1.2" />
+      <path d="M9 20 Q9 9 20 9 Q31 9 31 20 Q27 14 20 15 Q13 14 9 20 Z" fill="#2b2118" />
+      <circle cx="16" cy="22" r="3.2" fill="none" stroke="#2b2118" strokeWidth="1.1" />
+      <circle cx="24" cy="22" r="3.2" fill="none" stroke="#2b2118" strokeWidth="1.1" />
+      <path d="M19.2 22 h1.6" stroke="#2b2118" strokeWidth="1.1" />
+      <path d="M17 28 q3 2 6 0" fill="none" stroke="#9a4a36" strokeWidth="1.1" strokeLinecap="round" />
+    </svg>
   );
 }
 

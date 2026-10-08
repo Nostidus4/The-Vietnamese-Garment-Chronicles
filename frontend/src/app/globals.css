@@ -484,19 +484,22 @@ body {
   .game-fresh g[data-hint] circle { animation: hint-svg 1.6s ease-in-out infinite; }
   @keyframes hint-svg { 50% { stroke: #D9A43B; stroke-width: 1.4; } }
   @media (prefers-reduced-motion: reduce) { .game-fresh [data-hint], .game-fresh g[data-hint] circle { animation: none; outline: 2px solid #D9A43B; } }
+  /* a paper tag on the table, in the book's ink, not a dark toolbar that read as a developer's tool (#147) */
   .book-size {
-    color: #f3ead7;
-    background: rgba(20, 12, 7, 0.5);
-    border: 1px solid rgba(243, 234, 215, 0.22);
-    backdrop-filter: blur(3px);
+    color: #27354f;
+    background: #f3ead7;
+    border: 1px solid #c9a35a;
+    box-shadow: 0 4px 10px rgba(20, 8, 0, 0.35);
+    font-family: var(--font-hand), cursive;
   }
   .book-size button {
     border-radius: 999px;
     padding: 0.1rem 0.55rem;
-    transition: background 150ms ease;
   }
-  .book-size button:hover:not(:disabled) { background: rgba(243, 234, 215, 0.16); }
+  .book-size button:hover:not(:disabled) { background: rgba(39, 53, 79, 0.1); }
   .book-size button:disabled { opacity: 0.35; }
+  /* the two ways in under the closed book on a phone */
+  .desk-way { display: inline-flex; align-items: center; min-height: 44px; border-radius: 999px; border: 1px solid #c9a35a; background: #fbf6ea; padding: 0.35rem 1rem; font-family: var(--font-hand), cursive; font-size: 1.05rem; color: #27354f; box-shadow: 0 4px 10px rgba(20, 8, 0, 0.4); }
   .page-turn {
     font-family: var(--font-hand), cursive;
     font-size: 1.15rem;
