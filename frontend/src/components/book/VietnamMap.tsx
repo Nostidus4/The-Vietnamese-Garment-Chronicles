@@ -390,13 +390,16 @@ export function VietnamMap({
         pointerEvents="none"
         opacity="0.85"
       >
-        {/* two lines: at 12px one ran off the page's left edge on a phone */}
-        <text x={LABEL_AT.phuQuoc[0]} y={LABEL_AT.phuQuoc[1]} textAnchor="end">
-          <tspan dy="-0.5em">Phú</tspan>
-          <tspan x={LABEL_AT.phuQuoc[0]} dy="1.05em">
-            Quốc
-          </tspan>
-        </text>
+        {/* two lines: at 12px one ran off the page's left edge on a phone; zoomed into a region whose box starts right
+            of the label, it would be cut in half at the edge, so it is left out (#147) */}
+        {!(sheet && sheet.box[0] > LABEL_AT.phuQuoc[0] - 16 * s) && (
+          <text x={LABEL_AT.phuQuoc[0]} y={LABEL_AT.phuQuoc[1]} textAnchor="end">
+            <tspan dy="-0.5em">Phú</tspan>
+            <tspan x={LABEL_AT.phuQuoc[0]} dy="1.05em">
+              Quốc
+            </tspan>
+          </text>
+        )}
         <text x={LABEL_AT.conDao[0]} y={LABEL_AT.conDao[1]} textAnchor="middle">
           Côn Đảo
         </text>

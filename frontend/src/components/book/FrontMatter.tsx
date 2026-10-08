@@ -7,10 +7,26 @@ import { pagesOf, useDuKy } from "@/lib/dukyBook";
 import { useStamps } from "@/lib/stamps";
 import type { Bootstrap } from "@/lib/types";
 import { OLD, PENCIL, YOUNG } from "./Diary";
+import { useSyncExternalStore } from "react";
+
+/** A screen wider than a phone (the legend under the letter starts open there). */
+function useWide() {
+  return useSyncExternalStore(
+    (on) => {
+      const m = window.matchMedia("(min-width: 640px)");
+      m.addEventListener("change", on);
+      return () => m.removeEventListener("change", on);
+    },
+    () => window.matchMedia("(min-width: 640px)").matches,
+    () => true,
+  );
+}
 
 export function LetterPage() {
+  const wide = useWide();
   return (
-    <div className="flex h-full flex-col">
+    // the letter and the legend as one block in the middle of the page: pushed apart they left a hole on a desktop (#147)
+    <div className="flex h-full flex-col justify-center">
       <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">GỬI CON</p>
       <div className="font-hand mt-2 space-y-2 text-[1.12rem] leading-[1.42]" style={{ color: YOUNG }}>
         <p className="m-0">Con của Bà,</p>
@@ -26,8 +42,10 @@ export function LetterPage() {
         <p className="m-0 text-right">— Bà</p>
       </div>
 
-      <div className="mt-auto border-t border-dashed border-stone-400/60 pt-2">
-        <p className="m-0 text-[0.75rem] tracking-[0.3em] text-stone-600">CÁCH ĐỌC SỔ</p>
+      {/* folded on a phone, where the letter fills the page and Tèo's first note had nowhere to go but over these
+          lines; open on a wider screen (#147) */}
+      <details open={wide} className="mt-6 border-t border-dashed border-stone-400/60 pt-2">
+        <summary className="cursor-pointer text-[0.75rem] tracking-[0.3em] text-stone-600">CÁCH ĐỌC SỔ</summary>
         {/* each line is an icon and one run of text: loose text nodes in a flex row wrap word by word (#56) */}
         <ul className="m-0 mt-1 grid list-none grid-cols-1 gap-1 p-0 text-[0.75rem] leading-snug text-stone-700">
           <li className="flex items-start gap-2">
@@ -61,7 +79,7 @@ export function LetterPage() {
             <span>Bút chì: lời Tí, cháu của Bà, viết thêm bên lề. Trang “Hôm nay”: Tí đi lại đúng chỗ Bà từng đến, có ảnh thật.</span>
           </li>
         </ul>
-      </div>
+      </details>
     </div>
   );
 }
@@ -98,7 +116,7 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
                 <span className="font-display w-4 shrink-0 text-[0.8rem] text-stone-600">{i + 1}</span>
                 <span className="min-w-0 flex-1">
                   <span className={`font-display block truncate text-[1rem] ${readable ? "text-[#27354f]" : "text-stone-600"}`}>{r.name}</span>
-                  <span className="font-hand block truncate text-[0.85rem]" style={{ color: readable ? OLD : PENCIL }}>
+                  <span className="font-hand block text-[0.85rem] leading-tight" style={{ color: readable ? OLD : PENCIL }}>
                     {open.length ? open.map((c) => `${c.province}: ${c.title ?? ""}`).join(" · ") : "chờ người ở đó cùng viết"}
                   </span>
                 </span>
@@ -129,7 +147,8 @@ export function TocPage({ data, onRegion, onStart, suggest }: { data: Bootstrap;
       </ol>
       {/* the three dots of each row, said once (#114) */}
       <p className="m-0 mt-1 text-right text-[0.75rem] text-stone-600">
-        <span aria-hidden>○○○</span> ba tem Đến · Hiểu · Mặc của mỗi miền
+        {/* what the stamps are, not only their names (#147) */}
+        <span aria-hidden>○○○</span> ba tem của mỗi miền: Đến (mở chương), Hiểu (trả lời Bà hỏi), Mặc (dán ảnh mặc thật)
       </p>
       {/* the one way in for a first-time reader; the list above is for coming back */}
       <div className="mt-auto flex flex-col items-start gap-2">

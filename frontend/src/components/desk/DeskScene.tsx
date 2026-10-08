@@ -492,12 +492,13 @@ function WhatsInside({ onRead }: { onRead: () => void }) {
           sat on "Bấm để mở sổ" and next to the page-turn buttons (#119) */}
       <nav
         aria-label="Trong sổ có gì"
-        className="absolute inset-x-0 bottom-3 z-20 flex justify-center gap-2 px-3 lg:hidden [@media(max-height:500px)]:inset-x-auto [@media(max-height:500px)]:bottom-auto [@media(max-height:500px)]:left-3 [@media(max-height:500px)]:top-1/2 [@media(max-height:500px)]:-translate-y-1/2 [@media(max-height:500px)]:flex-col [@media(max-height:500px)]:items-start"
+        // light paper buttons with room above them: dark ones with small words sat on "Bấm để mở sổ" (#147)
+        className="absolute inset-x-0 bottom-4 z-20 flex justify-center gap-2 px-3 lg:hidden [@media(max-height:500px)]:inset-x-auto [@media(max-height:500px)]:bottom-auto [@media(max-height:500px)]:left-3 [@media(max-height:500px)]:top-1/2 [@media(max-height:500px)]:-translate-y-1/2 [@media(max-height:500px)]:flex-col [@media(max-height:500px)]:items-start"
       >
-        <a href={asset("/chapter/hue?entry=event")} className="page-turn !text-[0.95rem]">
+        <a href={asset("/chapter/hue?entry=event")} className="desk-way">
           <HandIcon name="dress" /> Tủ áo của Bà
         </a>
-        <a href={asset("/du-ky")} className="page-turn !text-[0.95rem]">
+        <a href={asset("/du-ky")} className="desk-way">
           <HandIcon name="notebook" /> Du Ký
         </a>
       </nav>
