@@ -65,7 +65,11 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
   const { data, error } = useBootstrap();
   const params = useSearchParams();
   // "Con" needs the server: a static build puts a reader who chose it last time back on the paper doll (#48)
-  const [who, setWho] = useState<Who | null>(() => (typeof window === "undefined" ? null : remembered().who === "con" && !HAS_API ? "nu" : remembered().who));
+  // Coming in from the desk's "Đi dự sự kiện" the first question is the occasion: Nữ is taken until the reader says
+  // otherwise (the "👤" pill changes it), so two boxes do not come one after the other (re-review 10-08)
+  const [who, setWho] = useState<Who | null>(() =>
+    typeof window === "undefined" ? null : (remembered().who === "con" && !HAS_API ? "nu" : remembered().who) ?? (params.get("entry") === "event" ? "nu" : null),
+  );
   const [askWho, setAskWho] = useState(false);
   const [look, setLook] = useState<Look | null>(null);
   const [history, setHistory] = useState<Look[]>([]);
@@ -434,12 +438,13 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
             <button type="button" onClick={() => setSheet("story")} disabled={!garment} className="page-turn !text-[0.95rem]" aria-label="Hiểu bộ áo">
               📖 <span className="hidden sm:inline">Hiểu bộ áo</span>
             </button>
-            {/* without a server: still there, faded, and it opens the sheet that says why (#116) */}
+            {/* without a server: still there, dashed on a dark pill (a faded one vanished on the photo), and it opens the
+                sheet that says why (#116, re-review 10-08) */}
             <button
               type="button"
               onClick={() => setSheet(HAS_API ? "teo" : "story")}
               disabled={!garment}
-              className={`page-turn !text-[0.95rem] ${HAS_API ? "" : "opacity-60"}`}
+              className={`page-turn !text-[0.95rem] ${HAS_API ? "" : "!border-dashed !border-amber-100/70 !bg-[#140c07]/85"}`}
               title={HAS_API ? "Hỏi Tèo" : `Hỏi Tèo · ${FULL_ONLY}`}
               aria-label={HAS_API ? "Hỏi Tèo" : "Hỏi Tèo, có ở bản đầy đủ"}
             >
@@ -468,7 +473,6 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
           />
 
           <div className="fitting-stage">
-            <p className="rotate-hint">📱 Xoay dọc máy để thấy cả búp bê và tủ áo nhé.</p>
             {garment && (
               <div className="fitting-weather empty:hidden">
                 <WeatherNote regionId={garment.region} garmentId={garment.id} place={place} />
@@ -556,7 +560,7 @@ export function ChapterView({ regionId, garmentId, shellPlace, locked }: { regio
                 Thuê / may ở đâu
               </button>
             )}
-            {!HAS_API && garment && <span className="text-amber-50/75">Ghim so sánh, chỗ thuê / may: có ở bản đầy đủ</span>}
+            {!HAS_API && garment && <span className="fitting-hint text-amber-50/75">Ghim so sánh, chỗ thuê / may: có ở bản đầy đủ</span>}
           </div>
         </div>
 

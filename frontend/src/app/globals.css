@@ -679,11 +679,7 @@ body {
     .fitting-grid > .outfit { justify-self: end; width: min(18rem, 100%); }
   }
   .fitting-stage { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; min-width: 0; }
-  /* a phone on its side has room for the doll or the wardrobe, never both (#57) */
-  .rotate-hint { display: none; }
-  @media (orientation: landscape) and (max-height: 500px) {
-    .rotate-hint { display: block; margin: 0; border-radius: 999px; background: rgba(251, 246, 234, 0.92); padding: 0.2rem 0.9rem; font-size: 0.85rem; color: #27354f; }
-  }
+  /* a phone on its side: the doll on the left, the wardrobe and what is worn on the right, a slim bar under them (#57, re-review 10-08) */
 
   /* the mirror: a tall arch of dark wood with a brass line, a cream glow behind the glass */
   .mirror-frame { position: relative; height: min(66vh, 640px); aspect-ratio: 3 / 4; max-width: 100%; padding: 14px; border-radius: 48% 48% 14px 14px / 30% 30% 14px 14px; background: linear-gradient(145deg, #5b3a22, #2e1c10 55%, #4a2f1b); box-shadow: 0 0 0 2px #c9a35a inset, 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 90px rgba(243, 213, 142, 0.18); }
@@ -695,12 +691,12 @@ body {
   @media (max-width: 640px) { .mirror-frame { height: min(58vh, 520px); padding: 10px; } .mirror-tag { right: -0.6rem; top: 6%; width: 6.6rem; } }
   /* phones: a smaller doll, so the doll and the wardrobe's first row are both on the first screen (#57) */
   @media (max-width: 760px) {
-    .fitting-grid .dress-form { height: min(40svh, 360px); }
+    .fitting-grid .dress-form { height: min(33svh, 300px); }
     .fitting-grid .mirror-caption { display: none; }
     /* the frame is only ~180px wide here: a tag hung on its side covered the doll's head and ran out of the room.
        It hangs under the frame instead, on one line (#116) */
     .fitting-grid .dress-form { margin-bottom: 1.9rem; }
-    .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: 0; right: 0; margin-inline: auto; width: max-content; max-width: calc(100vw - 2.5rem); padding: 0.25rem 0.6rem 0.25rem 1.2rem; white-space: nowrap; }
+    .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: 0; right: 0; margin-inline: auto; width: max-content; max-width: calc(100vw - 2.5rem); transform: none; padding: 0.25rem 0.6rem 0.25rem 1.2rem; white-space: nowrap; }
     .fitting-grid .dress-form .mirror-tag > span:not(.mirror-tag-hole) { display: inline !important; margin-right: 0.4rem; }
   }
   .mirror-chip { position: absolute; z-index: 2; border-radius: 999px; background: rgba(20, 12, 7, 0.6); color: #f3ead7; padding: 0.05rem 0.55rem; font-size: 0.75rem; }
@@ -717,9 +713,32 @@ body {
     .fitting-bar { grid-template-columns: auto 1fr; gap: 0.3rem 0.6rem; padding-top: 1.4rem; }
     .fitting-bar > :nth-child(2) { justify-content: flex-end; }
     .fitting-bar > :nth-child(3) { grid-column: 1 / -1; justify-content: center; }
+    /* the hint is a line of its own, inset from the screen's edges */
+    .fitting-hint { max-width: 22rem; padding-inline: 0.5rem; text-align: center; font-size: 0.75rem; line-height: 1.3; }
     .fitting-bar .page-turn { min-height: 44px; min-width: 44px; }
     .fitting { padding-bottom: 8.5rem; }
   }
+  /* landscape phone: a slim bar (one row, no hint), and the room's own scroll for the long wardrobe */
+  @media (orientation: landscape) and (max-height: 500px) {
+    .fitting { padding: 2.9rem 0.75rem 4rem; }
+    .fitting-head h1 { font-size: 1.3rem; }
+    .fitting-grid { grid-template-columns: 14rem minmax(0, 1fr); align-items: start; margin-top: 0; gap: 0.7rem; }
+    .fitting-grid > .fitting-stage { order: 0; grid-column: 1; grid-row: 1 / span 2; position: sticky; top: 3.2rem; }
+    .fitting-grid > .wardrobe { grid-column: 2; grid-row: 1; width: auto; }
+    .fitting-grid > .outfit { grid-column: 2; grid-row: 2; width: auto; justify-self: stretch; }
+    .fitting-grid .dress-form { height: calc(100svh - 14.4rem); min-height: 140px; margin-bottom: 1.9rem; }
+    .fitting-grid .mirror-caption, .fitting-weather { display: none; }
+    .fitting-grid .dress-form .mirror-tag { top: auto; bottom: -1.7rem; left: calc(50% - 6.4rem); right: auto; margin-inline: 0; width: 12.8rem; text-align: center; padding: 0.2rem 0.5rem 0.2rem 1.1rem; white-space: nowrap; }
+    .fitting-grid .dress-form .mirror-tag > span:not(.mirror-tag-hole) { display: inline !important; margin-right: 0.3rem; }
+    .fitting-grid .dress-form .mirror-tag > span:nth-child(4) { display: none !important; }
+    .wardrobe-body { max-height: calc(100svh - 11.5rem); min-height: 8rem; }
+    .wardrobe-tabs { padding-top: 0.3rem; }
+    .wardrobe-tab { min-height: 40px; }
+    .fitting-bar { grid-template-columns: auto 1fr auto; padding: 0.3rem 0.75rem calc(0.3rem + env(safe-area-inset-bottom, 0px)); gap: 0.5rem; background: rgba(20, 12, 7, 0.88); }
+    .fitting-bar .page-turn { min-height: 44px; padding-block: 0.2rem; }
+    .fitting-hint { display: none; }
+  }
+
   /* in the room a button that cannot be pressed yet still says why ("đang chấm…", "cần máy chủ") */
   .fitting-bar .page-turn:disabled { display: inline-block; opacity: 0.6; cursor: not-allowed; animation: none; }
 
@@ -740,10 +759,10 @@ body {
   .mirror-tag-bad { border-color: #b5452e; color: #b5452e; }
   .who-switch { position: relative; z-index: 6; margin-bottom: -0.4rem; border-radius: 999px; background: rgba(251, 246, 234, 0.92); padding: 0.1rem 0.8rem; font-size: 0.78rem; color: #27354f; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); }
   .who-card { min-width: 0; border-radius: 0.7rem; border: 2px solid transparent; background: #fbf6ea; padding: 0.6rem 0.4rem; color: #27354f; transition: transform 160ms ease, border-color 160ms ease; }
-  .who-card:hover:not(:disabled) { transform: translateY(-3px); }
+  .who-card:hover:not([aria-disabled="true"]) { transform: translateY(-3px); }
   /* "Con · bản đầy đủ": not for this build, but still readable (#109) */
-  .who-card:disabled { cursor: not-allowed; border: 2px dashed #b9a98a; background: #f1ead9; color: #57534e; }
-  .who-card:disabled svg, .who-card:disabled > span:first-child { opacity: 0.55; }
+  .who-card[aria-disabled="true"] { cursor: not-allowed; border: 2px dashed #b9a98a; background: #f1ead9; color: #57534e; }
+  .who-card[aria-disabled="true"] svg, .who-card[aria-disabled="true"] > span:first-child { opacity: 0.55; }
   .who-card-on { border-color: #e3b04b; box-shadow: 0 0 0 3px rgba(227, 176, 75, 0.35); transform: translateY(-3px); }
 
   /* the wardrobe: dark wood with brass, the drawers' tabs like the book's bookmarks, the pieces on paper */

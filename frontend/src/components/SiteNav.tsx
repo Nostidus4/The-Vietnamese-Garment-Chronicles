@@ -14,7 +14,8 @@ export function SiteNav() {
   // switching them on in the browser broke the hydration of that page (React #418, #118)
   const shared = /^\/du-ky\/p\/?$/.test(path);
   // the page the reader is on is marked for screen readers and drawn with a gold rim (#111)
-  const here = (p: string) => (path === p || path === `${p}/` ? "page" : undefined);
+  // the wardrobe and the chapter's pages (/chapter/<id>) are rooms of Bà's book: "Sổ của Bà" is lit there
+  const here = (p: string) => (path === p || path === `${p}/` || (p === "/" && /^\/chapter\//.test(path)) ? "page" : undefined);
   return (
     <nav className="site-nav absolute right-4 top-3 z-30 flex gap-4 text-sm sm:fixed">
       {shared ? (
