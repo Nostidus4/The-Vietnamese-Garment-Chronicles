@@ -11,7 +11,7 @@ Chạy `python -m scripts.check_content` sau mỗi lần sửa.
 |---|---|---|---|
 | Bà (nhật ký, lời bên lề, thư) | Bà; “tôi” khi Bà năm hai mươi tuổi viết nhật ký | con | “Con đoán thử xem…” |
 | Tí (nhân vật chính, nét chì bên lề) | mình | (không gọi) | “Giờ mình mới biết nó bắt đầu từ đâu.” |
-| Tèo (bạn đồng hành, lời Tèo chấm, Hỏi Tèo) | tớ | bạn | “Thấy ghim đỏ là có ghi chú của tớ.” |
+| Tèo (bạn đồng hành, lời Tèo chấm, Hỏi Tèo) | tớ | con | “Thấy ghim đỏ là có ghi chú của tớ.” |
 | Giao diện (nút, nhãn, thông báo) | (không xưng) | con | “Du Ký của con”, “Con hiểu…” |
 
 **Chữ**

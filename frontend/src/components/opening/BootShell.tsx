@@ -15,7 +15,7 @@ export const logoImg = () => ({
   width: 1118,
   height: 802,
 });
-export const TAGLINE = "Hiểu để mặc đúng – Sáng tạo để mặc theo cách của mình.";
+export const TAGLINE = "Hiểu để mặc đúng, sáng tạo để mặc theo cách của mình.";
 
 export function BootShell() {
   return (
