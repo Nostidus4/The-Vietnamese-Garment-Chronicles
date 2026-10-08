@@ -37,9 +37,9 @@ Bắc Bộ · Miền Trung · Nam Bộ · Tây Bắc · Tây Nguyên. Mỗi mi�
 
 ## 1. Trang mở miền: Miền Trung
 
-> *"Đường vô xứ Nghệ quanh quanh,*
+> *"Đường vô xứ Huế quanh quanh,*
 > *Non xanh nước biếc như tranh họa đồ."*
-> — ca dao
+> — ca dao (dị bản xứ Huế; một số sách chép là xứ Nghệ)
 
 Bà (mực nâu): "Miền Trung hẹp như cái đòn gánh, một đầu là núi, một đầu là biển. Bà mới đi hết một chỗ thôi, là Huế."
 
@@ -49,7 +49,7 @@ Bà (mực nâu): "Miền Trung hẹp như cái đòn gánh, một đầu là n�
 
 Các miền khác cũng có trang mở miền như vậy:
 - Bắc Bộ: *"Gió đưa cành trúc la đà / Tiếng chuông Trấn Vũ, canh gà Thọ Xương"*
-- Nam Bộ: *"Nhà Bè nước chảy chia hai / Ai về Gia Định, Đồng Nai thì về"*
+- Nam Bộ: *"Ai ơi về miệt Tháp Mười / Cá tôm sẵn bắt, lúa trời sẵn ăn"*
 - Tây Bắc, Tây Nguyên: một dòng của Bà ("Bà chưa đến, con đi thay Bà nhé").
 
 ---

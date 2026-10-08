@@ -10,11 +10,11 @@
     {"id": "q-ao-ba-ba", "image": "quiz/q-ao-ba-ba.jpg", "answer": "viet", "garment_id": "ao-ba-ba",
      "explanation": "Áo bà ba: dài vừa qua hông, xẻ hai bên, cổ tròn, hàng nút giữa, mặc với quần.", "sources": ["tcgdnt-ao-ba-ba", "ref-79"], "verified": false},
     {"id": "q-hanbok", "image": "quiz/q-hanbok.jpg", "answer": "hanbok",
-     "explanation": "Hanbok: áo jeogori ngắn, cổ chéo, thắt nơ goreum trước ngực, váy chima xòe tách rời.", "sources": ["ref-61"], "verified": false},
+     "explanation": "Hanbok: áo jeogori ngắn, cổ chéo, thắt nơ goreum trước ngực, váy chima tách rời.", "sources": ["vam-hanbok"], "verified": false},
     {"id": "q-hanfu", "image": "quiz/q-hanfu.jpg", "answer": "hanfu",
      "explanation": "Hanfu kiểu áo quần (aoqun): áo cổ chéo vạt trái đè phải, váy mã diện mặt trước phẳng, hai bên xếp ly.", "sources": ["ref-57", "wiki-hanfu"], "verified": false},
     {"id": "q-kimono", "image": "quiz/q-kimono.jpg", "answer": "kimono",
-     "explanation": "Kimono: thân áo thẳng hình chữ T, tay áo rộng vuông, vạt trái đè phải, thắt obi bản to.", "sources": ["ref-55"], "verified": false},
+     "explanation": "Kimono: thân áo thẳng hình chữ T, tay áo rộng, vạt trái đè phải, thắt obi.", "sources": ["vam-kimono", "met-kimono-style"], "verified": false},
     {"id": "q-ao-nhat-binh", "image": "quiz/q-ao-nhat-binh.jpg", "answer": "viet",
      "photo": {"credit": "Gia đình GS Nguyễn Văn Huyên", "license": "CC BY-SA 4.0", "source_url": "https://commons.wikimedia.org/wiki/File:Vietnamese_woman_wearing_%C3%81o_Nh%E1%BA%ADt_B%C3%ACnh.jpg"},
      "explanation": "Áo Nhật Bình: lễ phục của hoàng hậu, công chúa, cung nữ triều Nguyễn. Cổ áo to bản, khi mặc ghép trước ngực thành hình chữ nhật, hai vạt buộc dây. Áo được cho là bắt nguồn từ áo phi phong nhà Minh, triều Nguyễn cải biến thành kiểu riêng.", "sources": ["ref-71"], "verified": false},
@@ -29,6 +29,6 @@
      "explanation": "Sườn xám (qipao): áo liền thân của phụ nữ Trung Hoa, thịnh hành ở Thượng Hải từ thập niên 1920, gốc từ áo của phụ nữ Mãn Thanh. Không phải Hanfu, cũng không phải áo dài: không xẻ tà tới eo, không mặc với quần.", "sources": ["hkgov-qipao", "ref-48"], "verified": false},
     {"id": "q-sari", "image": "quiz/q-sari.jpg", "answer": "khac",
      "photo": {"credit": "Suyash.dwivedi", "license": "CC BY-SA 4.0", "source_url": "https://commons.wikimedia.org/wiki/File:Sari_on_mannequin_for_demo.jpg"},
-     "explanation": "Sari của Ấn Độ: một tấm vải dài không cắt may, quấn quanh eo rồi vắt qua vai, mặc với áo choli ngắn.", "sources": ["ref-65"], "verified": false}
+     "explanation": "Sari của Ấn Độ: một tấm vải dài không cắt may, quấn quanh eo rồi vắt qua vai, mặc với áo choli ngắn.", "sources": ["vam-indian-textiles", "natgeo-sari"], "verified": false}
   ]
 }
