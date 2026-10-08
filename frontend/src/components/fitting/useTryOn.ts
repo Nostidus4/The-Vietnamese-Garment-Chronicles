@@ -53,7 +53,7 @@ export function useTryOn() {
     setError(null);
     try {
       // a sleeping server must wake before the try-on clock starts, or the first try falls back
-      if (!(await untilAborted(serverReady(), ctl.signal))) throw new Error("Máy chủ chưa thức dậy. Bạn thử lại sau ít phút nhé.");
+      if (!(await untilAborted(serverReady(), ctl.signal))) throw new Error("Máy chủ chưa thức dậy. Con thử lại sau ít phút nhé.");
       setWait({ stage: "rendering", since: Date.now() });
       const r = await tryOn(selection, photo ? { photo, signal: ctl.signal } : { avatarId: "default", signal: ctl.signal });
       setResult(r);

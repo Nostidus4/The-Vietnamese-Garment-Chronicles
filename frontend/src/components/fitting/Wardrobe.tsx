@@ -14,7 +14,7 @@ import { ArtThumb, DRAWN } from "./PaperDoll";
 import type { Selection } from "@/lib/types";
 import { useDialog } from "@/lib/useDialog";
 import { WHO_BACKDROP, WHO_BOX, WhoChoices, type Who } from "./WhoChoices";
-import { lowerFirst } from "@/lib/text";
+import { keptSaid, lowerFirst } from "@/lib/text";
 
 export type { Who } from "./WhoChoices";
 
@@ -423,8 +423,6 @@ export function LookCard({
   );
 }
 
-/** "số thân áo (5 thân)" → "5 thân áo": the part as it is said in a sentence. */
-const keptSaid = (part: string) => part.replace(/^số thân áo \((\d+) thân\)$/, "$1 thân áo");
 /** "a, b và c" */
 const listVi = (xs: string[]) => (xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} và ${xs.at(-1)}`);
 

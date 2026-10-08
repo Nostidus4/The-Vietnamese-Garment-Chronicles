@@ -40,15 +40,17 @@ export function EventPicker({ data, onPick }: { data: Bootstrap; onPick: (occasi
 /* ---------- the side sheet ---------- */
 
 export type SheetTab = "story" | "teo" | "quiz-pre" | "quiz-post" | "shops";
-// Hỏi Tèo, the quiz and the shops all ask the server: a build without one opens only the garment's story (#48), but
-// still shows the other tabs, faded, and says why, instead of a sheet with one tab and no word (#116)
+// Hỏi Tèo and the shops ask the server: a build without one opens only the garment's story and the quiz (#48), but
+// still shows the other tabs, faded, and says why, instead of a sheet with one tab and no word (#116).
+// "Việt hay không?" runs from the bundled content, so it works there too (#151).
 const SHEET_TABS: { id: SheetTab; name: string }[] = [
   { id: "story", name: "Bộ áo" },
   { id: "teo", name: "Hỏi Tèo" },
   { id: "quiz-pre", name: "Việt hay không?" },
   { id: "shops", name: "Thuê / may" },
 ];
-export const FULL_ONLY = "Cần máy chủ: có ở bản đầy đủ";
+const NEEDS_SERVER: SheetTab[] = ["teo", "shops"];
+export const FULL_ONLY ="Cần máy chủ: có ở bản đầy đủ";
 
 export function AboutSheet({
   tab,
@@ -90,7 +92,7 @@ export function AboutSheet({
               <div role="tablist" className="flex flex-wrap gap-1">
                 {SHEET_TABS.map((t) => {
                   const on = tab === t.id || (t.id === "quiz-pre" && tab === "quiz-post");
-                  const off = !HAS_API && t.id !== "story";
+                  const off = !HAS_API && NEEDS_SERVER.includes(t.id);
                   return (
                     <button
                       key={t.id}
@@ -112,13 +114,13 @@ export function AboutSheet({
                 Đóng
               </button>
             </div>
-            {HAS_API || tab === "story" ? (
+            {HAS_API || !NEEDS_SERVER.includes(tab) ? (
               body[tab]
             ) : (
               <div className="rounded-md border border-dashed border-stone-400 bg-[#f7e4c8] px-4 py-5 text-[0.9rem] leading-snug text-[#5b3a22]">
                 <p className="m-0 font-semibold">{SHEET_TABS.find((t) => t.id === tab || (t.id === "quiz-pre" && tab === "quiz-post"))?.name}: có ở bản đầy đủ</p>
                 <p className="m-0 mt-1">
-                  Phần này hỏi máy chủ (Tèo tra nguồn, câu đố, danh sách chỗ thuê / may), mà bản đọc thử chạy không có máy chủ. Câu chuyện của bộ áo thì đọc
+                  Phần này hỏi máy chủ (Tèo tra nguồn, danh sách chỗ thuê / may), mà bản đọc thử chạy không có máy chủ. Câu chuyện của bộ áo thì đọc
                   được ngay ở tab <b>Bộ áo</b>.
                 </p>
                 <button type="button" onClick={() => onTab("story")} className="mt-3 rounded-full bg-[#27354f] px-4 py-1.5 text-sm text-amber-50">

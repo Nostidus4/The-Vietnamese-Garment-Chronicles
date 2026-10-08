@@ -14,7 +14,7 @@ const TIPS = [
   // on a touch screen there are no arrow keys to speak of (#115)
   { id: "next", target: '[data-guide="next"]', text: "Bấm nút vàng {btn}để đi tiếp. Vuốt trang cũng lật được.", touch: true },
   { id: "pin", target: ".teo-pin", text: "Thấy ghim đỏ là có ghi chú của tớ. Bấm vào để đọc thêm nhé." },
-  { id: "tabs", target: '[data-guide="tabs"]', text: "Mấy dải màu này là mục lục nhanh của chương: bấm để nhảy tới phần bạn muốn." },
+  { id: "tabs", target: '[data-guide="tabs"]', text: "Mấy dải màu này là mục lục nhanh của chương: bấm để nhảy tới phần con muốn." },
 ] as const;
 // the note sits beside the button, not always right next to it: it says which button by its words ("{btn}")
 const nameOf = (el: HTMLElement) => {
@@ -153,7 +153,7 @@ export function TeoGuide() {
           <span className="flex items-start gap-2">
             <TeoFace />
             <span className="min-w-0">
-              {place.side !== "dock" && <b className="font-hand block text-[1.05rem] text-[#8a4b2a]">Tèo chỉ bạn</b>}
+              {place.side !== "dock" && <b className="font-hand block text-[1.05rem] text-[#8a4b2a]">Tèo chỉ con</b>}
               {tip.tip.text.replace("{btn}", tip.name)}
             </span>
           </span>

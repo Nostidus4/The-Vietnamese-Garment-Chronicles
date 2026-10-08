@@ -180,7 +180,7 @@
       "game": {
         "kind": "ngu-than",
         "title": "Ghép chiếc áo ngũ thân",
-        "intro": "Trong Đại Nội có trưng bày một chiếc áo ngũ thân tháo rời. Con chọn từng mảnh thân áo rồi đặt vào đúng chỗ. Thân thứ năm nằm khuất bên trong.",
+        "intro": "Giả sử con đứng trước một chiếc áo ngũ thân tháo rời. Con chọn từng mảnh thân áo rồi đặt vào đúng chỗ. Thân thứ năm nằm khuất bên trong.",
         "rounds": [
           {
             "label": "Thân trước bên trái",
@@ -381,8 +381,8 @@
             "prompt": "Chiếc chén trên tay Bà rơi xuống đất. Cả nhà im phăng phắc.",
             "choices": [
               "Nhặt lên, xin lỗi mẹ, rồi bình tĩnh ăn tiếp",
-              "Bỏ chạy ra ngoài",
-              "Giả vờ như không có gì"
+              "Xin lỗi rối rít, rồi xin về sớm cho đỡ phiền",
+              "Nói chén trơn quá, rồi nhờ anh nhặt giúp mình"
             ],
             "answer": 0,
             "explain": "Mẹ anh lấy chén khác, nói nhỏ: “Rơi thì nhặt, rứa thôi.”"
@@ -424,7 +424,7 @@
           "verified": true
         },
         {
-          "text": "Mùa Phật đản ở Huế, trên sông Hương thắp sáng bảy bông sen khổng lồ, tượng trưng bảy bước chân của Đức Phật.",
+          "text": "Năm 2017, trong Đại lễ Phật đản, Huế thắp sáng bảy bông sen khổng lồ trên sông Hương, tượng trưng bảy bước đi của Đức Phật.",
           "unesco": null,
           "sources": [
             "sggp-phat-dan-hue"
@@ -461,6 +461,7 @@
           "id": "festival-hue",
           "name": "Festival Huế",
           "time": "Bốn mùa trong năm (từ năm 2022)",
+          "year_round": true,
           "month": 6,
           "place": "Đại Nội và khắp thành phố",
           "text": "Những đêm cả thành phố cùng về một thời, áo dài và áo tấc đầy phố.",
@@ -479,12 +480,12 @@
           "name": "Lễ hội điện Huệ Nam (điện Hòn Chén)",
           "time": "Tháng Ba và tháng Bảy âm lịch",
           "month": 4,
-          "place": "Điện Hòn Chén, bên sông Hương",
+          "place": "Điện Huệ Nam (Hòn Chén), bên sông Hương",
           "text": "Rước thuyền trên sông, trống chiêng, khói hương nghi ngút.",
           "review": "Thuyền kết hoa nối nhau trên sông, tiếng trống chiêng vọng vào vách núi. Huyền bí, rất đông, nên đi với người quen.",
           "photo": {
             "image": "/regions/hue/photos/dien-hon-chen.jpg",
-            "alt": "Thuyền rước trên sông Hương trước điện Hòn Chén",
+            "alt": "Thuyền rước trên sông Hương trước điện Huệ Nam (Hòn Chén)",
             "credit": "Lưu Ly",
             "license": "Public domain",
             "source_url": "https://commons.wikimedia.org/wiki/File:Le_Hoi_Dien_Hon_Chen_2012.jpg"
@@ -534,7 +535,7 @@
           "verified": true
         }
       ],
-      "ti": "Cái áo đỏ Bà may hôm mình hỏi “có phải áo dài không”… là áo ngũ thân."
+      "ti": "Cái áo Bà giữ hôm mình hỏi “có phải áo dài không”… là áo ngũ thân."
     },
     {
       "garment": "ao-dai",
@@ -602,9 +603,9 @@
         "id": "hue-bai-choi",
         "q": "Bài chòi là gì?",
         "choices": [
-          "Trò chơi và hát diễn dân gian dịp Tết ở Trung Bộ",
+          "Trò chơi và hát diễn dân gian ngày Tết",
           "Món bánh gói lá chuối người Huế ăn dịp Tết",
-          "Một kiểu áo dài của các cô gái Huế"
+          "Một kiểu áo dài truyền thống của các cô gái Huế"
         ],
         "answer": 0,
         "explain": "Bài chòi vừa là trò chơi vừa là hát diễn ngày Tết: người chơi ngồi trong chòi tre, anh hiệu hát câu thai để xướng con bài. UNESCO ghi danh Nghệ thuật Bài chòi Trung Bộ năm 2017.",

@@ -27,6 +27,7 @@ import { ShareDialog } from "./ShareDialog";
 import { StampCabinet } from "./StampCabinet";
 import { asset } from "@/lib/base";
 import { HAS_API } from "@/lib/api";
+import { coverCount } from "@/lib/dukyStamp";
 
 // where the reader is, kept across a rebuild of the book (new size or a page added)
 const memo = { page: 0 };
@@ -79,7 +80,9 @@ export default function DuKyNotebook() {
       const q = new URLSearchParams(window.location.search);
       const region = q.get("region") ?? undefined;
       const want = q.get("new");
+      const trang = q.get("trang"); // the page open before a reload (#145)
       if (want === "worn" || want === "planned") setCreating({ status: want, region });
+      else if (trang) setFocusId(trang);
       else if (region) {
         const last = [...loadBook().pages].filter((p) => p.region_id === region).sort(byDate).pop();
         if (last) setFocusId(last.id);
@@ -107,7 +110,7 @@ export default function DuKyNotebook() {
   return (
     <>
       {portrait ? (
-        <ScrollBook data={data} book={book} actions={actions} />
+        <ScrollBook data={data} book={book} actions={actions} focusId={focusId} onFocused={() => setFocusId(null)} />
       ) : (
         <DeskBook data={data} book={book} actions={actions} focusId={focusId} onFocused={() => setFocusId(null)} />
       )}
@@ -179,7 +182,7 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
         onBlur={() => name !== book.cover.name && setCover({ name: name.trim() })}
         placeholder="tên của con"
         aria-label="Tên trên bìa sổ"
-        className="tap font-hand w-full border-0 border-b border-stone-400 bg-transparent text-[1.5rem] outline-none placeholder:text-stone-400"
+        className="tap font-hand w-full border-0 border-b border-stone-400 bg-transparent text-[1.5rem] outline-none placeholder:text-stone-600"
         style={{ color: "#1f3a78" }}
       />
       {/* the cover holds 24 letters: say so while typing instead of cutting the name off silently (#63) */}
@@ -213,6 +216,14 @@ function InsideCover({ book, actions, compact = false }: { book: DuKyBook; actio
           + Trang đã mặc
         </button>
       </div>
+      {/* on the desk the page had a hole between these buttons and the cloud box: how the book fills itself goes there (#145) */}
+      {compact && (
+        <ol className="font-hand m-0 mt-5 flex list-none flex-col gap-1.5 border-t border-dashed border-stone-400/60 p-0 pt-3 text-[1rem] leading-snug text-[#27354f]">
+          <li>1 · Sắp đi đâu mặc Việt phục: viết trang “Chuẩn bị”, Tèo nhắc thời tiết và chỗ thuê.</li>
+          <li>2 · Mặc xong: dán ảnh thật, tem “Đã mặc” của vùng đậm lên trong Tủ tem.</li>
+          <li>3 · Muốn khoe: “Xuất ảnh” ra một tấm 1080×1350.</li>
+        </ol>
+      )}
       <div className="mt-auto">
         <CloudSync compact={compact} />
         <p className="m-0 mt-1 text-[0.75rem] text-stone-600">
@@ -257,6 +268,15 @@ function HowTo({ empty }: { empty: boolean }) {
       </ol>
     </div>
   );
+}
+
+/** Where a page of the book is among the flipbook's sheets: the inside cover, the stamp cabinet, the pages, the last. */
+function sheetIndex(key: string, pages: DuKyPage[]) {
+  if (key === "inside") return 0;
+  if (key === "stamps") return 1;
+  if (key === "last") return 2 + pages.length;
+  const i = pages.findIndex((p) => p.id === key);
+  return i < 0 ? -1 : i + 2;
 }
 
 /* ---------------- desktop: the notebook on the table ---------------- */
@@ -316,13 +336,13 @@ function DeskBook({
 
   // a page to show (just created, or asked for from Bà's book): open the book on its spread. An open book is turned
   // there by DuKyFlip: a page made with a photo built the book before the photo was in, on the old spread (#63)
-  const focusAt = focusId ? pages.findIndex((p) => p.id === focusId) : -1;
-  const focusPage = focusAt < 0 ? null : focusAt + 2 - ((focusAt + 2) % 2);
+  const focusAt = focusId ? sheetIndex(focusId, pages) : -1;
+  const focusPage = focusAt < 0 ? null : focusAt - (focusAt % 2);
   useEffect(() => {
     if (!focusId) return;
-    const i = pages.findIndex((p) => p.id === focusId);
+    const i = sheetIndex(focusId, pages);
     if (i < 0) return;
-    memo.page = (i + 2) - ((i + 2) % 2);
+    memo.page = i - (i % 2);
     onFocused();
     if (phase === "closed") setTimeout(open, 60);
   });
@@ -353,8 +373,9 @@ function DeskBook({
       </Link>
 
       {/* the real flipbook, built under the desk copy and shown once the cover has landed */}
+      {/* inert, not only hidden from screen readers: a transparent or invisible copy must not be reached by Tab (#145) */}
       {phase !== "closed" && (
-        <div className={`absolute inset-0 flex items-center justify-center ${shown ? "" : "pointer-events-none opacity-0"}`} aria-hidden={!shown}>
+        <div className={`absolute inset-0 flex items-center justify-center ${shown ? "" : "pointer-events-none opacity-0"}`} aria-hidden={!shown} inert={!shown}>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 w-1/2">
               <div className="book-shadow absolute inset-[1.5%]" />
@@ -368,7 +389,7 @@ function DeskBook({
       )}
 
       {/* the desk copy: the closed cloth book; its cover swings open over the same first spread */}
-      <div className={`absolute inset-0 flex items-center justify-center ${shown ? "pointer-events-none invisible" : ""}`} aria-hidden={shown}>
+      <div className={`absolute inset-0 flex items-center justify-center ${shown ? "pointer-events-none invisible" : ""}`} aria-hidden={shown} inert={shown}>
         <motion.div
           className="relative"
           style={{ width: size.w, height: size.h }}
@@ -405,7 +426,8 @@ function DeskBook({
           </div>
           {phase === "closed" && (
             <p className="font-hand absolute -bottom-14 left-0 right-0 text-center text-xl text-[#F3EAD7]/85">
-              {book.pages.length ? `${book.pages.length} lần mặc · bấm để mở` : "Bấm để mở sổ của con"}
+              {/* a page still "Sắp đi" is not a time worn (#144) */}
+              {book.pages.length ? `${coverCount(book.pages)} · bấm để mở` : "Bấm để mở sổ của con"}
             </p>
           )}
         </motion.div>
@@ -448,6 +470,13 @@ function DuKyFlip({
   useEffect(() => {
     memo.page = page;
   }, [page]);
+  // the open spread in the address (its left page), so a reload opens the book there again (#145)
+  const openKey = sheets[page]?.key;
+  useEffect(() => {
+    if (!active || !openKey || openKey === "blank") return;
+    window.history.replaceState(window.history.state, "", asset(`/du-ky/?trang=${openKey}`));
+    return () => window.history.replaceState(window.history.state, "", asset("/du-ky/"));
+  }, [active, openKey]);
   const atStart = page < 2;
   const atEnd = page + 2 >= n;
   const prev = () => (atStart ? onClose() : ref.current?.pageFlip()?.flipPrev("bottom"));
@@ -549,7 +578,7 @@ function DuKyFlip({
 
 /* ---------------- phones: one page under the other ---------------- */
 
-function ScrollBook({ data, book, actions }: { data: Bootstrap; book: DuKyBook; actions: Actions }) {
+function ScrollBook({ data, book, actions, focusId, onFocused }: { data: Bootstrap; book: DuKyBook; actions: Actions; focusId: string | null; onFocused: () => void }) {
   const pages = [...book.pages].sort(byDate); // the same order as the book on a computer: a notebook, not a feed (#57)
   const card = "paper rounded-md p-5 shadow-[0_8px_20px_rgba(20,8,0,0.35)]";
   // a page just written goes to the end: take the reader there
@@ -559,18 +588,39 @@ function ScrollBook({ data, book, actions }: { data: Bootstrap; book: DuKyBook; 
     if (pages.length > count.current && newest) document.getElementById(`page-${newest}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
     count.current = pages.length;
   }, [pages.length, newest]);
+  // the page read before a reload (?trang=, #145): scrolled to once it is there
+  useEffect(() => {
+    if (!focusId) return;
+    const el = document.getElementById(`page-${focusId}`);
+    if (!el) return;
+    el.scrollIntoView({ block: "start" });
+    onFocused();
+  });
+  // …and the page being read goes into the address as the reader scrolls
+  useEffect(() => {
+    const seen = new IntersectionObserver(
+      (es) => {
+        const top = es.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (top) window.history.replaceState(window.history.state, "", asset(`/du-ky/?trang=${top.target.id.slice(5)}`));
+      },
+      { rootMargin: "-30% 0px -60% 0px" },
+    );
+    document.querySelectorAll("section[id^='page-']").forEach((el) => seen.observe(el));
+    return () => seen.disconnect();
+  }, [pages.length]);
   return (
-    <main className="desk min-h-screen px-4 pb-16 pt-4">
+    // the desk runs up under the links at the top: a strip of cream sat behind them (#145)
+    <main className="desk -mt-10 min-h-screen px-4 pb-16 pt-14">
       {/* the one h1 of the phone view too, as in the desk book (#117) */}
       <h1 className="sr-only">Du Ký của con</h1>
       <div className="relative mx-auto aspect-[3/4] w-[62%] max-w-[260px] shadow-[10px_16px_24px_rgba(20,8,0,0.5)]">
         <DuKyCover name={book.cover.name} color={book.cover.color} />
       </div>
       <div className="mx-auto mt-6 flex max-w-md flex-col gap-5">
-        <section className={card}>
+        <section id="page-inside" className={card}>
           <InsideCover book={book} actions={actions} />
         </section>
-        <section className={`${card} min-h-[20rem]`}>
+        <section id="page-stamps" className={`${card} min-h-[20rem]`}>
           <StampCabinet data={data} book={book} />
         </section>
         {pages.map((p) => (
@@ -578,7 +628,7 @@ function ScrollBook({ data, book, actions }: { data: Bootstrap; book: DuKyBook; 
             <DuKyPageView page={p} data={data} onExport={actions.onExport} onShare={actions.onShare} />
           </section>
         ))}
-        <section className={`${card} h-72`}>
+        <section id="page-last" className={`${card} h-72`}>
           <LastPage actions={actions} empty={pages.length === 0} />
         </section>
         <Link href="/" className="tap font-hand flex items-center justify-center text-lg text-[#F3EAD7]/85 underline">

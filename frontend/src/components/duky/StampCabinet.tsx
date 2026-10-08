@@ -16,7 +16,7 @@ type Look = "on" | "soft" | "off";
 // how each stamp is earned, said on the stamp itself while it is still a dashed ring (#63)
 const HOW: Record<string, string> = {
   "Đã đến": "Mở chương của vùng này trong sổ của Bà",
-  "Đã hiểu": "Trả lời hết “Bà hỏi con” ở cuối chương",
+  "Đã hiểu": "Đúng ít nhất 2 trong 3 câu “Bà hỏi con” ở cuối chương",
   "Đã mặc": "Dán ảnh một lần con mặc thật vào Du Ký",
 };
 const TRIED = "Đã có ảnh thử đồ; dán ảnh mặc thật để tem đậm lên";
@@ -28,9 +28,10 @@ function Stamp({ label, place, look, color }: { label: string; place: string; lo
       role="img"
       title={look === "on" ? `${label} ${place}` : how}
       className={`flex h-[4.5rem] w-[4.5rem] shrink-0 flex-col items-center justify-center rounded-full border-[2.5px] text-center ${
-        look === "on" ? "rotate-[-8deg]" : look === "soft" ? "rotate-[6deg] border-dashed opacity-55" : "border-dashed opacity-60"
+        look === "on" ? "rotate-[-8deg]" : look === "soft" ? "rotate-[6deg] border-dashed opacity-75" : "border-dashed"
       }`}
-      style={{ borderColor: look === "off" ? "#a8a29e" : color, color: look === "off" ? "#a8a29e" : color }}
+      // an empty ring still readable: #a8a29e at 60% was too faint to read its own words (#145)
+      style={{ borderColor: look === "off" ? "#a8a29e" : color, color: look === "off" ? "#6b6560" : color }}
       aria-label={`${label} ${place}${look === "on" ? "" : `: chưa có. ${how}`}`}
     >
       {/* read at 100% zoom: 12px, not 7–9 (#117, #119) */}
@@ -65,7 +66,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
       </p>
       {/* the legend: what each ring is for, so an empty cabinet says how to fill it (#63) */}
       <p className="m-0 mt-1 text-[0.75rem] leading-snug text-stone-600">
-        <b className="font-semibold text-[#B5452E]">Đến</b>: mở chương của Bà · <b className="font-semibold text-[#5E7F4A]">Hiểu</b>: trả lời “Bà hỏi con” ·{" "}
+        <b className="font-semibold text-[#B5452E]">Đến</b>: mở chương của Bà · <b className="font-semibold text-[#5E7F4A]">Hiểu</b>: đúng 2 trong 3 câu “Bà hỏi con” ·{" "}
         <b className="font-semibold text-[#2F4A6D]">Mặc</b>: dán ảnh lần con mặc thật.
       </p>
       {allStamps && (
@@ -85,7 +86,7 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
           return (
             <li key={r.id} className="flex items-center gap-2 border-t border-dashed border-stone-300 pt-0.5">
               <div className="w-[5.5rem] shrink-0">
-                <a href={asset(`/?region=${r.id}&page=own`)} title={stamped === place ? undefined : `${place} · chương ${stamped}`} className="tap-around font-display block text-[0.85rem] leading-tight text-[#27354f] hover:underline">
+                <a href={asset(`/?region=${r.id}&page=own`)} title={stamped === place ? undefined : `${place} · chương ${stamped}`} className="tap font-display block text-[0.85rem] leading-tight text-[#27354f] hover:underline">
                   {place}
                   {stopsTotal(r) > 0 && (
                     // "tem điểm": the stops of Bà's road the reader has turned to (said here, the legend has no room)
@@ -110,10 +111,9 @@ export function StampCabinet({ data, book }: { data: Bootstrap; book: DuKyBook }
                 <Stamp label="Đã đến" place={stamped} look={arrived.includes(r.id) ? "on" : "off"} color="#B5452E" />
                 <Stamp label="Đã hiểu" place={stamped} look={understood.includes(r.id) ? "on" : "off"} color="#5E7F4A" />
                 {/* one name for the stamp, "ĐÃ MẶC", even before it is earned; what is missing is said under it (#114) */}
-                <div className="flex flex-col items-center">
-                  <Stamp label="Đã mặc" place={stamped} look={worn.has(r.id) ? "on" : tried.has(r.id) ? "soft" : "off"} color="#2F4A6D" />
-                  {!worn.has(r.id) && <span className="mt-0.5 max-w-[5.5rem] text-center text-[0.75rem] leading-none text-stone-600">cần ảnh mặc thật</span>}
-                </div>
+                {/* what an empty "ĐÃ MẶC" needs is in the legend above and on the stamp itself (its label and title):
+                    under every row it made the rows tall and ran into the mailbox line (#145) */}
+                <Stamp label="Đã mặc" place={stamped} look={worn.has(r.id) ? "on" : tried.has(r.id) ? "soft" : "off"} color="#2F4A6D" />
               </div>
             </li>
           );

@@ -9,19 +9,18 @@ import { addPhoto, takeOutPage, updatePage, usePhotoUrl, type DuKyPage, type Pho
 import { cited } from "@/lib/sources";
 import { track } from "@/lib/track";
 import { stampPlaceOf } from "@/lib/stampPlace";
+import { hasRealPhoto, stampLabel } from "@/lib/dukyStamp";
+import { formatDateVi } from "@/lib/dateVi";
+import { DateField } from "./DateField";
 import type { Bootstrap, Shop } from "@/lib/types";
 import { asset } from "@/lib/base";
-import { labelVi } from "@/lib/text";
+import { keptSaid, labelVi } from "@/lib/text";
 
 const INK = "#27354f";
 const ACT = "rounded-full border border-stone-400/80 bg-white/40 px-2.5 py-1 leading-tight hover:bg-white/80";
 const VERDICT: Record<string, string> = { Authentic: "✅", Adapted: "✨", Inspired: "⚠️" };
 
-export function formatDate(d: string | null) {
-  if (!d) return "";
-  const [y, m, day] = d.split("-");
-  return `${Number(day)}/${Number(m)}/${y}`;
-}
+export const formatDate = (d: string | null) => formatDateVi(d); // one form everywhere (#145)
 
 /** Tèo's note for a page: one sourced fact of the garment, chosen from the page id so it stays the same. */
 export function teoFact(data: Bootstrap, page: DuKyPage) {
@@ -66,8 +65,8 @@ export function Photo({ photo, className = "", big = false }: { photo: PhotoRef;
 const NOTE_MAX = 200;
 
 function RegionStamp({ page, place }: { page: DuKyPage; place: string }) {
-  const real = page.photos.some((p) => p.kind === "real");
-  const label = real || page.status === "worn" ? "ĐÃ MẶC" : page.photos.length ? "ĐÃ THỬ" : "SẮP ĐI";
+  const real = hasRealPhoto(page);
+  const label = stampLabel(page); // the same word as on the exported card (#144)
   const hint = real ? `Tem đã mặc ${place}, đã vào Tủ tem` : "Dán ảnh con mặc thật để tem này đậm lên và vào Tủ tem";
   return (
     <div
@@ -104,22 +103,22 @@ function Preparation({ page, data }: { page: DuKyPage; data: Bootstrap }) {
     <div className="mt-2 space-y-1.5 rounded-md bg-white/50 p-2 text-[0.75rem] leading-snug text-stone-700">
       {keep.length > 0 && (
         <p className="m-0">
-          <b>Nhớ giữ nguyên:</b> {keep.map((z) => z.part).join(" · ")}
+          <b>Nhớ giữ nguyên:</b> {keep.map((z) => keptSaid(z.part)).join(", ")}
         </p>
       )}
-      <p className="m-0">
-        <b>Thời tiết:</b>{" "}
-        {!page.date
-          ? "chọn ngày đi để xem dự báo."
-          : w?.available
-            ? `cao nhất ${Math.round(w.max_c!)}°C${w.rain_chance != null ? `, khả năng mưa ${w.rain_chance}%` : ""}.`
-            : w?.reason === "too_far"
-              ? `sẽ có dự báo khi còn 16 ngày (khoảng ${w.days_until_forecast} ngày nữa).`
-              : w?.reason === "past"
-                ? "ngày này đã qua."
-                : "chưa lấy được dự báo."}
-        {tip && <span className="block text-[#8a4b2a]">Mặc cho mát: {tip}</span>}
-      </p>
+      {page.date && (
+        <p className="m-0">
+          <b>Thời tiết:</b>{" "}
+          {w?.available
+              ? `cao nhất ${Math.round(w.max_c!)}°C${w.rain_chance != null ? `, khả năng mưa ${w.rain_chance}%` : ""}.`
+              : w?.reason === "too_far"
+                ? `sẽ có dự báo khi còn 16 ngày (khoảng ${w.days_until_forecast} ngày nữa).`
+                : w?.reason === "past"
+                  ? "ngày này đã qua."
+                  : "chưa xem được dự báo lúc này, con thử lại khi có mạng nhé."}
+          {tip && <span className="block text-[#8a4b2a]">Mặc cho mát: {tip}</span>}
+        </p>
+      )}
       {shops.length > 0 && (
         <p className="m-0">
           <b>Thuê/may:</b>{" "}
@@ -201,7 +200,7 @@ export function DuKyPageView({
         <div className="mt-1.5 grid grid-cols-2 gap-1.5 rounded-md bg-white/55 p-2 text-[0.75rem]">
           <label className="flex flex-col gap-0.5">
             Ngày
-            <input type="date" lang="vi" value={page.date ?? ""} onChange={(e) => updatePage(page.id, { date: e.target.value || null })} className="rounded border border-stone-300 bg-white/80 px-1.5 py-1" />
+            <DateField value={page.date} onChange={(d) => updatePage(page.id, { date: d })} className="rounded border border-stone-300 bg-white/80 px-1.5 py-1" />
           </label>
           <label className="flex flex-col gap-0.5">
             Dịp
@@ -241,14 +240,14 @@ export function DuKyPageView({
         placeholder="Viết một dòng của con…"
         rows={compact ? 1 : 2}
         maxLength={NOTE_MAX}
-        className={`font-hand mt-2 w-full shrink-0 ${compact ? "max-h-[2.8em]" : "max-h-[5.6em]"} resize-none overflow-y-auto [field-sizing:content] border-0 border-b border-stone-400 bg-transparent text-[1rem] leading-snug outline-none placeholder:text-stone-400`}
+        className={`font-hand mt-2 w-full shrink-0 ${compact ? "max-h-[2.8em]" : "max-h-[5.6em]"} resize-none overflow-y-auto [field-sizing:content] border-0 border-b border-stone-400 bg-transparent text-[1rem] leading-snug outline-none placeholder:text-stone-600`}
         style={{ color: "#1f3a78" }}
         aria-label="Một dòng của con"
         aria-describedby={note.length >= NOTE_MAX - 40 ? `count-${page.id}` : undefined}
       />
       {note.length >= NOTE_MAX - 40 && (
-        <p id={`count-${page.id}`} className="m-0 text-right text-[0.75rem] text-stone-600">
-          {note.length}/{NOTE_MAX} chữ{note.length > 120 ? " · ảnh xuất giữ 3 dòng đầu" : ""}
+        <p id={`count-${page.id}`} className="m-0 mt-1 text-right text-[0.75rem] text-stone-600">
+          {note.length}/{NOTE_MAX} chữ{note.length > 120 ? " · ảnh chỉ in 3 dòng đầu" : ""}
         </p>
       )}
 
