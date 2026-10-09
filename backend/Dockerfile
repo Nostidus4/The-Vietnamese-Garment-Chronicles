@@ -14,5 +14,5 @@ COPY content ./content
 
 EXPOSE 8000
 
-# Render's proxy is the direct peer: take the visitor's IP from X-Forwarded-For so the try-on limit is per person
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips", "*"]
+# Railway sets $PORT (8000 locally). Its proxy is the direct peer: take the visitor's IP from X-Forwarded-For so the try-on limit is per person
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --proxy-headers --forwarded-allow-ips '*'"]
