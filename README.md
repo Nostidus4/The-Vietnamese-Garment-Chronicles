@@ -225,9 +225,9 @@ Ghi chú của Tèo và thuật ngữ chỉ hiện trên trang thật khi `verif
 - Địa chỉ: **https://nostidus4.github.io/The-Vietnamese-Garment-Chronicles/**
 - Workflow `.github/workflows/pages.yml` tự build và deploy mỗi lần push vào `main`. Muốn deploy một nhánh khác để xem trước: tab **Actions → Deploy to GitHub Pages → Run workflow**, chọn nhánh.
 - Nội dung sổ được xuất từ `backend/content` lúc build (`python -m scripts.export_bootstrap`), nên **đọc sổ, trò chơi, tem, bưu thiếp, Du Ký chạy được mà không cần máy chủ**.
-- Compass, thử đồ AI, Hỏi Tèo, thời tiết, cửa hàng, link chia sẻ cần backend. Khi có backend trên Render:
-  1. **Settings → Secrets and variables → Actions → Variables**: thêm `API_URL` = URL Render (không có `/` ở cuối).
-  2. Trên Render, thêm `https://nostidus4.github.io` vào `CORS_ORIGINS`.
+- Compass, thử đồ AI, Hỏi Tèo, thời tiết, cửa hàng, link chia sẻ cần backend. Khi có backend trên Railway (xem **Backend trên Railway** bên dưới):
+  1. **Settings → Secrets and variables → Actions → Variables**: thêm `API_URL` = URL Railway (không có `/` ở cuối).
+  2. Trên Railway, thêm `https://nostidus4.github.io` vào `CORS_ORIGINS`.
   3. Chạy lại workflow (các biến `NEXT_PUBLIC_*` được nhúng lúc build).
 - Build thử trên máy giống hệt Pages:
   ```bash
@@ -245,23 +245,38 @@ Ghi chú của Tèo và thuật ngữ chỉ hiện trên trang thật khi `verif
   4. **Environment Variables** (áp cho Production và Preview):
      | Tên | Giá trị |
      |---|---|
-     | `NEXT_PUBLIC_API_URL` | URL backend trên Render, ví dụ `https://<ten-service>.onrender.com` (không có `/` ở cuối) |
+     | `NEXT_PUBLIC_API_URL` | URL backend trên Railway, ví dụ `https://<ten-service>.up.railway.app` (không có `/` ở cuối) |
      | `NEXT_PUBLIC_SUPABASE_URL` | như trong `frontend/.env.example` |
      | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | như trong `frontend/.env.example` (key công khai, không phải service key) |
   5. **Deploy.** Mỗi lần merge vào `main` Vercel tự deploy bản chính; mỗi PR có một link xem thử riêng.
   6. **Sau khi có địa chỉ Vercel** (ví dụ `https://viet-phuc-du-ky.vercel.app`):
-     - Render → backend → Environment: thêm địa chỉ đó vào `CORS_ORIGINS` (nhiều địa chỉ cách nhau bằng dấu phẩy, không có `/` ở cuối), rồi deploy lại backend.
+     - Railway → backend → Variables: thêm địa chỉ đó vào `CORS_ORIGINS` (nhiều địa chỉ cách nhau bằng dấu phẩy, không có `/` ở cuối), rồi deploy lại backend.
      - Supabase → Authentication → URL Configuration: đặt **Site URL** là địa chỉ Vercel và thêm `https://<địa-chỉ-vercel>/du-ky` vào **Redirect URLs** (để link đăng nhập "Lưu sổ lên mây" quay về đúng trang).
   - Biến `NEXT_PUBLIC_*` được nhúng lúc build: đổi giá trị thì phải **Redeploy** mới có tác dụng.
-- Backend: có thể triển khai trên Render hoặc Railway bằng lệnh `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
+- **Backend trên Railway** (dùng `backend/Dockerfile`, cấu hình ở `backend/railway.json`):
+  1. [railway.com](https://railway.com) → **New Project → Deploy from GitHub repo** → chọn repo này.
+  2. Service → **Settings**:
+     - **Root Directory:** `/backend`
+     - **Config-as-code → Railway Config File:** `/backend/railway.json` (đường dẫn này không tự đi theo Root Directory).
+  3. Service → **Variables** (xem `backend/.env.example`):
+     | Tên | Giá trị |
+     |---|---|
+     | `GEMINI_API_KEY` | key Gemini còn credit |
+     | `CORS_ORIGINS` | `https://nostidus4.github.io` (thêm địa chỉ khác bằng dấu phẩy, không có `/` ở cuối) |
+     | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | nên đặt: ổ đĩa Railway mất khi deploy lại, nên link chia sẻ và sự kiện cần Supabase |
+     | `TRYON_PER_MINUTE`, `MAX_UPLOAD_MB` | tùy chọn, mặc định 6 và 8 |
+     Không đặt `PORT`: Railway tự cấp, Dockerfile đọc `$PORT`.
+  4. **Settings → Networking → Generate Domain** để có URL `https://<ten>.up.railway.app`. Kiểm tra: mở `<URL>/health` thấy `"ok":true`.
+  5. Làm 3 bước ở mục **Web tĩnh trên GitHub Pages** phía trên (`API_URL`, rồi chạy lại workflow Pages).
+  - Railway không cho dịch vụ ngủ (trừ khi bật Serverless), nên không cần workflow keep-awake.
 - **Sự kiện ẩn danh cho phần Impact (`POST /events`):**
   1. Supabase → SQL Editor → chạy `backend/supabase/events.sql` (tạo bảng `events`, bật RLS, không có policy nên key công khai không đọc/ghi được).
-  2. Thêm `SUPABASE_URL` và `SUPABASE_SERVICE_ROLE_KEY` vào biến môi trường của backend trên Render (và `backend/.env` nếu muốn thử local với Supabase).
+  2. Thêm `SUPABASE_URL` và `SUPABASE_SERVICE_ROLE_KEY` vào biến môi trường của backend trên Railway (và `backend/.env` nếu muốn thử local với Supabase).
   3. Xem số liệu: `python -m scripts.event_stats` (tỉ lệ chọn đúng dịp, điểm quiz trước/sau, tỉ lệ look ⚠️/⛔ được sửa). Thêm `--json` để lấy số thô.
   - Không cấu hình Supabase thì sự kiện ghi vào `backend/data/events.jsonl` (không commit), chỉ để thử local.
-  - Không lưu IP; nếu muốn log của Render cũng không có IP, chạy uvicorn với `--no-access-log`.
-- **Giữ backend Render luôn thức:** workflow `.github/workflows/keep-awake.yml` ping `/health` mỗi 10 phút.
-  - Bật: GitHub → Settings → Secrets and variables → Actions → **Variables** → thêm `BACKEND_URL` = URL Render (không có `/` ở cuối). Có thể bấm "Run workflow" để thử ngay.
+  - Không lưu IP; nếu muốn log của Railway cũng không có IP, chạy uvicorn với `--no-access-log`.
+- **Giữ backend luôn thức (chỉ cần nếu host có chế độ ngủ):** workflow `.github/workflows/keep-awake.yml` ping `/health` mỗi 10 phút.
+  - Bật: GitHub → Settings → Secrets and variables → Actions → **Variables** → thêm `BACKEND_URL` = URL backend (không có `/` ở cuối). Có thể bấm "Run workflow" để thử ngay.
   - Tắt: xóa biến `BACKEND_URL`, hoặc vào tab Actions → "Keep backend awake" → Disable workflow.
   - Frontend vẫn tự xử lý khi máy chủ đang ngủ: sau 3 giây không có phản hồi sẽ hiện màn "Đang đánh thức máy chủ…".
 - Thiết lập `CORS_ORIGINS` thành URL frontend thật và gọi `/health` trước buổi demo nếu dịch vụ có chế độ ngủ.

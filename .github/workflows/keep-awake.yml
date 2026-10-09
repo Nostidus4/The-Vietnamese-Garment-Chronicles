@@ -1,6 +1,6 @@
-# Keeps the free Render backend awake so judges never meet a cold start.
+# Keeps a sleeping backend awake (Render free tier; Railway does not sleep unless Serverless is on) so judges never meet a cold start.
 # Turn on:  Settings → Secrets and variables → Actions → Variables → New variable
-#           BACKEND_URL = https://<your-service>.onrender.com   (no trailing slash)
+#           BACKEND_URL = https://<your-service>.up.railway.app   (no trailing slash)
 # Turn off: delete the BACKEND_URL variable, or Actions → "Keep backend awake" → ⋯ → Disable workflow.
 # Note: GitHub runs schedules only on the default branch, and may start them a few minutes late.
 name: Keep backend awake
