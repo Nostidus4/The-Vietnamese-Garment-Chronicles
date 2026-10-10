@@ -14,14 +14,17 @@ from .gemini_client import GeminiUnavailable, get_client
 
 TRYON_TEMPLATE = """Edit the person in IMAGE 1 so they wear the garment shown in IMAGE 2 (reference photo of the correct garment).
 Garment: {name_en} ({name_vi}), Vietnamese, {period}.
+The person in IMAGE 1 is the wearer and stays the same person: same gender, face, hair, body shape, height and skin tone. Do not replace them with a model; IMAGE 2 shows only the garment.{men_cut}
 MUST KEEP: {must_keep}.
 Colors: main {color_main}, accent {color_accent}.
 Accessories: {accessories}.{changes}
 Styling vibe: {vibe}. Background: {background}.
 MUST AVOID: {must_avoid}; Chinese hanfu collar, Korean jeogori ribbon, Japanese obi, any non-Vietnamese traditional element; any visible text, letters or Chinese characters (signs, banners, couplets, lanterns).
-Keep the person's face, body shape and skin tone unchanged. Full body, natural light, photorealistic."""
+Full body, natural light, photorealistic."""
 
-TRYON_TEMPLATE_NO_REF = TRYON_TEMPLATE.replace(" in IMAGE 2 (reference photo of the correct garment)", " described below")
+TRYON_TEMPLATE_NO_REF = TRYON_TEMPLATE.replace("shown in IMAGE 2 (reference photo of the correct garment)", "described below").replace(
+    "; IMAGE 2 shows only the garment.", "."
+)
 
 # Avatar renders are deterministic enough to cache; user photos are never cached or stored.
 _cache: "OrderedDict[str, str]" = OrderedDict()
@@ -60,6 +63,8 @@ def build_prompt(sel: Selection, with_reference: bool) -> str:
         name_en=g.name_en,
         name_vi=g.name_vi,
         period=g.period,
+        # the refs are women's cuts: without this a man in the photo came back as a woman
+        men_cut=f"\nIf the wearer is a man, use the men's cut: {g.men_cut}." if g.men_cut else "",
         must_keep="; ".join(g.must_keep),
         color_main=colors[0],
         color_accent=colors[1] if len(colors) > 1 else colors[0],

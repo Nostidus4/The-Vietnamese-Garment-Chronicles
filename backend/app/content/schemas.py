@@ -112,6 +112,9 @@ class Garment(Strict):
     accessories: list[Id] = []
     must_keep: list[str] = Field(min_length=1, description="English, sent to Nano Banana")
     must_avoid: list[str] = Field(default_factory=list, description="English, sent to Nano Banana")
+    men_cut: str | None = Field(
+        None, description="English, sent to Nano Banana: how the garment is cut for a man (the refs are women's cuts); none when only women wear it"
+    )
     reference_image: str | None = Field(None, description="Path under content/media, e.g. ref/ao-dai.png")
     hot_weather_tip: str | None = None
     wearing_steps: list[WearingStep] = []

@@ -23,6 +23,7 @@
   "accessories": ["khan-van", "sneakers-trang"],
   "must_keep": ["English: structural features that must stay"],
   "must_avoid": ["English: elements that must never appear"],
+  "men_cut": "English: how the garment is cut for a man (null when only women wear it)",
   "reference_image": "ref/ten-trang-phuc-khong-dau.png",
   "hot_weather_tip": "Gợi ý khi trời nóng (không bắt buộc).",
   "wearing_steps": [
